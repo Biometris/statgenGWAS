@@ -1,0 +1,29 @@
+Package: gwas
+Type: Package
+Title: Genome Wide Association Studies in R
+Version: 0.1.0
+Date: 2019-18-02
+Authors@R: c(
+    person("Bart-Jan", "van Rossum", email = "bart-jan.vanrossum@wur.nl", 
+           role = c("aut", "cre")),
+    person("Willem", "Kruijer", email = "willem.kruijer@wur.nl", role = "ctb"))
+Description: Package for fast single trait Genome Wide Association Studies (GWAS) 
+  including functions for visualizing results.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Depends: R (>= 3.3)
+Imports: ggplot2 (>= 3.0.0),
+    Matrix (>= 1.2-10),
+    methods,
+    sommer (>= 3.7.3),
+    Rcpp
+Suggests: covr,
+    knitr,
+    rmarkdown,
+    officer,
+    rvg,
+    testthat
+VignetteBuilder: knitr
+LinkingTo: Rcpp, RcppArmadillo

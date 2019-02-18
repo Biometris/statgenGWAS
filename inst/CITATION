@@ -1,0 +1,15 @@
+citHeader("To cite ... in publications use:")
+
+citEntry(entry = "Article",
+  title        = "GWAS",
+  author       = personList(as.person("Bart-Jan van Rossum")),
+  journal      = "WUR",
+  year         = "2017",
+  volume       = "1",
+  number       = "1",
+  pages        = "1",
+  url          = "www.wur.nl",
+
+  textVersion  =
+  paste("Test")
+)
