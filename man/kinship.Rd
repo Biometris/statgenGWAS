@@ -4,8 +4,7 @@
 \alias{kinship}
 \title{Functions for calculating kinship matrices}
 \usage{
-kinship(X, map = NULL, method = c("astle", "IBS", "vanRaden"),
-  denominator = NULL)
+kinship(X, method = c("astle", "IBS", "vanRaden"), denominator = NULL)
 }
 \arguments{
 \item{X}{An n x m marker matrix with genotypes in the rows (n) and markers in

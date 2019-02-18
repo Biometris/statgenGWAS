@@ -88,7 +88,7 @@ computeKin <- function(GLSMethod,
       K <- gData$kinship
     } else {
       ## Compute K from markers.
-      K <- kinship(X = markers, map = map, method = kinshipMethod)
+      K <- kinship(X = markers, method = kinshipMethod)
     }
     K <- K[order(match(rownames(K), rownames(markers))),
            order(match(colnames(K), rownames(markers)))]
@@ -146,7 +146,6 @@ chrSpecKin <- function(gData,
         ncol(gData$markers[, -chrMrk, drop = FALSE])
     } else if (length(dim(gData$markers)) == 3) {
       K <- kinship(X = gData$markers[, chrMrk, , drop = FALSE],
-                   map = gData$map[gData$map$chr == chr, ],
                    method = kinshipMethod, denominator = 1)
       ## Compute chromosome length.
       ## Add extra bits for first and last marker as in kinship calculation.
