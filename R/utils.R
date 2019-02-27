@@ -74,11 +74,11 @@ expandPheno <- function(gData,
 #' @importFrom methods as
 #' @keywords internal
 computeKin <- function(GLSMethod,
-                       kin,
-                       gData,
-                       markers,
+                       kin = NULL,
+                       gData = NULL,
+                       markers = NULL,
                        map = NULL,
-                       kinshipMethod) {
+                       kinshipMethod = NULL) {
   if (GLSMethod == "single") {
     if (!is.null(kin)) {
       ## kin is supplied as input. Convert to dsyMatrix.

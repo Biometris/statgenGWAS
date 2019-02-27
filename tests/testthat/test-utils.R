@@ -86,3 +86,56 @@ test_that("parameters in nearestPD function properly", {
                       1.04559967845123, 1.82792523675371, 0.890017983604708,
                       0.586415044934283, 0.890017983604708, 1.33494200875219))
 })
+
+K0 <- K[1:10, 1:10]
+gDataTest <- createGData(kin = K0 + 0.1)
+test_that("computeKin functions properly for GLSMethod single", {
+  ## Only kin provided -> converted to dsyMatrix.
+  expect_is(K1 <- computeKin(GLSMethod = "single", kin = K0), "dsyMatrix")
+  expect_equal(as.matrix(K1), K0)
+  ## Only gData provided -> converted to dsyMatrix.
+  expect_is(K2 <- computeKin(GLSMethod = "single", gData = gDataTest), 
+            "dsyMatrix")
+  expect_equal(as.matrix(K2), K0 + 0.1)
+  ## Both kin and gData provided -> Return kin converted to dsyMatrix.
+  expect_equal(computeKin(GLSMethod = "single", kin = K0, gData = gDataTest), 
+               K1)
+})
+
+gDataTest2 <- createGData(kin = list("chr1" = K0 + 0.1, "chr2" = K0 + 0.1))
+test_that("computeKin functions properly for GLSMethod multi", {
+  ## Only kin provided -> converted to dsyMatrices.
+  expect_is(KLst1 <- computeKin(GLSMethod = "multi",
+                                kin = list("chr1" = K0, "chr2" = K0)), "list")
+  expect_is(KLst1[[1]], "dsyMatrix")
+  expect_equal(as.matrix(KLst1[[1]]), K0)
+  ## Only gData provided -> converted to dsyMatrix.
+  expect_is(KLst2 <- computeKin(GLSMethod = "multi", gData = gDataTest2),
+            "list")
+  expect_is(KLst2[[1]], "dsyMatrix")
+  expect_equal(as.matrix(KLst2[[1]]), K0 + 0.1)
+  ## Both kin and gData provided -> Return kin converted to dsyMatrix.
+  expect_equal(computeKin(GLSMethod = "multi", 
+                          kin = list("chr1" = K0, "chr2" = K0), 
+                          gData = gDataTest2), KLst1)
+})
+
+markers <- matrix(runif(n = 200), nrow = 10, 
+                  dimnames = list(paste0("G", 1:10), paste0("M", 1:20)))
+map <- data.frame(chr = rep(x = 1:2 , each = 10), 
+                  pos = rep(x = 1:10, times = 2), row.names = paste0("M", 1:20))
+test_that("computeKin functions when computing K", {
+  expect_is(K3 <- computeKin(GLSMethod = "single", markers = markers), "matrix")
+  expect_equal(dim(K3), c(10, 10))
+  expect_equivalent(K3[1:2, 1:2], 
+                    c(0.24034600324685, -0.0495906565078673, 
+                      -0.0495906565078673, 0.168265132659869))
+  expect_is(KLst3 <- computeKin(GLSMethod = "multi", markers = markers, 
+                                map = map), "list")
+  expect_is(KLst3[[1]], "matrix")
+  expect_equal(dim(KLst3[[1]]), c(10, 10))
+  expect_equivalent(KLst3[[1]][1:2, 1:2], 
+                    c(0.1078569990775, -0.0679829089379083, -0.0679829089379083, 
+                      0.0893476300773066))
+})
+  

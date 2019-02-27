@@ -174,8 +174,4 @@ plot(GWASRicePlantHeightMult, type = "qq", trait = "Plant.height")
 plot(GWASRicePlantHeightMult, type = "qtl")
 ```
 
-
-### **Multi trait GWAS**
-Performing a multi trait GWAS is done in mostly the same way 
-
 ****
