@@ -1,64 +1,94 @@
 context("single trait GWAS")
 
-set.seed(1234)
-y <- 1:10
-X <- matrix(sample(x = c(0, 1), size = 30, replace = TRUE), nrow = 10)
-Sigma <- matrix(runif(n = 100), nrow = 10)
-Sigma <- tcrossprod(Sigma)
-covs <- matrix(runif(n = 20, max = 100), nrow = 10)
-pheno <- data.frame(genotype = paste0("G", 1:10),
-                    matrix(rnorm(50, mean = 10, sd = 2), nrow = 10))
-map <- data.frame(chr = c(1, 1, 2), pos = 1:3)
-rownames(X) <- rownames(Sigma) <- colnames(Sigma) <- rownames(covs) <-
-  paste0("G", 1:10)
-colnames(X) <- rownames(map) <- paste0("M", 1:3)
-gDataTest <- createGData(map = map, geno = X, kin = Sigma,
-                         pheno = list(ph1 = pheno, ph2 = pheno),
-                         covar = as.data.frame(covs))
-
 stg0 <- runSingleTraitGwas(gData = gDataTest, environments = 1)
-stg01 <- runSingleTraitGwas(gData = gDataTest)
+stg1 <- runSingleTraitGwas(gData = gDataTest)
 result1 <- runSingleTraitGwas(gData = gDataTest, environments = 1,
-                              covar = "V1")$GWAResult
+                              covar = "V1")[["GWAResult"]]
 result2 <- runSingleTraitGwas(gData = gDataTest, environments = 1,
-                              snpCov = "M2")$GWAResult
+                              snpCov = "M2")[["GWAResult"]]
 result3 <- runSingleTraitGwas(gData = gDataTest, environments = 1, covar = "V1",
-                              snpCov = "M2")$GWAResult
+                              snpCov = "M2")[["GWAResult"]]
 
 test_that("runSingleTraitGwas produces correct output structure", {
   expect_is(stg0, "GWAS")
   expect_length(stg0, 5)
   expect_named(stg0, c("GWAResult", "signSnp", "kinship", "thr", "GWASInfo"))
-  expect_is(stg0$GWAResult, "list")
-  expect_length(stg0$GWAResult, 1)
-  expect_named(stg0$GWAResult, "ph1")
-  expect_length(stg01$GWAResult, 2)
-  expect_named(stg01$GWAResult, c("ph1", "ph2"))
+  expect_named(stg0[["GWASInfo"]], c("call", "remlAlgo", "thrType", "MAF", 
+                                     "GLSMethod", "varComp", "genomicControl", 
+                                     "inflationFactor"))
+  expect_length(stg0[["GWASInfo"]][["varComp"]][["ph1"]], 5)
+  expect_is(stg0[["GWAResult"]], "list")
+  expect_length(stg0[["GWAResult"]], 1)
+  expect_named(stg0[["GWAResult"]], "ph1")
+  expect_length(stg1[["GWAResult"]], 2)
+  expect_named(stg1[["GWAResult"]], c("ph1", "ph2"))
 })
 
 test_that("runSingleTraitGWas produces correct p-values", {
-  expect_equal(stg0$GWAResult[[1]]$pValue,
+  expect_equal(stg0[["GWAResult"]][["ph1"]][["pValue"]],
                c(0.517279205274389, 0.913713471945949, 0.628864085064797,
                  0.0807864803940613, 0.857734879152358, 0.0951298087141793,
                  0.616384737625595, 0.994787446465712, 0.421203350051828,
                  0.183886590676029, 0.973491209528074, 0.57064757354885,
                  0.588456561785548, 0.367143146285209, 0.905504194974234))
-  expect_equal(result1[[1]]$pValue,
+  expect_equal(result1[["ph1"]][["pValue"]],
                c(0.269933551571042, 0.984965446392588, 0.648441699544188,
                  0.0626857428326674, 0.866711176390765, 0.120055932703493,
                  0.770861361333917, 0.940364514318174, 0.451352288953829,
                  0.22823190214397, 0.946236384390807, 0.592108077080844,
                  0.619302653579761, 0.405860998685857, 0.911116358438535))
-  expect_equal(result2[[1]]$pValue,
+  expect_equal(result2[["ph1"]][["pValue"]],
                c(0.52489597499325, 0.894152021294656, 0.602218414048816,
                  0.0970424392791122, 0.857734879152358, 0.0928126890021481,
                  0.626210599310249, 0.99304196419329, 0.437394594066136,
                  0.212511818760432, 0.973491209528084, 0.579458353874296,
                  0.648912926295298, 0.367143146285209, 0.918479093445766))
-  expect_equal(result3[[1]]$pValue,
+  expect_equal(result3[["ph1"]][["pValue"]],
                c(0.308728292832841, 0.984965446392575, 0.661002824234325,
                  0.0830816331311562, 0.866711176390759, 0.121327025768191,
                  0.802520086738191, 0.928635114511299, 0.464942717455927,
                  0.26495153781054, 0.946236384390817, 0.598229839636105,
                  0.657680037715817, 0.405860998685858, 0.926119151352394))
+})
+
+test_that("runSingleTraitGWas produces correct effects", {
+  expect_equal(stg0[["GWAResult"]][["ph1"]][["effect"]],
+               c(0.329655135663703, -0.0523415834531639, -0.231172492667825, 
+                 -0.998591826953343, 0.105747326397999, 0.900199835297491, 
+                 0.365802000421663, -0.00451897421654893, -0.536929047141782,
+                 0.566408148388453, -0.0140416675994678, -0.237071809376455,
+                 -0.423170101908386, -0.648467470701944, 0.0876608171462137))
+  expect_equal(result1[["ph1"]][["effect"]],
+               c(0.621867338507362, -0.00941342555744476, -0.224749040921914, 
+                 -1.23381446592779, 0.106875375611726, 0.900246123947075, 
+                 0.252267079981049, -0.0551904011508715, -0.535173617835912,
+                 0.609071800057479, -0.0304694939746248, -0.238205223566336,
+                 -0.463316408371964, -0.644652980899449, 0.0884008878197832))
+  expect_equal(result2[["ph1"]][["effect"]],
+               c(0.347469170304034, -0.0643513589083698, -0.273139653550658, 
+                 -1.0167290960899, 0.105747326398003, 0.988405733764471, 
+                 0.382341016024913, 0.00603463085627312, -0.569994013897078,
+                 0.572286144734965, -0.0140416675994663, -0.256619479060645,
+                 -0.364309543043668, -0.648467470701946, -0.079410657451786))
+  expect_equal(result3[["ph1"]][["effect"]],
+               c(0.623954093543482, -0.00941342555743628, -0.242515997411095, 
+                 -1.24313836461857, 0.106875375611758, 0.989932044372956, 
+                 0.235647618490217, -0.0660278629286459, -0.581896779500544,
+                 0.612364524225114, -0.0304694939746137, -0.26252254408369,
+                 -0.426570919112085, -0.644652980899469, -0.0782004839918009))
+})
+
+test_that("runSingleTraitGWas produces correct results for traits with NA", {
+  expect_equal(stg1[["GWAResult"]][["ph2"]][["pValue"]],
+               c(0.846492901007098, 0.804036547249414, 0.829274938599496, 
+                 0.191479673017763, 0.781127898907235, 0.240791420898706,
+                 0.514251268884624, 0.872517539395362, 0.293507938745088,
+                 0.0925940407313777, 0.914221117510438, 0.796846739920611, 
+                 0.775061838708158, 0.433123276583154, 0.8106032948157))
+  expect_equal(stg1[["GWAResult"]][["ph2"]][["effect"]],
+               c(0.0958703682948263, 0.12273920650201, -0.106737271934674, 
+                 -0.863846700297191, -0.191330661290845, 0.762023871819062, 
+                 0.631262428791117, -0.170785784832933, -0.86607749450581,
+                 0.893140037183808, -0.0578885168956671, -0.133618558341211, 
+                 -0.267907763062917, -0.717314491460222, 0.224923873492258))
 })

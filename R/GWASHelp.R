@@ -259,7 +259,7 @@ extrSignSnps <- function(GWAResult,
       ## Compute variance of marker scores, based on genotypes for which
       ## phenotypic data is available. For inbreeders, this depends on
       ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
-      ## 1 if there are heterozygotes)
+      ## 1 if there are heterozygotes).
       snpVar <- 4 * effect ^ 2 / maxScore ^ 2 *
         apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
       propSnpVar <- snpVar / as.numeric(var(pheno[trait]))
