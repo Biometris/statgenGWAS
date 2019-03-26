@@ -421,7 +421,7 @@ codeMarkers <- function(gData,
   }
   if (!is.null(gData$covar)) {
     covarNew <- gData$covar[rownames(gData$covar) %in%
-                              rownames(markersRecoded), ]
+                              rownames(markersRecoded), , drop = FALSE]
   }
   if (verbose) {
     cat(paste0("Output contains ", ncol(markersRecoded), " markers for ",

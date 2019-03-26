@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Bart-Jan van Rossum" />
+
+<meta name="date" content="2019-03-19" />
+
+<title>Introduction to the GWAS package</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to the GWAS package</h1>
+<h4 class="author">Bart-Jan van Rossum</h4>
+<h4 class="date">2019-03-19</h4>
+
+
+
+<p>The GWAS package has been designed for performing Genome Wide Association Studies (GWAS).</p>
+<hr />
+<div id="the-class-gdata" class="section level2">
+<h2>The class <code>GData</code></h2>
+<p>Data for analysis on genomic data comes from different sources and is stored in one data object of class <strong>gData</strong> (<strong>g</strong>enomic <strong>Data</strong>) for convenience. A gdata object will contain all data needed for performing analyses, so the first thing to do when using the GWAS package is creating a gData object. A gData object consists of different types of data. To create the object all data is optional, however for certain analyses certain types of data are requiered. Additional data can always be added to an existing object later on.<br />
+A gData object can be created using the function <strong><em>createGData</em></strong>. If an existing gData object is provided as an input to this function data is added to the existing object and existing data will be overwritten with a warning if necessary. All data is checked for consistency and if needed default names are added with a warning message.<br />
+A gData object created this way will consist of the following components:</p>
+<div id="marker-map" class="section level3">
+<h3><strong>Marker map</strong></h3>
+<p>The data.frame <strong>map</strong> is used to describe the physical positions of the markers on the chromosomes. The data consists of two columns, <em>chr</em> for the name or number of the chromosome and <em>pos</em> for the position of the marker on the chromosome. The position can be in basepair or in centimorgan. The names of the markers should be the row names of the data.frame.</p>
+</div>
+<div id="marker-matrix" class="section level3">
+<h3><strong>Marker matrix</strong></h3>
+<p>The marker matrix is stored in the matrix <strong>marker</strong> within the gData object. It has the names of the markers in its column names and the genotypes in its row names. Markers can either be coded as character strings or as numerical values. In the former case before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be do using the function <strong><em>codeMarkers</em></strong>. Any numerical marker matrix will be stored as a matrix of class <em>Matrix</em> in a gData object in order to save storage space and speed up computation.</p>
+</div>
+<div id="phenotypic-data" class="section level3">
+<h3><strong>Phenotypic data</strong></h3>
+<p>Phenotypic data, either directly from field trails or after summarizing can be stored in <strong>pheno</strong> in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different environments or possibly different summarizations of the original data. The first column of all elements of pheno should be <em>genotype</em> and all the other columns should represent different traits. Storing additional variables should be done in <strong>covar</strong>. A single data.frame will be converted to a one-item list upon creation of a gData object.</p>
+</div>
+<div id="kinship-matrix" class="section level3">
+<h3><strong>Kinship matrix</strong></h3>
+<p>The kinship matrix describes the genetic relatedness between the different genotypes. It is stored in the matrix <strong>kinship</strong> in the gData object. This should be a square matrix with genotypes in both row and column names and a measure for the genetic relatedness in its cells. There are many ways of computing genetic relatedness some of which are included in this package. Instead of providing one kinship matrix a list of kinship matrices can be provided with each matrix in this list a chromosome specific matrix usually computed using all markers that are not on the corresponding chromosome. If a named list of kinship matrices is provided its names should match the names or numbers of the chromosomes in <strong>map</strong>. Unnamed lists will be given default names. Kinship matrices will be stored as matrices of class <em>Matrix</em> in a gData object in order to save storage space and speed up computation.</p>
+</div>
+<div id="further-covariates" class="section level3">
+<h3><strong>Further covariates</strong></h3>
+<p>Further covariates that can be used in the analyses can be stored in the data.frame <strong>covar</strong>. This data.frame has genotypes in its row names and the covariates in the column names. Covariates can be numerical, factor or character data. The latter will be converted to a factor when creating the gData object.</p>
+<hr />
+</div>
+</div>
+<div id="single-trait-gwas" class="section level2">
+<h2>Single Trait GWAS</h2>
+<p>stG</p>
+</div>
+<div id="multi-trait-gwas" class="section level2">
+<h2>Multi Trait GWAS</h2>
+<p>mtG</p>
+<hr />
+</div>
+<div id="worked-example" class="section level2">
+<h2>Worked example</h2>
+<p>As an example of the functionality of the package a worked example is provided using Asian rice, <em>Oriza sativa</em>, data. The data is freely available from <a href="https://ricediversity.org" class="uri">https://ricediversity.org</a>.</p>
+<div id="load-data" class="section level3">
+<h3><strong>Load data</strong></h3>
+<p>The first step is loading the data into R.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">markersRaw &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">gzcon</span>(</a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw">url</span>(<span class="st">&quot;http://ricediversity.org/data/sets/44kgwas/RiceDiversity.44K.MSU6.Genotypes.csv.gz&quot;</span>), </a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">text =</span> <span class="ot">TRUE</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-4" title="4">phenoRaw &lt;-<span class="st"> </span><span class="kw">read.delim</span>(</a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="st">&quot;http://ricediversity.org/data/sets/44kgwas/RiceDiversity_44K_Phenotypes_34traits_PLINK.txt&quot;</span>,</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-7" title="7">covarRaw &lt;-<span class="st"> </span><span class="kw">read.csv</span>(</a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="st">&quot;http://ricediversity.org/data/sets/44kgwas/RiceDiversity.44K.germplasm.csv&quot;</span>, </a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="dt">skip =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p>MarkersRaw contains the map and marker information for 36901 SNPs and 413 accessions. PhenoRaw contains phenotypic data for those 413 accessions for 31 traits. covarRaw contains some background information on the different accessions including previously calculated principal components, PC1 - PC4, which we will use in the analysis of the data.</p>
+</div>
+<div id="create-gdata-object" class="section level3">
+<h3><strong>Create gData object</strong></h3>
+<p>Using the raw data the next step is to create a <strong>gData</strong> object that can be used for all analyses. For this the raw data has to be converted to a suitable format for a <strong>gData</strong> object. First we split the raw markers into two separate files, one containing mapping information and a second containing marker information.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">## Create mapRice with columns chr and pos and SNP names as row names.</span></a>
+<a class="sourceLine" id="cb2-2" title="2">mapRice &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">chr =</span> markersRaw<span class="op">$</span>chr, </a>
+<a class="sourceLine" id="cb2-3" title="3">                      <span class="dt">pos =</span> markersRaw<span class="op">$</span>position, </a>
+<a class="sourceLine" id="cb2-4" title="4">                      <span class="dt">row.names =</span> markersRaw<span class="op">$</span>id)</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co">## Create markersRice by removing the &#39;map&#39; columns from the raw data and then transposing the result</span></a>
+<a class="sourceLine" id="cb2-6" title="6">markersRice &lt;-<span class="st"> </span><span class="kw">t</span>(markersRaw[, <span class="dv">4</span><span class="op">:</span><span class="kw">ncol</span>(markersRaw)])</a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="co">## Add SNP names as column names</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="kw">colnames</span>(markersRice) &lt;-<span class="st"> </span>markersRaw<span class="op">$</span>id</a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co">## Missing values are coded in more than one way. Set everything that is not A, C, T or G to NA.</span></a>
+<a class="sourceLine" id="cb2-10" title="10">markersRice[<span class="op">!</span>markersRice <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;T&quot;</span>, <span class="st">&quot;G&quot;</span>)] &lt;-<span class="st"> </span><span class="ot">NA</span></a></code></pre></div>
+<p>Note that in the map file the column names ‘chr’ and ‘pos’ are obligatory. The order of those two columns isn’t important and the presence of extra columns doesn’t matter either. The latter will be ignored when creating the gData object. The rownames of the map file should always contain the genotypes.<br />
+The marker file should have the genotypes in the rows and the SNPs in the columns. To accomplish this the raw markers have to be transposed.</p>
+<p>Now a gData object containing only map and marker information can be created. This object can be used as a base and phenotypic data and covariates may be added later on.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">library</span>(gwas)</a>
+<a class="sourceLine" id="cb3-2" title="2">gDataRice &lt;-<span class="st"> </span><span class="kw">createGData</span>(<span class="dt">geno =</span> markersRice, <span class="dt">map =</span> mapRice)</a></code></pre></div>
+<p>The next step involves adding phenotypic data and covariates to the gData object just created. The raw phenotypic data is already in almost the right format. The main thing that needs to be done is constructing a genotype column such that the genotypes match the genotypes in <em>markersRice</em>. Also some superfluous columns are removed. The same holds for the covariates. Here genotypes need to be in the rownames. Since we will only use PC1 - PC4 in our analysis other columns are removed. It wouldn’t harm to keep them in though.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">phenoRice &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">genotype =</span> <span class="kw">paste0</span>(<span class="st">&quot;NSFTV_&quot;</span>, phenoRaw<span class="op">$</span>NSFTVID), </a>
+<a class="sourceLine" id="cb4-2" title="2">                   phenoRaw[, <span class="dv">3</span><span class="op">:</span>(<span class="kw">ncol</span>(phenoRaw) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)],</a>
+<a class="sourceLine" id="cb4-3" title="3">                   <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4">covarRice &lt;-<span class="st"> </span>covarRaw[<span class="op">!</span><span class="kw">is.na</span>(covarRaw<span class="op">$</span>NSFTV.ID), <span class="kw">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>, <span class="st">&quot;PC3&quot;</span>, <span class="st">&quot;PC4&quot;</span>)]</a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="kw">rownames</span>(covarRice) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;NSFTV_&quot;</span>, covarRaw[<span class="op">!</span><span class="kw">is.na</span>(covarRaw<span class="op">$</span>NSFTV.ID), <span class="st">&quot;NSFTV.ID&quot;</span>])</a></code></pre></div>
+<p>The phenotypic data and covariates can be added to <em>gDataRice</em> using the same function we used before for creating the object. Adding an argument <em>gData = </em> to the function call will add new info to an existing object.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">gDataRice &lt;-<span class="st"> </span><span class="kw">createGData</span>(<span class="dt">gData =</span> gDataRice, <span class="dt">pheno =</span> phenoRice, <span class="dt">covar =</span> covarRice)</a></code></pre></div>
+<p>Note that in the newly created object the phenotypic data is represented by a list containing 1 item named phenoRice. It is possible to add phenotypic data for i.e. several environments by adding a list of data.frames each containing the phenotypic data for a single environment.</p>
+<p>To get an idea of the contents of the data a summary of the gDataObject can be made.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">summary</span>(gDataRice)</a></code></pre></div>
+</div>
+<div id="coding-of-markers" class="section level3">
+<h3><strong>Coding of markers</strong></h3>
+<p>Marker data has to be numerical and without missing values in order to do GWAS analysis. Therefore before running the actual analysis the markers in <em>gDataRice</em> need to be coded and inputed. For this the package contains a function <em>codeMarkers</em>. Running this function with the default settings will recode the markers using the minor allele in a SNP as reference allele for this SNP. After that imputation will be done with a random value based on the distribution of values within a single SNP.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">gDataRiceCoded &lt;-<span class="st"> </span><span class="kw">codeMarkers</span>(<span class="dt">gData =</span> gDataRice)</a></code></pre></div>
+<p>Imputation with a random value isn’t the best way to impute the markers. For a better imputation the independent beagle software can be used. This software is included in the package and will be used when calling <em>codeMarkers</em> with the proper settings. Doing so will call beagle with its default settings. For the current example beagle will take a long time to run. It is advised to load the results from the beagle imputation that come with the package directly.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">## Perform imputation using beagle.</span></a>
+<a class="sourceLine" id="cb8-2" title="2">gDataRiceCodedBeagle &lt;-<span class="st"> </span><span class="kw">codeMarkers</span>(<span class="dt">gdata =</span> gDataRice, </a>
+<a class="sourceLine" id="cb8-3" title="3">                                    <span class="dt">removeDuplicates =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb8-4" title="4">                                    <span class="dt">imputeType =</span> <span class="st">&quot;beagle&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">## Load the data imputed by beagle directly.</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">data</span>(gDataRiceCodedBeagle)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">summary</span>(gDataRiceCodedBeagle)  </a></code></pre></div>
+<p>More options in codeMarkers take care of removing duplicate SNPs, removing SNPs with a low Minor Allele Frequency (MAF) and removing SNPs with a high percentage of missing value. See the function documentation for an overview of these options.</p>
+</div>
+<div id="single-trait-gwas-1" class="section level3">
+<h3><strong>Single trait GWAS</strong></h3>
+<p>The coded gData object can be used for performing single trait GWAS analysis. With all the default settings the analysis already performs quite well.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">GWASRicePlantHeight0 &lt;-<span class="st"> </span><span class="kw">runSingleTraitGwas</span>(<span class="dt">gData =</span> gDataRiceCodedBeagle, </a>
+<a class="sourceLine" id="cb11-2" title="2">                                           <span class="dt">traits =</span> <span class="st">&quot;Plant.height&quot;</span>)</a></code></pre></div>
+<p>To inspect the output a summary and plots the can be made. The default plot is a manhattan plot, other types of plot can be specified using the <em>type</em> argument in the function.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">summary</span>(GWASRicePlantHeight0)</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">plot</span>(GWASRicePlantHeight0, <span class="dt">type =</span> <span class="st">&quot;qq&quot;</span>)</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="kw">plot</span>(GWASRicePlantHeight0)</a></code></pre></div>
+<p>In the default function call of the <em>runSingleTraitGwas</em> function a single kinship matrix is computed using the algorithm proposed by Astle and Balding. In most cases computing chromosome specific kinship matrices considerably improves the predicting power of the algorithm. Several different methods for computing the kinship matrix are available in the package. Users can provide their own kinship matrices as well.<br />
+As a default significant SNP are selected with a threshold computed using Bonferroni correction. Other thresholds can be specified as well. More options can be found in the function documentation for <em>runSingleTraitGwas</em>. The following example performs the GWAS computation using chromosome specific kinship matrices computed using Identity By State (IBS), a threshold for significant SNPs of 4 and PC1 - PC4 as covariates.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">GWASRicePlantHeight &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="st">  </span><span class="kw">runSingleTraitGwas</span>(<span class="dt">gData =</span> gDataRiceCodedBeagle, <span class="dt">traits =</span> <span class="st">&quot;Plant.height&quot;</span>, </a>
+<a class="sourceLine" id="cb13-3" title="3">                     <span class="dt">covar =</span> <span class="kw">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>, <span class="st">&quot;PC3&quot;</span>, <span class="st">&quot;PC4&quot;</span>), <span class="dt">GLSMethod =</span> <span class="st">&quot;multi&quot;</span>,</a>
+<a class="sourceLine" id="cb13-4" title="4">                     <span class="dt">kinshipMethod =</span> <span class="st">&quot;IBS&quot;</span>, <span class="dt">thrType =</span> <span class="st">&quot;fixed&quot;</span>, <span class="dt">LODThr =</span> <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb13-5" title="5"></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="kw">summary</span>(GWASRicePlantHeight)</a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="kw">plot</span>(GWASRicePlantHeight, <span class="dt">type =</span> <span class="st">&quot;qq&quot;</span>)</a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="kw">plot</span>(GWASRicePlantHeight)</a></code></pre></div>
+<p>The analysis can be performed for more than one trait in a single function call. Not specifying traits at all will perform the analysis for all traits that are present in the phenotypic data. The results will be combined in a single output object with the traits specified in the column <em>trait</em> in <em>GWAResult</em> and <em>signSnp</em> within this object.<br />
+When making a qq or manhattan plot of this output the trait has to be specified. Also a “qtl” plot is available which plots significant SNPs per trait against their position on the chromosomes.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">GWASRicePlantHeightMult &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="st">  </span><span class="kw">runSingleTraitGwas</span>(<span class="dt">gData =</span> gDataRiceCodedBeagle, </a>
+<a class="sourceLine" id="cb14-3" title="3">                     <span class="dt">covar =</span> <span class="kw">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>, <span class="st">&quot;PC3&quot;</span>, <span class="st">&quot;PC4&quot;</span>), <span class="dt">GLSMethod =</span> <span class="st">&quot;multi&quot;</span>,</a>
+<a class="sourceLine" id="cb14-4" title="4">                     <span class="dt">kinshipMethod =</span> <span class="st">&quot;IBS&quot;</span>, <span class="dt">thrType =</span> <span class="st">&quot;fixed&quot;</span>, <span class="dt">LODThr =</span> <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="kw">summary</span>(GWASRicePlantHeightMult)</a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="kw">plot</span>(GWASRicePlantHeightMult, <span class="dt">type =</span> <span class="st">&quot;qq&quot;</span>, <span class="dt">trait =</span> <span class="st">&quot;Plant.height&quot;</span>)</a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="kw">plot</span>(GWASRicePlantHeightMult, <span class="dt">type =</span> <span class="st">&quot;qtl&quot;</span>)</a></code></pre></div>
+<hr />
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

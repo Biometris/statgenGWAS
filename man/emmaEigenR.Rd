@@ -7,7 +7,7 @@
 emmaEigenR(k, x, eigVals, eigVecs)
 }
 \arguments{
-\item{X}{a q x n covariate matrix, q being the number of covariates and n
+\item{x}{a q x n covariate matrix, q being the number of covariates and n
 being the number of genotypes. q has to be at least one (typically an
 intercept).}
 }
