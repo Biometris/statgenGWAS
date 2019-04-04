@@ -103,6 +103,7 @@ codeMarkers <- function(gData,
                         fixedValue = NULL,
                         naStrings = NA,
                         verbose = FALSE) {
+  set.seed(1234)
   ## Checks.
   chkGData(gData, comps = "markers")
   if (length(refAll) > 1 && !length(refAll) == ncol(gData$markers)) {
@@ -336,7 +337,7 @@ codeMarkers <- function(gData,
                                                             path.package())])[1],
                                    "/java/beagle.jar")), " gtgl=beagle/run",
                     prefix, "input.vcf out=beagle/run",
-                    prefix, "out gprobs=true nthreads=", 1,
+                    prefix, "out gprobs=true seed=1234 nthreads=", 1,
                     " map=beagle/run", prefix, ".map"), intern = TRUE)
       ## Read beagle output.
       beagleOut <- read.table(gzfile(paste0("beagle/run", prefix, "out.vcf.gz")),
