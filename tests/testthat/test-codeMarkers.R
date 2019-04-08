@@ -1,7 +1,5 @@
 context("codeMarkers")
 
-## Seed is needed to get identical output when imputing random values.
-set.seed(1234)
 ## Create object containing character markers.
 markers <- matrix(c("AA", "AB", "AA", "AB", NA, "AA", NA, "AA",
                     "AA", "BB", "AB", "BB"), ncol = 4, byrow = TRUE,
@@ -58,7 +56,7 @@ test_that("codeMarkers produces correct results with imputation", {
                c(0, 1, 0, 1, 2, 0, 0, 1, 1))
   expect_equal(as.numeric(codeMarkers(gData = gData, impute = TRUE,
                                       imputeType = "random")$markers),
-               c(0, 0, 0, 0, 0, 1, 1, 2, 0))
+               c(0, 0, 0, 1, 2, 0, 0, 1, 1))
   expect_equal(as.numeric(codeMarkers(gData = gData, removeDuplicates = FALSE,
                                       impute = TRUE, imputeType = "fixed",
                                       fixedValue = 1)$markers),
@@ -98,7 +96,7 @@ test_that("option refAll in codeMarkers works properly", {
 
 test_that("codeMarkers functions properly when using numeric input", {
   expect_equal(as.numeric(codeMarkers(gData = gData2, impute = FALSE)$markers),
-               c(0, NA, 0, 0, NA, 1, 1, 0, 2))
+               c(0, NA, 0, 1, 0, 2, 0, NA, 1))
   expect_equal(as.numeric(codeMarkers(gData = gData2, removeDuplicates = FALSE,
                                       impute = TRUE, imputeType = "fixed",
                                       fixedValue = 1)$markers),
