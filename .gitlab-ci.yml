@@ -29,7 +29,7 @@ before_script:
   - apt-get update -qq
   # install dependencies for packages
   - apt-get update && apt-get install -y wget --no-install-recommends apt-utils > /dev/null
-  - apt-get install -y wget locales libxml2-dev libssl-dev libcurl4-openssl-dev zlib1g-dev libglu1-mesa-dev libfreetype6-dev > /dev/null
+  - apt-get install -y wget locales libcairo2-dev libxml2-dev libssl-dev libcurl4-openssl-dev zlib1g-dev libglu1-mesa-dev libfreetype6-dev > /dev/null
   - apt-get install -y wget --no-install-recommends qpdf ghostscript > /dev/null
   # recent pandoc
   - wget --quiet https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-1-amd64.deb
