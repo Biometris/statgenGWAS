@@ -1,15 +1,140 @@
+# ==================================================================== #
+# TITLE                                                                #
+# Antimicrobial Resistance (AMR) Analysis                              #
+#                                                                      #
+# SOURCE                                                               #
+# https://gitlab.com/msberends/AMR                                     #
+#                                                                      #
+# LICENCE                                                              #
+# (c) 2019 Berends MS (m.s.berends@umcg.nl), Luz CF (c.f.luz@umcg.nl)  #
+#                                                                      #
+# This R package is free software; you can freely use and distribute   #
+# it for both personal and commercial purposes under the terms of the  #
+# GNU General Public License version 2.0 (GNU GPL-2), as published by  #
+# the Free Software Foundation.                                        #
+#                                                                      #
+# This R package was created for academic research and was publicly    #
+# released in the hope that it will be useful, but it comes WITHOUT    #
+# ANY WARRANTY OR LIABILITY.                                           #
+# Visit our website for more info: https://msberends.gitlab.io/AMR.    #
+# ==================================================================== #
+
+stages:
+  - build
+  - test
+
+image: rocker/r-base
+
 before_script:
   - apt-get update -qq
-  - apt-get install -y libglu1-mesa-dev
-  - apt-get install -y --no-install-recommends qpdf ghostscript
+  # install dependencies for packages
+  - apt-get update && apt-get install -y wget --no-install-recommends apt-utils > /dev/null
+  - apt-get install -y wget locales libxml2-dev libssl-dev libcurl4-openssl-dev zlib1g-dev libglu1-mesa-dev libfreetype6-dev > /dev/null
+  - apt-get install -y wget --no-install-recommends qpdf ghostscript > /dev/null
+  # recent pandoc
+  - wget --quiet https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-1-amd64.deb
+  - dpkg -i pandoc*.deb
+  - rm pandoc*.deb
+  # set R system language
+  - echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+  - echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+  - echo "LANG=en_US.UTF-8" > /etc/locale.conf
+  - locale-gen
+  # cache R packages
+  - mkdir -p installed_deps
+  - echo 'R_LIBS="installed_deps"' > .Renviron
+  - echo 'R_LIBS_USER="installed_deps"' >> .Renviron
+  - echo 'R_LIBS_SITE="installed_deps"' >> .Renviron
+  # set language
+  - echo 'LANGUAGE="en_US.utf8"' >> .Renviron
+  - echo 'LANG="en_US.utf8"' >> .Renviron
+  - echo 'LANGUAGE="en_US.utf8"' > ~/.Renviron
   - export _R_CHECK_FORCE_SUGGESTS_="false"
 
-r-base:
-   stage: test
-   image: rocker/tidyverse
-   script:
-    - Rscript -e 'remotes::install_deps(dependencies = TRUE)'
-    - R CMD build . --no-manual
+R-release:
+  stage: build
+  allow_failure: false
+  script:
+    - Rscript -e 'sessionInfo()'
+    # install missing and outdated packages
+    - Rscript -e 'source(".gitlab-ci.R"); gl_update_pkg_all(repos = "https://cran.rstudio.com", quiet = TRUE, install_pkgdown = FALSE)'
+    # remove vignettes folder and get VignetteBuilder field out of DESCRIPTION file
+    - rm -rf vignettes
+    - Rscript -e 'd <- read.dcf("DESCRIPTION"); d[, colnames(d) == "VignetteBuilder"] <- NA; write.dcf(d, "DESCRIPTION")'
+    # build package
+    - R CMD build . --no-build-vignettes --no-manual
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
-    - R CMD check "${PKG_FILE_NAME}" --as-cran --no-manual
+    - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual --as-cran
+  artifacts:
+    when: always
+    paths:
+      - '*.Rcheck/*'
+    expire_in: '1 month'
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - installed_deps/
+
+R-devel:
+  stage: build
+  image: rocker/r-devel
+  allow_failure: true
+  script:
+    # set language
+    - echo 'LANGUAGE="en_US.utf8"' > .Renviron
+    - echo 'LANG="en_US.utf8"' >> .Renviron
+    - echo 'LANGUAGE="en_US.utf8"' > ~/.Renviron
+    - rm -rf installed_deps
+    - Rscriptdevel -e 'sessionInfo()'
+    # install missing and outdated packages
+    - Rscriptdevel -e 'source(".gitlab-ci.R"); gl_update_pkg_all(repos = "https://cran.rstudio.com", quiet = TRUE, install_pkgdown = FALSE)'
+    # remove vignettes folder and get VignetteBuilder field out of DESCRIPTION file
+    - rm -rf vignettes
+    - Rscriptdevel -e 'd <- read.dcf("DESCRIPTION"); d[, colnames(d) == "VignetteBuilder"] <- NA; write.dcf(d, "DESCRIPTION")'
+    # build package
+    - Rdevel CMD build . --no-build-vignettes --no-manual
+    - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
+    - Rdevel CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual --as-cran
+  artifacts:
+    when: always
+    paths:
+      - '*.Rcheck/*'
+    expire_in: '1 month'
+
+coverage:
+  stage: test
+  allow_failure: true
+  when: on_success
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - installed_deps/
+  only:
+    - develop
+    - master
+  script:
+    - apt-get install --yes git
+    # install missing and outdated packages
+    - Rscript -e 'source(".gitlab-ci.R"); gl_update_pkg_all(repos = "https://cran.rstudio.com", quiet = TRUE, install_pkgdown = FALSE)'
     - Rscript -e 'covr::package_coverage(line_exclusions = "R/zzz.R")'
+  coverage: '/Coverage:\s*(\d+.\d+\%)/'
+
+
+# Working example: https://gitlab.com/msberends/AMR/blob/master/_pkgdown.yml
+#pages:
+#  stage: deploy
+#  when: always
+#  cache:
+#    key: "$CI_COMMIT_REF_SLUG"
+#    paths:
+#      - installed_deps/
+#  only:
+#    - master
+#  script:
+#    # install missing and outdated packages
+#    - Rscript -e 'source(".gitlab-ci.R"); gl_update_pkg_all(repos = "https://cran.rstudio.com", quiet = TRUE, install_pkgdown = TRUE)'
+#    - Rscript -e "devtools::install(build = TRUE, upgrade = FALSE)"
+#    - R -e "pkgdown::build_site(examples = FALSE, lazy = TRUE)"
+#  artifacts:
+#    paths:
+#      - public
