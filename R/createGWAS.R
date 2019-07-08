@@ -356,7 +356,10 @@ plot.GWAS <- function(x,
         stop("Select at least one valid chromosome for plotting.\n")
       }
     }
-    chrBnd <- aggregate(x = GWAResult$pos, by = list(GWAResult$chr), FUN = max)
+    ## Get the boundary for each of the chromosomes. 
+    ## Has to be converted to numeric to avoid integer overflow in the next step.
+    chrBnd <- aggregate(x = GWAResult$pos, by = list(GWAResult$chr), 
+                        FUN = function(p) {as.numeric(max(p))})
     ## Compute cumulative positions.
     addPos <- data.frame(chr = chrBnd[, 1],
                          add = c(0, cumsum(chrBnd[, 2]))[1:nrow(chrBnd)],
