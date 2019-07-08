@@ -125,9 +125,13 @@ codeMarkers <- function(gData,
     if (imputeType == "fixed" && is.null(fixedValue)) {
       stop("fixedValue cannot be NULL.\n")
     }
+    if (imputeType == "beagle" && !nzchar(Sys.which("java"))) {
+      stop("When using beagle imputation an installation of java is ", 
+           "required.\n")
+    }
     if (imputeType == "beagle" &&
         (is.null(gData$map) || any(gData$map$pos != round(gData$map$pos)))) {
-      stop("When using beagle imputation gData should contain a map with only",
+      stop("When using beagle imputation gData should contain a map with only ",
            "integer positions.\n")
     }
     if (imputeType == "beagle" && 
@@ -137,7 +141,7 @@ codeMarkers <- function(gData,
                FUN = function(x) {
                  length(unique(x))
                })) == 1) {
-      stop("When using beagle imputation gData should contain a map with at", 
+      stop("When using beagle imputation gData should contain a map with at ", 
            "least two different positions for each chromosome.\n")
     }
   }
