@@ -6,5 +6,7 @@
 beagle
 .gitlab-ci.yml
 .gitlab-ci.R
-^installed_deps$
+^README\.Rmd$
+^.apt$
+^ci
 
