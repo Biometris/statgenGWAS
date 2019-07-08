@@ -18,9 +18,9 @@ using namespace arma;
 //' @keywords internal
 // [[Rcpp::export]]
 arma::mat matrixRoot(const arma::mat x) {
-  try {
+  if (x.is_sympd()) {
     return sqrtmat_sympd(x);
-  } catch (const std::runtime_error& e) {
+  } else {
     throw std::runtime_error("x should be a symmetric positive definite matrix.\n");
   }
 }
