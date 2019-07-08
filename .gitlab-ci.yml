@@ -23,8 +23,6 @@ before_script:
   ## cache R packages.
   - mkdir -p $R_LIBS_USER
   - echo 'R_LIBS_USER='$R_LIBS_USER > .Renviron
-  ## Set _R_CHECK_FORCE_SUGGESTS_ to FALSE so R check doesn't crash over asreml.
-  - echo '_R_CHECK_FORCE_SUGGESTS_="false"' >> .Renviron
 
 R-release:
   stage: build
