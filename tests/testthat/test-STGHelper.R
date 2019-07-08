@@ -32,25 +32,25 @@ test_that("EMMA produces correct results with default settings", {
 test_that("EMMA produces correct results with covariates", {
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
                          environment = 1, covar = 1)[[1]],
-                    c(8.76962021955844e-05, 1.93163739799549))
+                    c(8.76962021955837e-05, 1.93163739799548))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
                          environment = 1, covar = "V1")[[1]],
-                    c(8.76962021955844e-05, 1.93163739799549))
+                    c(8.76962021955837e-05, 1.93163739799548))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
                          environment = 1, K = Sigma, covar = 1)[[1]],
-                    c(8.76962021955844e-05, 1.93163739799549))
+                    c(8.76962021955837e-05, 1.93163739799548))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
                          environment = 1, snpName = "M1")[[1]],
-                    c(0.184076137051078, 1.83600897652493))
+                    c(9.11116376851807e-05, 2.00686737098146))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
                          environment = 1, K = Sigma, snpName = "M1")[[1]],
-                    c(0.184076137051078, 1.83600897652493))
+                    c(9.11116376851807e-05, 2.00686737098146))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
                          environment = 1, covar = 1, snpName = "M1")[[1]],
-                    c(0.140370911511506, 1.71006778174736))
+                    c(8.77313241082566e-05, 1.93241100960362))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2, environment = 1,
                          K = Sigma, covar = 1, snpName = "M1")[[1]],
-                    c(0.140370911511506, 1.71006778174736))
+                    c(8.77313241082566e-05, 1.93241100960362))
 })
 
 test_that("extra options in EMMA don't significantly change results", {
@@ -95,25 +95,25 @@ test_that("fastGLS produces correct output structure", {
 
 test_that("fastGLS without covariates produces correct output", {
   expect_equal(GLS0[, 1],
-               c(0.191990244479038, 0.0346367487131218, 0.297099155797429))
+               c(0.0271120646525595, 0.556661238666598, 0.203405705505351))
   expect_equal(GLS0[, 2],
-               c(-0.765513606856416, -2.9009783711453, 0.760762479686889))
+               c(-2.90711358246727, -1.01229725829335, -1.73072077802875))
   expect_equal(GLS0[, 3],
-               c(0.125433669816756, 0.319994381086895, 0.152892637284377))
+               c(0.310442837982955, 0.352135174778732, 0.290108955585292))
   expect_equal(GLS0[, 4],
-               c(0.975876824782575, 0.999730440588029, 0.91590885222019))
+               c(0.999844554418642, 0.562383932125061, 0.971533598465952))
 })
 
 test_that("fastGLS with covariates produces correct output", {
   GLS1 <- fastGLS(y = y, X = X, Sigma = Sigma, covs = covs)
   expect_equal(GLS1[, 1],
-               c(0.729670715779269, 0.0632229836715346, 0.489762145590089))
+               c(0.158456432903659, 0.592448089085206, 0.861012555940774))
   expect_equal(GLS1[, 2],
-               c(0.779388868965725, -3.50930856822299, 1.51419592119873))
+               c(-4.0813171867358, -1.23573112888003, 0.547427202536095))
   expect_equal(GLS1[, 3],
-               c(0.483570573233199, 0.467906979316023, 0.47775066615577))
+               c(0.67415615801093, 0.498746367260275, 0.667641616295594))
   expect_equal(GLS1[, 4],
-               c(0.228770901452724, 0.996393508816207, 0.633782123371107))
+               c(0.974397061281524, 0.458757080015615, 0.0650202741814823))
 })
 
 test_that("fastGLS is independent of dimensions", {
@@ -152,4 +152,3 @@ test_that("genCtrlPVals produces correct inflation factor", {
   expect_equal(genCtrlPVals(pVals = c(0.25, 0.5), nObs = 1e6)[[2]],
                1.95438310682772)
 })
-

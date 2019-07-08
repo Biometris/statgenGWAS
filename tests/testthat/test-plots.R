@@ -40,7 +40,7 @@ test_that("qtl plot functions properly", {
 })
 
 test_that("GWAS qtl plot functions properly", {
-  stg <- runSingleTraitGwas(gDataTest, thrType = "fixed", LODThr = 1)
+  stg <- runSingleTraitGwas(gDataTest, thrType = "fixed", LODThr = 0.5)
   expect_error(plot(stg, plotType = "qtl"), "multiple environments detected")
   p <- plot(stg, plotType = "qtl", environment = "ph1", output = FALSE)
   expect_is(p, "ggplot")
