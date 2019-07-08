@@ -311,6 +311,11 @@ codeMarkers <- function(gData,
         mapBeagle[, 1] <- as.integer(as.factor(mapBeagle[, 1]))
       }
       mapBeagle[, 1] <- paste0("chr", mapBeagle[, 1])
+      ## Convert position columns to character format to avoid coversion
+      ## to scientific format when writing to file.
+      ## Beagle cannot handle scientific input format.
+      mapBeagle[, 3] <- format(mapBeagle[, 3], trim = TRUE, scientific = FALSE)
+      mapBeagle[, 4] <- format(mapBeagle[, 4], trim = TRUE, scientific = FALSE)
       ## Write map to .map file
       write.table(mapBeagle, file = paste0("beagle/run",
                                            prefix, ".map"), col.names = FALSE,
