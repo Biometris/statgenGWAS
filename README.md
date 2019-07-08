@@ -1,7 +1,7 @@
+# gwas
+
 [![pipeline status](https://git.wur.nl/rossu027/gwas/badges/master/pipeline.svg)](https://git.wur.nl/rossu027/gwas/commits/master)
 [![coverage report](https://git.wur.nl/rossu027/gwas/badges/master/coverage.svg)](https://git.wur.nl/rossu027/gwas/commits/master)
-
-# gwas
 
 R Package
 * recoding and imputing markers
