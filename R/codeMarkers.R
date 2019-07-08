@@ -25,11 +25,11 @@
 #' allele for the whole set of SNPs, or a character vector with a reference
 #' allele per SNP.
 #' @param nMissGeno A numerical value between 0 and 1. Genotypes with a
-#' fraction of missing values higher than \code{nMissGeno} will be removed. Genotypes
-#' with only missing values will always be removed.
+#' fraction of missing values higher than \code{nMissGeno} will be removed. 
+#' Genotypes with only missing values will always be removed.
 #' @param nMiss A numerical value between 0 and 1. SNPs with a fraction of
-#' missing values higher than \code{nMiss} will be removed. SNPs with only missing
-#' values will always be removed.
+#' missing values higher than \code{nMiss} will be removed. SNPs with only 
+#' missing values will always be removed.
 #' @param MAF A numerical value between 0 and 1. SNPs with a Minor Allele
 #' Frequency (MAF) below this value will be removed.
 #' @param removeDuplicates Should duplicate SNPs be removed?
@@ -103,6 +103,7 @@ codeMarkers <- function(gData,
                         fixedValue = NULL,
                         naStrings = NA,
                         verbose = FALSE) {
+  ## Set seed to assure results are always identical.
   set.seed(1234)
   ## Checks.
   chkGData(gData, comps = "markers")
@@ -144,21 +145,22 @@ codeMarkers <- function(gData,
   }
   ## Remove genotypes with too many missings.
   if (!is.null(nMissGeno)) {
-    genoMiss <- rowMeans(is.na(markersOrig)) <= nMissGeno
+    genoMiss <- rowMeans(is.na(markersOrig)) < nMissGeno
     markersClean <- markersOrig[genoMiss, ]
     if (verbose) {
       cat(paste0(sum(!genoMiss), " genotypes removed because proportion of",
-                 " missing values larger than ", nMissGeno, ".\n"))
+                 " missing values larger than or equal to ", nMissGeno, ".\n"))
     }
   }
   snpKeep <- colnames(markersClean) %in% keep
   ## Remove markers with too many missings.
   if (!is.null(nMiss)) {
-    snpMiss <- colMeans(is.na(markersClean)) <= nMiss
+    snpMiss <- colMeans(is.na(markersClean)) < nMiss
     markersClean <- markersClean[, snpMiss | snpKeep, drop = FALSE]
     if (verbose) {
       cat(paste0(sum(!(snpMiss | snpKeep)), " markers removed because ",
-                 "proportion of missing values larger than ", nMiss, ".\n"))
+                 "proportion of missing values larger than or equal to ",
+                 nMiss, ".\n"))
     }
     snpKeep <- snpKeep[snpMiss | snpKeep]
     if (length(refAll) > 1) {
