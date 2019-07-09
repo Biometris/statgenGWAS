@@ -26,4 +26,5 @@ gDataTest <- createGData(map = map, geno = X, kin = Sigma,
                          pheno = list(ph1 = pheno, ph2 = pheno2),
                          covar = as.data.frame(covs))
 ## Export to package
-usethis::use_data(gDataTest, Y, K, X, internal = TRUE, overwrite = TRUE)
+usethis::use_data(gDataTest, X, y, Sigma, map, covs,
+                  internal = TRUE, overwrite = TRUE)

@@ -1,20 +1,5 @@
 context("STG Helper functions")
 
-set.seed(1234)
-y <- 1:10
-X <- matrix(sample(x = c(0, 1), size = 30, replace = TRUE), nrow = 10)
-Sigma <- matrix(runif(n = 100), nrow = 10)
-Sigma <- Sigma %*% t(Sigma)
-covs <- matrix(runif(n = 20, max = 100), nrow = 10)
-pheno <- data.frame(genotype = paste0("G", 1:10),
-                    matrix(rnorm(50, mean = 10, sd = 2), nrow = 10))
-map <- data.frame(chr = c(1, 1, 2), pos = 1:3)
-rownames(X) <- rownames(Sigma) <- colnames(Sigma) <- rownames(covs) <-
-  paste0("G", 1:10)
-colnames(X) <- rownames(map) <- paste0("M", 1:3)
-gDataTest <- createGData(map = map, geno = X, kin = Sigma, pheno = pheno,
-                         covar = as.data.frame(covs))
-
 test_that("EMMA produces correct results with default settings", {
   expect_equivalent(EMMA(gData = gDataTest, trait = 2, environment = 1)[[1]],
                     c(0.020597492367456, 1.85412717490278))
@@ -22,7 +7,7 @@ test_that("EMMA produces correct results with default settings", {
                          environment = 1)[[1]],
                     c(0.020597492367456, 1.85412717490278))
   expect_equivalent(EMMA(gData = gDataTest, trait = "X1",
-                         environment = "pheno")[[1]],
+                         environment = "ph1")[[1]],
                     c(0.020597492367456, 1.85412717490278))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
                          environment = 1, K = Sigma)[[1]],

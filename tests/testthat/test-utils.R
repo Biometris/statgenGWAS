@@ -38,12 +38,13 @@ test_that("function matrixRoot functions properly", {
 })
 
 test_that("function reduceKinship functions properly", {
-  K1 <- reduceKinship(K = K, nPca = 2)
+  K0 <- Sigma[1:3, 1:3]
+  K1 <- reduceKinship(K = K0, nPca = 2)
   expect_is(K1, "matrix")
-  expect_equal(dim(K1), dim(K))
-  expect_known_output(K1, file = test_path("test-redKin1.txt"), print = TRUE)
-  K2 <- reduceKinship(K = K, nPca = 5)
-  expect_known_output(K2, file = test_path("test-redKin2.txt"), print = TRUE)
+  expect_equal(dim(K1), dim(K0))
+  expect_equivalent(K1, c(2.8936100899925, 1.98703710262991, 2.61300859510848, 
+                          1.98703710262991, 3.58376426582127, 1.90676356934091,
+                          2.61300859510848, 1.90676356934091, 2.36531209462111))
 })
 
 set.seed(1234)
@@ -89,37 +90,38 @@ test_that("parameters in nearestPD function properly", {
                       0.586415044934283, 0.890017983604708, 1.33494200875219))
 })
 
-K0 <- K[1:10, 1:10]
-gDataTest <- createGData(kin = K0 + 0.1)
 test_that("computeKin functions properly for GLSMethod single", {
+  K0 <- Sigma + 0.1
+  gDataTest <- createGData(kin = K0)
   ## Only kin provided -> converted to dsyMatrix.
   expect_is(K1 <- computeKin(GLSMethod = "single", kin = K0), "dsyMatrix")
   expect_equal(as.matrix(K1), K0)
   ## Only gData provided -> converted to dsyMatrix.
   expect_is(K2 <- computeKin(GLSMethod = "single", gData = gDataTest), 
             "dsyMatrix")
-  expect_equal(as.matrix(K2), K0 + 0.1)
+  expect_equal(as.matrix(K2), K0)
   ## Both kin and gData provided -> Return kin converted to dsyMatrix.
   expect_equal(computeKin(GLSMethod = "single", kin = K0, gData = gDataTest), 
                K1)
 })
 
-gDataTest2 <- createGData(kin = list("chr1" = K0 + 0.1, "chr2" = K0 + 0.1))
 test_that("computeKin functions properly for GLSMethod multi", {
+  K0 = Sigma + 0.1
+  gDataTest <- createGData(kin = list("chr1" = K0, "chr2" = K0))
   ## Only kin provided -> converted to dsyMatrices.
   expect_is(KLst1 <- computeKin(GLSMethod = "multi",
                                 kin = list("chr1" = K0, "chr2" = K0)), "list")
   expect_is(KLst1[[1]], "dsyMatrix")
   expect_equal(as.matrix(KLst1[[1]]), K0)
   ## Only gData provided -> converted to dsyMatrix.
-  expect_is(KLst2 <- computeKin(GLSMethod = "multi", gData = gDataTest2),
+  expect_is(KLst2 <- computeKin(GLSMethod = "multi", gData = gDataTest),
             "list")
   expect_is(KLst2[[1]], "dsyMatrix")
-  expect_equal(as.matrix(KLst2[[1]]), K0 + 0.1)
+  expect_equal(as.matrix(KLst2[[1]]), K0)
   ## Both kin and gData provided -> Return kin converted to dsyMatrix.
   expect_equal(computeKin(GLSMethod = "multi", 
                           kin = list("chr1" = K0, "chr2" = K0), 
-                          gData = gDataTest2), KLst1)
+                          gData = gDataTest), KLst1)
 })
 
 markers <- matrix(runif(n = 200), nrow = 10, 
