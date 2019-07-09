@@ -87,10 +87,10 @@ test_that("EMMAREMLLL produces correct output", {
 
 GLS0 <- fastGLS(y = y, X = X, Sigma = Sigma)
 test_that("fastGLS produces correct output structure", {
-  expect_is(GLS0, "data.frame")
+  expect_is(GLS0, "matrix")
   expect_equal(dim(GLS0), c(3, 4))
-  expect_equal(rownames(GLS0), paste0("M", 1:3))
-  expect_equal(colnames(GLS0), c("pValue", "beta", "betaSe", "RLR2"))
+  expect_null(rownames(GLS0))
+  expect_null(colnames(GLS0))
 })
 
 test_that("fastGLS without covariates produces correct output", {
