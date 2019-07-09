@@ -21,12 +21,12 @@ allele for the whole set of SNPs, or a character vector with a reference
 allele per SNP.}
 
 \item{nMissGeno}{A numerical value between 0 and 1. Genotypes with a
-fraction of missing values higher than \code{nMissGeno} will be removed. Genotypes
-with only missing values will always be removed.}
+fraction of missing values higher than \code{nMissGeno} will be removed. 
+Genotypes with only missing values will always be removed.}
 
 \item{nMiss}{A numerical value between 0 and 1. SNPs with a fraction of
-missing values higher than \code{nMiss} will be removed. SNPs with only missing
-values will always be removed.}
+missing values higher than \code{nMiss} will be removed. SNPs with only 
+missing values will always be removed.}
 
 \item{MAF}{A numerical value between 0 and 1. SNPs with a Minor Allele
 Frequency (MAF) below this value will be removed.}
@@ -46,7 +46,7 @@ values should be done.\cr
 using allele frequencies per SNP.}
 \item{beagle - missing values will be imputed using beagle software. Beagle
 only accepts integers as map positions. If you use this option, please cite
-the original papers in your publication.}
+the original papers in your publication (see references).}
 }}
 
 \item{fixedValue}{A numerical value used for replacing missing values in

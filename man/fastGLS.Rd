@@ -23,7 +23,7 @@ the parallel part of the algorithm. If \code{NULL} the number of cores used
 will be equal to the number of cores available on the machine - 1.}
 }
 \value{
-A data.frame with the following columns:
+A matrix with the following (unnamed) columns:
 \itemize{
 \item{\code{pValue} p-values for the GLS F-test}
 \item{\code{beta} effect sizes}
