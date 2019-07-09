@@ -53,7 +53,7 @@ chkTraits <- function(traits,
   }
   for (env in envs) {
     if ((is.character(traits) &&
-         !all(traits %in% colnames(gData$pheno[[env]]))) ||
+         !all(hasName(x = gData$pheno[[env]], traits))) ||
         (is.numeric(traits) &&
          (any(traits == 1) || any(traits > ncol(gData$pheno[[env]]))))) {
       stop(paste("For", env, "not all traits are columns in pheno.\n"),
@@ -67,7 +67,7 @@ chkCovar <- function(covar,
   if (!is.null(covar) && !is.numeric(covar) && !is.character(covar)) {
     stop("covar should be a numeric or character vector.\n", call. = FALSE)
   }
-  if ((is.character(covar) && !all(covar %in% colnames(gData$covar))) ||
+  if ((is.character(covar) && !all(hasName(x = gData$covar, name = covar))) ||
       (is.numeric(covar) && any(covar > ncol(gData$covar)))) {
     stop("covar should be columns in covar in gData.\n", call. = FALSE)
   }

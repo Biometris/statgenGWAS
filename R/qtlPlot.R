@@ -103,14 +103,14 @@ qtlPlot <- function(data,
   ## Check that all necessary columns are in the data
   reqCols <- c(chromosome, trait, snpEffect, snpPosition)
   if (is.character(sortData)) reqCols <- c(reqCols, sortData)
-  reqChk <- reqCols %in% colnames(data)
+  reqChk <- hasName(x = data, name = reqCols)
   if (!all(reqChk)) {
     stop("data lacks the following columns: ",
          paste0(reqCols[!reqChk], collapse = ", "), ".\n\n")
   }
   ## Check that all necessary columns are in the map file
   reqColsMap <- c("chr", "pos")
-  reqChkMap <- reqColsMap %in% colnames(map)
+  reqChkMap <- hasName(x = map, name = reqColsMap)
   if (!all(reqChkMap)) {
     stop("map lacks the following columns: ",
          paste0(reqColsMap[!reqChkMap], collapse = ", "), ".\n\n")
@@ -118,7 +118,7 @@ qtlPlot <- function(data,
   ## Check that all necessary columns are in the bin file
   if (!is.null(binPositions)) {
     reqColsBin <- c("chr", "pos")
-    reqChkBin <- reqColsBin %in% colnames(map)
+    reqChkBin <- hasName(x = map, name = reqColsBin)
     if (!all(reqChkBin)) {
       stop("binPositions lacks the following columns: ",
            paste0(reqColsBin[!reqChkBin], collapse = ", "), ".\n\n")

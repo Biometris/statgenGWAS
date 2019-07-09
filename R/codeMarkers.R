@@ -117,7 +117,7 @@ codeMarkers <- function(gData,
     chkNum(MAF, min = 0, max = 1)
   }
   if (!is.null(keep) && (!is.character(keep) ||
-                         !all(hasName(x = gData$markers, name = keep)))) {
+                         !all(keep %in% colnames(gData$markers)))) {
     stop("all items in keep should be SNPs in markers.\n")
   }
   if (impute) {
