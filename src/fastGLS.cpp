@@ -16,11 +16,11 @@ using namespace Rcpp;
 using namespace arma;
 
 // [[Rcpp::export]]
-List fastGLSCPP(const arma::mat &X,
-                const arma::vec &y,
-                const arma::mat &sigma,
-                Rcpp::Nullable<Rcpp::NumericVector> size_param = R_NilValue,
-                Rcpp::Nullable<Rcpp::IntegerVector> nCores = R_NilValue) {
+arma::mat fastGLSCPP(const arma::mat &X,
+                     const arma::vec &y,
+                     const arma::mat &sigma,
+                     Rcpp::Nullable<Rcpp::NumericVector> size_param = R_NilValue,
+                     Rcpp::Nullable<Rcpp::IntegerVector> nCores = R_NilValue) {
   // Get number of genotypes and markers.
   unsigned int p = X.n_cols;
   unsigned int n = X.n_rows;
@@ -55,24 +55,25 @@ List fastGLSCPP(const arma::mat &X,
   arma::colvec betaVec = nn % (tMX.t() * tMy - sum(tvXA, 1));
   // QR decomposition of covariates.
   arma::mat tMQtQ = (mt.t() * (eye<mat>(n, n) - Q * Q.t())).t();
-  NumericVector pVal = NumericVector(p);
-  NumericVector RLR2 = NumericVector(p);
-  // Compute RSS per marker
-  arma::mat tX = tMQtQ * X;
+  // Define output matrix.
+  arma::mat res = zeros<mat>(p, 4);
+  // Add beta to second column.
+  res.col(1) = betaVec;
+  // Add SE beta to third column.
+  res.col(2) = sqrt(nn);
   int nThr = getThr(nCores);
+  // Compute RSS per marker.
 #pragma omp parallel for num_threads(nThr)
-  for (unsigned int i = 0; i < tX.n_cols; i++) {
+  for (uword i = 0; i < p; i++) {
     arma::mat Qx, Rx;
-    arma::qr_econ(Qx, Rx, tX.col(i));
+    arma::qr_econ(Qx, Rx, tMQtQ * X.col(i));
     double RSSx = accu(square(ResEnv - Qx * Qx.t() * ResEnv));
     double fValx = (RSSEnv - RSSx) / RSSx * (n - 1 - nCov);
-    pVal(i) = R::pf(fValx, 1.0, n - 1 - nCov, false, false);
-    RLR2(i) = 1 - exp((RSSx - RSSEnv) / n);
+    // Add pVal to first column.
+    res(i, 0) = R::pf(fValx, 1.0, n - 1 - nCov, false, false);
+    // Add RLR2 to second column.
+    res(i, 3) = 1 - exp((RSSx - RSSEnv) / n);
   }
-  return List::create(_["beta"] = betaVec,
-                      _["betaSe"] = sqrt(nn),
-                      _["pVal"] = pVal,
-                      _["RLR2"] = RLR2);
+  return res;
 }
-
 

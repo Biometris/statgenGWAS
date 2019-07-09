@@ -72,7 +72,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // fastGLSCPP
-List fastGLSCPP(const arma::mat& X, const arma::vec& y, const arma::mat& sigma, Rcpp::Nullable<Rcpp::NumericVector> size_param, Rcpp::Nullable<Rcpp::IntegerVector> nCores);
+arma::mat fastGLSCPP(const arma::mat& X, const arma::vec& y, const arma::mat& sigma, Rcpp::Nullable<Rcpp::NumericVector> size_param, Rcpp::Nullable<Rcpp::IntegerVector> nCores);
 RcppExport SEXP _gwas_fastGLSCPP(SEXP XSEXP, SEXP ySEXP, SEXP sigmaSEXP, SEXP size_paramSEXP, SEXP nCoresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

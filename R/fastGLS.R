@@ -14,7 +14,7 @@
 #' @param covs An n x c matrix of covariates (NOT including an intercept).
 #' No missing values allowed.
 #'
-#' @return A data.frame with the following columns:
+#' @return A matrix with the following (unnamed) columns:
 #' \itemize{
 #' \item{\code{pValue} p-values for the GLS F-test}
 #' \item{\code{beta} effect sizes}
@@ -66,11 +66,5 @@ fastGLS <- function(y,
   }
   ## If necessary convert input to matrix
   resCpp <- fastGLSCPP(as.matrix(X), y, as.matrix(Sigma), covs, nCores = nCores)
-  ## Construct output data.frame.
-  GLS <- data.frame(pValue = resCpp$pVal,
-                    beta = resCpp$beta,
-                    betaSe = resCpp$betaSe,
-                    RLR2 = resCpp$RLR2)
-  rownames(GLS) <- colnames(X)
-  return(GLS)
+  return(resCpp)
 }
