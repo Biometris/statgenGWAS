@@ -13,39 +13,39 @@
 #'
 #' @keywords internal
 emmaEigenR <- function(k, x, eigVals, eigVecs) {
-    invisible(.Call(`_gwas_emmaEigenR`, k, x, eigVals, eigVecs))
+    invisible(.Call(`_statgenGWAS_emmaEigenR`, k, x, eigVals, eigVecs))
 }
 
 emmaREMLLL <- function(logDelta, lambda, etas1, n, t, etas2) {
-    .Call(`_gwas_emmaREMLLL`, logDelta, lambda, etas1, n, t, etas2)
+    .Call(`_statgenGWAS_emmaREMLLL`, logDelta, lambda, etas1, n, t, etas2)
 }
 
 goldenSectionSearch <- function(upperBound, center, lowerBound, absolutePrecision, lambda, etas1, n, t, etas2) {
-    .Call(`_gwas_goldenSectionSearch`, upperBound, center, lowerBound, absolutePrecision, lambda, etas1, n, t, etas2)
+    .Call(`_statgenGWAS_goldenSectionSearch`, upperBound, center, lowerBound, absolutePrecision, lambda, etas1, n, t, etas2)
 }
 
 emmaCPP <- function(y, k, x, nGrids = 100L, uLim = 10, lLim = -10, eps = 1e-3) {
-    .Call(`_gwas_emmaCPP`, y, k, x, nGrids, uLim, lLim, eps)
+    .Call(`_statgenGWAS_emmaCPP`, y, k, x, nGrids, uLim, lLim, eps)
 }
 
 fastGLSCPP <- function(X, y, sigma, size_param = NULL, nCores = NULL) {
-    .Call(`_gwas_fastGLSCPP`, X, y, sigma, size_param, nCores)
+    .Call(`_statgenGWAS_fastGLSCPP`, X, y, sigma, size_param, nCores)
 }
 
 getThr <- function(nCores = NULL) {
-    .Call(`_gwas_getThr`, nCores)
+    .Call(`_statgenGWAS_getThr`, nCores)
 }
 
 astleCPP <- function(x, denom = NULL) {
-    .Call(`_gwas_astleCPP`, x, denom)
+    .Call(`_statgenGWAS_astleCPP`, x, denom)
 }
 
 IBSCPP <- function(x, denom = NULL) {
-    .Call(`_gwas_IBSCPP`, x, denom)
+    .Call(`_statgenGWAS_IBSCPP`, x, denom)
 }
 
 vanRadenCPP <- function(x, denom = NULL) {
-    .Call(`_gwas_vanRadenCPP`, x, denom)
+    .Call(`_statgenGWAS_vanRadenCPP`, x, denom)
 }
 
 #' Compute square root of a symmetric, positive definite matrix
@@ -59,7 +59,7 @@ vanRadenCPP <- function(x, denom = NULL) {
 #'
 #' @keywords internal
 matrixRoot <- function(x) {
-    .Call(`_gwas_matrixRoot`, x)
+    .Call(`_statgenGWAS_matrixRoot`, x)
 }
 
 #' Reduce the kinship matrix
@@ -75,10 +75,10 @@ matrixRoot <- function(x) {
 #'
 #' @keywords internal
 reduceKinship <- function(K, nPca) {
-    .Call(`_gwas_reduceKinship`, K, nPca)
+    .Call(`_statgenGWAS_reduceKinship`, K, nPca)
 }
 
 nearestPD <- function(x, corr = FALSE, keepDiag = FALSE, do2eigen = TRUE, doSym = FALSE, doDykstra = TRUE, eigTol = 1e-6, convTol = 1e-7, posdTol = 1e-8, maxIter = 100L) {
-    .Call(`_gwas_nearestPD`, x, corr, keepDiag, do2eigen, doSym, doDykstra, eigTol, convTol, posdTol, maxIter)
+    .Call(`_statgenGWAS_nearestPD`, x, corr, keepDiag, do2eigen, doSym, doDykstra, eigTol, convTol, posdTol, maxIter)
 }
 

@@ -88,7 +88,7 @@ The marker file should have the genotypes in the rows and the SNPs in the column
 
 Now a gData object containing only map and marker information can be created. This object can be used as a base and phenotypic data and covariates may be added later on.
 ```{r eval=FALSE}
-library(gwas)
+library(statgenGWAS)
 gDataRice <- createGData(geno = markersRice, map = mapRice)
 ```
 The next step involves adding phenotypic data and covariates to the gData object just created. The raw phenotypic data is already in almost the right format. The main thing that needs to be done is constructing a genotype column such that the genotypes match the genotypes in *markersRice*. Also some superfluous columns are removed. The same holds for the covariates. Here genotypes need to be in the rownames. Since we will only use PC1 - PC4 in our analysis other columns are removed. It wouldn't harm to keep them in though.  

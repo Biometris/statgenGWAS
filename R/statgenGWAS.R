@@ -1,11 +1,11 @@
-#' \code{gwas} package
+#' \code{statgenGWAS} package
 #'
-#' gwas
+#' statgenGWAS
 #'
 #' @docType package
-#' @name gwas
+#' @name statgenGWAS
 #' @importClassesFrom Matrix Matrix
-#' @useDynLib gwas, .registration = TRUE
+#' @useDynLib statgenGWAS, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @importFrom utils hasName
 NULL

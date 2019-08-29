@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // emmaEigenR
 void emmaEigenR(const arma::mat k, const arma::mat x, arma::vec& eigVals, arma::mat& eigVecs);
-RcppExport SEXP _gwas_emmaEigenR(SEXP kSEXP, SEXP xSEXP, SEXP eigValsSEXP, SEXP eigVecsSEXP) {
+RcppExport SEXP _statgenGWAS_emmaEigenR(SEXP kSEXP, SEXP xSEXP, SEXP eigValsSEXP, SEXP eigVecsSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat >::type k(kSEXP);
@@ -21,7 +21,7 @@ END_RCPP
 }
 // emmaREMLLL
 arma::vec emmaREMLLL(double logDelta, arma::vec lambda, arma::vec etas1, double n, double t, arma::vec etas2);
-RcppExport SEXP _gwas_emmaREMLLL(SEXP logDeltaSEXP, SEXP lambdaSEXP, SEXP etas1SEXP, SEXP nSEXP, SEXP tSEXP, SEXP etas2SEXP) {
+RcppExport SEXP _statgenGWAS_emmaREMLLL(SEXP logDeltaSEXP, SEXP lambdaSEXP, SEXP etas1SEXP, SEXP nSEXP, SEXP tSEXP, SEXP etas2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,7 +37,7 @@ END_RCPP
 }
 // goldenSectionSearch
 double goldenSectionSearch(double upperBound, double center, double lowerBound, double absolutePrecision, arma::vec lambda, arma::vec etas1, double n, double t, arma::vec etas2);
-RcppExport SEXP _gwas_goldenSectionSearch(SEXP upperBoundSEXP, SEXP centerSEXP, SEXP lowerBoundSEXP, SEXP absolutePrecisionSEXP, SEXP lambdaSEXP, SEXP etas1SEXP, SEXP nSEXP, SEXP tSEXP, SEXP etas2SEXP) {
+RcppExport SEXP _statgenGWAS_goldenSectionSearch(SEXP upperBoundSEXP, SEXP centerSEXP, SEXP lowerBoundSEXP, SEXP absolutePrecisionSEXP, SEXP lambdaSEXP, SEXP etas1SEXP, SEXP nSEXP, SEXP tSEXP, SEXP etas2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -56,7 +56,7 @@ END_RCPP
 }
 // emmaCPP
 List emmaCPP(arma::vec y, arma::mat k, arma::mat x, int nGrids, double uLim, double lLim, double eps);
-RcppExport SEXP _gwas_emmaCPP(SEXP ySEXP, SEXP kSEXP, SEXP xSEXP, SEXP nGridsSEXP, SEXP uLimSEXP, SEXP lLimSEXP, SEXP epsSEXP) {
+RcppExport SEXP _statgenGWAS_emmaCPP(SEXP ySEXP, SEXP kSEXP, SEXP xSEXP, SEXP nGridsSEXP, SEXP uLimSEXP, SEXP lLimSEXP, SEXP epsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -73,7 +73,7 @@ END_RCPP
 }
 // fastGLSCPP
 arma::mat fastGLSCPP(const arma::mat& X, const arma::vec& y, const arma::mat& sigma, Rcpp::Nullable<Rcpp::NumericVector> size_param, Rcpp::Nullable<Rcpp::IntegerVector> nCores);
-RcppExport SEXP _gwas_fastGLSCPP(SEXP XSEXP, SEXP ySEXP, SEXP sigmaSEXP, SEXP size_paramSEXP, SEXP nCoresSEXP) {
+RcppExport SEXP _statgenGWAS_fastGLSCPP(SEXP XSEXP, SEXP ySEXP, SEXP sigmaSEXP, SEXP size_paramSEXP, SEXP nCoresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -88,7 +88,7 @@ END_RCPP
 }
 // getThr
 int getThr(Rcpp::Nullable<Rcpp::IntegerVector> nCores);
-RcppExport SEXP _gwas_getThr(SEXP nCoresSEXP) {
+RcppExport SEXP _statgenGWAS_getThr(SEXP nCoresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -99,7 +99,7 @@ END_RCPP
 }
 // astleCPP
 arma::mat astleCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> denom);
-RcppExport SEXP _gwas_astleCPP(SEXP xSEXP, SEXP denomSEXP) {
+RcppExport SEXP _statgenGWAS_astleCPP(SEXP xSEXP, SEXP denomSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -111,7 +111,7 @@ END_RCPP
 }
 // IBSCPP
 arma::mat IBSCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> denom);
-RcppExport SEXP _gwas_IBSCPP(SEXP xSEXP, SEXP denomSEXP) {
+RcppExport SEXP _statgenGWAS_IBSCPP(SEXP xSEXP, SEXP denomSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -123,7 +123,7 @@ END_RCPP
 }
 // vanRadenCPP
 arma::mat vanRadenCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> denom);
-RcppExport SEXP _gwas_vanRadenCPP(SEXP xSEXP, SEXP denomSEXP) {
+RcppExport SEXP _statgenGWAS_vanRadenCPP(SEXP xSEXP, SEXP denomSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -135,7 +135,7 @@ END_RCPP
 }
 // matrixRoot
 arma::mat matrixRoot(const arma::mat x);
-RcppExport SEXP _gwas_matrixRoot(SEXP xSEXP) {
+RcppExport SEXP _statgenGWAS_matrixRoot(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -146,7 +146,7 @@ END_RCPP
 }
 // reduceKinship
 arma::mat reduceKinship(const arma::mat K, const int nPca);
-RcppExport SEXP _gwas_reduceKinship(SEXP KSEXP, SEXP nPcaSEXP) {
+RcppExport SEXP _statgenGWAS_reduceKinship(SEXP KSEXP, SEXP nPcaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -158,7 +158,7 @@ END_RCPP
 }
 // nearestPD
 arma::mat nearestPD(arma::mat x, const bool corr, const bool keepDiag, const bool do2eigen, const bool doSym, const bool doDykstra, const double eigTol, const double convTol, const double posdTol, const int maxIter);
-RcppExport SEXP _gwas_nearestPD(SEXP xSEXP, SEXP corrSEXP, SEXP keepDiagSEXP, SEXP do2eigenSEXP, SEXP doSymSEXP, SEXP doDykstraSEXP, SEXP eigTolSEXP, SEXP convTolSEXP, SEXP posdTolSEXP, SEXP maxIterSEXP) {
+RcppExport SEXP _statgenGWAS_nearestPD(SEXP xSEXP, SEXP corrSEXP, SEXP keepDiagSEXP, SEXP do2eigenSEXP, SEXP doSymSEXP, SEXP doDykstraSEXP, SEXP eigTolSEXP, SEXP convTolSEXP, SEXP posdTolSEXP, SEXP maxIterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -178,22 +178,22 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_gwas_emmaEigenR", (DL_FUNC) &_gwas_emmaEigenR, 4},
-    {"_gwas_emmaREMLLL", (DL_FUNC) &_gwas_emmaREMLLL, 6},
-    {"_gwas_goldenSectionSearch", (DL_FUNC) &_gwas_goldenSectionSearch, 9},
-    {"_gwas_emmaCPP", (DL_FUNC) &_gwas_emmaCPP, 7},
-    {"_gwas_fastGLSCPP", (DL_FUNC) &_gwas_fastGLSCPP, 5},
-    {"_gwas_getThr", (DL_FUNC) &_gwas_getThr, 1},
-    {"_gwas_astleCPP", (DL_FUNC) &_gwas_astleCPP, 2},
-    {"_gwas_IBSCPP", (DL_FUNC) &_gwas_IBSCPP, 2},
-    {"_gwas_vanRadenCPP", (DL_FUNC) &_gwas_vanRadenCPP, 2},
-    {"_gwas_matrixRoot", (DL_FUNC) &_gwas_matrixRoot, 1},
-    {"_gwas_reduceKinship", (DL_FUNC) &_gwas_reduceKinship, 2},
-    {"_gwas_nearestPD", (DL_FUNC) &_gwas_nearestPD, 10},
+    {"_statgenGWAS_emmaEigenR", (DL_FUNC) &_statgenGWAS_emmaEigenR, 4},
+    {"_statgenGWAS_emmaREMLLL", (DL_FUNC) &_statgenGWAS_emmaREMLLL, 6},
+    {"_statgenGWAS_goldenSectionSearch", (DL_FUNC) &_statgenGWAS_goldenSectionSearch, 9},
+    {"_statgenGWAS_emmaCPP", (DL_FUNC) &_statgenGWAS_emmaCPP, 7},
+    {"_statgenGWAS_fastGLSCPP", (DL_FUNC) &_statgenGWAS_fastGLSCPP, 5},
+    {"_statgenGWAS_getThr", (DL_FUNC) &_statgenGWAS_getThr, 1},
+    {"_statgenGWAS_astleCPP", (DL_FUNC) &_statgenGWAS_astleCPP, 2},
+    {"_statgenGWAS_IBSCPP", (DL_FUNC) &_statgenGWAS_IBSCPP, 2},
+    {"_statgenGWAS_vanRadenCPP", (DL_FUNC) &_statgenGWAS_vanRadenCPP, 2},
+    {"_statgenGWAS_matrixRoot", (DL_FUNC) &_statgenGWAS_matrixRoot, 1},
+    {"_statgenGWAS_reduceKinship", (DL_FUNC) &_statgenGWAS_reduceKinship, 2},
+    {"_statgenGWAS_nearestPD", (DL_FUNC) &_statgenGWAS_nearestPD, 10},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_gwas(DllInfo *dll) {
+RcppExport void R_init_statgenGWAS(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

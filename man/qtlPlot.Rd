@@ -4,14 +4,14 @@
 \alias{qtlPlot}
 \title{Draw a qtl plot}
 \usage{
-qtlPlot(data, chromosome = "chr", trait = "trait",
+qtlPlot(dat, chromosome = "chr", trait = "trait",
   snpEffect = "effect", snpPosition = "pos", map, normalize = FALSE,
   sortData = FALSE, binPositions = NULL, printVertGrid = TRUE,
   yLab = "Traits", exportPptx = FALSE, pptxName = "",
   output = TRUE, ...)
 }
 \arguments{
-\item{data}{A data.frame with QTL data to be plotted}
+\item{dat}{A data.frame with QTL data to be plotted}
 
 \item{chromosome}{A character string indicating the data column containing
 the chromosome number.}

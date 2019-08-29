@@ -1,6 +1,6 @@
 ## Create data for testing functions.
 ## Restricted and anonymized version of DROPs data.
-load(system.file("extdata", "testData.RData", package = "gwas"))
+load(system.file("extdata", "testData.RData", package = "statgenGWAS"))
 
 ## Create a dataset for unit testing.
 set.seed(1234)

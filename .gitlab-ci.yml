@@ -2,27 +2,28 @@ stages:
   - build
   - test
 
-image: rocker/r-base
+image: rocker/r-ver
 
 variables:
   R_LIBS_USER: "$CI_PROJECT_DIR/ci/lib"
 
 before_script:
-  ## cache apt.
+  ## Cache apt.
   - export APT_DIR=$CI_PROJECT_DIR/.apt && export APT_STATE_LISTS=$APT_DIR/lists && export APT_CACHE_ARCHIVES=$APT_DIR/archives
   - printf "dir::state::lists    ${APT_STATE_LISTS};\ndir::cache::archives    ${APT_CACHE_ARCHIVES};\n" > /etc/apt/apt.conf
   - mkdir -p "${APT_STATE_LISTS}/partial" && mkdir -p "${APT_CACHE_ARCHIVES}/partial"
-  ## install apt dependencies for packages.
+  ## Install apt dependencies for packages.
   - apt-get update -qq
-  # install dependencies for packages
-  - apt-get update && apt-get install -y wget --no-install-recommends apt-utils > /dev/null
+  - apt-get update && apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev zlib1g-dev libglu1-mesa-dev libfreetype6-dev netbase > /dev/null
   - apt-get install -y wget locales libcairo2-dev libxml2-dev libssl-dev libcurl4-openssl-dev zlib1g-dev libglu1-mesa-dev libfreetype6-dev > /dev/null
-  - apt-get install -y wget --no-install-recommends qpdf ghostscript > /dev/null
-  ## install pandoc - needed for checking readme.
+  ## Install qpdf - needed for checking vignettes.
+  - apt-get update && apt-get install -y --no-install-recommends qpdf ghostscript > /dev/null
+  ## Install pandoc - needed for checking readme.
   - apt-get update && apt-get install -y pandoc pandoc-citeproc > /dev/null
-  ## cache R packages.
+  ## Create directory for caching R packages.
   - mkdir -p $R_LIBS_USER
-  - echo 'R_LIBS_USER='$R_LIBS_USER > .Renviron
+  ## Add R_LIBS_USER to libpaths.
+  - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
 
 R-release:
   stage: build
@@ -30,14 +31,11 @@ R-release:
   script:
     - Rscript -e 'sessionInfo()'
     ## Install missing and outdated packages.
-    - Rscript -e 'source(".gitlab-ci.R"); pkgsUpdate(repos = "https://cran.rstudio.com", quiet = TRUE, instPkgdown = FALSE)'
-    ## Remove vignettes folder and get VignetteBuilder field out of DESCRIPTION file.
-    - rm -rf vignettes
-    - Rscript -e 'd <- read.dcf("DESCRIPTION"); d[, colnames(d) == "VignetteBuilder"] <- NA; write.dcf(d, "DESCRIPTION")'
-    # Build package.
-    - R CMD build . --no-build-vignettes --no-manual
+    - Rscript -e 'source(".gitlab-ci.R"); pkgsUpdate(quiet = TRUE, instPkgdown = FALSE)'
+    ## Build package.
+    - R CMD build . --no-manual
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
-    - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual --as-cran
+    - R CMD check "${PKG_FILE_NAME}" --no-manual --as-cran
   artifacts:
     when: always
     paths:
@@ -56,14 +54,11 @@ R-devel:
   script:
     - Rscriptdevel -e 'sessionInfo()'
     ## Install missing and outdated packages.
-    - Rscriptdevel -e 'source(".gitlab-ci.R"); pkgsUpdate(repos = "https://cran.rstudio.com", quiet = TRUE, instPkgdown = FALSE)'
-    ## Remove vignettes folder and get VignetteBuilder field out of DESCRIPTION file.
-    - rm -rf vignettes
-    - Rscriptdevel -e 'd <- read.dcf("DESCRIPTION"); d[, colnames(d) == "VignetteBuilder"] <- NA; write.dcf(d, "DESCRIPTION")'
+    - Rscriptdevel -e 'source(".gitlab-ci.R"); pkgsUpdate(quiet = TRUE, instPkgdown = FALSE)'
     ## Build package.
-    - Rdevel CMD build . --no-build-vignettes --no-manual
+    - Rdevel CMD build . --no-manual
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
-    - Rdevel CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual --as-cran
+    - Rdevel CMD check "${PKG_FILE_NAME}" --no-manual --as-cran
   artifacts:
     when: always
     paths:
@@ -91,7 +86,8 @@ coverage:
     - develop
     - master
   before_script:
-    - echo 'R_LIBS_USER='$R_LIBS_USER > .Renviron
+    ## Add R_LIBS_USER to libpaths.
+    - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
   script:
-    - Rscript -e 'covr::package_coverage()'
+    - Rscript -e 'covr::package_coverage(line_exclusions = "R/fitTDAsreml.R", function_exclusions = c("extractAsreml", "createReport"))'
   coverage: '/Coverage:\s*(\d+.\d+\%)/'

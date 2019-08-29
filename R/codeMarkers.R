@@ -339,7 +339,7 @@ codeMarkers <- function(gData,
       cat(file = tmpVcf,
           "##fileformat=VCFv4.1",
           "\n##filedate=", Sys.Date(),
-          "\n##source=\"codeMarkers of gwas\"",
+          "\n##source=\"codeMarkers of statgenGWAS\"",
           "\n##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
           "\n#")
       cat(file = tmpVcf, paste(colnames(vcfBeagle), collapse = "\t"), "\n",
@@ -349,7 +349,7 @@ codeMarkers <- function(gData,
                   na = paste(".", ".", sep = "/"))
       ## Run beagle with default settings.
       system(paste0("java -Xmx3000m -jar ",
-                    shQuote(paste0(sort(path.package()[grep("gwas",
+                    shQuote(paste0(sort(path.package()[grep("statgenGWAS",
                                                             path.package())])[1],
                                    "/java/beagle.jar")), " gtgl=", tmpVcf, 
                     " out=", tmpVcfOut, " gprobs=true seed=1234 nthreads=", 1,

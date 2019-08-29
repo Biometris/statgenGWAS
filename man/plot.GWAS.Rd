@@ -4,8 +4,8 @@
 \alias{plot.GWAS}
 \title{Plot function for the class \code{GWAS}}
 \usage{
-\method{plot}{GWAS}(x, ..., plotType = c("manhattan", "qq", "qtl",
-  "matrix"), environment = NULL, trait = NULL, output = TRUE)
+\method{plot}{GWAS}(x, ..., plotType = c("manhattan", "qq", "qtl"),
+  environment = NULL, trait = NULL, output = TRUE)
 }
 \arguments{
 \item{x}{An object of class \code{GWAS}.}
@@ -123,4 +123,8 @@ which the plot is exported. Ignored if exportPptx = \code{FALSE}.}
 Millet et al. (2016) Genome-wide analysis of yield in Europe:
 Allelic effects vary with drought and heat scenarios. Plant Physiology,
 October 2016, Vol. 172, p. 749–764
+
+Segura et al. (2012) An efficient multi-locus mixed-model
+approach for genome-wide association studies in structured populations.
+Nature Genetics, June 2012, Vol. 44, p. 825–830.
 }

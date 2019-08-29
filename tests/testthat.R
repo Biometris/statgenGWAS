@@ -1,4 +1,4 @@
 library(testthat)
-library(gwas)
+library(statgenGWAS)
 
-test_check("gwas")
+test_check("statgenGWAS")

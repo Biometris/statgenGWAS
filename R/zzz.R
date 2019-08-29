@@ -1,5 +1,5 @@
-.onLoad <- function(libname = find.package("gwas"),
-                    pkgname = "gwas"){
+.onLoad <- function(libname = find.package("statgenGWAS"),
+                    pkgname = "statgenGWAS"){
   ## CRAN Note avoidance.
   if (getRversion() >= "2.15.1") {
     utils::globalVariables("j")
@@ -8,5 +8,5 @@
 }
 
 .onUnload <- function(libpath) {
-  library.dynam.unload("gwas", libpath)
+  library.dynam.unload("statgenGWAS", libpath)
 }
