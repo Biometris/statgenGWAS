@@ -4,13 +4,13 @@
 \alias{runSingleTraitGwas}
 \title{Perform single-trait GWAS}
 \usage{
-runSingleTraitGwas(gData, traits = NULL, environments = NULL,
-  covar = NULL, snpCov = NULL, kin = NULL,
-  kinshipMethod = c("astle", "IBS", "vanRaden"), remlAlgo = c("EMMA",
-  "NR"), GLSMethod = c("single", "multi"), useMAF = TRUE, MAF = 0.01,
-  MAC = 10, genomicControl = FALSE, thrType = c("bonf", "fixed",
-  "small"), alpha = 0.05, LODThr = 4, nSnpLOD = 10,
-  sizeInclRegion = 0, minR2 = 0.5, nCores = NULL)
+runSingleTraitGwas(gData, traits = NULL, trials = NULL, covar = NULL,
+  snpCov = NULL, kin = NULL, kinshipMethod = c("astle", "IBS",
+  "vanRaden"), remlAlgo = c("EMMA", "NR"), GLSMethod = c("single",
+  "multi"), useMAF = TRUE, MAF = 0.01, MAC = 10,
+  genomicControl = FALSE, thrType = c("bonf", "fixed", "small"),
+  alpha = 0.05, LODThr = 4, nSnpLOD = 10, sizeInclRegion = 0,
+  minR2 = 0.5, nCores = NULL)
 }
 \arguments{
 \item{gData}{An object of class \code{gData} containing at least \code{map},
@@ -20,10 +20,10 @@ runSingleTraitGwas(gData, traits = NULL, environments = NULL,
 numeric indices or character names of columns in \code{pheno}. If \code{NULL},
 GWAS is run on all traits.}
 
-\item{environments}{A vector of environments on which to run GWAS. These can
+\item{trials}{A vector of trials on which to run GWAS. These can
 be either numeric indices or character names of list items in \code{pheno}.
-If \code{NULL}, GWAS is run for all environments. GWAS is run for the
-selected environments in sequential order.}
+If \code{NULL}, GWAS is run for all trials. GWAS is run for the
+selected trials in sequential order.}
 
 \item{covar}{An optional vector of covariates taken into account when
 running GWAS. These can be either numeric indices or character names of

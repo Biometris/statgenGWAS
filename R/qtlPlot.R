@@ -3,7 +3,7 @@
 #' Visualisation of the final set of QTLs selected after the multi-trait GWAS.
 #'
 #' Each horizontal line contains QTLs of one trait, phenotypic trait or
-#' environment. Option: Vertical white lines can indicate chromosome
+#' trial. Option: Vertical white lines can indicate chromosome
 #' subdivision, genes of interest, known QTLs, etc. Circle diameters are
 #' proportional to the absolute value of allelic effect. Colors indicate the
 #' direction of the effect: green when the allele increases the trait value,

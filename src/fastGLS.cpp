@@ -43,8 +43,8 @@ arma::mat fastGLSCPP(const arma::mat &X,
   // Compute residuals and RSS over all markers.
   arma::mat Q, R;
   arma::qr_econ(Q, R, tMfixCovs);
-  arma::vec ResEnv = tMy - Q * Q.t() * tMy;
-  double RSSEnv = accu(square(ResEnv));
+  arma::vec ResTr = tMy - Q * Q.t() * tMy;
+  double RSSTr = accu(square(ResTr));
   // Matrix cookbook, 3.2.6 Rank-1 update of inverse of inner product.
   arma::mat A = inv_sympd(tMfixCovs.t() * tMfixCovs);
   arma::rowvec vv = sum(square(tMX));
@@ -67,12 +67,12 @@ arma::mat fastGLSCPP(const arma::mat &X,
   for (uword i = 0; i < p; i++) {
     arma::mat Qx, Rx;
     arma::qr_econ(Qx, Rx, tMQtQ * X.col(i));
-    double RSSx = accu(square(ResEnv - Qx * Qx.t() * ResEnv));
-    double fValx = (RSSEnv - RSSx) / RSSx * (n - 1 - nCov);
+    double RSSx = accu(square(ResTr - Qx * Qx.t() * ResTr));
+    double fValx = (RSSTr - RSSx) / RSSx * (n - 1 - nCov);
     // Add pVal to first column.
     res(i, 0) = R::pf(fValx, 1.0, n - 1 - nCov, false, false);
     // Add RLR2 to second column.
-    res(i, 3) = 1 - exp((RSSx - RSSEnv) / n);
+    res(i, 3) = 1 - exp((RSSx - RSSTr) / n);
   }
   return res;
 }

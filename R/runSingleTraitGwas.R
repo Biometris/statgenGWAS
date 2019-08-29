@@ -15,10 +15,10 @@
 #' @param traits A vector of traits on which to run GWAS. These can be either
 #' numeric indices or character names of columns in \code{pheno}. If \code{NULL},
 #' GWAS is run on all traits.
-#' @param environments A vector of environments on which to run GWAS. These can
+#' @param trials A vector of trials on which to run GWAS. These can
 #' be either numeric indices or character names of list items in \code{pheno}.
-#' If \code{NULL}, GWAS is run for all environments. GWAS is run for the
-#' selected environments in sequential order.
+#' If \code{NULL}, GWAS is run for all trials. GWAS is run for the
+#' selected trials in sequential order.
 #' @param covar An optional vector of covariates taken into account when
 #' running GWAS. These can be either numeric indices or character names of
 #' columns in \code{covar} in \code{gData}. If \code{NULL} no covariates are
@@ -116,7 +116,7 @@
 #' @export
 runSingleTraitGwas <- function(gData,
                                traits = NULL,
-                               environments = NULL,
+                               trials = NULL,
                                covar = NULL,
                                snpCov = NULL,
                                kin = NULL,
@@ -137,12 +137,12 @@ runSingleTraitGwas <- function(gData,
   ## Checks.
   chkGData(gData)
   chkMarkers(gData$markers)
-  chkEnvs(environments, gData)
-  ## If environments is null set environments to all environments in pheno.
-  if (is.null(environments)) {
-    environments <- 1:length(gData$pheno)
+  chkTrials(trials, gData)
+  ## If trials is null set trials to all trials in pheno.
+  if (is.null(trials)) {
+    trials <- 1:length(gData$pheno)
   }
-  chkTraits(traits, environments, gData)
+  chkTraits(traits, trials, gData)
   chkCovar(covar, gData)
   ## If covar is given as numeric convert to character.
   if (is.numeric(covar)) {
@@ -186,34 +186,34 @@ runSingleTraitGwas <- function(gData,
   maxScore <- min(max(gData$markers, na.rm = TRUE), 2)
   ## Define data.frames for total results.
   GWATot <- signSnpTot <- varCompTot <- LODThrTot <- inflationFactorTot <-
-    setNames(vector(mode = "list", length = length(environments)),
-             names(gData$pheno)[environments])
-  for (env in environments) {
+    setNames(vector(mode = "list", length = length(trials)),
+             names(gData$pheno)[trials])
+  for (trial in trials) {
     ## Add covariates to phenotypic data.
-    phExp <- expandPheno(gData = gData, env = env, covar = covar,
+    phExp <- expandPheno(gData = gData, trial = trial, covar = covar,
                          snpCov = snpCov)
-    phEnv <- phExp$phEnv
-    covEnv <- phExp$covEnv
+    phTr <- phExp$phTr
+    covTr <- phExp$covTr
     ## If traits is given as numeric convert to character.
     if (is.numeric(traits)) {
-      traits <- colnames(gData$pheno[[env]])[traits]
+      traits <- colnames(gData$pheno[[trial]])[traits]
     }
     ## If no traits supplied extract them from pheno data.
     if (is.null(traits)) {
-      traits <- colnames(gData$pheno[[env]])[-1]
+      traits <- colnames(gData$pheno[[trial]])[-1]
     }
-    LODThrEnv <- inflationFactorEnv <-
+    LODThrTr <- inflationFactorTr <-
       setNames(numeric(length = length(traits)), traits)
-    GWATotEnv <- signSnpTotEnv <- varCompEnv <-
+    GWATotTr <- signSnpTotTr <- varCompTr <-
       setNames(vector(mode = "list", length = length(traits)), traits)
     ## Perform GWAS for all traits.
     for (trait in traits) {
       ## Select relevant columns only.
-      phEnvTr <- phEnv[!is.na(phEnv[trait]) & phEnv$genotype %in%
-                         rownames(gData$markers), c("genotype", trait, covEnv)]
+      phTrTr <- phTr[!is.na(phTr[trait]) & phTr$genotype %in%
+                       rownames(gData$markers), c("genotype", trait, covTr)]
       ## Select genotypes where trait is not missing.
-      nonMiss <- unique(phEnvTr$genotype)
-      nonMissRepId <- phEnvTr$genotype
+      nonMiss <- unique(phTrTr$genotype)
+      nonMissRepId <- phTrTr$genotype
       if (GLSMethod == "single") {
         kinshipRed <- K[nonMiss, nonMiss]
         chrs <- NULL
@@ -223,10 +223,10 @@ runSingleTraitGwas <- function(gData,
       }
       ## Estimate variance components.
       vc <- estVarComp(GLSMethod = GLSMethod, remlAlgo = remlAlgo,
-                       trait = trait, pheno = phEnvTr, covar = covEnv,
+                       trait = trait, pheno = phTrTr, covar = covTr,
                        K = kinshipRed, chrs = chrs, KChr = KChr,
                        nonMiss = nonMiss, nonMissRepId = nonMissRepId)
-      varCompEnv[[trait]] <- vc$varComp
+      varCompTr[[trait]] <- vc$varComp
       vcovMatrix <- vc$vcovMatrix
       ## Compute allele frequencies based on genotypes for which phenotypic
       ## data is available.
@@ -245,19 +245,19 @@ runSingleTraitGwas <- function(gData,
                               RLR2 = NA, allFreq = allFreq,
                               stringsAsFactors = FALSE)
       ## Define single column matrix with trait non missing values.
-      y <- phEnvTr[which(phEnvTr$genotype %in% nonMiss), trait]
+      y <- phTrTr[which(phTrTr$genotype %in% nonMiss), trait]
       if (GLSMethod == "single") {
         ## Exclude snpCovariates from segregating markers.
         exclude <- exclMarkers(snpCov = snpCov, markers = markersRed,
                                allFreq = allFreq)
         ## The following is based on the genotypes, not the replicates:
         X <- markersRed[nonMissRepId, setdiff(segMarkers, exclude)]
-        if (length(covEnv) == 0) {
+        if (length(covTr) == 0) {
           Z <- NULL
         } else {
           ## Define covariate matrix Z.
-          Z <- as.matrix(phEnvTr[which(phEnvTr$genotype %in% nonMiss),
-                                 covEnv])
+          Z <- as.matrix(phTrTr[which(phTrTr$genotype %in% nonMiss),
+                                covTr])
         }
         ## Compute pvalues and effects using fastGLS.
         GLSResult <- fastGLS(y = y, X = X, Sigma = vcovMatrix, covs = Z,
@@ -294,12 +294,12 @@ runSingleTraitGwas <- function(gData,
                                              which(mapRedChr$chr == chr)),
                                    exclude)
           X <- markersRedChr[nonMissRepId, segMarkersChr, drop = FALSE]
-          if (length(covEnv) == 0) {
+          if (length(covTr) == 0) {
             Z <- NULL
           } else {
             ## Define covariate matrix Z.
-            Z <- as.matrix(phEnvTr[which(phEnvTr$genotype %in% nonMiss),
-                                   covEnv])
+            Z <- as.matrix(phTrTr[which(phTrTr$genotype %in% nonMiss),
+                                  covTr])
           }
           GLSResult <- fastGLS(y = y, X = X,
                                Sigma = vcovMatrix[[which(chrs == chr)]],
@@ -327,8 +327,8 @@ runSingleTraitGwas <- function(gData,
       }
       ## Calculate the genomic inflation factor.
       GC <- genCtrlPVals(pVals = GWAResult$pValue, nObs = length(nonMiss),
-                         nCov = length(covEnv))
-      inflationFactorEnv[trait] <- GC$inflation
+                         nCov = length(covTr))
+      inflationFactorTr[trait] <- GC$inflation
       ## Rescale p-values.
       if (genomicControl) {
         GWAResult$pValue <- GC$pValues
@@ -349,26 +349,26 @@ runSingleTraitGwas <- function(gData,
         ## of ordered p values.
         LODThr <- sort(na.omit(GWAResult$LOD), decreasing = TRUE)[nSnpLOD]
       }
-      LODThrEnv[trait] <- LODThr
+      LODThrTr[trait] <- LODThr
       ## Select the SNPs whose LOD-scores is above the threshold
-      signSnpTotEnv[[trait]] <-
+      signSnpTotTr[[trait]] <-
         extrSignSnps(GWAResult = GWAResult, LODThr = LODThr,
                      sizeInclRegion = sizeInclRegion, minR2 = minR2,
                      map = mapRed, markers = markersRed,
-                     maxScore = maxScore, pheno = phEnvTr, trait = trait)
-      GWATotEnv[[trait]] <- GWAResult
+                     maxScore = maxScore, pheno = phTrTr, trait = trait)
+      GWATotTr[[trait]] <- GWAResult
     } # end for (trait in traits)
     ## Bind data together for results and significant SNPs.
-    GWATot[[match(env, environments)]] <- dfBind(GWATotEnv)
-    signSnpTot[[match(env, environments)]] <- dfBind(signSnpTotEnv)
+    GWATot[[match(trial, trials)]] <- dfBind(GWATotTr)
+    signSnpTot[[match(trial, trials)]] <- dfBind(signSnpTotTr)
     ## No significant SNPs should return NULL instead of data.frame().
     signSnpTot <- lapply(signSnpTot, FUN = function(x) {
       if (is.null(x) || nrow(x) == 0) NULL else x
     })
-    varCompTot[[match(env, environments)]] <- varCompEnv
-    LODThrTot[[match(env, environments)]] <- LODThrEnv
-    inflationFactorTot[[match(env, environments)]] <- inflationFactorEnv
-  } # end for (environment in environments)
+    varCompTot[[match(trial, trials)]] <- varCompTr
+    LODThrTot[[match(trial, trials)]] <- LODThrTr
+    inflationFactorTot[[match(trial, trials)]] <- inflationFactorTr
+  } # end for (trial in trials)
   ## Collect info.
   GWASInfo <- list(call = match.call(),
                    remlAlgo = remlAlgo,

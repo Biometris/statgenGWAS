@@ -1,12 +1,12 @@
 context("single trait GWAS")
 
-stg0 <- runSingleTraitGwas(gData = gDataTest, environments = 1)
+stg0 <- runSingleTraitGwas(gData = gDataTest, trials = 1)
 stg1 <- runSingleTraitGwas(gData = gDataTest)
-result1 <- runSingleTraitGwas(gData = gDataTest, environments = 1,
+result1 <- runSingleTraitGwas(gData = gDataTest, trials = 1,
                               covar = "V1")[["GWAResult"]]
-result2 <- runSingleTraitGwas(gData = gDataTest, environments = 1,
+result2 <- runSingleTraitGwas(gData = gDataTest, trials = 1,
                               snpCov = "M2")[["GWAResult"]]
-result3 <- runSingleTraitGwas(gData = gDataTest, environments = 1, covar = "V1",
+result3 <- runSingleTraitGwas(gData = gDataTest, trials = 1, covar = "V1",
                               snpCov = "M2")[["GWAResult"]]
 
 test_that("runSingleTraitGwas produces correct output structure", {

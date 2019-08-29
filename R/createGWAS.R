@@ -99,38 +99,40 @@ createGWAS <- function(GWAResult = NULL,
 #'
 #' @param object An object of class \code{GWAS}
 #' @param ... Not used
-#' @param environments A vector of strings or numeric indices indicating for
-#' which environment the summary should be made. If \code{NULL}, a summary is
-#' made for all environments.
+#' @param trials A vector of strings or numeric indices indicating for
+#' which trial the summary should be made. If \code{NULL}, a summary is
+#' made for all trials.
 #'
 #' @export
-summary.GWAS <- function(object, ..., environments = NULL) {
+summary.GWAS <- function(object, 
+                         ..., 
+                         trials = NULL) {
   ## Checks.
-  if (!is.null(environments) && !is.character(environments) &&
-      !is.numeric(environments)) {
-    stop("environments should be a character or numeric vector.\n")
+  if (!is.null(trials) && !is.character(trials) &&
+      !is.numeric(trials)) {
+    stop("trials should be a character or numeric vector.\n")
   }
-  if ((is.character(environments) &&
-       !all(environments %in% names(object$GWAResult))) ||
-      (is.numeric(environments) &&
-       !all(environments %in% 1:length(object$GWAResult)))) {
-    stop("all environments should be in object.\n")
+  if ((is.character(trials) &&
+       !all(trials %in% names(object$GWAResult))) ||
+      (is.numeric(trials) &&
+       !all(trials %in% 1:length(object$GWAResult)))) {
+    stop("all trials should be in object.\n")
   }
   ## Convert character input to numeric.
-  if (is.character(environments)) {
-    environments <- which(names(object$GWAResult) == environments)
+  if (is.character(trials)) {
+    trials <- which(names(object$GWAResult) == trials)
   }
-  ## If NULL then summary of all environments.
-  if (is.null(environments)) {
-    environments <- 1:length(object$GWAResult)
+  ## If NULL then summary of all trials.
+  if (is.null(trials)) {
+    trials <- 1:length(object$GWAResult)
   }
-  for (environment in environments) {
-    GWAResult <- object$GWAResult[[environment]]
-    signSnp <- object$signSnp[[environment]]
+  for (trial in trials) {
+    GWAResult <- object$GWAResult[[trial]]
+    signSnp <- object$signSnp[[trial]]
     GWASInfo <- object$GWASInfo
     traits <- unique(GWAResult$trait)
-    ## Print environment.
-    cat(names(object$GWAResult)[environment], ":\n", sep = "")
+    ## Print trial.
+    cat(names(object$GWAResult)[trial], ":\n", sep = "")
     ## Print traits.
     cat("\tTraits analysed:", paste(traits, collapse = ", "), "\n\n")
     ## Print SNP numbers.
@@ -149,13 +151,13 @@ summary.GWAS <- function(object, ..., environments = NULL) {
         cat("\t\tMixed model with only polygenic effects,",
             "and no marker effects:\n")
         cat("\t\tGenetic variance:",
-            GWASInfo$varComp[[environment]][[trait]][1], "\n")
+            GWASInfo$varComp[[trial]][[trait]][1], "\n")
         cat("\t\tResidual variance:",
-            GWASInfo$varComp[[environment]][[trait]][2], "\n\n")
+            GWASInfo$varComp[[trial]][[trait]][2], "\n\n")
       }
       if (!is.null(GWASInfo$thrType) && !is.null(GWASInfo$thrType)) {
         ## Print significant SNP info.
-        cat("\t\tLOD-threshold:", object$thr[[environment]][trait], "\n")
+        cat("\t\tLOD-threshold:", object$thr[[trial]][trait], "\n")
         signSnpTrait <- signSnp[signSnp$trait == trait, ]
         if (!is.null(signSnpTrait)) {
           nSignSnp <-
@@ -186,7 +188,7 @@ summary.GWAS <- function(object, ..., environments = NULL) {
       }
       if (!is.null(GWASInfo$inflationFactor)) {
         cat("\t\tGenomic control inflation-factor:",
-            round(GWASInfo$inflationFactor[[environment]][trait], 3), "\n\n")
+            round(GWASInfo$inflationFactor[[trial]][trait], 3), "\n\n")
       }
     }
   }
@@ -248,7 +250,7 @@ summary.GWAS <- function(object, ..., environments = NULL) {
 #' @section QTL Plot:
 #' A plot of effect sizes for the significant SNPs found in the GWAS analysis
 #' is created. Each horizontal line contains QTLs of one trait,
-#' phenotypic trait or environment. Optionally, vertical white lines can indicate
+#' phenotypic trait or trial. Optionally, vertical white lines can indicate
 #' chromosome subdivision, genes of interest, known QTL, etc. Circle diameters
 #' are proportional to the absolute value of allelic effect. Colors indicate the
 #' direction of the effect: green when the allele increases the trait value,
@@ -284,9 +286,9 @@ summary.GWAS <- function(object, ..., environments = NULL) {
 #' functions.
 #' @param plotType A character string indicating the type of plot to be made.
 #' One of "manhattan", "qq" and "qtl".
-#' @param environment A character string or numeric index indicating for which
-#' environment the plot should be made. If \code{x} only contains results for
-#' one environment, \code{environment} may be \code{NULL}.
+#' @param trial A character string or numeric index indicating for which
+#' trial the plot should be made. If \code{x} only contains results for
+#' one trial, \code{trial} may be \code{NULL}.
 #' @param trait A character string indicating for which trait the results
 #' should be plotted. For \code{type} "qtl" all traits are plotted. If \code{x}
 #' only contains results for one trait, \code{trait} may be \code{NULL}.
@@ -304,35 +306,34 @@ summary.GWAS <- function(object, ..., environments = NULL) {
 plot.GWAS <- function(x,
                       ...,
                       plotType = c("manhattan", "qq", "qtl"),
-                      environment = NULL,
+                      trial = NULL,
                       trait = NULL,
                       output = TRUE) {
   plotType <- match.arg(plotType)
   dotArgs <- list(...)
   ## Checks.
-  if (!is.null(environment) && !is.character(environment) &&
-      !is.numeric(environment)) {
-    stop("Environment should be a character or numerical value.\n")
+  if (!is.null(trial) && !is.character(trial) &&
+      !is.numeric(trial)) {
+    stop("Trial should be a character or numerical value.\n")
   }
-  if ((is.character(environment) && !environment %in% names(x$GWAResult)) ||
-      (is.numeric(environment) && !environment %in% 1:length(x$GWAResult))) {
-    stop("Environment should be in x.\n")
+  if ((is.character(trial) && !trial %in% names(x$GWAResult)) ||
+      (is.numeric(trial) && !trial %in% 1:length(x$GWAResult))) {
+    stop("Trial should be in x.\n")
   }
   ## Convert character input to numeric.
-  if (is.character(environment)) {
-    environment <- which(names(x$GWAResult) == environment)
+  if (is.character(trial)) {
+    trial <- which(names(x$GWAResult) == trial)
   }
-  ## If NULL then summary of all environment.
-  if (is.null(environment)) {
+  ## If NULL then summary of all trial.
+  if (is.null(trial)) {
     if (length(x$GWAResult) != 1) {
-      stop(paste("Environment not supplied but multiple environments",
-                 "detected in data.\n"))
+      stop("Trial not supplied but multiple trials detected in data.\n")
     } else {
-      environment <- 1
+      trial <- 1
     }
   }
-  GWAResult <- x$GWAResult[[environment]]
-  signSnp <- x$signSnp[[environment]]
+  GWAResult <- x$GWAResult[[trial]]
+  signSnp <- x$signSnp[[trial]]
   if (plotType != "qtl") {
     if (is.null(trait)) {
       trait <- unique(GWAResult$trait)
@@ -400,7 +401,7 @@ plot.GWAS <- function(x,
       signSnpNr <- integer()
     }
     if (is.null(dotArgs$yThr)) {
-      yThr <- x$thr[[environment]][trait]
+      yThr <- x$thr[[trial]][trait]
     } else {
       yThr <- dotArgs$yThr
     }
@@ -437,6 +438,6 @@ plot.GWAS <- function(x,
     do.call(qtlPlot,
             args = c(list(dat = signSnp, map = map, output = output),
                      dotArgs[!(names(dotArgs) %in% c("yThr", "chr"))]
-                     ))
+            ))
   } 
 }

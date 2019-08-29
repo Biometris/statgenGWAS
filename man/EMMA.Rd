@@ -4,8 +4,8 @@
 \alias{EMMA}
 \title{Compute REML estimates of variance components using EMMA algorithm.}
 \usage{
-EMMA(gData, trait, environment, K = NULL, covar = NULL,
-  snpName = NULL, Z = NULL, nGrids = 100, lLim = -10, uLim = 10,
+EMMA(gData, trait, trial, K = NULL, covar = NULL, snpName = NULL,
+  Z = NULL, nGrids = 100, lLim = -10, uLim = 10,
   eps = .Machine$double.eps^0.25)
 }
 \arguments{
@@ -20,7 +20,7 @@ calculations.}
 \item{trait}{A trait for which to estimate variance components. This can be
 either numeric index or character name of a column in \code{pheno}.}
 
-\item{environment}{An environment for which to estimate variance components.
+\item{trial}{A trial for which to estimate variance components.
 This can be either numeric index or character name of a list item in
 \code{pheno}.}
 

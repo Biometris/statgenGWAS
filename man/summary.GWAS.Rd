@@ -4,16 +4,16 @@
 \alias{summary.GWAS}
 \title{Summary function for the class \code{GWAS}}
 \usage{
-\method{summary}{GWAS}(object, ..., environments = NULL)
+\method{summary}{GWAS}(object, ..., trials = NULL)
 }
 \arguments{
 \item{object}{An object of class \code{GWAS}}
 
 \item{...}{Not used}
 
-\item{environments}{A vector of strings or numeric indices indicating for
-which environment the summary should be made. If \code{NULL}, a summary is
-made for all environments.}
+\item{trials}{A vector of strings or numeric indices indicating for
+which trial the summary should be made. If \code{NULL}, a summary is
+made for all trials.}
 }
 \description{
 Gives a summary for an object of S3 class \code{GWAS}.

@@ -43,7 +43,7 @@ in \code{map} in which case default names are provided.}
 with genotypes in the first column \code{genotype} and traits in the
 following columns. The trait columns should be numerical columns only.
 A list of data.frames can be used for replications, i.e. different
-environments.}
+trials.}
 
 \item{covar}{A data.frame with extra covariates per genotype. Genotypes
 should be in the rows.}

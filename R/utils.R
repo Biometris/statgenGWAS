@@ -2,24 +2,24 @@
 ## factors to dummy varables.
 #' @keywords internal
 expandPheno <- function(gData,
-                        env,
+                        trial,
                         covar,
                         snpCov,
                         ref = NULL) {
   ## Add covariates to pheno data.
   if (is.null(covar)) {
-    phEnv <- gData$pheno[[env]]
-    covEnv <- NULL
+    phTr <- gData$pheno[[trial]]
+    covTr <- NULL
   } else {
     ## Append covariates to pheno data. Merge to remove values from pheno that
     ## are missing in covar.
-    phEnv <- merge(gData$pheno[[env]], gData$covar[covar],
-                   by.x = "genotype", by.y = "row.names")
-    ## Remove rows from phEnv with missing covar check if there are
+    phTr <- merge(gData$pheno[[trial]], gData$covar[covar],
+                  by.x = "genotype", by.y = "row.names")
+    ## Remove rows from phTr with missing covar check if there are
     ## missing values.
-    phEnv <- phEnv[complete.cases(phEnv[covar]), ]
+    phTr <- phTr[complete.cases(phTr[covar]), ]
     ## Expand covariates that are a factor (i.e. dummy variables are created)
-    ## using model.matrix. The new dummies are attached to phEnv, and covar
+    ## using model.matrix. The new dummies are attached to phTr, and covar
     ## is changed accordingly
     factorCovs <- which(sapply(X = gData$covar[covar], FUN = is.factor))
     if (length(factorCovs) > 0) {
@@ -27,27 +27,26 @@ expandPheno <- function(gData,
       covFormula <- as.formula(paste("genotype ~ ",
                                      paste(covar[factorCovs], collapse = "+")))
       extraCov <- as.data.frame(suppressWarnings(
-        model.matrix(object = covFormula, data = droplevels(phEnv))))[, -1]
+        model.matrix(object = covFormula, data = droplevels(phTr))))[, -1]
       ## Add dummy variables to pheno data.
-      phEnv <- cbind(phEnv[, -which(colnames(phEnv) %in% names(factorCovs))],
-                     extraCov)
+      phTr <- cbind(phTr[, -which(colnames(phTr) %in% names(factorCovs))],
+                    extraCov)
       ## Modify covar to suit newly defined columns
-      covEnv <- c(covar[-factorCovs], colnames(extraCov))
+      covTr <- c(covar[-factorCovs], colnames(extraCov))
     } else {
-      covEnv <- covar
+      covTr <- covar
     }
   }
   if (!is.null(snpCov)) {
     ## Distinguish between 2- and 3-dimensional marker data.
     if (length(dim(gData$markers)) == 2) {
       ## Add snp covariates to covar.
-      covEnv <- c(covEnv, snpCov)
+      covTr <- c(covTr, snpCov)
       ## Add snp covariates to pheno data.
-      phEnv <- merge(phEnv, gData$markers[, snpCov, drop = FALSE],
-                     by.x = "genotype", by.y = "row.names")
-      colnames(phEnv)[(ncol(phEnv) - length(snpCov) + 1):ncol(phEnv)] <- snpCov
+      phTr <- merge(phTr, gData$markers[, snpCov, drop = FALSE],
+                    by.x = "genotype", by.y = "row.names")
+      colnames(phTr)[(ncol(phTr) - length(snpCov) + 1):ncol(phTr)] <- snpCov
     } else if (length(dim(gData$markers)) == 3) {
-      allNames <- dimnames(gData$markers)[[3]][-ref]
       for (snpCovar in snpCov) {
         ## Get alleles for current covariate and remove reference allele.
         allCov <- gData$markers[, snpCovar , -ref]
@@ -58,13 +57,13 @@ expandPheno <- function(gData,
         ## Rename columns to combination of allele and marker.
         colnames(allCov) <- paste0(snpCovar, "_", colnames(allCov))
         ## Add snp covariates to covar.
-        covEnv <- c(covEnv, colnames(allCov))
+        covTr <- c(covTr, colnames(allCov))
         ## Add snp covariates to pheno data.
-        phEnv <- merge(phEnv, allCov, by.x = "genotype", by.y = "row.names")
+        phTr <- merge(phTr, allCov, by.x = "genotype", by.y = "row.names")
       }
     }
   }
-  return(list(phEnv = phEnv, covEnv = covEnv))
+  return(list(phTr = phTr, covTr = covTr))
 }
 
 ## Helper function for computing (or extracting kinship matrices)

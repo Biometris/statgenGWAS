@@ -7,12 +7,13 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta name="author" content="Bart-Jan van Rossum" />
 
-<meta name="date" content="2019-03-19" />
+<meta name="date" content="2019-08-29" />
 
 <title>Introduction to the GWAS package</title>
 
@@ -96,7 +97,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -303,7 +304,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Introduction to the GWAS package</h1>
 <h4 class="author">Bart-Jan van Rossum</h4>
-<h4 class="date">2019-03-19</h4>
+<h4 class="date">2019-08-29</h4>
 
 
 
@@ -311,7 +312,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <hr />
 <div id="the-class-gdata" class="section level2">
 <h2>The class <code>GData</code></h2>
-<p>Data for analysis on genomic data comes from different sources and is stored in one data object of class <strong>gData</strong> (<strong>g</strong>enomic <strong>Data</strong>) for convenience. A gdata object will contain all data needed for performing analyses, so the first thing to do when using the GWAS package is creating a gData object. A gData object consists of different types of data. To create the object all data is optional, however for certain analyses certain types of data are requiered. Additional data can always be added to an existing object later on.<br />
+<p>Data for analysis on genomic data comes from different sources and is stored in one data object of class <strong>gData</strong> (<strong>g</strong>enomic <strong>Data</strong>) for convenience. A gdata object will contain all data needed for performing analyses, so the first thing to do when using the GWAS package is creating a gData object. A gData object consists of different types of data. To create the object all data is optional, however for certain analyses certain types of data are required. Additional data can always be added to an existing object later on.<br />
 A gData object can be created using the function <strong><em>createGData</em></strong>. If an existing gData object is provided as an input to this function data is added to the existing object and existing data will be overwritten with a warning if necessary. All data is checked for consistency and if needed default names are added with a warning message.<br />
 A gData object created this way will consist of the following components:</p>
 <div id="marker-map" class="section level3">
@@ -324,7 +325,7 @@ A gData object created this way will consist of the following components:</p>
 </div>
 <div id="phenotypic-data" class="section level3">
 <h3><strong>Phenotypic data</strong></h3>
-<p>Phenotypic data, either directly from field trails or after summarizing can be stored in <strong>pheno</strong> in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different environments or possibly different summarizations of the original data. The first column of all elements of pheno should be <em>genotype</em> and all the other columns should represent different traits. Storing additional variables should be done in <strong>covar</strong>. A single data.frame will be converted to a one-item list upon creation of a gData object.</p>
+<p>Phenotypic data, either directly from field trials or after summarizing can be stored in <strong>pheno</strong> in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different trials or possibly different summarizations of the original data. The first column of all elements of pheno should be <em>genotype</em> and all the other columns should represent different traits. Storing additional variables should be done in <strong>covar</strong>. A single data.frame will be converted to a one-item list upon creation of a gData object.</p>
 </div>
 <div id="kinship-matrix" class="section level3">
 <h3><strong>Kinship matrix</strong></h3>
@@ -379,7 +380,7 @@ A gData object created this way will consist of the following components:</p>
 <p>Note that in the map file the column names ‘chr’ and ‘pos’ are obligatory. The order of those two columns isn’t important and the presence of extra columns doesn’t matter either. The latter will be ignored when creating the gData object. The rownames of the map file should always contain the genotypes.<br />
 The marker file should have the genotypes in the rows and the SNPs in the columns. To accomplish this the raw markers have to be transposed.</p>
 <p>Now a gData object containing only map and marker information can be created. This object can be used as a base and phenotypic data and covariates may be added later on.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">library</span>(gwas)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">library</span>(statgenGWAS)</a>
 <a class="sourceLine" id="cb3-2" title="2">gDataRice &lt;-<span class="st"> </span><span class="kw">createGData</span>(<span class="dt">geno =</span> markersRice, <span class="dt">map =</span> mapRice)</a></code></pre></div>
 <p>The next step involves adding phenotypic data and covariates to the gData object just created. The raw phenotypic data is already in almost the right format. The main thing that needs to be done is constructing a genotype column such that the genotypes match the genotypes in <em>markersRice</em>. Also some superfluous columns are removed. The same holds for the covariates. Here genotypes need to be in the rownames. Since we will only use PC1 - PC4 in our analysis other columns are removed. It wouldn’t harm to keep them in though.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">phenoRice &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">genotype =</span> <span class="kw">paste0</span>(<span class="st">&quot;NSFTV_&quot;</span>, phenoRaw<span class="op">$</span>NSFTVID), </a>
@@ -389,7 +390,7 @@ The marker file should have the genotypes in the rows and the SNPs in the column
 <a class="sourceLine" id="cb4-5" title="5"><span class="kw">rownames</span>(covarRice) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;NSFTV_&quot;</span>, covarRaw[<span class="op">!</span><span class="kw">is.na</span>(covarRaw<span class="op">$</span>NSFTV.ID), <span class="st">&quot;NSFTV.ID&quot;</span>])</a></code></pre></div>
 <p>The phenotypic data and covariates can be added to <em>gDataRice</em> using the same function we used before for creating the object. Adding an argument <em>gData = </em> to the function call will add new info to an existing object.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">gDataRice &lt;-<span class="st"> </span><span class="kw">createGData</span>(<span class="dt">gData =</span> gDataRice, <span class="dt">pheno =</span> phenoRice, <span class="dt">covar =</span> covarRice)</a></code></pre></div>
-<p>Note that in the newly created object the phenotypic data is represented by a list containing 1 item named phenoRice. It is possible to add phenotypic data for i.e. several environments by adding a list of data.frames each containing the phenotypic data for a single environment.</p>
+<p>Note that in the newly created object the phenotypic data is represented by a list containing 1 item named phenoRice. It is possible to add phenotypic data for i.e. several trials by adding a list of data.frames each containing the phenotypic data for a single trial.</p>
 <p>To get an idea of the contents of the data a summary of the gDataObject can be made.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">summary</span>(gDataRice)</a></code></pre></div>
 </div>
@@ -440,6 +441,9 @@ When making a qq or manhattan plot of this output the trait has to be specified.
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

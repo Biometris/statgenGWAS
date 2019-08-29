@@ -37,7 +37,7 @@
 #' with genotypes in the first column \code{genotype} and traits in the
 #' following columns. The trait columns should be numerical columns only.
 #' A list of data.frames can be used for replications, i.e. different
-#' environments.
+#' trials.
 #' @param covar A data.frame with extra covariates per genotype. Genotypes
 #' should be in the rows.
 #'
@@ -168,9 +168,9 @@ createGData <- function(gData = NULL,
         ## Pheno is unnamed list.
         ## Add default names for ease of use in functions.
         names(pheno) <- sapply(X = seq_along(pheno), FUN = function(x) {
-          paste0("Environment", x)
+          paste0("Trial", x)
         })
-        warning("pheno contains no environment names. Default names added.\n",
+        warning("pheno contains no trial names. Default names added.\n",
                 call. = FALSE)
       } else {
         ## Pheno has at least some names.
@@ -179,12 +179,12 @@ createGData <- function(gData = NULL,
         if (!all(sapply(X = names(pheno), FUN = nzchar))) {
           names(pheno) <- sapply(X = seq_along(pheno), FUN = function(x) {
             if (!nzchar(names(pheno)[x])) {
-              paste0("Environment", x)
+              paste0("Trial", x)
             } else {
               names(pheno)[x]
             }
           })
-          warning(paste("Some data.frames in pheno contain no environment",
+          warning(paste("Some data.frames in pheno contain no trial",
                         "names. Default names added.\n", call. = FALSE))
         }
       }
@@ -487,12 +487,12 @@ summary.gData <- function(object, ...) {
   }
   if (!is.null(pheno)) {
     cat("pheno\n")
-    cat("\tNumber of environments:", length(pheno), "\n\n")
+    cat("\tNumber of trials:", length(pheno), "\n\n")
     for (i in 1:length(pheno)) {
       if (!is.null(names(pheno)[i])) {
         cat("\t", names(pheno)[i], ":\n", sep = "")
       } else {
-        cat("\tEnvironment ", i, ":\n", sep = "")
+        cat("\tTrial ", i, ":\n", sep = "")
       }
       cat("\t\tNumber of traits:", ncol(pheno[[i]]) - 1, "\n")
       cat("\t\tNumber of genotypes:", length(unique(pheno[[i]]$genotype)),

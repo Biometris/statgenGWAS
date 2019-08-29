@@ -23,7 +23,7 @@
 #  markersRice[!markersRice %in% c("A", "C", "T", "G")] <- NA
 
 ## ----eval=FALSE----------------------------------------------------------
-#  library(gwas)
+#  library(statgenGWAS)
 #  gDataRice <- createGData(geno = markersRice, map = mapRice)
 
 ## ----eval=FALSE----------------------------------------------------------

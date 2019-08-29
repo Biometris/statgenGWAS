@@ -28,20 +28,20 @@ chkMarkers <- function(markers,
   }
 }
 
-chkEnvs <- function(envs,
-                    gData) {
-  if (!is.null(envs) && !is.numeric(envs) && !is.character(envs)) {
-    stop("environments should be a numeric or character vector.\n",
+chkTrials <- function(trials,
+                      gData) {
+  if (!is.null(trials) && !is.numeric(trials) && !is.character(trials)) {
+    stop("trials should be a numeric or character vector.\n",
          call. = FALSE)
   }
-  if ((is.character(envs) && !all(envs %in% names(gData$pheno))) ||
-      (is.numeric(envs) && any(envs > length(gData$pheno)))) {
-    stop("environments should be in pheno.\n", call. = FALSE)
+  if ((is.character(trials) && !all(trials %in% names(gData$pheno))) ||
+      (is.numeric(trials) && any(trials > length(gData$pheno)))) {
+    stop("trials should be in pheno.\n", call. = FALSE)
   }
 }
 
 chkTraits <- function(traits,
-                      envs,
+                      trials,
                       gData,
                       multi) {
   if (!is.null(traits) && !is.numeric(traits) && !is.character(traits)) {
@@ -51,12 +51,12 @@ chkTraits <- function(traits,
       stop("trait should be a single numeric or character.\n", call. = FALSE)
     }
   }
-  for (env in envs) {
+  for (trial in trials) {
     if ((is.character(traits) &&
-         !all(hasName(x = gData$pheno[[env]], traits))) ||
+         !all(hasName(x = gData$pheno[[trial]], traits))) ||
         (is.numeric(traits) &&
-         (any(traits == 1) || any(traits > ncol(gData$pheno[[env]]))))) {
-      stop(paste("For", env, "not all traits are columns in pheno.\n"),
+         (any(traits == 1) || any(traits > ncol(gData$pheno[[trial]]))))) {
+      stop(paste("For", trial, "not all traits are columns in pheno.\n"),
            call. = FALSE)
     }
   }

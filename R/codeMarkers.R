@@ -419,8 +419,8 @@ codeMarkers <- function(gData,
     mapNew <- gData$map[rownames(gData$map) %in% colnames(markersRecoded), ]
   }
   if (!is.null(gData$pheno)) {
-    gData$pheno <- lapply(X = gData$pheno, FUN = function(env) {
-      env[env$genotype %in% rownames(markersRecoded), ]
+    gData$pheno <- lapply(X = gData$pheno, FUN = function(trial) {
+      trial[trial$genotype %in% rownames(markersRecoded), ]
     })
   }
   if (!is.null(gData$map)) {

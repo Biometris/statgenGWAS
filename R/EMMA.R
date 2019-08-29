@@ -12,7 +12,7 @@
 #' calculations.
 #' @param trait A trait for which to estimate variance components. This can be
 #' either numeric index or character name of a column in \code{pheno}.
-#' @param environment An environment for which to estimate variance components.
+#' @param trial A trial for which to estimate variance components.
 #' This can be either numeric index or character name of a list item in
 #' \code{pheno}.
 #' @param K An optional kinship matrix. If \code{NULL} then matrix
@@ -52,7 +52,7 @@
 #' @keywords internal
 EMMA <- function(gData,
                  trait,
-                 environment,
+                 trial,
                  K = NULL,
                  covar = NULL,
                  snpName = NULL,
@@ -63,15 +63,15 @@ EMMA <- function(gData,
                  eps = .Machine$double.eps ^ 0.25) {
   ## Checks.
   chkGData(gData, comps = "pheno")
-  if (missing(environment) || length(environment) > 1 ||
-      !(is.numeric(environment) || is.character(environment))) {
-    stop("environment should be a single numeric or character.\n")
+  if (missing(trial) || length(trial) > 1 ||
+      !(is.numeric(trial) || is.character(trial))) {
+    stop("trial should be a single numeric or character.\n")
   }
-  if ((is.character(environment) && !environment %in% names(gData$pheno)) ||
-      (is.numeric(environment) && environment > length(gData$pheno))) {
-    stop("environment should be a list item in pheno.\n")
+  if ((is.character(trial) && !trial %in% names(gData$pheno)) ||
+      (is.numeric(trial) && trial > length(gData$pheno))) {
+    stop("trial should be a list item in pheno.\n")
   }
-  chkTraits(trait, environment, gData, multi = FALSE)
+  chkTraits(trait, trial, gData, multi = FALSE)
   if (!is.null(K) && !(inherits(K, "Matrix") || is.matrix(K))) {
     stop("K should be a matrix.\n")
   }
@@ -92,22 +92,22 @@ EMMA <- function(gData,
     stop("lLim should be smaller than uLim.\n")
   }
   chkNum(eps, min = 0)
-  ## Add column genotype to environment.
-  phEnv <- gData$pheno[[environment]]
+  ## Add column genotype to trial.
+  phTr <- gData$pheno[[trial]]
   ## Remove data with missings in trait or any of the covars.
-  nonMiss <- phEnv$genotype[!is.na(phEnv[trait])]
-  nonMissId <- which(!is.na(phEnv[trait]))
+  nonMiss <- phTr$genotype[!is.na(phTr[trait])]
+  nonMissId <- which(!is.na(phTr[trait]))
   if (!is.null(covar)) {
     misCov <- rownames(gData$covar)[rowSums(is.na(gData$covar[covar])) == 0]
     nonMiss <- nonMiss[nonMiss %in% misCov]
-    nonMissId <- intersect(nonMissId, which(phEnv$genotype %in% misCov))
+    nonMissId <- intersect(nonMissId, which(phTr$genotype %in% misCov))
   }
   if (is.null(K)) {
     K <- gData$kinship[nonMiss, nonMiss]
   } else {
     K <- K[nonMiss, nonMiss]
   }
-  y <- phEnv[nonMissId, trait]
+  y <- phTr[nonMissId, trait]
   ## Define intercept.
   X <- matrix(data = 1, nrow = length(nonMiss), ncol = 1)
   if (!is.null(covar)) {
@@ -116,7 +116,7 @@ EMMA <- function(gData,
   }
   if (!is.null(snpName)) {
     ## Add extra snp to intercept + covars.
-    X <- cbind(X, as.numeric(gData$markers[phEnv$genotype, snpName][nonMiss]))
+    X <- cbind(X, as.numeric(gData$markers[phTr$genotype, snpName][nonMiss]))
   }
   ## Check resulting X for singularity.
   if (!is.matrix(try(solve(crossprod(X)), silent = TRUE))) {

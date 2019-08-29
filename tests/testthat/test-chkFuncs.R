@@ -10,13 +10,13 @@ test_that("chkGData functions properly", {
   expect_silent(chkGData(gDataTest2, comps = "map"))
 })
 
-test_that("chkEnvs functions properly", {
-  expect_silent(chkEnvs("ph1", gDataTest))
-  expect_silent(chkEnvs(c("ph1", "ph2"), gDataTest))
-  expect_error(chkEnvs("ph3", gDataTest), "should be in pheno")
-  expect_silent(chkEnvs(1, gDataTest))
-  expect_silent(chkEnvs(c(1, 2), gDataTest))
-  expect_error(chkEnvs(3, gDataTest), "should be in pheno")
+test_that("chkTrials functions properly", {
+  expect_silent(chkTrials("ph1", gDataTest))
+  expect_silent(chkTrials(c("ph1", "ph2"), gDataTest))
+  expect_error(chkTrials("ph3", gDataTest), "should be in pheno")
+  expect_silent(chkTrials(1, gDataTest))
+  expect_silent(chkTrials(c(1, 2), gDataTest))
+  expect_error(chkTrials(3, gDataTest), "should be in pheno")
 })
 
 test_that("chkTraits functions properly", {

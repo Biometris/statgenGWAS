@@ -33,7 +33,7 @@ estVarComp <- function(GLSMethod,
                                              row.names = pheno$genotype)
                              })
     if (GLSMethod == "single") {
-      remlObj <- EMMA(gData = gDataEmma, trait = trait, environment = 1,
+      remlObj <- EMMA(gData = gDataEmma, trait = trait, trial = 1,
                       covar = covar, K = K)
       ## Extract varComp and vcovMatrix
       varComp <- remlObj$varComp
@@ -43,8 +43,8 @@ estVarComp <- function(GLSMethod,
         ## Get chromosome specific kinship.
         K <- KChr[[which(chrs == chr)]][nonMiss, nonMiss]
         ## Compute variance components using chromosome specific kinship.
-        remlObj <- EMMA(gData = gDataEmma, trait = trait,
-                        environment = 1, covar = covar, K = K)
+        remlObj <- EMMA(gData = gDataEmma, trait = trait, trial = 1, 
+                        covar = covar, K = K)
         ## Compute varcov matrix using var components.
         varComp[[which(chrs == chr)]] <- remlObj$varComp
         vcovMatrix[[which(chrs == chr)]] <- remlObj$vcovMatrix

@@ -1,61 +1,61 @@
 context("STG Helper functions")
 
 test_that("EMMA produces correct results with default settings", {
-  expect_equivalent(EMMA(gData = gDataTest, trait = 2, environment = 1)[[1]],
+  expect_equivalent(EMMA(gData = gDataTest, trait = 2, trial = 1)[[1]],
                     c(0.020597492367456, 1.85412717490278))
   expect_equivalent(EMMA(gData = gDataTest, trait = "X1",
-                         environment = 1)[[1]],
+                         trial = 1)[[1]],
                     c(0.020597492367456, 1.85412717490278))
   expect_equivalent(EMMA(gData = gDataTest, trait = "X1",
-                         environment = "ph1")[[1]],
+                         trial = "ph1")[[1]],
                     c(0.020597492367456, 1.85412717490278))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
-                         environment = 1, K = Sigma)[[1]],
+                         trial = 1, K = Sigma)[[1]],
                     c(0.020597492367456, 1.85412717490278))
 })
 
 test_that("EMMA produces correct results with covariates", {
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
-                         environment = 1, covar = 1)[[1]],
+                         trial = 1, covar = 1)[[1]],
                     c(8.76962021955837e-05, 1.93163739799548))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
-                         environment = 1, covar = "V1")[[1]],
+                         trial = 1, covar = "V1")[[1]],
                     c(8.76962021955837e-05, 1.93163739799548))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
-                         environment = 1, K = Sigma, covar = 1)[[1]],
+                         trial = 1, K = Sigma, covar = 1)[[1]],
                     c(8.76962021955837e-05, 1.93163739799548))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
-                         environment = 1, snpName = "M1")[[1]],
+                         trial = 1, snpName = "M1")[[1]],
                     c(9.11116376851807e-05, 2.00686737098146))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
-                         environment = 1, K = Sigma, snpName = "M1")[[1]],
+                         trial = 1, K = Sigma, snpName = "M1")[[1]],
                     c(9.11116376851807e-05, 2.00686737098146))
   expect_equivalent(EMMA(gData = gDataTest, trait = 2,
-                         environment = 1, covar = 1, snpName = "M1")[[1]],
+                         trial = 1, covar = 1, snpName = "M1")[[1]],
                     c(8.77313241082566e-05, 1.93241100960362))
-  expect_equivalent(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  expect_equivalent(EMMA(gData = gDataTest, trait = 2, trial = 1,
                          K = Sigma, covar = 1, snpName = "M1")[[1]],
                     c(8.77313241082566e-05, 1.93241100960362))
 })
 
 test_that("extra options in EMMA don't significantly change results", {
   ## Compute base value
-  EMMA0 <- EMMA(gData = gDataTest, trait = 2, environment = 1)[[1]]
-  expect_equal(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  EMMA0 <- EMMA(gData = gDataTest, trait = 2, trial = 1)[[1]]
+  expect_equal(EMMA(gData = gDataTest, trait = 2, trial = 1,
                     nGrids = 50)[[1]], EMMA0, tolerance = 1e-6)
-  expect_equal(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  expect_equal(EMMA(gData = gDataTest, trait = 2, trial = 1,
                     nGrids = 500)[[1]], EMMA0, tolerance = 1e-6)
-  expect_equal(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  expect_equal(EMMA(gData = gDataTest, trait = 2, trial = 1,
                     lLim = -100)[[1]], EMMA0, tolerance = 1e-6)
-  expect_equal(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  expect_equal(EMMA(gData = gDataTest, trait = 2, trial = 1,
                     lLim = -20)[[1]], EMMA0, tolerance = 1e-6)
-  expect_equal(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  expect_equal(EMMA(gData = gDataTest, trait = 2, trial = 1,
                     uLim = 20)[[1]], EMMA0, tolerance = 1e-6)
-  expect_equal(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  expect_equal(EMMA(gData = gDataTest, trait = 2, trial = 1,
                     uLim = 100)[[1]], EMMA0, tolerance = 1e-6)
-  expect_equal(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  expect_equal(EMMA(gData = gDataTest, trait = 2, trial = 1,
                     eps = 1e-5)[[1]], EMMA0, tolerance = 1e-6)
-  expect_equal(EMMA(gData = gDataTest, trait = 2, environment = 1,
+  expect_equal(EMMA(gData = gDataTest, trait = 2, trial = 1,
                     nGrids = 500, lLim = -100, uLim = 100)[[1]],
                EMMA0, tolerance = 1e-6)
 })

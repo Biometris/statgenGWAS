@@ -26,7 +26,7 @@ The data.frame **map** is used to describe the physical positions of the markers
 The marker matrix is stored in the matrix **marker** within the gData object. It has the names of the markers in its column names and the genotypes in its row names. Markers can either be coded as character strings or as numerical values. In the former case before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be do using the function **_codeMarkers_**. Any numerical marker matrix will be stored as a matrix of class *Matrix* in a gData object in order to save storage space and speed up computation.
 
 ### **Phenotypic data**  
-Phenotypic data, either directly from field trials or after summarizing can be stored in **pheno** in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different environments or possibly different summarizations of the original data. The first column of all elements of pheno should be *genotype* and all the other columns should represent different traits. Storing additional variables should be done in **covar**. A single data.frame will be converted to a one-item list upon creation of a gData object. 
+Phenotypic data, either directly from field trials or after summarizing can be stored in **pheno** in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different trials or possibly different summarizations of the original data. The first column of all elements of pheno should be *genotype* and all the other columns should represent different traits. Storing additional variables should be done in **covar**. A single data.frame will be converted to a one-item list upon creation of a gData object. 
 
 ### **Kinship matrix**  
 The kinship matrix describes the genetic relatedness between the different genotypes. It is stored in the matrix **kinship** in the gData object. This should be a square matrix with genotypes in both row and column names and a measure for the genetic relatedness in its cells. There are many ways of computing genetic relatedness some of which are included in this package. Instead of providing one kinship matrix a list of kinship matrices can be provided with each matrix in this list a chromosome specific matrix usually computed using all markers that are not on the corresponding chromosome. If a named list of kinship matrices is provided its names should match the names or numbers of the chromosomes in **map**. Unnamed lists will be given default names. Kinship matrices will be stored as matrices of class *Matrix* in a gData object in order to save storage space and speed up computation.
@@ -103,7 +103,7 @@ The phenotypic data and covariates can be added to *gDataRice* using the same fu
 ```{r eval=FALSE}
 gDataRice <- createGData(gData = gDataRice, pheno = phenoRice, covar = covarRice)
 ```
-Note that in the newly created object the phenotypic data is represented by a list containing 1 item named phenoRice. It is possible to add phenotypic data for i.e. several environments by adding a list of data.frames each containing the phenotypic data for a single environment.
+Note that in the newly created object the phenotypic data is represented by a list containing 1 item named phenoRice. It is possible to add phenotypic data for i.e. several trials by adding a list of data.frames each containing the phenotypic data for a single trial.
 
 To get an idea of the contents of the data a summary of the gDataObject can be made.
 ```{r eval=FALSE}
