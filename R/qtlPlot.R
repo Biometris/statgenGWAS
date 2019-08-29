@@ -43,7 +43,8 @@
 #' Allelic effects vary with drought and heat scenarios. Plant Physiology,
 #' October 2016, Vol. 172, p. 749–764
 #'
-#' @import grDevices graphics
+#' @import ggplot2
+#' @importFrom graphics plot
 #'
 #' @keywords internal
 qtlPlot <- function(dat,
@@ -170,54 +171,49 @@ qtlPlot <- function(dat,
   plotDat <- droplevels(plotDat)
   ## Create theme for plot
   qtlPlotTheme <-
-    ggplot2::theme(plot.background = ggplot2::element_blank(),
-                   panel.grid.major.x =
-                     ggplot2::element_line(color = ifelse(printVertGrid,
-                                                          "white", "gray")),
-                   panel.grid.major.y = ggplot2::element_line(color = "white"),
-                   panel.grid.minor = ggplot2::element_blank(),
-                   plot.title = ggplot2::element_text(size = 20, face = "bold",
-                                                      vjust = 2) ,
-                   axis.ticks = ggplot2::element_blank(),
-                   panel.border = ggplot2::element_blank(),
-                   axis.line = ggplot2::element_blank(),
-                   legend.position = "none",
-                   panel.background = ggplot2::element_rect(fill = "gray"),
-                   axis.text.x = ggplot2::element_text(size = 0),
-                   axis.text.y = ggplot2::element_text(size = 13 ,
-                                                       color = "black"),
-                   axis.title = ggplot2::element_text(size = 20,
-                                                      color = "navyblue"),
-                   strip.background = ggplot2::element_rect(fill = "gray40"),
-                   strip.text = ggplot2::element_text(),
-                   strip.text.x = ggplot2::element_text(size = 14),
-                   strip.text.y = ggplot2::element_text(size = 0))
+    theme(plot.background = element_blank(),
+          panel.grid.major.x = element_line(color = ifelse(printVertGrid,
+                                                           "white", "gray")),
+          panel.grid.major.y = element_line(color = "white"),
+          panel.grid.minor = element_blank(),
+          plot.title = element_text(size = 20, face = "bold", vjust = 2) ,
+          axis.ticks = element_blank(),
+          panel.border = element_blank(),
+          axis.line = element_blank(),
+          legend.position = "none",
+          panel.background = element_rect(fill = "gray"),
+          axis.text.x = element_text(size = 0),
+          axis.text.y = element_text(size = 13, color = "black"),
+          axis.title = element_text(size = 20, color = "navyblue"),
+          strip.background = element_rect(fill = "gray40"),
+          strip.text = element_text(),
+          strip.text.x = element_text(size = 14),
+          strip.text.y = element_text(size = 0))
   ## Create the plot object
-  p <- ggplot2::ggplot(
-    data = plotDat,
-    ## Y data is sorted in reverse order because of the way ggplot plots.
-    ## Point size proportional to allelic effect.
-    ## Point color depends on the effect direction.
-    ggplot2::aes(x = snpPosition, y = reorder(trait, -sort), size = abs(eff),
-                 color = factor(color))) +
+  p <- ggplot(data = plotDat,
+              ## Y data is sorted in reverse order because of the way ggplot plots.
+              ## Point size proportional to allelic effect.
+              ## Point color depends on the effect direction.
+              aes(x = snpPosition, y = reorder(trait, -sort), size = abs(eff),
+                  color = factor(color))) +
     ## use custom made theme
     qtlPlotTheme +
-    ggplot2::ylab(yLab) +
-    ggplot2::xlab("Chromosomes")  +
+    ylab(yLab) +
+    xlab("Chromosomes")  +
     # add vertical lines at the bin positions
-    ggplot2::geom_vline(ggplot2::aes_(xintercept = ~pos), data = binPositions,
-                        linetype = 1, color = "white")   +
+    geom_vline(aes_(xintercept = ~pos), data = binPositions,
+               linetype = 1, color = "white") +
     ## Add the points with a slight transparency in case of overlap.
-    ggplot2::geom_point(alpha = I(0.7), na.rm = TRUE) +
+    geom_point(alpha = I(0.7), na.rm = TRUE) +
     ## Split of the plot according to the chromosomes on the x axis.
     ## Do not resize the x axis (otherwise every chromosome has the same size.
     ## Do not add extra space between two facets.
     ## Place the chromosome labels at the bottom.
-    ggplot2::facet_grid(". ~ chromosome", scales = "free", space = "free",
-                        switch = "both") +
+    facet_grid(". ~ chromosome", scales = "free", space = "free",
+               switch = "both") +
     ## Ascribe a color to the allelic direction (column 'color').
-    ggplot2::scale_color_manual("color", labels = c("neg", "pos"),
-                                values = c("darkblue", "green4"))
+    scale_color_manual("color", labels = c("neg", "pos"), 
+                       values = c("darkblue", "green4"))
   if (exportPptx) {
     ## Save figure in .pptx
     if (requireNamespace("officer", quietly = TRUE) &&
