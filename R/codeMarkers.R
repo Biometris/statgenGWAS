@@ -145,7 +145,7 @@ codeMarkers <- function(gData,
            "least two different positions for each chromosome.\n")
     }
   }
-  markersOrig <- as.matrix(gData$markers)
+  markersOrig <- gData$markers
   if (verbose) {
     cat("Input contains ", ncol(markersOrig), " markers for ", 
         nrow(markersOrig), " genotypes.\n", sep = "")

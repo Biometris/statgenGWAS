@@ -95,8 +95,6 @@ NULL
 
 #' @rdname gData
 #'
-#' @importFrom methods as
-#'
 #' @export
 createGData <- function(gData = NULL,
                         geno = NULL,
@@ -230,8 +228,8 @@ createGData <- function(gData = NULL,
     if (isMat) {
       if (is.data.frame(geno) || is.matrix(geno)) {
         if (is.numeric(unlist(geno))) {
-          ## Convert geno to Matrix of class Matrix.
-          markers <- as(geno, "Matrix")
+          ## Convert geno to matrix.
+          markers <- as.matrix(geno)
         } else {
           ## Markers contain non numeric entries. Matrix class cannot handle
           ## this but it is needed for use in recodeMarkers.
@@ -395,19 +393,18 @@ createGData <- function(gData = NULL,
       stop(paste("row and column names of kin should be in row",
                  "names of geno.\n"))
     }
-    ## Order as in geno and convert to symmetric matrix in Matrix class.
+    ## Order as in geno and convert to matrix.
     ## match is needed since markers may contain more genotypes than kin.
     ## If markers is NULL only the conversion is done.
     if (is.list(kin)) {
       kin <- lapply(X = kin,
                     FUN = function(k) {
-                      as(k[order(match(rownames(k), rownames(markers))),
-                           order(match(colnames(k), rownames(markers)))],
-                         "dsyMatrix")
+                      as.matrix(k[order(match(rownames(k), rownames(markers))),
+                                  order(match(colnames(k), rownames(markers)))])
                     })
     } else {
       if (is.matrix(kin)) {
-        kin <- as(kin, "dsyMatrix")
+        kin <- as.matrix(kin)
       }
       kin <- kin[order(match(rownames(kin), rownames(markers))),
                  order(match(colnames(kin), rownames(markers)))]

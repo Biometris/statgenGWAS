@@ -43,7 +43,7 @@ expandPheno <- function(gData,
       ## Add snp covariates to covar.
       covEnv <- c(covEnv, snpCov)
       ## Add snp covariates to pheno data.
-      phEnv <- merge(phEnv, as.matrix(gData$markers[, snpCov, drop = FALSE]),
+      phEnv <- merge(phEnv, gData$markers[, snpCov, drop = FALSE],
                      by.x = "genotype", by.y = "row.names")
       colnames(phEnv)[(ncol(phEnv) - length(snpCov) + 1):ncol(phEnv)] <- snpCov
     } else if (length(dim(gData$markers)) == 3) {
@@ -71,7 +71,6 @@ expandPheno <- function(gData,
 ## 1 - If kin is supplied use kin
 ## 2 - Get kin from gData object
 ## 3 - Compute kin from markers (and map for GLSMethod multi)
-#' @importFrom methods as
 #' @keywords internal
 computeKin <- function(GLSMethod,
                        kin = NULL,
@@ -81,8 +80,8 @@ computeKin <- function(GLSMethod,
                        kinshipMethod = NULL) {
   if (GLSMethod == "single") {
     if (!is.null(kin)) {
-      ## kin is supplied as input. Convert to dsyMatrix.
-      K <- as(kin, "dsyMatrix")
+      ## kin is supplied as input. Convert to matrix.
+      K <- as.matrix(kin)
     } else if (!is.null(gData$kinship) && !inherits(gData$kinship, "list")) {
       ## Get kin from gData object.
       K <- gData$kinship
@@ -94,8 +93,8 @@ computeKin <- function(GLSMethod,
            order(match(colnames(K), rownames(markers)))]
   } else if (GLSMethod == "multi") {
     if (!is.null(kin)) {
-      ## kin is supplied as input. Convert to dsyMatrices.
-      K <- lapply(X = kin, FUN = as, Class = "dsyMatrix")
+      ## kin is supplied as input. Convert to matrices.
+      K <- lapply(X = kin, FUN = as.matrix)
     } else if (!is.null(gData$kinship) && inherits(gData$kinship, "list")) {
       ## Get kin from gData object.
       K <- gData$kinship

@@ -48,7 +48,6 @@
 #' p. 1709-1723
 #'
 #' @import stats
-#' @importFrom methods as
 #'
 #' @keywords internal
 EMMA <- function(gData,
@@ -124,8 +123,7 @@ EMMA <- function(gData,
     warning("X is singular.")
     return(list(varcomp = c(0, 0), K = K))
   }
-  resEmma <- emmaCPP(y = y, k = as.matrix(K), x = X,
-                     eps = .Machine$double.eps ^ 0.25)
+  resEmma <- emmaCPP(y = y, k = K, x = X, eps = .Machine$double.eps ^ 0.25)
   vcovMatrix <- resEmma$vcovMatrix
   rownames(vcovMatrix) <- colnames(vcovMatrix) <- rownames(K)
   return(list(varComp = c(Vg = resEmma$maxVg, Ve = resEmma$maxVe),

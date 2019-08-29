@@ -63,6 +63,6 @@ fastGLS <- function(y,
                "number of rows in covs.\n"))
   }
   ## If necessary convert input to matrix
-  resCpp <- fastGLSCPP(as.matrix(X), y, as.matrix(Sigma), covs, nCores = nCores)
+  resCpp <- fastGLSCPP(X, y, Sigma, covs, nCores = nCores)
   return(resCpp)
 }

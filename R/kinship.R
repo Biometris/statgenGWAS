@@ -43,9 +43,6 @@ kinship <- function(X,
   if (!is.null(denominator)) {
     chkNum(denominator, min = 0)
   }
-  if (!is.matrix(X)) {
-    X <- as.matrix(X)
-  }
   K <- do.call(what = paste0(method, "CPP"),
                args = list(x = X, denom = denominator))
   rownames(K) <- colnames(K) <- rownames(X)

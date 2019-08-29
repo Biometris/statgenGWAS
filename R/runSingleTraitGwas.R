@@ -233,7 +233,7 @@ runSingleTraitGwas <- function(gData,
       markersRed <- gData$markers[nonMiss, colnames(gData$markers) %in%
                                     rownames(gData$map)]
       mapRed <- gData$map[rownames(gData$map) %in% colnames(markersRed), ]
-      allFreq <- Matrix::colMeans(markersRed, na.rm = TRUE) / maxScore
+      allFreq <- colMeans(markersRed, na.rm = TRUE) / maxScore
       if (!useMAF) {
         MAF <- MAC / (maxScore * length(nonMiss)) - 1e-5
       }
@@ -283,7 +283,7 @@ runSingleTraitGwas <- function(gData,
           markersRedChr <- markersRed[, which(colnames(markersRed) %in%
                                                 rownames(mapRedChr)),
                                       drop = FALSE]
-          allFreqChr <- Matrix::colMeans(markersRedChr, na.rm = TRUE) / maxScore
+          allFreqChr <- colMeans(markersRedChr, na.rm = TRUE) / maxScore
           ## Determine segregating markers. Exclude snps used as covariates.
           segMarkersChr <- which(allFreqChr >= MAF & allFreqChr <= (1 - MAF))
           ## Exclude snpCovariates from segregating markers.

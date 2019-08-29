@@ -93,14 +93,14 @@ test_that("parameters in nearestPD function properly", {
 test_that("computeKin functions properly for GLSMethod single", {
   K0 <- Sigma + 0.1
   gDataTest <- createGData(kin = K0)
-  ## Only kin provided -> converted to dsyMatrix.
-  expect_is(K1 <- computeKin(GLSMethod = "single", kin = K0), "dsyMatrix")
-  expect_equal(as.matrix(K1), K0)
-  ## Only gData provided -> converted to dsyMatrix.
+  ## Only kin provided -> return directly.
+  expect_is(K1 <- computeKin(GLSMethod = "single", kin = K0), "matrix")
+  expect_equal(K1, K0)
+  ## Only gData provided ->  return directly.
   expect_is(K2 <- computeKin(GLSMethod = "single", gData = gDataTest), 
-            "dsyMatrix")
-  expect_equal(as.matrix(K2), K0)
-  ## Both kin and gData provided -> Return kin converted to dsyMatrix.
+            "matrix")
+  expect_equal(K2, K0)
+  ## Both kin and gData provided -> Return kin.
   expect_equal(computeKin(GLSMethod = "single", kin = K0, gData = gDataTest), 
                K1)
 })
@@ -111,14 +111,14 @@ test_that("computeKin functions properly for GLSMethod multi", {
   ## Only kin provided -> converted to dsyMatrices.
   expect_is(KLst1 <- computeKin(GLSMethod = "multi",
                                 kin = list("chr1" = K0, "chr2" = K0)), "list")
-  expect_is(KLst1[[1]], "dsyMatrix")
-  expect_equal(as.matrix(KLst1[[1]]), K0)
-  ## Only gData provided -> converted to dsyMatrix.
+  expect_is(KLst1[[1]], "matrix")
+  expect_equal(KLst1[[1]], K0)
+  ## Only gData provided -> return directly.
   expect_is(KLst2 <- computeKin(GLSMethod = "multi", gData = gDataTest),
             "list")
-  expect_is(KLst2[[1]], "dsyMatrix")
-  expect_equal(as.matrix(KLst2[[1]]), K0)
-  ## Both kin and gData provided -> Return kin converted to dsyMatrix.
+  expect_is(KLst2[[1]], "matrix")
+  expect_equal(KLst2[[1]], K0)
+  ## Both kin and gData provided -> return directly.
   expect_equal(computeKin(GLSMethod = "multi", 
                           kin = list("chr1" = K0, "chr2" = K0), 
                           gData = gDataTest), KLst1)

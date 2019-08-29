@@ -13,7 +13,7 @@ chkGData <- function(gData = NULL,
 chkMarkers <- function(markers,
                        dim = 2) {
   if (dim == 2) {
-    if (!inherits(markers, "Matrix")) {
+    if (!is.numeric(markers)) {
       stop(paste("markers in gData should be a numerical matrix. Use",
                  "recodeMarkers first for recoding.\n"), call. = FALSE)
     }

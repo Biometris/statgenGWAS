@@ -15,7 +15,6 @@ LazyData: true
 RoxygenNote: 6.1.1
 Depends: R (>= 3.5)
 Imports: ggplot2 (>= 3.0.0),
-    Matrix (>= 1.2-10),
     methods,
     sommer (>= 3.7.3),
     Rcpp

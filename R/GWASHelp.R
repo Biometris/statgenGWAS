@@ -15,9 +15,9 @@ estVarComp <- function(GLSMethod,
                        nonMissRepId) {
   ## Estimate variance components.
   if (GLSMethod == "single") {
-    if (isTRUE(all.equal(K, Matrix::Diagonal(nrow(K)), check.names = FALSE))) {
+    if (isTRUE(all.equal(K, diag(nrow = nrow(K)), check.names = FALSE))) {
       ## Kinship matrix is computationally identical to identity matrix.
-      vcovMatrix <- Matrix::Diagonal(nrow(pheno))
+      vcovMatrix <- diag(nrow = nrow(pheno))
     }
   } else if (GLSMethod == "multi") {
     varComp <- vcovMatrix <-
@@ -25,13 +25,13 @@ estVarComp <- function(GLSMethod,
   }
   if (remlAlgo == "EMMA") {
     ## emma algorithm takes covariates from gData.
-    gDataEmma <-
-      createGData(pheno = pheno[, c("genotype", trait)],
-                  covar = if (is.null(covar)) {
-                    NULL
-                  } else {
-                    as.data.frame(pheno[covar], row.names = pheno$genotype)
-                  })
+    gDataEmma <- createGData(pheno = pheno[, c("genotype", trait)],
+                             covar = if (is.null(covar)) {
+                               NULL
+                             } else {
+                               as.data.frame(pheno[covar], 
+                                             row.names = pheno$genotype)
+                             })
     if (GLSMethod == "single") {
       remlObj <- EMMA(gData = gDataEmma, trait = trait, environment = 1,
                       covar = covar, K = K)
@@ -63,7 +63,7 @@ estVarComp <- function(GLSMethod,
     if (GLSMethod == "single") {
       ## Fit model.
       modFit <- sommer::mmer(fixed = fixed, data = pheno,
-                             random = ~ sommer::vs(genotype, Gu = as.matrix(K)),
+                             random = ~ sommer::vs(genotype, Gu = K),
                              verbose = FALSE, date.warning = FALSE)
       ## Compute varcov matrix using var components from model.
       vcMod <- modFit$sigma
@@ -71,11 +71,10 @@ estVarComp <- function(GLSMethod,
       varComp <- setNames(unlist(vcMod)[c(1, length(unlist(vcMod)))],
                           c("Vg", "Ve"))
       vcovMatrix <- unlist(vcMod)[1] * modK +
-        Matrix::Diagonal(n = nrow(modK),
-                         x = unlist(vcMod)[length(unlist(vcMod))])
+        diag(x = unlist(vcMod)[length(unlist(vcMod))])
       if (any(eigen(vcovMatrix, symmetric = TRUE,
                     only.values = TRUE)$values <= 1e-8)) {
-        nearestPD(as.matrix(vcovMatrix))
+        nearestPD(vcovMatrix)
       }
     } else if (GLSMethod == "multi") {
       for (chr in chrs) {
@@ -92,12 +91,12 @@ estVarComp <- function(GLSMethod,
           unlist(vcMod)[c(1, length(unlist(vcMod)))], c("Vg", "Ve"))
         vcovMatrix[[which(chrs == chr)]] <- unlist(vcMod)[1] * modK +
           unlist(vcMod)[length(unlist(vcMod))] *
-          Matrix::Diagonal(n = nrow(modK))
+          diag(nrow = nrow(modK))
       }
       vcovMatrix <- lapply(vcovMatrix, FUN = function(vc) {
         if (any(eigen(vc, symmetric = TRUE,
                       only.values = TRUE)$values <= 1e-8)) {
-          nearestPD(as.matrix(vc))
+          nearestPD(vc)
         } else {
           vc
         }
@@ -168,7 +167,7 @@ exclMarkers <- function(snpCov,
                                         MARGIN = 2, FUN = function(x) {
                                           identical(as.numeric(x), snpInfo)
                                         })])
-
+      
     }
   }
   return(exclude)
@@ -316,7 +315,7 @@ getSNPsInRegionSufLD <- function(gData,
   candidateSnps <- setdiff(which(crit1 & crit2), snp)
   ## Compute R2 for candidate SNPs.
   if (length(dim(gData$markers)) == 2) {
-    R2 <- suppressWarnings(cor(as.matrix(gData$markers[, candidateSnps]),
+    R2 <- suppressWarnings(cor(gData$markers[, candidateSnps],
                                gData$markers[, snp]) ^ 2)
     ## Select SNPs based on R2.
     candidateSnpsNames <- names(which(R2[, 1] > minR2))
