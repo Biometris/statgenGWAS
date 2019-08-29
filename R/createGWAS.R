@@ -296,11 +296,14 @@ summary.GWAS <- function(object, ..., environments = NULL) {
 #' @references Millet et al. (2016) Genome-wide analysis of yield in Europe:
 #' Allelic effects vary with drought and heat scenarios. Plant Physiology,
 #' October 2016, Vol. 172, p. 749–764
+#' @references Segura et al. (2012) An efficient multi-locus mixed-model
+#' approach for genome-wide association studies in structured populations.
+#' Nature Genetics, June 2012, Vol. 44, p. 825–830.
 #'
 #' @export
 plot.GWAS <- function(x,
                       ...,
-                      plotType = c("manhattan", "qq", "qtl", "matrix"),
+                      plotType = c("manhattan", "qq", "qtl"),
                       environment = NULL,
                       trait = NULL,
                       output = TRUE) {
@@ -432,7 +435,7 @@ plot.GWAS <- function(x,
       }
     }
     do.call(qtlPlot,
-            args = c(list(data = signSnp, map = map, output = output),
+            args = c(list(dat = signSnp, map = map, output = output),
                      dotArgs[!(names(dotArgs) %in% c("yThr", "chr"))]
                      ))
   } 

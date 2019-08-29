@@ -21,9 +21,9 @@ test_that("GWAS qq plot functions properly", {
 })
 
 test_that("qtl plot functions properly", {
-  p <- qtlPlot(data = qtlDat, map = map, output = FALSE)
+  p <- qtlPlot(dat = qtlDat, map = map, output = FALSE)
   expect_is(p, "ggplot")
-  p1 <- qtlPlot(data = qtlDat, map = map, output = FALSE, yLab = "Testlab")
+  p1 <- qtlPlot(dat = qtlDat, map = map, output = FALSE, yLab = "Testlab")
   expect_equal(p1$labels$y, "Testlab")
 })
 

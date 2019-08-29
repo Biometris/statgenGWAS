@@ -9,7 +9,7 @@
 #' direction of the effect: green when the allele increases the trait value,
 #' and blue when it decreases the value.
 #'
-#' @param data A data.frame with QTL data to be plotted
+#' @param dat A data.frame with QTL data to be plotted
 #' @param chromosome A character string indicating the data column containing
 #' the chromosome number.
 #' @param trait A character string indicating the data column containing the
@@ -46,7 +46,7 @@
 #' @import grDevices graphics
 #'
 #' @keywords internal
-qtlPlot <- function(data,
+qtlPlot <- function(dat,
                     chromosome = "chr",
                     trait = "trait",
                     snpEffect = "effect",
@@ -62,8 +62,8 @@ qtlPlot <- function(data,
                     output = TRUE,
                     ...) {
   ## Basic argument checks
-  if (is.null(data) || !is.data.frame(data)) {
-    stop("data should be a data.frame")
+  if (is.null(dat) || !is.data.frame(dat)) {
+    stop("dat should be a data.frame")
   }
   if (is.null(chromosome) || length(chromosome) > 1 ||
       !is.character(chromosome)) {
@@ -103,9 +103,9 @@ qtlPlot <- function(data,
   ## Check that all necessary columns are in the data
   reqCols <- c(chromosome, trait, snpEffect, snpPosition)
   if (is.character(sortData)) reqCols <- c(reqCols, sortData)
-  reqChk <- hasName(x = data, name = reqCols)
+  reqChk <- hasName(x = dat, name = reqCols)
   if (!all(reqChk)) {
-    stop("data lacks the following columns: ",
+    stop("dat lacks the following columns: ",
          paste0(reqCols[!reqChk], collapse = ", "), ".\n\n")
   }
   ## Check that all necessary columns are in the map file
@@ -128,18 +128,18 @@ qtlPlot <- function(data,
   }
   ## Center and reduce the allelic effect (because of the different units)
   if (normalize) {
-    data$eff <- sapply(X = 1:nrow(data), FUN = function(x) {
-      (data[x, snpEffect] -
-         mean(data[data[trait] == as.character(data[x, trait]), snpEffect],
+    dat$eff <- sapply(X = 1:nrow(dat), FUN = function(x) {
+      (dat[x, snpEffect] -
+         mean(dat[dat[trait] == as.character(dat[x, trait]), snpEffect],
               na.rm = TRUE)) /
-        sd(data[data[trait] == as.character(data[x, trait]), snpEffect],
+        sd(dat[dat[trait] == as.character(dat[x, trait]), snpEffect],
            na.rm = TRUE)
     })
-  } else data$eff <- data[[snpEffect]]
+  } else dat$eff <- dat[[snpEffect]]
   if (is.character(sortData)) {
-    data$sort <- data[[sortData]]
+    dat$sort <- dat[[sortData]]
   } else {
-    data$sort <- 1
+    dat$sort <- 1
   }
   eff <- color <- NULL
   ## Add the physical limits of the chromosomes, calculated from the map file
@@ -148,18 +148,18 @@ qtlPlot <- function(data,
   limHigh <- aggregate(x = map$pos, by = list(map$chr), FUN = max)
   ## Empty data.frame with 2 lines per chromosomes and as many columns as the
   ## QTL data.frame
-  lim <- data.frame(matrix(ncol = ncol(data), nrow = 2 * nrow(limLow)))
-  names(lim) <- names(data)
+  lim <- data.frame(matrix(ncol = ncol(dat), nrow = 2 * nrow(limLow)))
+  names(lim) <- names(dat)
   ## Trait and sort have to be filled. Value is not important
-  lim[trait] <- data[1, trait]
-  lim$sort <- data[1, "sort"]
+  lim[trait] <- dat[1, trait]
+  lim$sort <- dat[1, "sort"]
   ## Set eff to suppress warnings in printing. Setting it to -Inf ensures
   ## nothing is plotted
   lim$eff <- -Inf
   lim[, c(chromosome, snpPosition)] <- rbind(limLow, limHigh)
-  data <- rbind(data, lim)
+  dat <- rbind(dat, lim)
   ## Select and rename relevant columns for plotting
-  plotDat <- data[, c(trait, chromosome, snpEffect, snpPosition, "sort", "eff")]
+  plotDat <- dat[, c(trait, chromosome, snpEffect, snpPosition, "sort", "eff")]
   colnames(plotDat)[1:4] <- c("trait", "chromosome", "snpEffect", "snpPosition")
   ## Add a column with the allelic effect direction (for points color)
   plotDat$color <- ifelse(plotDat$eff != -Inf,

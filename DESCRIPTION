@@ -1,6 +1,6 @@
 Package: gwas
 Type: Package
-Title: Genome Wide Association Studies in R
+Title: Genome Wide Association Studies 
 Version: 0.1.0
 Date: 2019-02-18
 Authors@R: c(
