@@ -176,16 +176,16 @@ createGData <- function(gData = NULL,
         ## Pheno has at least some names.
         ## Check for possible empty/missing names in list and add
         ## default names for those. Keep other names.
-        if (!all(sapply(X = names(pheno), FUN = nzchar))) {
-          names(pheno) <- sapply(X = seq_along(pheno), FUN = function(x) {
-            if (!nzchar(names(pheno)[x])) {
-              paste0("Trial", x)
+        if (!all(nzchar(names(pheno)))) {
+          names(pheno) <- sapply(X = seq_along(pheno), FUN = function(i) {
+            if (!nzchar(names(pheno)[i])) {
+              paste0("Trial", i)
             } else {
-              names(pheno)[x]
+              names(pheno)[i]
             }
           })
-          warning(paste("Some data.frames in pheno contain no trial",
-                        "names. Default names added.\n", call. = FALSE))
+          warning("Some data.frames in pheno contain no trial names. ",
+                  "Default names added.\n", call. = FALSE)
         }
       }
     }
@@ -199,7 +199,7 @@ createGData <- function(gData = NULL,
     for (i in seq_along(pheno)) {
       pheno[[i]]$genotype <- as.character(pheno[[i]]$genotype)
     }
-    ## Check that all non-genotype columns are numerical.
+    ## Check that all non-genotype columns in pheno are numerical.
     if (!all(sapply(X = pheno, FUN = function(x) {
       all(sapply(X = x[-1], FUN = is.numeric))
     }))) {
@@ -226,23 +226,21 @@ createGData <- function(gData = NULL,
     isMat <- length(dim(geno)) == 2
     isPMat <- length(dim(geno)) == 3
     if (isMat) {
-      if (is.data.frame(geno) || is.matrix(geno)) {
-        if (is.numeric(unlist(geno))) {
-          ## Convert geno to matrix.
-          markers <- as.matrix(geno)
-        } else {
-          ## Markers contain non numeric entries. Matrix class cannot handle
-          ## this but it is needed for use in recodeMarkers.
-          markers <- as.matrix(geno)
-        }
+      if (!is.matrix(geno)) {
+        ## Convert geno to matrix.
+        ## This should work for matrices with only numerical entries and
+        ## matrices with (some) non numeric entries.
+        markers <- as.matrix(geno)
       } else {
         markers <- geno
       }
     } else if (isPMat) {
       markers <- geno
     }
-    ## Check for row names in markers. If not available take them from pheno or
-    ## use default names.
+    ## Check for row names in markers. 
+    ## If not available:
+    ## 1 - take them from pheno.
+    ## 2 - use default names.
     if (all(rownames(markers) == as.character(1:nrow(markers)))) {
       if (is.null(pheno)) {
         ## Default names are constructed as g001, g002, etc. with the number
@@ -261,8 +259,8 @@ createGData <- function(gData = NULL,
           warning("geno contains no genotype names. Names taken from pheno.\n",
                   call. = FALSE)
         } else {
-          stop(paste("geno contains no genotype names. Dimensions between",
-                     "geno and pheno differ.\n"))
+          stop("geno contains no genotype names. Dimensions between ",
+               "geno and pheno differ.\n")
         }
       }
     } else {
@@ -281,8 +279,8 @@ createGData <- function(gData = NULL,
         stop("geno contains no marker names. Map not available.\n")
       }
       if (nrow(map) != ncol(markers)) {
-        stop(paste("geno contains no marker names. Dimensions between geno",
-                   "and map differ.\n"))
+        stop("geno contains no marker names. Dimensions between geno ",
+             "and map differ.\n")
       }
       colnames(markers) <- rownames(map)
       warning("geno contains no marker names. Names taken from map.\n",
@@ -293,8 +291,8 @@ createGData <- function(gData = NULL,
       ## Map may still contain markers that are not in markers.
       if (any(!colnames(markers) %in%
               rownames(map)[rownames(map) %in% colnames(markers)])) {
-        warning(paste("not all markers in geno are in map. Extra markers",
-                      "will be removed.\n"), call. = FALSE)
+        warning("not all markers in geno are in map. Extra markers ",
+                "will be removed.\n", call. = FALSE)
       }
       if (isMat) {
         ## This not only removes markers that are not in map but orders them in
@@ -355,8 +353,8 @@ createGData <- function(gData = NULL,
     ## match the number of chromosomes in map.
     if (!is.null(map) && is.list(kin) &&
         length(kin) != length(unique(map$chr))) {
-      stop(paste("kin should be the same length as the number of",
-                 "chromosomes in map.\n"))
+      stop("kin should be the same length as the number of ",
+           "chromosomes in map.\n")
     }
     ## If kin is a named list of matrices names of list items should match names
     ## of chromosomes in map.
@@ -390,8 +388,7 @@ createGData <- function(gData = NULL,
         (!is.null(markers) && !is.list(kin) &&
          (!all(rownames(kin) %in% rownames(markers)) ||
           !all(colnames(kin) %in% rownames(markers))))) {
-      stop(paste("row and column names of kin should be in row",
-                 "names of geno.\n"))
+      stop("row and column names of kin should be in row names of geno.\n")
     }
     ## Order as in geno and convert to matrix.
     ## match is needed since markers may contain more genotypes than kin.
@@ -403,7 +400,7 @@ createGData <- function(gData = NULL,
                                   order(match(colnames(k), rownames(markers)))])
                     })
     } else {
-      if (is.matrix(kin)) {
+      if (!is.matrix(kin)) {
         kin <- as.matrix(kin)
       }
       kin <- kin[order(match(rownames(kin), rownames(markers))),
@@ -429,8 +426,8 @@ createGData <- function(gData = NULL,
     ## All columns should be numerical, character of factors.
     if (!all(sapply(X = covar, FUN = function(x) {
       is.numeric(x) || is.character(x) || is.factor(x)}))) {
-      stop(paste("all columns in covar should be numeric, character or",
-                 "factor columns.\n"))
+      stop("all columns in covar should be numeric, character or ",
+           "factor columns.\n")
     }
     ## Convert character columns to factors.
     covar[sapply(covar, is.character)] <-
