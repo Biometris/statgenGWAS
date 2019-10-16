@@ -1,3 +1,4 @@
+#' @noRd
 #' @keywords internal
 chkGData <- function(gData = NULL,
                      comps = c("map", "markers", "pheno")) {
@@ -6,28 +7,12 @@ chkGData <- function(gData = NULL,
   }
   for (comp in comps) {
     if (is.null(gData[[comp]]))
-      stop(paste("gData should contain", comp), call. = FALSE)
+      stop("gData should contain ", comp, call. = FALSE)
   }
 }
 
-chkMarkers <- function(markers,
-                       dim = 2) {
-  if (dim == 2) {
-    if (!is.numeric(markers)) {
-      stop(paste("markers in gData should be a numerical matrix. Use",
-                 "recodeMarkers first for recoding.\n"), call. = FALSE)
-    }
-  } else if (dim == 3) {
-    if (!inherits(markers, "array")) {
-      stop("markers should be a three-dimensional array.\n", call. = FALSE)
-    }
-  }
-  if (anyNA(markers)) {
-    stop("markers contains missing values. Impute or remove these first.\n",
-         call. = FALSE)
-  }
-}
-
+#' @noRd
+#' @keywords internal
 chkTrials <- function(trials,
                       gData) {
   if (!is.null(trials) && !is.numeric(trials) && !is.character(trials)) {
@@ -40,62 +25,32 @@ chkTrials <- function(trials,
   }
 }
 
+#' @noRd
+#' @keywords internal
 chkTraits <- function(traits,
                       trials,
                       gData,
                       multi) {
   if (!is.null(traits) && !is.numeric(traits) && !is.character(traits)) {
-    if (multi) {
-      stop("traits should be a numeric or character vector.\n", call. = FALSE)
-    } else if (length(traits) > 1) {
-      stop("trait should be a single numeric or character.\n", call. = FALSE)
-    }
+    stop("traits should be a numeric or character vector.\n", call. = FALSE)
+  } 
+  if (!multi && length(traits) > 1) {
+    stop("traits should be a single numeric or character value.\n", 
+         call. = FALSE)
   }
   for (trial in trials) {
     if ((is.character(traits) &&
          !all(hasName(x = gData$pheno[[trial]], traits))) ||
         (is.numeric(traits) &&
          (any(traits == 1) || any(traits > ncol(gData$pheno[[trial]]))))) {
-      stop(paste("For", trial, "not all traits are columns in pheno.\n"),
+      stop("For ", trial, " not all traits are columns in pheno.\n",
            call. = FALSE)
     }
   }
 }
 
-chkCovar <- function(covar,
-                     gData) {
-  if (!is.null(covar) && !is.numeric(covar) && !is.character(covar)) {
-    stop("covar should be a numeric or character vector.\n", call. = FALSE)
-  }
-  if ((is.character(covar) && !all(hasName(x = gData$covar, name = covar))) ||
-      (is.numeric(covar) && any(covar > ncol(gData$covar)))) {
-    stop("covar should be columns in covar in gData.\n", call. = FALSE)
-  }
-}
-
-chkSnpCov <- function(snpCov,
-                      gData) {
-  if (!is.null(snpCov) && !all(snpCov %in% colnames(gData$markers))) {
-    stop("All snpCov should be in markers.\n", call. = FALSE)
-  }
-}
-
-chkKin <- function(kin,
-                   gData,
-                   GLSMethod) {
-  if (GLSMethod == "single" && !is.null(kin) &&
-      !(inherits(kin, "Matrix") || is.matrix(kin))) {
-    stop("kin should be a matrix.\n", call. = FALSE)
-  }
-  if (GLSMethod == "multi" && !is.null(kin) &&
-      (!is.list(kin) || !all(sapply(kin, FUN = function(k) {
-        is.matrix(k) || inherits(k, "Matrix")})) ||
-       length(kin) != length(unique(gData$map$chr)))) {
-    stop(paste("kin should be a list of matrices of length equal to the",
-               "number of chromosomes in the map.\n", call. = FALSE))
-  }
-}
-
+#' @noRd
+#' @keywords internal
 chkNum <- function(x,
                    min = NULL,
                    max = NULL) {
@@ -110,9 +65,71 @@ chkNum <- function(x,
     } else {
       txt <- ""
     }
-    stop(paste0(match.call()$x, " should be a single numerical value",
-                txt, ".\n"), call. = FALSE)
+    stop(match.call()$x, " should be a single numerical value ", txt, ".\n", 
+         call. = FALSE)
   }
 }
+
+#' @noRd
+#' @keywords internal
+chkMarkers <- function(markers,
+                       dim = 2) {
+  if (dim == 2) {
+    if (!is.numeric(markers)) {
+      stop("markers in gData should be a numerical matrix. Use ",
+           "recodeMarkers first for recoding.\n", call. = FALSE)
+    }
+  } else if (dim == 3) {
+    if (!inherits(markers, "array")) {
+      stop("markers should be a three-dimensional array.\n", call. = FALSE)
+    }
+  }
+  if (anyNA(markers)) {
+    stop("markers contains missing values. Impute or remove these first.\n",
+         call. = FALSE)
+  }
+}
+
+#' @noRd
+#' @keywords internal
+chkCovar <- function(covar,
+                     gData) {
+  if (!is.null(covar) && !is.numeric(covar) && !is.character(covar)) {
+    stop("covar should be a numeric or character vector.\n", call. = FALSE)
+  }
+  if ((is.character(covar) && !all(hasName(x = gData$covar, name = covar))) ||
+      (is.numeric(covar) && any(covar > ncol(gData$covar)))) {
+    stop("covar should be columns in covar in gData.\n", call. = FALSE)
+  }
+}
+
+#' @noRd
+#' @keywords internal
+chkSnpCov <- function(snpCov,
+                      gData) {
+  if (!is.null(snpCov) && !all(snpCov %in% colnames(gData$markers))) {
+    stop("All snpCov should be in markers.\n", call. = FALSE)
+  }
+}
+
+#' @noRd
+#' @keywords internal
+chkKin <- function(kin,
+                   gData,
+                   GLSMethod) {
+  if (GLSMethod == "single" && !is.null(kin) &&
+      !(inherits(kin, "Matrix") || is.matrix(kin))) {
+    stop("kin should be a matrix.\n", call. = FALSE)
+  }
+  if (GLSMethod == "multi" && !is.null(kin) &&
+      (!is.list(kin) || !all(sapply(kin, FUN = function(k) {
+        is.matrix(k) || inherits(k, "Matrix")})) ||
+       length(kin) != length(unique(gData$map$chr)))) {
+    stop("kin should be a list of matrices of length equal to the ",
+         "number of chromosomes in the map.\n", call. = FALSE)
+  }
+}
+
+
 
 

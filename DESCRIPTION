@@ -23,6 +23,6 @@ Suggests: covr,
     rmarkdown,
     officer,
     rvg,
-    testthat
+    tinytest
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo
