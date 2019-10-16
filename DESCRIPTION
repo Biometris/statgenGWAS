@@ -7,8 +7,8 @@ Authors@R: c(
     person("Bart-Jan", "van Rossum", email = "bart-jan.vanrossum@wur.nl", 
            role = c("aut", "cre")),
     person("Willem", "Kruijer", email = "willem.kruijer@wur.nl", role = "ctb"))
-Description: Package for fast single trait Genome Wide Association Studies (GWAS) 
-  including functions for visualizing results.
+Description: Fast single trait Genome Wide Association Studies (GWAS) including 
+    functions for visualizing results.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
