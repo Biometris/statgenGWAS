@@ -142,7 +142,7 @@ runSingleTraitGwas <- function(gData,
   if (is.null(trials)) {
     trials <- 1:length(gData$pheno)
   }
-  chkTraits(traits, trials, gData)
+  chkTraits(traits, trials, gData, multi = TRUE)
   chkCovar(covar, gData)
   ## If covar is given as numeric convert to character.
   if (is.numeric(covar)) {
