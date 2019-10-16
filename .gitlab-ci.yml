@@ -89,5 +89,5 @@ coverage:
     ## Add R_LIBS_USER to libpaths.
     - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
   script:
-    - Rscript -e 'covr::package_coverage(line_exclusions = "R/fitTDAsreml.R", function_exclusions = c("extractAsreml", "createReport"))'
+    - Rscript -e 'covr::package_coverage()'
   coverage: '/Coverage:\s*(\d+.\d+\%)/'
