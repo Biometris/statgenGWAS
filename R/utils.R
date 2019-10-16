@@ -116,8 +116,8 @@ chrSpecKin <- function(gData,
   chrs <- unique(gData$map$chr[rownames(gData$map) %in%
                                  colnames(gData$markers)])
   if (length(chrs) == 1) {
-    stop(paste("Chromosome specific kinship calculation not possible since",
-               "map contains only 1 chromosome.\n"))
+    stop("Chromosome specific kinship calculation not possible since ",
+         "map contains only 1 chromosome.\n")
   }
   ## Create list of zero matrices.
   KChr <- setNames(
