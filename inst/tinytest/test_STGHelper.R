@@ -73,19 +73,19 @@ expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
 # All single input values.
 expect_equivalent(statgenGWAS:::emmaREMLLL(logDelta = -1, lambda = 1, etas1 = 2,
                                            n = 0, t = 0, etas2 = 0), 
-                  -2.11208571376462)
+                  matrix(-2.11208571376462))
 
 # Vector for etas1 should still give single result.
 expect_equivalent(statgenGWAS:::emmaREMLLL(logDelta = -1, lambda = 1:10, 
                                            etas1 = 1:10, n = 0, t = 0, 
                                            etas2 = 0), 
-                  -30.4461091155684)
+                  matrix(-30.4461091155684))
 
 # Vector for etas2 should give vector of the same length as result.
 expect_equivalent(statgenGWAS:::emmaREMLLL(logDelta = -1, lambda = 1:10, 
                                            etas1 = 1:10, n = 3, t = 2, 
                                            etas2 = 1:2),
-                  c(-31.9439236241564, -32.2122231996107))
+                  matrix(c(-31.9439236241564, -32.2122231996107)))
 
 ## Test fastGLS
 
