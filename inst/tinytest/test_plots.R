@@ -2,6 +2,21 @@ load(file = "testdata.rda")
 
 ### Test plotting funtions.
 
+## General input tests.
+
+# Run a simple GWAS used for most plotting tests.
+stg <- runSingleTraitGwas(gDataTest)
+
+# These tests are identical for all plotTypes. 
+# Only need to be checked once.
+
+expect_error(plot(stg, trial = TRUE),
+             "trial should be a character or numerical value")
+expect_error(plot(stg, trial = 3), "trial should be in x")
+
+# Plotting is always done for a single trial.
+expect_error(plot(stg, "multiple trials detected"))
+
 ## Test qq plot
 
 # Check on random p-Values.
@@ -12,12 +27,12 @@ expect_error(statgenGWAS:::qqPlot(pValues = 0:2, output = FALSE),
 pVals <- runif(n = 50)
 p <- statgenGWAS:::qqPlot(pValues = pVals, output = FALSE)
 expect_true(inherits(p, "ggplot"))
-p1 <- statgenGWAS:::qqPlot(pValues = pVals, title = "Test title", output = FALSE)
+p1 <- statgenGWAS:::qqPlot(pValues = pVals, title = "Test title", 
+                           output = FALSE)
 expect_equal(p1$labels$title, "Test title")
 
 # Check for result of GWAS.
 
-stg <- runSingleTraitGwas(gDataTest)
 expect_error(plot(stg, plotType = "qq"), "multiple trials detected")
 expect_error(plot(stg, plotType = "qq", trial = "ph1"),
              "multiple traits detected")
@@ -39,10 +54,82 @@ expect_equal(p1$labels$y, "Testlab")
 
 # Check for result of GWAS.
 
-stg <- runSingleTraitGwas(gDataTest, thrType = "fixed", LODThr = 0.5)
-expect_error(plot(stg, plotType = "qtl"), "multiple trials detected")
-p <- plot(stg, plotType = "qtl", trial = "ph1", output = FALSE)
+expect_error(plot(stg, plotType = "qtl", trial = "ph1", output = FALSE),
+             "No significant SNPs found. No plot can be made")
+
+stg1 <- runSingleTraitGwas(gDataTest, thrType = "fixed", LODThr = 0.2)
+expect_error(plot(stg1, plotType = "qtl"), "multiple trials detected")
+p <- plot(stg1, plotType = "qtl", trial = "ph1", output = FALSE)
 expect_true(inherits(p, "ggplot"))
+
+# Check yThr
+expect_error(plot(stg, plotType = "qtl", trial = "ph1", yThr = -1, 
+                  output = FALSE),
+             "yThr should be a single numerical value greater than 0")
+expect_silent(plot(stg, plotType = "qtl", trial = "ph1", yThr = 0.2, 
+                   output = FALSE))
+
+# Check option chr.
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", chr = 3,
+                  output = FALSE),
+             "Select at least one valid chromosome for plotting")
+p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", chr = 1,
+           output = FALSE)
+expect_equal(nrow(p1$data), 7)
+
+# Check option normalize.
+
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  normalize = 1, output = FALSE),
+             "normalize should be a single logical")
+
+#### CHECK WITH EMILIE
+p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+           normalize = TRUE, output = FALSE)
+
+# Check option sortData.
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  sortData = TRUE, output = FALSE),
+            "sortData should be either FALSE or a single character")
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  sortData = "sortCol", output = FALSE),
+             "dat lacks the following columns: sortCol")
+
+### CRASHES!!! > sort has to be a numeric column.
+
+# p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+#            sortData = "test", output = FALSE) 
+
+# Check option binPositions
+binPos <- data.frame(chr = 1)
+binPos1 <- data.frame(chr = 1, pos = 2)
+
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  binPositions = "binPos", output = FALSE),
+             "binPositions should be either NULL or an data.frame")
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  binPositions = binPos, output = FALSE),
+             "binPositions lacks the following columns: pos")
+p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+           binPositions = binPos1, output = FALSE)
+
+# Check pdf output.
+# Create tmpfile.
+tmpPptx <- tempfile(fileext = ".pptx")
+tmpPpt <- tempfile(fileext = ".ppt")
+
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  exportPptx = 1, pptxName = tmpPptx, output = FALSE),
+             "exportPptx should be a single logical")
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  exportPptx = TRUE, pptxName = NULL, output = FALSE),
+             "pptxName should be a single character string")
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  exportPptx = TRUE, pptxName = tmpPpt, output = FALSE),
+             "should have '.pptx' extension.")
+
+expect_silent(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                   exportPptx = TRUE, pptxName = tmpPptx, output = FALSE))
 
 ## Test manhattan plot
 
@@ -59,10 +146,59 @@ expect_equal(p1$labels$y, "laby")
 
 # Check for result of GWAS.
 
-stg <- runSingleTraitGwas(gDataTest)
-expect_error(plot(stg, plotType = "manhattan"), "multiple trials detected")
-expect_error(plot(stg, plotType = "manhattan", trial = "ph1"),
+# Manhattan plots are always made for single traits.
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1"), 
              "multiple traits detected")
+
 p <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1", 
           output = FALSE)
 expect_true(inherits(p, "ggplot"))
+
+# Check option chr.
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+                  chr = 3, output = FALSE),
+             "Select at least one valid chromosome for plotting")
+p1 <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+           chr = 1, output = FALSE)
+expect_equal(nrow(p1$data), 2)
+
+# Check option effects.
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+                  effects = "M5", output = FALSE),
+             "All known effects should be in the map")
+p1 <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+           effects = "M1", output = FALSE)
+# For the colored effect point a new layer should be added in p1.
+expect_equal(length(p$layers), length(p1$layers) - 1)
+
+# Check option lod.
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+                  lod = -1, output = FALSE),
+             "lod should be a single numerical value greater than 0")
+p1 <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+           lod = .5, output = FALSE)
+# Just one SNP left after sampling.
+expect_equal(nrow(p1$data), 1)
+
+# Check yThr
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+                  yThr = -1, output = FALSE),
+             "yThr should be a single numerical value greater than 0")
+
+p1 <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+           yThr = .1, output = FALSE)
+# For the colored points above the new thr a new layer should be added in p1.
+expect_equal(length(p$layers), length(p1$layers) - 1)
+
+# Check combination of yThr and effect to create true neg/false pos.
+p1 <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+           effects = c("M2", "M3"), yThr = .1, output = FALSE)
+# This should add one of each: true positive, false positive and false negative.
+# So three extra layers with colors should be added.
+expect_equal(length(p$layers), length(p1$layers) - 3)
+
+# Check that significant SNPs are picked up directly from GWAS output.
+p1 <- plot(stg1, plotType = "manhattan", trial = "ph1", trait = "X1", 
+           output = FALSE)
+# One new layer should be added for the significant SNP.
+expect_equal(length(p$layers), length(p1$layers) - 1)

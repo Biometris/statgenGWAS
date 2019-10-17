@@ -4,26 +4,12 @@
 \alias{qtlPlot}
 \title{Draw a qtl plot}
 \usage{
-qtlPlot(dat, chromosome = "chr", trait = "trait",
-  snpEffect = "effect", snpPosition = "pos", map, normalize = FALSE,
-  sortData = FALSE, binPositions = NULL, printVertGrid = TRUE,
-  yLab = "Traits", exportPptx = FALSE, pptxName = "",
-  output = TRUE, ...)
+qtlPlot(dat, map, normalize = FALSE, sortData = FALSE,
+  binPositions = NULL, printVertGrid = TRUE, yLab = "Traits",
+  exportPptx = FALSE, pptxName = "", output = TRUE, ...)
 }
 \arguments{
 \item{dat}{A data.frame with QTL data to be plotted}
-
-\item{chromosome}{A character string indicating the data column containing
-the chromosome number.}
-
-\item{trait}{A character string indicating the data column containing the
-trait name.}
-
-\item{snpEffect}{A character string indicating the data column containing
-the SNP effect.}
-
-\item{snpPosition}{A character string indicating the data column containing
-the position of the SNP on the chromosome.}
 
 \item{map}{A data.frame with at least the columns \code{chr}, the number of
 the chromosome and \code{pos}, the position of the SNP on the chromosome.
@@ -51,6 +37,18 @@ plot is exported. Ignored if exportPptx = \code{FALSE}.}
 \code{FALSE} only a list of ggplot objects is invisibly returned.}
 
 \item{...}{Further parameter.}
+
+\item{chromosome}{A character string indicating the data column containing
+the chromosome number.}
+
+\item{trait}{A character string indicating the data column containing the
+trait name.}
+
+\item{snpEffect}{A character string indicating the data column containing
+the SNP effect.}
+
+\item{snpPosition}{A character string indicating the data column containing
+the position of the SNP on the chromosome.}
 }
 \value{
 A ggplot object is returned and plotted on screen. Optionally the

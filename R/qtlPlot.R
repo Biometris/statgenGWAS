@@ -48,10 +48,6 @@
 #'
 #' @keywords internal
 qtlPlot <- function(dat,
-                    chromosome = "chr",
-                    trait = "trait",
-                    snpEffect = "effect",
-                    snpPosition = "pos",
                     map,
                     normalize = FALSE,
                     sortData = FALSE,
@@ -64,62 +60,41 @@ qtlPlot <- function(dat,
                     ...) {
   ## Basic argument checks
   if (is.null(dat) || !is.data.frame(dat)) {
-    stop("dat should be a data.frame")
-  }
-  if (is.null(chromosome) || length(chromosome) > 1 ||
-      !is.character(chromosome)) {
-    stop("chromosome should be a single character")
-  }
-  if (is.null(trait) || length(trait) > 1 || !is.character(trait)) {
-    stop("trait should be a single character")
-  }
-  if (is.null(snpEffect) || length(snpEffect) > 1 || !is.character(snpEffect)) {
-    stop("snpEffect should be a single character")
-  }
-  if (is.null(snpPosition) || length(snpPosition) > 1 ||
-      !is.character(snpPosition)) {
-    stop("snpPosition should be a single character")
+    stop("dat should be a data.frame.\n")
   }
   if (is.null(map) || !is.data.frame(map)) {
-    stop("map should be a data.frame")
+    stop("map should be a data.frame.\n")
   }
   if (is.null(normalize) || length(normalize) > 1 || !is.logical(normalize)) {
-    stop("normalize should be a single logical")
+    stop("normalize should be a single logical.\n")
   }
   if (is.null(sortData) || (is.logical(sortData) && sortData) ||
       (is.character(sortData) && length(sortData) > 1)) {
-    stop("sortData should be either FALSE or a single character")
+    stop("sortData should be either FALSE or a single character.\n")
   }
   if (!is.null(binPositions) && (!is.data.frame(binPositions))) {
-    stop("binPositions should be either NULL or an data.frame")
+    stop("binPositions should be either NULL or an data.frame.\n")
   }
   if (is.null(exportPptx) || length(exportPptx) > 1 ||
       !is.logical(exportPptx)) {
-    stop("exportPptx should be a single logical")
+    stop("exportPptx should be a single logical.\n")
   }
   if (exportPptx && (is.null(pptxName) || length(pptxName) > 1 ||
                      !is.character(pptxName))) {
-    stop("pptxName cannot be empty")
+    stop("pptxName should be a single character string.\n")
   }
   ## Check that all necessary columns are in the data
-  reqCols <- c(chromosome, trait, snpEffect, snpPosition)
+  reqCols <- c("chr", "trait", "effect", "pos")
   if (is.character(sortData)) reqCols <- c(reqCols, sortData)
   reqChk <- hasName(x = dat, name = reqCols)
   if (!all(reqChk)) {
     stop("dat lacks the following columns: ",
          paste0(reqCols[!reqChk], collapse = ", "), ".\n\n")
   }
-  ## Check that all necessary columns are in the map file
-  reqColsMap <- c("chr", "pos")
-  reqChkMap <- hasName(x = map, name = reqColsMap)
-  if (!all(reqChkMap)) {
-    stop("map lacks the following columns: ",
-         paste0(reqColsMap[!reqChkMap], collapse = ", "), ".\n\n")
-  }
   ## Check that all necessary columns are in the bin file
   if (!is.null(binPositions)) {
     reqColsBin <- c("chr", "pos")
-    reqChkBin <- hasName(x = map, name = reqColsBin)
+    reqChkBin <- hasName(x = binPositions, name = reqColsBin)
     if (!all(reqChkBin)) {
       stop("binPositions lacks the following columns: ",
            paste0(reqColsBin[!reqChkBin], collapse = ", "), ".\n\n")
@@ -129,14 +104,20 @@ qtlPlot <- function(dat,
   }
   ## Center and reduce the allelic effect (because of the different units)
   if (normalize) {
-    dat$eff <- sapply(X = 1:nrow(dat), FUN = function(x) {
-      (dat[x, snpEffect] -
-         mean(dat[dat[trait] == as.character(dat[x, trait]), snpEffect],
-              na.rm = TRUE)) /
-        sd(dat[dat[trait] == as.character(dat[x, trait]), snpEffect],
-           na.rm = TRUE)
+    datLst <- lapply(X = unique(dat$trait), FUN = function(x) {
+      dat0 <- dat[dat["trait"] == as.character(x), ]
+      if (nrow(dat0[!is.na(dat0[["effect"]]), ]) <= 1) {
+        dat0$eff <- dat0[["effect"]]
+      } else {
+        dat0[!is.na(dat0[["effect"]]), "eff"] <- 
+        scale(dat0[!is.na(dat0[["effect"]]), "effect"], center = FALSE,
+              scale = apply(dat0[!is.na(dat0[["effect"]]), "effect", 
+                                 drop = FALSE], 2, sd, na.rm = TRUE))
+      }
+      return(dat0)
     })
-  } else dat$eff <- dat[[snpEffect]]
+    dat <- do.call("rbind", datLst)
+  } else dat$eff <- dat[["effect"]]
   if (is.character(sortData)) {
     dat$sort <- dat[[sortData]]
   } else {
@@ -152,15 +133,15 @@ qtlPlot <- function(dat,
   lim <- data.frame(matrix(ncol = ncol(dat), nrow = 2 * nrow(limLow)))
   names(lim) <- names(dat)
   ## Trait and sort have to be filled. Value is not important
-  lim[trait] <- dat[1, trait]
+  lim["trait"] <- dat[1, "trait"]
   lim$sort <- dat[1, "sort"]
   ## Set eff to suppress warnings in printing. Setting it to -Inf ensures
   ## nothing is plotted
   lim$eff <- -Inf
-  lim[, c(chromosome, snpPosition)] <- rbind(limLow, limHigh)
+  lim[, c("chr", "pos")] <- rbind(limLow, limHigh)
   dat <- rbind(dat, lim)
   ## Select and rename relevant columns for plotting
-  plotDat <- dat[, c(trait, chromosome, snpEffect, snpPosition, "sort", "eff")]
+  plotDat <- dat[, c("trait", "chr", "effect", "pos", "sort", "eff")]
   colnames(plotDat)[1:4] <- c("trait", "chromosome", "snpEffect", "snpPosition")
   ## Add a column with the allelic effect direction (for points color)
   plotDat$color <- ifelse(plotDat$eff != -Inf,
@@ -227,8 +208,8 @@ qtlPlot <- function(dat,
       pptOut <- rvg::ph_with_vg_at(x = pptOut, ggobj = p, left = 0.9,
                                    top = 0.9, width = 8, height = 6.4)
       ## Add date to slide
-      pptOut <- officer::ph_with_text(x = pptOut, type = "dt",
-                                      str = format(Sys.Date(),"%B %d, %Y"))
+      pptOut <- officer::ph_with(x = pptOut, value = format(Sys.Date()), 
+                                 location = officer::ph_location_type(type = "dt"))
       ##Write .pptx
       print(pptOut, target = pptxName)
     } else {
@@ -241,3 +222,6 @@ qtlPlot <- function(dat,
   }
   invisible(p)
 }
+
+
+
