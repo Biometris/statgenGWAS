@@ -65,7 +65,7 @@ chkNum <- function(x,
     } else {
       txt <- ""
     }
-    stop(match.call()$x, " should be a single numerical value ", txt, ".\n", 
+    stop(match.call()$x, " should be a single numerical value", txt, ".\n", 
          call. = FALSE)
   }
 }
