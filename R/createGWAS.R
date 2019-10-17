@@ -236,7 +236,8 @@ summary.GWAS <- function(object,
 #' \item{\code{lod}}{A positive numerical value. For the SNPs with a LOD-value
 #' below this value, only 5\% is plotted. The chance of a SNP being plotting is
 #' proportional to its LOD-score. This option can be useful when plotting a
-#' large number of SNPs.}
+#' large number of SNPs. The 5\% of SNPs plotted is selected randomly. For 
+#' reproducible results use set.seed before calling the function.}
 #' \item{\code{chr}}{A vector of chromosomes to be plotted. By default, all
 #' chromosomes are plotted. Using this option allows restricting the plot to a
 #' subset of chromosomes.}
@@ -314,11 +315,11 @@ plot.GWAS <- function(x,
   ## Checks.
   if (!is.null(trial) && !is.character(trial) &&
       !is.numeric(trial)) {
-    stop("Trial should be a character or numerical value.\n")
+    stop("trial should be a character or numerical value.\n")
   }
   if ((is.character(trial) && !trial %in% names(x$GWAResult)) ||
       (is.numeric(trial) && !trial %in% 1:length(x$GWAResult))) {
-    stop("Trial should be in x.\n")
+    stop("trial should be in x.\n")
   }
   ## Convert character input to numeric.
   if (is.character(trial)) {
@@ -327,7 +328,7 @@ plot.GWAS <- function(x,
   ## If NULL then summary of all trial.
   if (is.null(trial)) {
     if (length(x$GWAResult) != 1) {
-      stop("Trial not supplied but multiple trials detected in data.\n")
+      stop("trial not supplied but multiple trials detected in data.\n")
     } else {
       trial <- 1
     }
@@ -380,12 +381,15 @@ plot.GWAS <- function(x,
       ## The weigth of LOD ^ 1.5 empirically derived.
       lod <- dotArgs$lod
       chkNum(lod, min = 0)
-      set.seed(1234)
+      ## Split the map in a part that is always shown, i.e high enough lod
+      ## And the remainder that is to be sampled.
       mapShw <- map[(!is.na(map$LOD) & map$LOD >= dotArgs$lod) |
                       map$snp %in% dotArgs$effect, ]
       mapRem <- map[(!is.na(map$LOD) & map$LOD < dotArgs$lod) &
                       !map$snp %in% dotArgs$effect, ]
-      sampIdx <- sample(seq_len(nrow(mapRem)), floor(nrow(mapRem) / 20),
+      ## Take a sample of the number of rows in the remainder and 
+      ## use as indices for actual sampling.
+      sampIdx <- sample(seq_len(nrow(mapRem)), ceiling(nrow(mapRem) / 20),
                         prob = mapRem$LOD ^ 1.5)
       map <- rbind(mapRem[sampIdx, ], mapShw)
     }
