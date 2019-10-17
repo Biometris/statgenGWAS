@@ -397,6 +397,7 @@ plot.GWAS <- function(x,
     map$cumPos <- map$pos + map$add
     ## Extract row numbers for significant SNPs.
     if (!is.null(dotArgs$yThr)) {
+      chkNum(dotArgs$yThr, min = 0)
       signSnpNr <- which(map$LOD > dotArgs$yThr)
     } else if (!is.null(signSnp)) {
       signSnpNr <- which(map$snp %in%
@@ -425,6 +426,7 @@ plot.GWAS <- function(x,
     qqPlot(pValues = na.omit(GWAResult$pValue), ..., output = output)
   } else if (plotType == "qtl") {
     if (!is.null(dotArgs$yThr)) {
+      chkNum(dotArgs$yThr, min = 0)
       signSnp <- GWAResult[!is.na(GWAResult$LOD) &
                              GWAResult$LOD > dotArgs$yThr, ]
     }
