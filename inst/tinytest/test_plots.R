@@ -4,7 +4,10 @@ load(file = "testdata.rda")
 
 ## Test qq plot
 
-# Check on random p-Values
+# Check on random p-Values.
+
+expect_error(statgenGWAS:::qqPlot(pValues = 0:2, output = FALSE),
+             "pValues should be an numeric vector with values between 0 and 1")
 
 pVals <- runif(n = 50)
 p <- statgenGWAS:::qqPlot(pValues = pVals, output = FALSE)
@@ -18,7 +21,7 @@ stg <- runSingleTraitGwas(gDataTest)
 expect_error(plot(stg, plotType = "qq"), "multiple trials detected")
 expect_error(plot(stg, plotType = "qq", trial = "ph1"),
              "multiple traits detected")
-p <- plot(stg, type = "qq", trial = "ph1", trait = "X1", output = FALSE)
+p <- plot(stg, plotType = "qq", trial = "ph1", trait = "X1", output = FALSE)
 expect_true(inherits(p, "ggplot"))
 
 ## Test qtl plot
@@ -60,5 +63,6 @@ stg <- runSingleTraitGwas(gDataTest)
 expect_error(plot(stg, plotType = "manhattan"), "multiple trials detected")
 expect_error(plot(stg, plotType = "manhattan", trial = "ph1"),
              "multiple traits detected")
-p <- plot(stg, type = "manhattan", trial = "ph1", trait = "X1", output = FALSE)
+p <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1", 
+          output = FALSE)
 expect_true(inherits(p, "ggplot"))

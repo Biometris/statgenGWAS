@@ -25,9 +25,13 @@ qqPlot <- function(pValues,
       any(pValues > 1)) {
     stop("pValues should be an numeric vector with values between 0 and 1")
   }
+  ## Remove missing values.
   pValues <- na.omit(pValues)
+  ## Construct vector of expected values given the number of points.
   expected <- -log10(ppoints(n = length(pValues)))
+  ## Convert p-Values to log scale.
   observed <- -log10(sort(pValues))
+  ## Create a data.frame used as input for ggplot.
   plotDat <- data.frame(expected, observed)
   ## Construct title.
   if (!is.null(dotArgs$title)) {
@@ -39,7 +43,9 @@ qqPlot <- function(pValues,
     geom_point() +
     geom_line() +
     geom_abline(slope = 1, intercept = 0, color = "blue") +
+    ## Center title.
     theme(plot.title = element_text(hjust = 0.5)) +
+    ## Add custom axis labels.
     labs(x = expression(Expected~~-log[10](p)), 
          y = expression(Observed~~-log[10](p))) +
     ggtitle(plotTitle)
