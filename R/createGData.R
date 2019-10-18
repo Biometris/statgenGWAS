@@ -126,13 +126,13 @@ createGData <- function(gData = NULL,
     }
     if (!is.null(gData$map)) {
       ## gData already contained a map object. Overwrite with a warning.
-      warning("existing map will be overwritten.\n", call. = FALSE)
+      warning("Existing map will be overwritten.\n", call. = FALSE)
     }
     ## Extract columns and order.
-    map <- map[order(map$chr, map$pos), c("chr", "pos")]
     if (all(rownames(map) == as.character(1:nrow(map)))) {
       ## If no marker name in input compute them from chromosome and position.
       ## Names are made unique if necessary by adding a suffix _1, _2, etc.
+      map <- map[order(map$chr, map$pos), c("chr", "pos")]
       replicates <- aggregate(chr ~ chr + pos, data = map, FUN = length)$chr
       suffix <- unlist(sapply(X = replicates, FUN = function(n) {
         if (n == 1) {
@@ -145,6 +145,9 @@ createGData <- function(gData = NULL,
       warning(paste("map contains no marker names. Names constructed from",
                     "chromosome and position.\n"),
               call. = FALSE)
+    } else {
+      ## No duplicates. Still order output.
+      map <- map[order(map$chr, map$pos), c("chr", "pos")]
     }
   } else if (!is.null(gData$map)) {
     ## No map input, but available from gData object. Set map to
@@ -158,7 +161,7 @@ createGData <- function(gData = NULL,
     ## Data.frame or list of data.frames allowed.
     if (!is.data.frame(pheno) &&
         !(is.list(pheno) && all(sapply(X = pheno, FUN = is.data.frame)))) {
-      stop("pheno should be a data.frame or a list data.frames.\n")
+      stop("pheno should be a data.frame or a list of data.frames.\n")
     }
     if (is.data.frame(pheno)) {
       ## If not a list already put data.frame/matrix in a list.
@@ -203,11 +206,11 @@ createGData <- function(gData = NULL,
     if (!all(sapply(X = pheno, FUN = function(x) {
       all(sapply(X = x[-1], FUN = is.numeric))
     }))) {
-      stop("all trait columns in pheno should be numerical.\n")
+      stop("All trait columns in pheno should be numerical.\n")
     }
     if (!is.null(gData$pheno)) {
       ## gData already contained a pheno object. Overwrite with a warning.
-      warning("existing pheno will be overwritten.\n", call. = FALSE)
+      warning("Existing pheno will be overwritten.\n", call. = FALSE)
     }
   } else if (!is.null(gData$pheno)) {
     ## No pheno input, but available from gData object. Set pheno to
@@ -291,7 +294,7 @@ createGData <- function(gData = NULL,
       ## Map may still contain markers that are not in markers.
       if (any(!colnames(markers) %in%
               rownames(map)[rownames(map) %in% colnames(markers)])) {
-        warning("not all markers in geno are in map. Extra markers ",
+        warning("Not all markers in geno are in map. Extra markers ",
                 "will be removed.\n", call. = FALSE)
       }
       if (isMat) {
@@ -329,7 +332,7 @@ createGData <- function(gData = NULL,
     }
     if (!is.null(gData$markers)) {
       ## gData already contained a markers object. Overwrite with a warning.
-      warning("existing geno will be overwritten.\n", call. = FALSE)
+      warning("Existing geno will be overwritten.\n", call. = FALSE)
     }
   } else if (!is.null(gData$markers)) {
     ## No marker input, but available from gData object. Set markers to
@@ -360,7 +363,7 @@ createGData <- function(gData = NULL,
     ## of chromosomes in map.
     if (!is.null(map) && is.list(kin) &&
         !is.null(names(kin)) && names(kin) != unique(map$chr)) {
-      stop("names of kin should correspond to names of chromosomes in map.\n")
+      stop("Names of kin should correspond to names of chromosomes in map.\n")
     }
     ## If kin is an unnamed list of matrices add default names.
     if (is.list(kin) && is.null(names(kin))) {
@@ -370,13 +373,13 @@ createGData <- function(gData = NULL,
     ## Row and colnames should be provided.
     if (!is.list(kin)) {
       if (is.null(rownames(kin)) || is.null(colnames(kin))) {
-        stop("row and column names in kin cannot be NULL.\n")
+        stop("Row and column names in kin cannot be NULL.\n")
       }
     } else {
       if (any(sapply(X = kin, FUN = function(k) {
         is.null(rownames(k)) || is.null(colnames(k))
       }))) {
-        stop("row and column names in kin cannot be NULL.\n")
+        stop("Row and column names in kin cannot be NULL.\n")
       }
     }
     ## Genotypes in kin should all be in markers.
@@ -388,7 +391,7 @@ createGData <- function(gData = NULL,
         (!is.null(markers) && !is.list(kin) &&
          (!all(rownames(kin) %in% rownames(markers)) ||
           !all(colnames(kin) %in% rownames(markers))))) {
-      stop("row and column names of kin should be in row names of geno.\n")
+      stop("Row and column names of kin should be in row names of geno.\n")
     }
     ## Order as in geno and convert to matrix.
     ## match is needed since markers may contain more genotypes than kin.
@@ -408,7 +411,7 @@ createGData <- function(gData = NULL,
     }
     if (!is.null(gData$kinship)) {
       ## gData already contained a kinship object. Overwrite with a warning.
-      warning("existing kinship will be overwritten.\n", call. = FALSE)
+      warning("Existing kinship will be overwritten.\n", call. = FALSE)
     }
   } else if (!is.null(gData$kinship)) {
     ## No kin input, but available from gData object. Set kin to
@@ -426,7 +429,7 @@ createGData <- function(gData = NULL,
     ## All columns should be numerical, character of factors.
     if (!all(sapply(X = covar, FUN = function(x) {
       is.numeric(x) || is.character(x) || is.factor(x)}))) {
-      stop("all columns in covar should be numeric, character or ",
+      stop("All columns in covar should be numeric, character or ",
            "factor columns.\n")
     }
     ## Convert character columns to factors.
@@ -435,7 +438,7 @@ createGData <- function(gData = NULL,
              FUN = as.factor)
     if (!is.null(gData$covar)) {
       ## gData already contained a covar object. Overwrite with a warning.
-      warning("existing covar will be overwritten.\n", call. = FALSE)
+      warning("Existing covar will be overwritten.\n", call. = FALSE)
     }
   } else if (!is.null(gData$covar)) {
     ## No covar input, but available from gData object. Set covar to
@@ -454,11 +457,11 @@ createGData <- function(gData = NULL,
   return(gData)
 }
 
-#' Summary function for the class \code{GData}
+#' Summary function for the class \code{gData}
 #'
-#' Gives a summary for an object of S3 class \code{GData}.
+#' Gives a summary for an object of S3 class \code{gData}.
 #'
-#' @param object An object of class \code{GData}
+#' @param object An object of class \code{gData}
 #' @param ... Not used
 #'
 #' @export
@@ -466,7 +469,6 @@ summary.gData <- function(object, ...) {
   map <- object$map
   markers <- object$markers
   pheno <-  object$pheno
-  kinship <- object$kinship
   covar <- object$covar
   if (!is.null(map)) {
     cat("map\n")

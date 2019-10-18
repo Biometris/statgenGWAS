@@ -2,15 +2,15 @@
 % Please edit documentation in R/createGData.R
 \name{summary.gData}
 \alias{summary.gData}
-\title{Summary function for the class \code{GData}}
+\title{Summary function for the class \code{gData}}
 \usage{
 \method{summary}{gData}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{GData}}
+\item{object}{An object of class \code{gData}}
 
 \item{...}{Not used}
 }
 \description{
-Gives a summary for an object of S3 class \code{GData}.
+Gives a summary for an object of S3 class \code{gData}.
 }
