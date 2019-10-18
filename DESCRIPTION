@@ -1,12 +1,24 @@
 Package: statgenGWAS
 Type: Package
 Title: Genome Wide Association Studies 
-Version: 0.0.1
+Version: 0.0.2
 Date: 2019-09-01
 Authors@R: c(
-    person("Bart-Jan", "van Rossum", email = "bart-jan.vanrossum@wur.nl", 
+    person(given = "Bart-Jan", 
+           family = "van Rossum", 
+           email = "bart-jan.vanrossum@wur.nl", 
            role = c("aut", "cre")),
-    person("Willem", "Kruijer", email = "willem.kruijer@wur.nl", role = "ctb"))
+    person(given = "Willem", 
+           family = "Kruijer", 
+           email = "willem.kruijer@wur.nl",
+           comment = c(ORCID = "0000-0000-0000-0000"),
+           role = "aut"),
+    person(given = "Emilie",
+           family = "Millet",
+           email = "emilie.millet@wur.nl",
+           comment = c(ORCID = "0000-0002-2913-4892"),
+           role = c("ctb"))
+           )
 Description: Fast single trait Genome Wide Association Studies (GWAS) including 
     functions for visualizing results.
 License: GPL-3
