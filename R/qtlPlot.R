@@ -10,21 +10,13 @@
 #' and blue when it decreases the value.
 #'
 #' @param dat A data.frame with QTL data to be plotted
-#' @param chromosome A character string indicating the data column containing
-#' the chromosome number.
-#' @param trait A character string indicating the data column containing the
-#' trait name.
-#' @param snpEffect A character string indicating the data column containing
-#' the SNP effect.
-#' @param snpPosition A character string indicating the data column containing
-#' the position of the SNP on the chromosome.
 #' @param map A data.frame with at least the columns \code{chr}, the number of
 #' the chromosome and \code{pos}, the position of the SNP on the chromosome.
 #' These are used for calculating the physical limits of the chromosome.
 #' @param normalize Should the snpEffect be normalized?
 #' @param sortData Should the data be sorted before plotting? Either
-#' \code{FALSE} if no sorting should be done or a character indicating the data
-#' column on which the data should be sorted.
+#' \code{FALSE}, if no sorting should be done, or a character string indicating
+#' the data column to use for sorting. This should be a numerical column.
 #' @param binPositions An optional data.frame containing at leasts two columns,
 #' chr and pos. Vertical lines are plotted at those positions.
 #' @param printVertGrid Should default vertical grid lines be plotted.
@@ -66,18 +58,18 @@ qtlPlot <- function(dat,
     stop("map should be a data.frame.\n")
   }
   if (is.null(normalize) || length(normalize) > 1 || !is.logical(normalize)) {
-    stop("normalize should be a single logical.\n")
+    stop("normalize should be a single logical value.\n")
   }
   if (is.null(sortData) || (is.logical(sortData) && sortData) ||
       (is.character(sortData) && length(sortData) > 1)) {
-    stop("sortData should be either FALSE or a single character.\n")
+    stop("sortData should be either FALSE or a single character string.\n")
   }
   if (!is.null(binPositions) && (!is.data.frame(binPositions))) {
     stop("binPositions should be either NULL or an data.frame.\n")
   }
   if (is.null(exportPptx) || length(exportPptx) > 1 ||
       !is.logical(exportPptx)) {
-    stop("exportPptx should be a single logical.\n")
+    stop("exportPptx should be a single logical value.\n")
   }
   if (exportPptx && (is.null(pptxName) || length(pptxName) > 1 ||
                      !is.character(pptxName))) {
@@ -90,6 +82,10 @@ qtlPlot <- function(dat,
   if (!all(reqChk)) {
     stop("dat lacks the following columns: ",
          paste0(reqCols[!reqChk], collapse = ", "), ".\n\n")
+  }
+  ## Check that sortData is a numerical column.
+  if (is.character(sortData) && !is.numeric(dat[[sortData]])) {
+    stop("sortData should be a numerical column.\n") 
   }
   ## Check that all necessary columns are in the bin file
   if (!is.null(binPositions)) {
@@ -123,7 +119,6 @@ qtlPlot <- function(dat,
   } else {
     dat$sort <- 1
   }
-  eff <- color <- NULL
   ## Add the physical limits of the chromosomes, calculated from the map file
   ## This ensures plotting of all chromosomes
   limLow <- aggregate(x = map$pos, by = list(map$chr), FUN = min)
@@ -140,9 +135,8 @@ qtlPlot <- function(dat,
   lim$eff <- -Inf
   lim[, c("chr", "pos")] <- rbind(limLow, limHigh)
   dat <- rbind(dat, lim)
-  ## Select and rename relevant columns for plotting
+  ## Select relevant columns for plotting
   plotDat <- dat[, c("trait", "chr", "effect", "pos", "sort", "eff")]
-  colnames(plotDat)[1:4] <- c("trait", "chromosome", "snpEffect", "snpPosition")
   ## Add a column with the allelic effect direction (for points color)
   plotDat$color <- ifelse(plotDat$eff != -Inf,
                           ifelse(plotDat$eff > 0, "pos", "neg"), NA)
@@ -175,8 +169,8 @@ qtlPlot <- function(dat,
               ## Y data is sorted in reverse order because of the way ggplot plots.
               ## Point size proportional to allelic effect.
               ## Point color depends on the effect direction.
-              aes(x = snpPosition, y = reorder(trait, -sort), size = abs(eff),
-                  color = factor(color))) +
+              aes_string(x = "pos", y = "reorder(trait, -sort)", 
+                         size = "abs(eff)", color = "factor(color)")) +
     ## use custom made theme
     qtlPlotTheme +
     ylab(yLab) +
@@ -190,7 +184,7 @@ qtlPlot <- function(dat,
     ## Do not resize the x axis (otherwise every chromosome has the same size.
     ## Do not add extra space between two facets.
     ## Place the chromosome labels at the bottom.
-    facet_grid(". ~ chromosome", scales = "free", space = "free",
+    facet_grid(". ~ chr", scales = "free", space = "free",
                switch = "both") +
     ## Ascribe a color to the allelic direction (column 'color').
     scale_color_manual("color", labels = c("neg", "pos"), 

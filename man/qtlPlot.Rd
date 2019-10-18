@@ -18,8 +18,8 @@ These are used for calculating the physical limits of the chromosome.}
 \item{normalize}{Should the snpEffect be normalized?}
 
 \item{sortData}{Should the data be sorted before plotting? Either
-\code{FALSE} if no sorting should be done or a character indicating the data
-column on which the data should be sorted.}
+\code{FALSE}, if no sorting should be done, or a character string indicating
+the data column to use for sorting. This should be a numerical column.}
 
 \item{binPositions}{An optional data.frame containing at leasts two columns,
 chr and pos. Vertical lines are plotted at those positions.}
@@ -37,18 +37,6 @@ plot is exported. Ignored if exportPptx = \code{FALSE}.}
 \code{FALSE} only a list of ggplot objects is invisibly returned.}
 
 \item{...}{Further parameter.}
-
-\item{chromosome}{A character string indicating the data column containing
-the chromosome number.}
-
-\item{trait}{A character string indicating the data column containing the
-trait name.}
-
-\item{snpEffect}{A character string indicating the data column containing
-the SNP effect.}
-
-\item{snpPosition}{A character string indicating the data column containing
-the position of the SNP on the chromosome.}
 }
 \value{
 A ggplot object is returned and plotted on screen. Optionally the
