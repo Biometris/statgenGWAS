@@ -99,8 +99,8 @@ Extra parameter options:
 \code{FALSE}}
 \item{\code{sortData}}{Should the data be sorted before plotting? Either
 \code{FALSE}, if no sorting should be done, or a character string indicating
-the data column to use for sorting. Default =
-\code{FALSE}}
+the data column to use for sorting. This should be a numerical column.
+Default = \code{FALSE}}
 \item{\code{binPositions}}{An optional data.frame containing at leasts two
 columns, chr(omosome) and pos(ition). Vertical lines are plotted at those
 positions. Default = \code{NULL}}

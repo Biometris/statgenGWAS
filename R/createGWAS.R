@@ -262,8 +262,8 @@ summary.GWAS <- function(object,
 #' \code{FALSE}}
 #' \item{\code{sortData}}{Should the data be sorted before plotting? Either
 #' \code{FALSE}, if no sorting should be done, or a character string indicating
-#' the data column to use for sorting. Default =
-#' \code{FALSE}}
+#' the data column to use for sorting. This should be a numerical column.
+#' Default = \code{FALSE}}
 #' \item{\code{binPositions}}{An optional data.frame containing at leasts two
 #' columns, chr(omosome) and pos(ition). Vertical lines are plotted at those
 #' positions. Default = \code{NULL}}
@@ -427,22 +427,25 @@ plot.GWAS <- function(x,
   } else if (plotType == "qtl") {
     if (!is.null(dotArgs$yThr)) {
       chkNum(dotArgs$yThr, min = 0)
-      signSnp <- GWAResult[!is.na(GWAResult$LOD) &
-                             GWAResult$LOD > dotArgs$yThr, ]
+      yThr <- dotArgs$yThr
+    } else {
+      ## Get yThr from GWAS object.
+      yThr <- x$thr[[trial]][[1]]
     }
-    if (is.null(signSnp)) {
+    GWAResult$sign <- !is.na(GWAResult$LOD) & GWAResult$LOD > yThr
+    if (!sum(GWAResult$sign)) {
       stop("No significant SNPs found. No plot can be made.\n")
     }
     map <- GWAResult[!is.na(GWAResult$pos), c("chr", "pos")]
     if (!is.null(dotArgs$chr)) {
-      signSnp <- signSnp[signSnp$chr %in% dotArgs$chr, ]
+      GWAResult <- GWAResult[GWAResult$chr %in% dotArgs$chr, ]
       map <- map[map$chr %in% dotArgs$chr, ]
-      if (nrow(signSnp) == 0) {
+      if (nrow(GWAResult) == 0) {
         stop("Select at least one valid chromosome for plotting.\n")
       }
     }
     do.call(qtlPlot,
-            args = c(list(dat = signSnp, map = map, output = output),
+            args = c(list(dat = GWAResult, map = map, output = output),
                      dotArgs[!(names(dotArgs) %in% c("yThr", "chr"))]
             ))
   } 

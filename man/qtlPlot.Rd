@@ -9,7 +9,7 @@ qtlPlot(dat, map, normalize = FALSE, sortData = FALSE,
   exportPptx = FALSE, pptxName = "", output = TRUE, ...)
 }
 \arguments{
-\item{dat}{A data.frame with QTL data to be plotted}
+\item{dat}{A data.frame with QTL data to be plotted.}
 
 \item{map}{A data.frame with at least the columns \code{chr}, the number of
 the chromosome and \code{pos}, the position of the SNP on the chromosome.

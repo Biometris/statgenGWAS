@@ -9,7 +9,7 @@
 #' direction of the effect: green when the allele increases the trait value,
 #' and blue when it decreases the value.
 #'
-#' @param dat A data.frame with QTL data to be plotted
+#' @param dat A data.frame with QTL data to be plotted.
 #' @param map A data.frame with at least the columns \code{chr}, the number of
 #' the chromosome and \code{pos}, the position of the SNP on the chromosome.
 #' These are used for calculating the physical limits of the chromosome.
@@ -98,7 +98,9 @@ qtlPlot <- function(dat,
   } else {
     binPositions <- data.frame(pos = integer())
   }
-  ## Center and reduce the allelic effect (because of the different units)
+  ## Reduce the allelic effect (because of the different units).
+  ## This should be done on the full data to make sense.
+  ## Therefore restricting to significant SNPs only is done afterwards.
   if (normalize) {
     datLst <- lapply(X = unique(dat$trait), FUN = function(x) {
       dat0 <- dat[dat["trait"] == as.character(x), ]
@@ -114,6 +116,8 @@ qtlPlot <- function(dat,
     })
     dat <- do.call("rbind", datLst)
   } else dat$eff <- dat[["effect"]]
+  ## After normalizing restrict the data to the significant SNPs only.
+  dat <- dat[dat$sign, ]
   if (is.character(sortData)) {
     dat$sort <- dat[[sortData]]
   } else {
@@ -187,7 +191,7 @@ qtlPlot <- function(dat,
     facet_grid(". ~ chr", scales = "free", space = "free",
                switch = "both") +
     ## Ascribe a color to the allelic direction (column 'color').
-    scale_color_manual("color", labels = c("neg", "pos"), 
+    scale_color_manual(labels = c("neg", "pos"), 
                        values = c("darkblue", "green4"))
   if (exportPptx) {
     ## Save figure in .pptx

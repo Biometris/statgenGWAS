@@ -44,7 +44,12 @@ expect_true(inherits(p, "ggplot"))
 # Check on random qtl data.
 
 qtlDat <- data.frame(trait = c("X1", "X2"), effect = c(0.3, -0.2),
-                     chr = c(1, 2), pos = c(2, 3))
+                     chr = c(1, 2), pos = c(2, 3), sign = c(TRUE, FALSE))
+
+expect_error(statgenGWAS:::qtlPlot(dat = 1),
+             "dat should be a data.frame")
+expect_error(statgenGWAS:::qtlPlot(dat = qtlDat, map = 1),
+             "map should be a data.frame")
 
 p <- statgenGWAS:::qtlPlot(dat = qtlDat, map = map, output = FALSE)
 expect_true(inherits(p, "ggplot"))
@@ -82,23 +87,26 @@ expect_equal(nrow(p1$data), 7)
 expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
                   normalize = 1, output = FALSE),
              "normalize should be a single logical")
-
-#### CHECK WITH EMILIE
 p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
            normalize = TRUE, output = FALSE)
 
 # Check option sortData.
 expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
                   sortData = TRUE, output = FALSE),
-            "sortData should be either FALSE or a single character")
+             "sortData should be either FALSE or a single character")
 expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
                   sortData = "sortCol", output = FALSE),
              "dat lacks the following columns: sortCol")
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                  sortData = "trait", output = FALSE),
+             "sortData should be a numerical column")
 
-### CRASHES!!! > sort has to be a numeric column.
-
-# p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
-#            sortData = "test", output = FALSE) 
+# Data contains no numerical column for sorting. 
+# Add one manually.
+stg1a <- stg1
+stg1a$GWAResult$ph1$sortCol <- rep(c(3, 4, 5, 1, 2), each = 3)
+expect_silent(p1 <- plot(stg1a, plotType = "qtl", trial = "ph1", trait = "X1", 
+                         sortData = "sortCol", output = FALSE))
 
 # Check option binPositions
 binPos <- data.frame(chr = 1)
@@ -110,8 +118,8 @@ expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1",
 expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
                   binPositions = binPos, output = FALSE),
              "binPositions lacks the following columns: pos")
-p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
-           binPositions = binPos1, output = FALSE)
+expect_silent(p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
+                         binPositions = binPos1, output = FALSE))
 
 # Check pdf output.
 # Create tmpfile.
