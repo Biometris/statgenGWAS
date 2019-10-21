@@ -362,7 +362,7 @@ createGData <- function(gData = NULL,
     ## If kin is a named list of matrices names of list items should match names
     ## of chromosomes in map.
     if (!is.null(map) && is.list(kin) &&
-        !is.null(names(kin)) && names(kin) != unique(map$chr)) {
+        !is.null(names(kin)) && all(names(kin) != unique(map$chr))) {
       stop("Names of kin should correspond to names of chromosomes in map.\n")
     }
     ## If kin is an unnamed list of matrices add default names.
