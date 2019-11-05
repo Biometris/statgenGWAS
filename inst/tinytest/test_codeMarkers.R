@@ -74,24 +74,27 @@ expect_equivalent(codeMarkers(gData = gData, removeDuplicates = FALSE,
 # Beagle imputation cannot be checked on CRAN since it needs 
 # java to be installed. 
 
-# map has to be present for beagle.
-gData3 <- createGData(geno = markers)
-expect_error(codeMarkers(gData = gData3, impute = TRUE, imputeType = "beagle"),
-             "When using beagle imputation gData should contain a map")
-
-# map can only contain integer positions for beagle.
-map2 <- data.frame(chr = c(1, 1, 2, 2), pos = c(1, 1.1, 2, 2))
-gData4 <- suppressWarnings(createGData(gData = gData, map = map2))
-expect_error(codeMarkers(gData = gData4, impute = TRUE, imputeType = "beagle"),
-             "gData should contain a map with only integer positions")
-
-# map needs at least two positions per chromosome for beagle.
-map3 <- data.frame(chr = c(1, 1, 1, 2), pos = 1:4)
-gData5 <- suppressWarnings(createGData(gData = gData, map = map3))
-expect_error(codeMarkers(gData = gData5, impute = TRUE, imputeType = "beagle"),
-             "at least two different positions for each chromosome")
-
 if (at_home()) {
+  # map has to be present for beagle.
+  gData3 <- createGData(geno = markers)
+  expect_error(codeMarkers(gData = gData3, impute = TRUE, 
+                           imputeType = "beagle"),
+               "When using beagle imputation gData should contain a map")
+  
+  # map can only contain integer positions for beagle.
+  map2 <- data.frame(chr = c(1, 1, 2, 2), pos = c(1, 1.1, 2, 2))
+  gData4 <- suppressWarnings(createGData(gData = gData, map = map2))
+  expect_error(codeMarkers(gData = gData4, impute = TRUE, 
+                           imputeType = "beagle"),
+               "gData should contain a map with only integer positions")
+  
+  # map needs at least two positions per chromosome for beagle.
+  map3 <- data.frame(chr = c(1, 1, 1, 2), pos = 1:4)
+  gData5 <- suppressWarnings(createGData(gData = gData, map = map3))
+  expect_error(codeMarkers(gData = gData5, impute = TRUE, 
+                           imputeType = "beagle"),
+               "at least two different positions for each chromosome")
+  
   expect_equivalent(codeMarkers(gData = gData, impute = TRUE, 
                                 removeDuplicates = FALSE, 
                                 imputeType = "beagle")$markers, 
