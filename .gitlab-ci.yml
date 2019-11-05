@@ -44,7 +44,7 @@ R-release:
 
 R-devel:
   stage: build
-  image:  docker-registry.wur.nl/rossu027/r-devel:latest
+  image:  docker-registry.wur.nl/rossu027/r-develasreml:latest
   allow_failure: true
   script:
     - Rscriptdevel -e 'sessionInfo()'
