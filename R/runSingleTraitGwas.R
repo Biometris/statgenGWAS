@@ -184,7 +184,7 @@ runSingleTraitGwas <- function(gData,
   ## Define data.frames for total results.
   GWATot <- signSnpTot <- varCompTot <- LODThrTot <- inflationFactorTot <-
     setNames(vector(mode = "list", length = length(trials)),
-             names(gData$pheno)[trials])
+             names(gData$pheno[trials]))
   for (trial in trials) {
     ## Get traits for current trial.
     if (is.numeric(traits)) {
@@ -291,6 +291,10 @@ runSingleTraitGwas <- function(gData,
                                  allFreq = allFreqChr)
           ## Remove excluded snps from segreg markers for current chromosome.
           segMarkersChr <- setdiff(segMarkersChr, exclude)
+          ## If there are no segregating markers for current chromosome 
+          ## continue with next chromosome.
+          ## This is highly unlike for real data.
+          if (!length(segMarkersChr)) break
           X <- markersRedChr[nonMissRepId, segMarkersChr, drop = FALSE]
           Z <- if (length(covTr) > 0) {
             ## Define covariate matrix Z.
