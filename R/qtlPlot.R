@@ -103,7 +103,7 @@ qtlPlot <- function(dat,
   ## Therefore restricting to significant SNPs only is done afterwards.
   if (normalize) {
     datLst <- lapply(X = unique(dat$trait), FUN = function(x) {
-      dat0 <- dat[dat["trait"] == as.character(x), ]
+      dat0 <- dat[dat[["trait"]] == as.character(x), ]
       if (nrow(dat0[!is.na(dat0[["effect"]]), ]) <= 1) {
         dat0$eff <- dat0[["effect"]]
       } else {
@@ -133,7 +133,7 @@ qtlPlot <- function(dat,
   names(lim) <- names(dat)
   ## Trait and sort have to be filled. Value is not important
   lim["trait"] <- dat[1, "trait"]
-  lim$sort <- dat[1, "sort"]
+  lim["sort"] <- dat[1, "sort"]
   ## Set eff to suppress warnings in printing. Setting it to -Inf ensures
   ## nothing is plotted
   lim$eff <- -Inf

@@ -62,7 +62,11 @@ fastGLS <- function(y,
     stop(paste("The number of elements in y should be identical to the",
                "number of rows in covs.\n"))
   }
-  ## If necessary convert input to matrix
+  ## Convert output to data.table.
   resCpp <- fastGLSCPP(X, y, Sigma, covs, nCores = nCores)
+  rownames(resCpp) <- colnames(X)
+  colnames(resCpp) <- c("pValue", "effect", "effectSe", "RLR2")
+  resCpp <- as.data.table(resCpp, keep.rownames = TRUE)
+  setkeyv(resCpp, cols = "rn")
   return(resCpp)
 }

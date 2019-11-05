@@ -325,7 +325,7 @@ plot.GWAS <- function(x,
   if (is.character(trial)) {
     trial <- which(names(x$GWAResult) == trial)
   }
-  ## If NULL then summary of all trial.
+  ## If NULL then plot of all trials.
   if (is.null(trial)) {
     if (length(x$GWAResult) != 1) {
       stop("trial not supplied but multiple trials detected in data.\n")
@@ -338,18 +338,17 @@ plot.GWAS <- function(x,
   if (plotType != "qtl") {
     if (is.null(trait)) {
       trait <- unique(GWAResult$trait)
-      if (length(trait) > 1) {
-        if (substr(as.character(x$GWASInfo$call)[1], 1, 9) == "runSingle") {
-          stop("Trait not supplied but multiple traits detected in data.\n")
-        } else {
-          ## For multi trait GWAS p-values are the same for all traits.
-          trait <- trait[1]
-        }
-      }
-    } else {
-      GWAResult <- GWAResult[GWAResult$trait == trait, ]
-      signSnp <- signSnp[signSnp$trait == trait, ]
     }
+    if (length(trait) > 1) {
+      if (substr(as.character(x$GWASInfo$call)[1], 1, 9) == "runSingle") {
+        stop("Trait not supplied but multiple traits detected in data.\n")
+      } else {
+        ## For multi trait GWAS p-values are the same for all traits.
+        trait <- trait[1]
+      }
+    }
+    GWAResult <- GWAResult[trait == as.name(trait), ]
+    signSnp <- signSnp[trait == as.name(trait), ]
   }
   if (plotType == "manhattan") {
     ## Compute chromosome boundaries.
@@ -414,8 +413,7 @@ plot.GWAS <- function(x,
     ## Create manhattan plot.
     do.call(manhattanPlot,
             args = c(list(xValues = map$cumPos, yValues = map$LOD,
-                          map = map[, -which(colnames(map) == "LOD")],
-                          xSig = signSnpNr, xEffects = xEffects,
+                          map = map, xSig = signSnpNr, xEffects = xEffects,
                           chrBoundaries = chrBnd[, 2], yThr = yThr,
                           output = output),
                      dotArgs[!(names(dotArgs) %in% c("yThr", "lod", "chr",

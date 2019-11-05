@@ -103,12 +103,10 @@ codeMarkers <- function(gData,
                         fixedValue = NULL,
                         naStrings = NA,
                         verbose = FALSE) {
-  ## Set seed to assure results are always identical.
-  set.seed(1234)
   ## Checks.
   chkGData(gData, comps = "markers")
   if (length(refAll) > 1 && !length(refAll) == ncol(gData$markers)) {
-    stop("number of reference alleles should either be 1 or equal to",
+    stop("Number of reference alleles should either be 1 or equal to",
          "the amount of SNPs in markers.\n")
   }
   chkNum(nMissGeno, min = 0, max = 1)
@@ -118,12 +116,15 @@ codeMarkers <- function(gData,
   }
   if (!is.null(keep) && (!is.character(keep) ||
                          !all(keep %in% colnames(gData$markers)))) {
-    stop("all items in keep should be SNPs in markers.\n")
+    stop("All items in keep should be SNPs in markers.\n")
   }
   if (impute) {
     imputeType <- match.arg(imputeType)
-    if (imputeType == "fixed" && is.null(fixedValue)) {
-      stop("fixedValue cannot be NULL.\n")
+    if (imputeType == "fixed") {
+      if (is.null(fixedValue)) {
+        stop("When using imputeType = fixed, fixedValue cannot be NULL.\n")
+      }
+      chkNum(fixedValue, min = 0, max = 2)
     }
     if (imputeType == "beagle" && !nzchar(Sys.which("java"))) {
       stop("When using beagle imputation an installation of java is ", 
@@ -233,8 +234,8 @@ codeMarkers <- function(gData,
     snpMAF <- snpMAFs >= maxAll * MAF & snpMAFs <= maxAll * (1 - MAF)
     markersRecoded <- markersRecoded[, snpMAF | snpKeep, drop = FALSE]
     if (verbose) {
-      cat(sum(!(snpMAF | snpKeep)), " markers removed because MAF smaller than",
-          MAF, ".\n", sep = "")
+      cat(sum(!(snpMAF | snpKeep)), " markers removed because MAF smaller ",
+          "than ", MAF, ".\n", sep = "")
     }
     snpKeep <- snpKeep[snpMAF | snpKeep]
   }
@@ -272,101 +273,25 @@ codeMarkers <- function(gData,
       snpNA <- apply(X = markersRecoded, MARGIN = 2, FUN = anyNA)
       hom <- maxAll == 2 && any(markersRecoded == 1, na.rm = TRUE)
       markersRecoded[, snpNA] <-
-        apply(X = markersRecoded[, snpNA], MARGIN = 2, FUN = function(x) {
-          p <- mean(x, na.rm = TRUE) / maxAll
-          if (hom) {
-            ## At least one heterozygous marker. Imputation may add more.
-            x[is.na(x)] <- sample(x = 0:maxAll, size = sum(is.na(x)),
-                                  replace = TRUE,
-                                  prob = choose(maxAll, 0:maxAll) *
-                                    (1 - p) ^ (maxAll:0) * p ^ (0:maxAll))
-          } else {
-            ## only homozygous markers.
-            x[is.na(x)] <- sample(x = c(0, 2), size = sum(is.na(x)),
-                                  replace = TRUE, prob = c(1 - p, p))
-          }
-          return(x)
-        })
+        apply(X = markersRecoded[, snpNA, drop = FALSE], MARGIN = 2, 
+              FUN = function(x) {
+                p <- mean(x, na.rm = TRUE) / maxAll
+                if (hom) {
+                  ## At least one heterozygous marker. Imputation may add more.
+                  x[is.na(x)] <- sample(x = 0:maxAll, size = sum(is.na(x)),
+                                        replace = TRUE,
+                                        prob = choose(maxAll, 0:maxAll) *
+                                          (1 - p) ^ (maxAll:0) * p ^ (0:maxAll))
+                } else {
+                  ## only homozygous markers.
+                  x[is.na(x)] <- sample(x = c(0, 2), size = sum(is.na(x)),
+                                        replace = TRUE, prob = c(1 - p, p))
+                }
+                return(x)
+              })
     } else if (imputeType == "beagle") {
-      ## Imputation of missing values using beagle software.
-      ## Create temporary files for writing beagle input and output.
-      outdir <- tempdir()
-      tmpMap <- tempfile(tmpdir = outdir, fileext = ".map")
-      tmpVcf <- tempfile(tmpdir = outdir, fileext = "input.vcf")
-      tmpVcfOut <- tempfile(tmpdir = outdir, fileext = "out")
-      ## Convert map to format suitable for beagle input.
-      map <- gData$map[colnames(markersRecoded), ]
-      mapBeagle <- data.frame(map$chr, rownames(map), map$pos, map$pos)
-      mapBeagle <- mapBeagle[order(mapBeagle$map.chr, mapBeagle$map.pos), ]
-      ## Beagle doesn't accept duplicate map entries. To get around this
-      ## duplicate entries are made distinct by adding 1 to the position.
-      while (anyDuplicated(mapBeagle[, c(1, 4)])) {
-        mapBeagle[duplicated(mapBeagle[, c(1, 4)]), 4] <-
-          mapBeagle[duplicated(mapBeagle[, c(1, 4)]), 4] + 1
-      }
-      ## Convert chromosome column to a format suitable for beagle:
-      ## Always 'chr' + chr number.
-      if (!is.integer(mapBeagle[, 1])) {
-        mapBeagle[, 1] <- as.integer(as.factor(mapBeagle[, 1]))
-      }
-      mapBeagle[, 1] <- paste0("chr", mapBeagle[, 1])
-      ## Convert position columns to character format to avoid coversion
-      ## to scientific format when writing to file.
-      ## Beagle cannot handle scientific input format.
-      mapBeagle[, 3] <- format(mapBeagle[, 3], trim = TRUE, scientific = FALSE)
-      mapBeagle[, 4] <- format(mapBeagle[, 4], trim = TRUE, scientific = FALSE)
-      ## Write map to .map file
-      write.table(mapBeagle, file = tmpMap, col.names = FALSE, 
-                  row.names = FALSE, quote = FALSE, na = ".", sep = "\t")
-      ## Convert markers to format suitable for beagle input.
-      all00 <- "0/0"
-      all01 <- "0/1"
-      all11 <- "1/1"
-      all10 <- "1/0"
-      markersBeagle <- as.data.frame(t(markersRecoded),
-                                     stringsAsFactors = FALSE)
-      markersBeagle[markersBeagle == 0] <- all00
-      markersBeagle[markersBeagle == 1] <- all01
-      markersBeagle[markersBeagle == 2] <- all11
-      markersBeagle[markersBeagle == -1] <- all10
-      ## Write markers to vcf file.
-      vcfBeagle <- cbind(data.frame(CHROM = mapBeagle[, 1], 
-                                    POS = mapBeagle[, 4], ID = rownames(map), 
-                                    REF = "A", ALT = "G", QUAL = ".", 
-                                    FILTER = "PASS", INFO = ".", FORMAT = "GT",
-                                    stringsAsFactors = FALSE),
-                         markersBeagle)
-      cat(file = tmpVcf,
-          "##fileformat=VCFv4.1",
-          "\n##filedate=", Sys.Date(),
-          "\n##source=\"codeMarkers of statgenGWAS\"",
-          "\n##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-          "\n#")
-      cat(file = tmpVcf, paste(colnames(vcfBeagle), collapse = "\t"), "\n",
-          append = TRUE)
-      write.table(vcfBeagle, file = tmpVcf, quote = FALSE, col.names = FALSE,
-                  row.names = FALSE, append = TRUE, sep = "\t",
-                  na = paste(".", ".", sep = "/"))
-      ## Run beagle with default settings.
-      system(paste0("java -Xmx3000m -jar ",
-                    shQuote(paste0(sort(path.package()[grep("statgenGWAS",
-                                                            path.package())])[1],
-                                   "/java/beagle.jar")), " gtgl=", tmpVcf, 
-                    " out=", tmpVcfOut, " gprobs=true seed=1234 nthreads=", 1,
-                    " map=", tmpMap), intern = TRUE)
-      ## Read beagle output.
-      beagleOut <- read.table(gzfile(paste0(tmpVcfOut, ".vcf.gz")),
-                              stringsAsFactors = FALSE)
-      ## Convert beagle output to format suitable for gData.
-      markersRecoded <- t(beagleOut[, 10:ncol(beagleOut)])
-      markersRecoded[substr(markersRecoded, 1, 3) == all00] <- 0
-      markersRecoded[substr(markersRecoded, 1, 3) == all01] <- 1
-      markersRecoded[substr(markersRecoded, 1, 3) == all11] <- 2
-      markersRecoded[substr(markersRecoded, 1, 3) == all10] <- NA
-      markersRecoded <- apply(X = markersRecoded, MARGIN = 2, FUN = as.numeric)
-      markersRecoded[markersRecoded == -1] <- 0
-      rownames(markersRecoded) <- colnames(markersBeagle)
-      colnames(markersRecoded) <- beagleOut[, 3]
+      markersRecoded <- imputeBeagle(markersRecoded = markersRecoded, 
+                                     map = gData$map)
     }
     if (refAll[1] == "minor") {
       ## Correct for position of minor allele after imputation.
@@ -423,13 +348,13 @@ codeMarkers <- function(gData,
       trial[trial$genotype %in% rownames(markersRecoded), ]
     })
   }
-  if (!is.null(gData$map)) {
+  if (!is.null(gData$kinship)) {
     if (!is.list(gData$kinship)) {
-      gData$kinhsip <-
-        gData$kinhsip[rownames(gData$kinship) %in% rownames(markersRecoded),
+      gData$kinship <-
+        gData$kinship[rownames(gData$kinship) %in% rownames(markersRecoded),
                       colnames(gData$kinship) %in% rownames(markersRecoded)]
     } else {
-      gData$kinhsip <- lapply(X = gData$kinship, FUN = function(k) {
+      gData$kinship <- lapply(X = gData$kinship, FUN = function(k) {
         k[rownames(k) %in% rownames(markersRecoded),
           colnames(k) %in% rownames(markersRecoded)]
       })
@@ -449,3 +374,92 @@ codeMarkers <- function(gData,
     createGData(gData = gData, geno = markersRecoded, map = mapNew,
                 covar = covarNew)))
 }
+
+#' Helper function for imputation using beagle.
+#' 
+#' @keywords internal
+imputeBeagle <- function(markersRecoded,
+                         map) {
+  ## Imputation of missing values using beagle software.
+  ## Create temporary files for writing beagle input and output.
+  outdir <- tempdir()
+  tmpMap <- tempfile(tmpdir = outdir, fileext = ".map")
+  tmpVcf <- tempfile(tmpdir = outdir, fileext = "input.vcf")
+  tmpVcfOut <- tempfile(tmpdir = outdir, fileext = "out")
+  ## Convert map to format suitable for beagle input.
+  map <- map[colnames(markersRecoded), ]
+  mapBeagle <- data.frame(map$chr, rownames(map), map$pos, map$pos)
+  mapBeagle <- mapBeagle[order(mapBeagle$map.chr, mapBeagle$map.pos), ]
+  ## Beagle doesn't accept duplicate map entries. To get around this
+  ## duplicate entries are made distinct by adding 1 to the position.
+  while (anyDuplicated(mapBeagle[, c(1, 4)])) {
+    mapBeagle[duplicated(mapBeagle[, c(1, 4)]), 4] <-
+      mapBeagle[duplicated(mapBeagle[, c(1, 4)]), 4] + 1
+  }
+  ## Convert chromosome column to a format suitable for beagle:
+  ## Always 'chr' + chr number.
+  if (!is.integer(mapBeagle[, 1])) {
+    mapBeagle[, 1] <- as.integer(as.factor(mapBeagle[, 1]))
+  }
+  mapBeagle[, 1] <- paste0("chr", mapBeagle[, 1])
+  ## Convert position columns to character format to avoid coversion
+  ## to scientific format when writing to file.
+  ## Beagle cannot handle scientific input format.
+  mapBeagle[, 3] <- format(mapBeagle[, 3], trim = TRUE, scientific = FALSE)
+  mapBeagle[, 4] <- format(mapBeagle[, 4], trim = TRUE, scientific = FALSE)
+  ## Write map to .map file
+  write.table(mapBeagle, file = tmpMap, col.names = FALSE, 
+              row.names = FALSE, quote = FALSE, na = ".", sep = "\t")
+  ## Convert markers to format suitable for beagle input.
+  all00 <- "0/0"
+  all01 <- "0/1"
+  all11 <- "1/1"
+  all10 <- "1/0"
+  markersBeagle <- as.data.frame(t(markersRecoded),
+                                 stringsAsFactors = FALSE)
+  markersBeagle[markersBeagle == 0] <- all00
+  markersBeagle[markersBeagle == 1] <- all01
+  markersBeagle[markersBeagle == 2] <- all11
+  markersBeagle[markersBeagle == -1] <- all10
+  ## Write markers to vcf file.
+  vcfBeagle <- cbind(data.frame(CHROM = mapBeagle[, 1], 
+                                POS = mapBeagle[, 4], ID = rownames(map), 
+                                REF = "A", ALT = "G", QUAL = ".", 
+                                FILTER = "PASS", INFO = ".", FORMAT = "GT",
+                                stringsAsFactors = FALSE),
+                     markersBeagle)
+  cat(file = tmpVcf,
+      "##fileformat=VCFv4.1",
+      "\n##filedate=", Sys.Date(),
+      "\n##source=\"codeMarkers of statgenGWAS\"",
+      "\n##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
+      "\n#")
+  cat(file = tmpVcf, paste(colnames(vcfBeagle), collapse = "\t"), "\n",
+      append = TRUE)
+  write.table(vcfBeagle, file = tmpVcf, quote = FALSE, col.names = FALSE,
+              row.names = FALSE, append = TRUE, sep = "\t",
+              na = paste(".", ".", sep = "/"))
+  ## Run beagle with default settings.
+  system(paste0("java -Xmx3000m -jar ",
+                shQuote(paste0(sort(path.package()[grep("statgenGWAS",
+                                                        path.package())])[1],
+                               "/java/beagle.jar")), " gtgl=", tmpVcf, 
+                " out=", tmpVcfOut, " gprobs=true seed=1234 nthreads=", 1,
+                " map=", tmpMap), intern = TRUE)
+  ## Read beagle output.
+  beagleOut <- read.table(gzfile(paste0(tmpVcfOut, ".vcf.gz")),
+                          stringsAsFactors = FALSE)
+  ## Convert beagle output to format suitable for gData.
+  markersRecoded <- t(beagleOut[, 10:ncol(beagleOut)])
+  markersRecoded[substr(markersRecoded, 1, 3) == all00] <- 0
+  markersRecoded[substr(markersRecoded, 1, 3) == all01] <- 1
+  markersRecoded[substr(markersRecoded, 1, 3) == all11] <- 2
+  markersRecoded[substr(markersRecoded, 1, 3) == all10] <- NA
+  markersRecoded <- apply(X = markersRecoded, MARGIN = 2, FUN = as.numeric)
+  markersRecoded[markersRecoded == -1] <- 0
+  rownames(markersRecoded) <- colnames(markersBeagle)
+  colnames(markersRecoded) <- beagleOut[, 3]
+  return(markersRecoded)
+}
+
+

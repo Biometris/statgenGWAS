@@ -10,7 +10,6 @@ estVarComp <- function(GLSMethod,
                        covar,
                        K,
                        chrs,
-                       KChr,
                        nonMiss,
                        nonMissRepId) {
   ## Estimate variance components.
@@ -33,6 +32,7 @@ estVarComp <- function(GLSMethod,
                                              row.names = pheno$genotype)
                              })
     if (GLSMethod == "single") {
+      K <- K[nonMiss, nonMiss]
       remlObj <- EMMA(gData = gDataEmma, trait = trait, trial = 1,
                       covar = covar, K = K)
       ## Extract varComp and vcovMatrix
@@ -41,10 +41,10 @@ estVarComp <- function(GLSMethod,
     } else if (GLSMethod == "multi") {
       for (chr in chrs) {
         ## Get chromosome specific kinship.
-        K <- KChr[[which(chrs == chr)]][nonMiss, nonMiss]
+        KChr <- K[[which(chrs == chr)]][nonMiss, nonMiss]
         ## Compute variance components using chromosome specific kinship.
         remlObj <- EMMA(gData = gDataEmma, trait = trait, trial = 1, 
-                        covar = covar, K = K)
+                        covar = covar, K = KChr)
         ## Compute varcov matrix using var components.
         varComp[[which(chrs == chr)]] <- remlObj$varComp
         vcovMatrix[[which(chrs == chr)]] <- remlObj$vcovMatrix
@@ -61,6 +61,7 @@ estVarComp <- function(GLSMethod,
       fixed <- as.formula(paste(trait, " ~ 1"))
     }
     if (GLSMethod == "single") {
+      K <- K[nonMiss, nonMiss]
       ## Fit model.
       modFit <- sommer::mmer(fixed = fixed, data = pheno,
                              random = ~ sommer::vs(genotype, Gu = K),
@@ -79,14 +80,14 @@ estVarComp <- function(GLSMethod,
     } else if (GLSMethod == "multi") {
       for (chr in chrs) {
         ## Get chromosome specific kinship.
-        K <- KChr[[which(chrs == chr)]][nonMiss, nonMiss]
+        KChr <- K[[which(chrs == chr)]][nonMiss, nonMiss]
         ## Fit mmer model using chromosome specific kinship.
         modFit <- sommer::mmer(fixed = fixed, data = pheno,
-                               random = ~ sommer::vs(genotype, Gu = K),
+                               random = ~ sommer::vs(genotype, Gu = KChr),
                                verbose = FALSE, date.warning = FALSE)
         ## Compute varcov matrix using var components from model.
         vcMod <- modFit$sigma
-        modK <- K[nonMissRepId, nonMissRepId]
+        modK <- KChr[nonMissRepId, nonMissRepId]
         varComp[[which(chrs == chr)]] <- setNames(
           unlist(vcMod)[c(1, length(unlist(vcMod)))], c("Vg", "Ve"))
         vcovMatrix[[which(chrs == chr)]] <- unlist(vcMod)[1] * modK +
