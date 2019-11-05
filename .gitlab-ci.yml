@@ -14,7 +14,7 @@ before_script:
   - mkdir -p "${APT_STATE_LISTS}/partial" && mkdir -p "${APT_CACHE_ARCHIVES}/partial"
   ## Install apt dependencies for packages.
   - apt-get update -qq
-  - apt-get install -y wget locales > /dev/null
+  - apt-get install -y locales > /dev/null
   ## Create directory for caching R packages.
   - mkdir -p $R_LIBS_USER
   ## Add R_LIBS_USER to libpaths.
@@ -44,7 +44,7 @@ R-release:
 
 R-devel:
   stage: build
-  image: rocker/r-devel
+  image:  docker-registry.wur.nl/rossu027/r-devel:latest
   allow_failure: true
   script:
     - Rscriptdevel -e 'sessionInfo()'
