@@ -92,29 +92,28 @@ expect_equivalent(statgenGWAS:::emmaREMLLL(logDelta = -1, lambda = 1:10,
 # Check output format.
 
 GLS0 <- statgenGWAS:::fastGLS(y = y, X = X, Sigma = Sigma)
-expect_true(inherits(GLS0, "matrix"))
-expect_equal(dim(GLS0), c(3, 4))
-expect_null(rownames(GLS0))
-expect_null(colnames(GLS0))
+expect_true(inherits(GLS0, "data.table"))
+expect_equal(dim(GLS0), c(3, 5))
+expect_equal(colnames(GLS0), c("rn", "pValue", "effect", "effectSe", "RLR2"))
 
 # Check without covariates.
 
-expect_equal(GLS0, 
-             matrix(c(0.0271120646525595, 0.556661238666598, 0.203405705505351, 
-                      -2.90711358246727, -1.01229725829335, -1.73072077802875, 
-                      0.310442837982955, 0.352135174778732, 0.290108955585292,
-                      0.999844554418642, 0.562383932125061, 0.971533598465952),
-                    nrow = 3))
+expect_equivalent(
+  as.matrix(GLS0[, 2:5]), 
+  matrix(c(0.0271120646525595, 0.556661238666598, 0.203405705505351, 
+           -2.90711358246727, -1.01229725829335, -1.73072077802875, 
+           0.310442837982955, 0.352135174778732, 0.290108955585292,
+           0.999844554418642, 0.562383932125061, 0.971533598465952), nrow = 3))
 
 # Check with covariates.
 
 GLS1 <- statgenGWAS:::fastGLS(y = y, X = X, Sigma = Sigma, covs = covs)
-expect_equal(GLS1, 
-             matrix(c(0.158456432903659, 0.592448089085206, 0.861012555940774, 
-                      -4.0813171867358, -1.23573112888003, 0.547427202536095, 
-                      0.67415615801093, 0.498746367260275, 0.667641616295594, 
-                      0.974397061281524, 0.458757080015615, 0.0650202741814823),
-                    nrow = 3))
+expect_equivalent(
+  as.matrix(GLS1[, 2:5]), 
+  matrix(c(0.158456432903659, 0.592448089085206, 0.861012555940774, 
+           -4.0813171867358, -1.23573112888003, 0.547427202536095, 
+           0.67415615801093, 0.498746367260275, 0.667641616295594, 
+           0.974397061281524, 0.458757080015615, 0.0650202741814823), nrow = 3))
 
 # Check that fastGLS is independent of dimensions.
 
