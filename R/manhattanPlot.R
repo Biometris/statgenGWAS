@@ -47,25 +47,26 @@ manhattanPlot <- function(xValues,
                           output = TRUE) {
   ## Basic argument checks
   if (is.null(xValues) || !is.numeric(xValues)) {
-    stop("xValues should be an integer vector")
+    stop("xValues should be a numerical vector.\n")
   }
   if (is.null(yValues) || !is.numeric(yValues)) {
-    stop("yValues should be a numerical vector")
+    stop("yValues should be a numerical vector.\n")
   }
-  if (is.null(xSig) || !is.numeric(xSig)) {
-    stop("xSig should be an integer vector")
+  ## Check correspondence xValues and yValues
+  if (length(xValues) != length(yValues)) {
+    stop("xValues and yValues should be of the same length.\n")
   }
-  if (is.null(xEffects) || !is.numeric(xEffects)) {
-    stop("xEffects should be an integer vector")
+  if (is.null(xSig) || !is.numeric(xSig) || !all(xSig == round(xSig))) {
+    stop("xSig should be an integer vector.\n")
+  }
+  if (is.null(xEffects) || !is.numeric(xEffects) || 
+      !all(xEffects == round(xEffects))) {
+    stop("xEffects should be an integer vector.\n")
   }
   if (!is.null(yThr)) {
     chkNum(yThr, min = 0)
   }
   chkNum(signLwd, min = 0)
-  ## Check correspondence xValues and yValues
-  if (length(xValues) != length(yValues)) {
-    stop("xValues and yValues should be of the same length")
-  }
   ## Extract central chromosome postions from map.
   ## Differentiate cases to deal with character chromosomes.
   if (is.numeric(map$chr)) {

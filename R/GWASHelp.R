@@ -255,7 +255,7 @@ extrSignSnps <- function(GWAResult,
       snpStatus <- rep("significant snp", length(signSnpNr))
     }
     if (length(dim(markers)) == 2) {
-      effect <- GWAResult$effect[snpSelection]
+      effect <- GWAResult[snpSelection, "effect"]
       ## Compute variance of marker scores, based on genotypes for which
       ## phenotypic data is available. For inbreeders, this depends on
       ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
@@ -267,12 +267,12 @@ extrSignSnps <- function(GWAResult,
       ### temporary value tbd.
       propSnpVar <- NA
     }
-    ## Create data.frame with significant snps.
-    signSnp <- data.frame(GWAResult[snpSelection, ],
-                          snpStatus = as.factor(snpStatus),
-                          propSnpVar = propSnpVar, stringsAsFactors = FALSE)
+    ## Create data.table with significant snps.
+    signSnp <- data.table::data.table(GWAResult[snpSelection, ],
+                                      snpStatus = as.factor(snpStatus),
+                                      propSnpVar = propSnpVar)
   } else {
-    signSnp <- data.frame()
+    signSnp <- data.table::data.table()
   }
   return(signSnp)
 }
