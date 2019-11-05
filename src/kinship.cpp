@@ -29,7 +29,6 @@ arma::mat astleCPP(arma::mat x,
   } else {
     denominator = Rcpp::as<double>(denom);
   }
-  arma::mat xtemp = x * x.t();
   return x * x.t() / denominator;
 }
 
