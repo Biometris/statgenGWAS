@@ -34,55 +34,6 @@ createGWAS <- function(GWAResult = NULL,
                        kin = NULL,
                        thr = NULL,
                        GWASInfo = NULL) {
-  ## Check that at least one input is provided.
-  if (is.null(GWAResult) && is.null(signSnp)) {
-    stop("At least one of GWAResult and signSnp should be provided.\n")
-  }
-  ## Check GWAResults
-  if (!is.null(GWAResult)) {
-    if (!is.data.frame(GWAResult) &&
-        !(is.list(GWAResult) &&
-          all(sapply(X = GWAResult, FUN = is.data.frame)))) {
-      stop("GWAResult should be a data.frame or a list data.frames.\n")
-    }
-    if (is.data.frame(GWAResult)) {
-      ## If not a list already put data.frame in a list.
-      GWAResult <- list(GWAResult)
-    }
-    if (!all(sapply(GWAResult, FUN = function(x) {
-      all(c("trait", "snp", "chr", "pos", "pValue", "LOD") %in%
-          colnames(x))}))) {
-      stop(paste("GWAResult should contain columns trait, snp, chr, pos,",
-                 "pValue and LOD.\n"))
-    }
-  }
-  ## Check signSnps
-  if (!all(sapply(signSnp, FUN = is.null))) {
-    if (!is.data.frame(signSnp) &&
-        !(is.list(signSnp) && all(sapply(X = signSnp, FUN = function(x) {
-          is.null(x) || is.data.frame(x)
-        })))) {
-      stop("signSnp should be a data.frame or a list of data.frames.\n")
-    }
-    if (is.data.frame(signSnp)) {
-      ## If not a list already put data.frame in a list.
-      signSnp <- list(signSnp)
-    }
-    if (!all(sapply(signSnp, FUN = function(x) {
-      is.null(x) || all(c("trait", "snp", "snpStatus", "pValue", "LOD") %in%
-                        colnames(x))}))) {
-      stop(paste("signSnp should contain columns trait, snp, snpStatus,",
-                 "pValue and LOD.\n"))
-    }
-  }
-  ## Check kin
-  if (!is.null(kin)) {
-    if (!(inherits(kin, "Matrix") || is.matrix(kin)) &&
-        !(is.list(kin) && all(sapply(X = kin, FUN = function(x) {
-          inherits(x, "Matrix") || is.matrix(x)})))) {
-      stop("kin should be a matrix or a list of matrices.\n")
-    }
-  }
   ## Create GWAS object.
   GWAS <- structure(list(GWAResult = GWAResult,
                          signSnp = signSnp,
@@ -116,7 +67,7 @@ summary.GWAS <- function(object,
        !all(trials %in% names(object$GWAResult))) ||
       (is.numeric(trials) &&
        !all(trials %in% 1:length(object$GWAResult)))) {
-    stop("all trials should be in object.\n")
+    stop("All trials should be in object.\n")
   }
   ## Convert character input to numeric.
   if (is.character(trials)) {
@@ -184,7 +135,7 @@ summary.GWAS <- function(object,
         ## Print genomic control.
         cat("\t\tGenomic control correction was applied\n")
       } else {
-        cat("\t\tNo Genomic control correction was applied\n")
+        cat("\t\tNo genomic control correction was applied\n")
       }
       if (!is.null(GWASInfo$inflationFactor)) {
         cat("\t\tGenomic control inflation-factor:",
