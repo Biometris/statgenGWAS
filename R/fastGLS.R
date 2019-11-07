@@ -14,12 +14,13 @@
 #' @param covs An n x c matrix of covariates (NOT including an intercept).
 #' No missing values allowed.
 #'
-#' @return A matrix with the following (unnamed) columns:
+#' @return A data.table with the following columns:
 #' \itemize{
 #' \item{\code{pValue} p-values for the GLS F-test}
 #' \item{\code{beta} effect sizes}
 #' \item{\code{betaSe} standard errors of the effect sizes}
 #' \item{\code{RLR2} L_LR^2 statistics as defined in Sun et al.}
+#' \item{\code{rn} SNP name}
 #' }
 #'
 #' @references Segura et al. (2012) An efficient multi-locus mixed-model
@@ -34,38 +35,11 @@ fastGLS <- function(y,
                     Sigma,
                     covs = NULL,
                     nCores = NULL) {
-  ## Check class and missing values.
-  if (missing(y) || !(inherits(y, "Matrix") || is.numeric(y)) || anyNA(y)) {
-    stop("y should be a numeric vector without missing values.\n")
-  }
-  #  if (missing(X) || !(inherits(X, "Matrix") || is.matrix(X)) || anyNA(X))
-  #    stop("X should be a matrix without missing values.")
-  if (missing(Sigma) || !(inherits(Sigma, "Matrix") || is.matrix(Sigma)) ||
-      anyNA(Sigma)) {
-    stop("Sigma should be a matrix without missing values.\n")
-  }
-  if (!is.null(covs) && (!(inherits(covs, "Matrix") || is.matrix(covs)) ||
-                         anyNA(covs))) {
-    stop("covs should be a numeric vector without missing values.\n")
-  }
-  n <- length(y)
-  ## Check dimensions.
-  if (nrow(X) != n) {
-    stop(paste("The number of elements in y should be identical to the",
-               "number of rows in X.\n"))
-  }
-  if (nrow(Sigma) != n || ncol(Sigma) != n) {
-    stop(paste("The number of elements in y should be identical to the",
-               "number of rows and columns in Sigma.\n"))
-  }
-  if (!is.null(covs) && nrow(covs) != n) {
-    stop(paste("The number of elements in y should be identical to the",
-               "number of rows in covs.\n"))
-  }
-  ## Convert output to data.table.
   resCpp <- fastGLSCPP(X, y, Sigma, covs, nCores = nCores)
+  ## Set row and column names to output merging results.
   rownames(resCpp) <- colnames(X)
   colnames(resCpp) <- c("pValue", "effect", "effectSe", "RLR2")
+  ## Convert output to data.table.
   resCpp <- as.data.table(resCpp, keep.rownames = TRUE)
   setkeyv(resCpp, cols = "rn")
   return(resCpp)

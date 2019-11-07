@@ -23,12 +23,13 @@ the parallel part of the algorithm. If \code{NULL} the number of cores used
 will be equal to the number of cores available on the machine - 1.}
 }
 \value{
-A matrix with the following (unnamed) columns:
+A data.table with the following columns:
 \itemize{
 \item{\code{pValue} p-values for the GLS F-test}
 \item{\code{beta} effect sizes}
 \item{\code{betaSe} standard errors of the effect sizes}
 \item{\code{RLR2} L_LR^2 statistics as defined in Sun et al.}
+\item{\code{rn} SNP name}
 }
 }
 \description{
