@@ -23,28 +23,23 @@ estVarComp <- function(GLSMethod,
       setNames(vector(mode = "list", length = length(chrs)), paste("chr", chrs))
   }
   if (remlAlgo == "EMMA") {
-    ## emma algorithm takes covariates from gData.
-    gDataEmma <- createGData(pheno = pheno[, c("genotype", trait)],
-                             covar = if (is.null(covar)) {
-                               NULL
-                             } else {
-                               as.data.frame(pheno[covar], 
-                                             row.names = pheno$genotype)
-                             })
     if (GLSMethod == "single") {
-      K <- K[nonMiss, nonMiss]
-      remlObj <- EMMA(gData = gDataEmma, trait = trait, trial = 1,
-                      covar = covar, K = K)
+      remlObj <- EMMA(dat = pheno[, c("genotype", trait)], 
+                      trait = trait, 
+                      covar = as.data.frame(pheno[covar], 
+                                            row.names = pheno$genotype), 
+                      K = K)
       ## Extract varComp and vcovMatrix
       varComp <- remlObj$varComp
       vcovMatrix <- remlObj$vcovMatrix
     } else if (GLSMethod == "multi") {
       for (chr in chrs) {
-        ## Get chromosome specific kinship.
-        KChr <- K[[which(chrs == chr)]][nonMiss, nonMiss]
         ## Compute variance components using chromosome specific kinship.
-        remlObj <- EMMA(gData = gDataEmma, trait = trait, trial = 1, 
-                        covar = covar, K = KChr)
+        remlObj <- EMMA(dat = pheno[, c("genotype", trait)],
+                        trait = trait, 
+                        covar = as.data.frame(pheno[covar], 
+                                              row.names = pheno$genotype), 
+                        K = K[[which(chrs == chr)]])
         ## Compute varcov matrix using var components.
         varComp[[which(chrs == chr)]] <- remlObj$varComp
         vcovMatrix[[which(chrs == chr)]] <- remlObj$vcovMatrix

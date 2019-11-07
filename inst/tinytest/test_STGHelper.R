@@ -4,67 +4,44 @@ load(file = "testdata.rda")
 
 ## Test EMMA function
 
+pheno <- gDataTest$pheno$ph1
+covar <- gDataTest$covar
+
 # Check with default settings.
 
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, 
-                                     trial = 1)[[1]],
+expect_equivalent(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma)[[1]],
                   c(0.020597492367456, 1.85412717490278))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = "X1",
-                                     trial = 1)[[1]],
-                  c(0.020597492367456, 1.85412717490278))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = "X1",
-                                     trial = "ph1")[[1]],
-                  c(0.020597492367456, 1.85412717490278))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2,
-                                     trial = 1, K = Sigma)[[1]],
+expect_equivalent(statgenGWAS:::EMMA(dat = pheno, trait = "X1", K = Sigma)[[1]],
                   c(0.020597492367456, 1.85412717490278))
 
 # Check with covariates.
 # Use combinations of covariates and SNP covariates.
 
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2,
-                                     trial = 1, covar = 1)[[1]],
+expect_equivalent(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma,
+                                     covar = covar[, 1, drop = FALSE])[[1]],
                   c(8.76962021955837e-05, 1.93163739799548))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2,
-                                     trial = 1, covar = "V1")[[1]],
-                  c(8.76962021955837e-05, 1.93163739799548))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2,
-                                     trial = 1, K = Sigma, covar = 1)[[1]],
-                  c(8.76962021955837e-05, 1.93163739799548))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2,
-                                     trial = 1, snpName = "M1")[[1]],
-                  c(9.11116376851807e-05, 2.00686737098146))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2,
-                                     trial = 1, K = Sigma, snpName = "M1")[[1]],
-                  c(9.11116376851807e-05, 2.00686737098146))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2,
-                                     trial = 1, covar = 1, snpName = "M1")[[1]],
-                  c(8.77313241082566e-05, 1.93241100960362))
-expect_equivalent(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
-                                     K = Sigma, covar = 1, snpName = "M1")[[1]],
-                  c(8.77313241082566e-05, 1.93241100960362))
 
 # Check that extra options don't significantly change results.
 # Changing the number of grid points or setting different upper or lower
 # limits should give output very similar to the default settings.
 
 ## Compute base value
-EMMA0 <- statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1)[[1]]
-expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
+EMMA0 <- statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma)[[1]]
+expect_equal(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma,
                                 nGrids = 50)[[1]], EMMA0, tolerance = 1e-6)
-expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
+expect_equal(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma, 
                                 nGrids = 500)[[1]], EMMA0, tolerance = 1e-6)
-expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
+expect_equal(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma, 
                                 lLim = -100)[[1]], EMMA0, tolerance = 1e-6)
-expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
+expect_equal(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma, 
                                 lLim = -20)[[1]], EMMA0, tolerance = 1e-6)
-expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
+expect_equal(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma, 
                                 uLim = 20)[[1]], EMMA0, tolerance = 1e-6)
-expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
+expect_equal(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma, 
                                 uLim = 100)[[1]], EMMA0, tolerance = 1e-6)
-expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
+expect_equal(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma, 
                                 eps = 1e-5)[[1]], EMMA0, tolerance = 1e-6)
-expect_equal(statgenGWAS:::EMMA(gData = gDataTest, trait = 2, trial = 1,
+expect_equal(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma, 
                                 nGrids = 500, lLim = -100, uLim = 100)[[1]],
              EMMA0, tolerance = 1e-6)
 

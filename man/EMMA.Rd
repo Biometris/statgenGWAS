@@ -4,41 +4,22 @@
 \alias{EMMA}
 \title{Compute REML estimates of variance components using EMMA algorithm.}
 \usage{
-EMMA(gData, trait, trial, K = NULL, covar = NULL, snpName = NULL,
-  Z = NULL, nGrids = 100, lLim = -10, uLim = 10,
-  eps = .Machine$double.eps^0.25)
+EMMA(dat, trait, K, covar = NULL, nGrids = 100, lLim = -10,
+  uLim = 10, eps = .Machine$double.eps^0.25)
 }
 \arguments{
-\item{gData}{An object of class gData containing at least a data.frame
-\code{pheno}. If \code{K} is not supplied a matrix \code{kinship} should be
-in \code{gData}. If covariates are included then a data.frame covar is
-needed as wel and if an extra snp is to be included as covariate (defined
-in \code{snpName}) then a data.frame \code{markers} is also needed. Missing
-values in \code{pheno} are allowed but will be excluded from the
-calculations.}
+\item{dat}{A data.frame containing the phenotypic data on which the 
+analysis is performed.}
 
 \item{trait}{A trait for which to estimate variance components. This can be
 either numeric index or character name of a column in \code{pheno}.}
-
-\item{trial}{A trial for which to estimate variance components.
-This can be either numeric index or character name of a list item in
-\code{pheno}.}
 
 \item{K}{An optional kinship matrix. If \code{NULL} then matrix
 \code{kinship} in \code{gData} is used. If both \code{K} is provided and
 \code{gData} contains a matrix \code{kinship} then \code{K} is used.}
 
-\item{covar}{An optional vector of covariates taken into account when
-estimating variance components. These can be either numeric indices or
-character names of columns in \code{covar} in \code{gData}. If \code{NULL}
-no covariates are used.}
-
-\item{snpName}{An optional character string of a marker in \code{markers} in
-\code{gData} to be included as covariate. If used the \code{gData} object
-should contain a data.frame \code{markers}.}
-
-\item{Z}{An optional incidence matrix mapping each observed phenotype to
-one of inbred strains.}
+\item{covar}{A data.frame of covariates taken into account when
+estimating variance components. If \code{NULL} no covariates are used.}
 
 \item{nGrids}{An integer indicating the number of intervals used for local
 optimisation within the algorithm.}
