@@ -223,15 +223,13 @@ extrSignSnps <- function(GWAResult,
                          maxScore,
                          pheno,
                          trait) {
-  signSnpNr <- which(!is.na(GWAResult$LOD) & GWAResult$LOD >= LODThr)
+  signSnpNr <- which(!is.na(GWAResult[["LOD"]]) & GWAResult[["LOD"]] >= LODThr)
   if (length(signSnpNr) > 0) {
     if (sizeInclRegion > 0) {
-      snpSelection <-
-        unlist(sapply(X = signSnpNr, FUN = getSNPsInRegionSufLD,
-                      ## Create new minimal gData object to match map and
-                      ## markers used for SNP selection.
-                      gData = createGData(map = map, geno = markers),
-                      regionSize = sizeInclRegion, minR2 = minR2))
+      snpSelection <- unlist(sapply(X = signSnpNr, FUN = getSNPsInRegionSufLD,
+                                    map = map, markers = markers, 
+                                    sizeInclRegion = sizeInclRegion, 
+                                    minR2 = minR2))
       snpSelection <- sort(union(snpSelection, signSnpNr))
       snpStatus <- rep(paste("within", sizeInclRegion / 1000,
                              "kb of a significant snp"),
@@ -242,12 +240,11 @@ extrSignSnps <- function(GWAResult,
       snpStatus <- rep("significant snp", length(signSnpNr))
     }
     if (length(dim(markers)) == 2) {
-      effect <- GWAResult[snpSelection, "effect"]
       ## Compute variance of marker scores, based on genotypes for which
       ## phenotypic data is available. For inbreeders, this depends on
       ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
       ## 1 if there are heterozygotes).
-      snpVar <- 4 * effect ^ 2 / maxScore ^ 2 *
+      snpVar <- 4 * GWAResult[snpSelection, "effect"] ^ 2 / maxScore ^ 2 *
         apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
       propSnpVar <- snpVar / as.numeric(var(pheno[trait]))
     } else if (length(dim(markers)) == 3) {
@@ -259,6 +256,7 @@ extrSignSnps <- function(GWAResult,
                                       snpStatus = as.factor(snpStatus),
                                       propSnpVar = propSnpVar)
   } else {
+    ## No significant SNPs. Return empty data.table.
     signSnp <- data.table::data.table()
   }
   return(signSnp)
@@ -275,33 +273,34 @@ extrSignSnps <- function(GWAResult,
 #' included.
 #' @param snp An integer indicating the index of the reference SNP within
 #' the map.
-#' @param regionSize A numerical value indicating the size of the region on
+#' @param sizeInclRegion A numerical value indicating the size of the region on
 #' the chromosome in which to look for SNPs.
 #' @param minR2 A numerical value between 0 and 1 indicating the minimum
 #' LD (in terms of r^2) that the SNPs should have with the reference SNP.
 #'
 #' @return An integer vector with indices of the SNPs that are within the
-#' given \code{regionSize} and have a minimum LD with the reference SNP.
+#' given \code{sizeInclRegion} and have a minimum LD with the reference SNP.
 #'
 #' @keywords internal
-getSNPsInRegionSufLD <- function(gData,
-                                 snp,
-                                 regionSize = 5000,
+getSNPsInRegionSufLD <- function(snp,
+                                 map,
+                                 markers,
+                                 sizeInclRegion = 5000,
                                  minR2 = 0.5) {
   ## Get candidate SNPs based on position.
-  crit1 <- abs(gData$map$pos[snp] - gData$map$pos) <= regionSize
-  crit2 <- gData$map$chr == gData$map$chr[snp]
+  crit1 <- abs(map[snp, "pos"] - map[["pos"]]) <= sizeInclRegion
+  crit2 <- map[["chr"]] == map[snp, "chr"]
   candidateSnps <- setdiff(which(crit1 & crit2), snp)
   ## Compute R2 for candidate SNPs.
-  if (length(dim(gData$markers)) == 2) {
-    R2 <- suppressWarnings(cor(gData$markers[, snp, drop = FALSE],
-                               gData$markers[, candidateSnps, drop = FALSE]) ^ 2)
+  if (length(dim(markers)) == 2) {
+    R2 <- suppressWarnings(cor(markers[, snp, drop = FALSE],
+                               markers[, candidateSnps, drop = FALSE]) ^ 2)
     ## Select SNPs based on R2.
     candidateSnpsNames <- colnames(R2[, R2[, 1] > minR2, drop = FALSE])
-  } else if (length(dim(gData$markers)) == 3) {
+  } else if (length(dim(markers)) == 3) {
     ### temporary.
-    candidateSnpsNames <- rownames(gData$map)[candidateSnps]
+    candidateSnpsNames <- rownames(map)[candidateSnps]
   }
-  return(which(rownames(gData$map) %in% candidateSnpsNames))
+  return(which(rownames(map) %in% candidateSnpsNames))
 }
 

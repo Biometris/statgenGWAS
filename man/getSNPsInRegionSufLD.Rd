@@ -4,24 +4,25 @@
 \alias{getSNPsInRegionSufLD}
 \title{get the SNPs close to a given SNP with sufficient LD}
 \usage{
-getSNPsInRegionSufLD(gData, snp, regionSize = 5000, minR2 = 0.5)
+getSNPsInRegionSufLD(snp, map, markers, sizeInclRegion = 5000,
+  minR2 = 0.5)
 }
 \arguments{
-\item{gData}{An object of class gData with at least the map and markers
-included.}
-
 \item{snp}{An integer indicating the index of the reference SNP within
 the map.}
 
-\item{regionSize}{A numerical value indicating the size of the region on
+\item{sizeInclRegion}{A numerical value indicating the size of the region on
 the chromosome in which to look for SNPs.}
 
 \item{minR2}{A numerical value between 0 and 1 indicating the minimum
 LD (in terms of r^2) that the SNPs should have with the reference SNP.}
+
+\item{gData}{An object of class gData with at least the map and markers
+included.}
 }
 \value{
 An integer vector with indices of the SNPs that are within the
-given \code{regionSize} and have a minimum LD with the reference SNP.
+given \code{sizeInclRegion} and have a minimum LD with the reference SNP.
 }
 \description{
 \code{getSNPsInRegionSufLD} extracts the SNPs from a map file that are
