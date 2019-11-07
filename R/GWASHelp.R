@@ -72,7 +72,7 @@ estVarComp <- function(GLSMethod,
       varComp <- setNames(unlist(vcMod)[c(1, length(unlist(vcMod)))],
                           c("Vg", "Ve"))
       vcovMatrix <- unlist(vcMod)[1] * modK +
-        diag(x = unlist(vcMod)[length(unlist(vcMod))])
+        diag(x = unlist(vcMod)[length(unlist(vcMod))], nrow = nrow(modK))
       if (any(eigen(vcovMatrix, symmetric = TRUE,
                     only.values = TRUE)$values <= 1e-8)) {
         nearestPD(vcovMatrix)
@@ -316,10 +316,10 @@ getSNPsInRegionSufLD <- function(gData,
   candidateSnps <- setdiff(which(crit1 & crit2), snp)
   ## Compute R2 for candidate SNPs.
   if (length(dim(gData$markers)) == 2) {
-    R2 <- suppressWarnings(cor(gData$markers[, candidateSnps],
-                               gData$markers[, snp]) ^ 2)
+    R2 <- suppressWarnings(cor(gData$markers[, snp, drop = FALSE],
+                               gData$markers[, candidateSnps, drop = FALSE]) ^ 2)
     ## Select SNPs based on R2.
-    candidateSnpsNames <- names(which(R2[, 1] > minR2))
+    candidateSnpsNames <- colnames(R2[, R2[, 1] > minR2, drop = FALSE])
   } else if (length(dim(gData$markers)) == 3) {
     ### temporary.
     candidateSnpsNames <- rownames(gData$map)[candidateSnps]
