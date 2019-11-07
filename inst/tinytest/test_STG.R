@@ -6,6 +6,10 @@ stg0 <- runSingleTraitGwas(gData = gDataTest, trials = 1)
 stg1 <- runSingleTraitGwas(gData = gDataTest)
 result1 <- runSingleTraitGwas(gData = gDataTest, trials = 1,
                               covar = "V1")[["GWAResult"]]
+result1a <- runSingleTraitGwas(gData = gDataTest, traits = 2:6, trials = 1, 
+                               covar = "V1")[["GWAResult"]]
+result1b <- runSingleTraitGwas(gData = gDataTest, trials = 1,
+                               covar = 1)[["GWAResult"]]
 result2 <- runSingleTraitGwas(gData = gDataTest, trials = 1,
                               snpCov = "M2")[["GWAResult"]]
 result3 <- runSingleTraitGwas(gData = gDataTest, trials = 1, covar = "V1",
@@ -96,6 +100,11 @@ expect_equal(stg1[["GWAResult"]][["ph2"]][["effect"]],
                -0.3325198897839, 0.285348088200379, -0.0221226243845664,
                -0.810848162781112, -0.119937375119302))
 
+## Check that specifying traits by number functions correctly.
+expect_equal(result1, result1a)
+
+## Check that specifying covar by number functions correctly.
+expect_equal(result1, result1b)
 
 ### Test runSingleTraitGwas with chromosome specific kinship.
 
