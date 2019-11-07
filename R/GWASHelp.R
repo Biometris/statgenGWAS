@@ -198,19 +198,6 @@ exclMarkers <- function(snpCov,
 genCtrlPVals <- function(pVals,
                          nObs,
                          nCov = 0) {
-  ## Check input.
-  if (missing(pVals) || !is.numeric(pVals) || any(pVals < 0, na.rm = TRUE) ||
-      any(pVals > 1, na.rm = TRUE)) {
-    stop("pVals should be a numeric vector with values between 0 and 1.\n")
-  }
-  if (missing(nObs) || length(nObs) > 1 || !is.numeric(nObs) ||
-      nObs != round(nObs) || nObs < 1) {
-    stop("nObs should be a single positive integer.\n")
-  }
-  if (length(nCov) > 1 || !is.numeric(nCov) || nCov != round(nCov) ||
-      nCov < 0) {
-    stop("nCov should be a single non negative integer.\n")
-  }
   ## Compute degree of freedom.
   df2 <- nObs - nCov - 2
   pValsNew <- pVals
@@ -301,15 +288,6 @@ getSNPsInRegionSufLD <- function(gData,
                                  snp,
                                  regionSize = 5000,
                                  minR2 = 0.5) {
-  ## Check input.
-  chkGData(gData, comps = c("map", "markers"))
-  if (missing(snp) || length(snp) > 1 || !is.numeric(snp) ||
-      snp != round(snp) || !snp %in% 1:nrow(gData$map)) {
-    stop(paste("snp should be a single integer indicating a row in",
-               "the map in gData.\n"))
-  }
-  chkNum(regionSize, min = 0)
-  chkNum(minR2, min = 0, max = 1)
   ## Get candidate SNPs based on position.
   crit1 <- abs(gData$map$pos[snp] - gData$map$pos) <= regionSize
   crit2 <- gData$map$chr == gData$map$chr[snp]
