@@ -61,51 +61,49 @@ estVarComp <- function(GLSMethod,
       fixed <- as.formula(paste(trait, " ~ 1"))
     }
     if (GLSMethod == "single") {
-      K <- K[nonMiss, nonMiss]
-      ## Fit model.
-      modFit <- sommer::mmer(fixed = fixed, data = pheno,
-                             random = ~ sommer::vs(genotype, Gu = K),
-                             verbose = FALSE, date.warning = FALSE)
-      ## Compute varcov matrix using var components from model.
-      vcMod <- modFit$sigma
-      modK <- K[nonMissRepId, nonMissRepId]
-      varComp <- setNames(unlist(vcMod)[c(1, length(unlist(vcMod)))],
-                          c("Vg", "Ve"))
-      vcovMatrix <- unlist(vcMod)[1] * modK +
-        diag(x = unlist(vcMod)[length(unlist(vcMod))], nrow = nrow(modK))
-      if (any(eigen(vcovMatrix, symmetric = TRUE,
-                    only.values = TRUE)$values <= 1e-8)) {
-        nearestPD(vcovMatrix)
-      }
+      vcNR <- estVarCompNR(dat = pheno, fixed = fixed, K = K, nonMiss = nonMiss,
+                           nonMissRepId = nonMissRepId)
+      varComp <- vcNR$varComp
+      vcovMatrix <- vcNR$vcovMatrix
     } else if (GLSMethod == "multi") {
       for (chr in chrs) {
-        ## Get chromosome specific kinship.
-        KChr <- K[[which(chrs == chr)]][nonMiss, nonMiss]
-        ## Fit mmer model using chromosome specific kinship.
-        modFit <- sommer::mmer(fixed = fixed, data = pheno,
-                               random = ~ sommer::vs(genotype, Gu = KChr),
-                               verbose = FALSE, date.warning = FALSE)
-        ## Compute varcov matrix using var components from model.
-        vcMod <- modFit$sigma
-        modK <- KChr[nonMissRepId, nonMissRepId]
-        varComp[[which(chrs == chr)]] <- setNames(
-          unlist(vcMod)[c(1, length(unlist(vcMod)))], c("Vg", "Ve"))
-        vcovMatrix[[which(chrs == chr)]] <- unlist(vcMod)[1] * modK +
-          unlist(vcMod)[length(unlist(vcMod))] *
-          diag(nrow = nrow(modK))
-      }
-      vcovMatrix <- lapply(vcovMatrix, FUN = function(vc) {
-        if (any(eigen(vc, symmetric = TRUE,
-                      only.values = TRUE)$values <= 1e-8)) {
-          nearestPD(vc)
-        } else {
-          vc
-        }
-      })
-    }
+        vcNR <- estVarCompNR(dat = pheno, fixed = fixed, 
+                             K = K[[which(chrs == chr)]], 
+                             nonMiss = nonMiss, nonMissRepId = nonMissRepId)
+        varComp[[which(chrs == chr)]] <- vcNR$varComp
+        vcovMatrix[[which(chrs == chr)]] <- vcNR$vcovMatrix
+      } # End loop over chromosomes.
+    } # End GLSMethod multi.
+  } # End remlAlgo NR.
+  return(list(varComp = varComp, vcovMatrix = vcovMatrix))
+}
+
+#' Helper function for estimating variance components using NR method.
+estVarCompNR <- function(dat,
+                         fixed,
+                         K, 
+                         nonMiss, 
+                         nonMissRepId) {
+  K <- K[nonMiss, nonMiss]
+  ## Fit model.
+  modFit <- sommer::mmer(fixed = fixed, data = dat,
+                         random = ~ sommer::vs(genotype, Gu = K),
+                         verbose = FALSE, date.warning = FALSE)
+  ## Compute varcov matrix using var components from model.
+  vcMod <- modFit$sigma
+  varComp <- setNames(unlist(vcMod)[c(1, length(unlist(vcMod)))],
+                      c("Vg", "Ve"))
+  modK <- K[nonMissRepId, nonMissRepId]
+  vcovMatrix <- unlist(vcMod)[1] * modK +
+    diag(x = unlist(vcMod)[length(unlist(vcMod))], nrow = nrow(modK))
+  ## Assure that vcovMatrix is positive definite.
+  if (any(eigen(vcovMatrix, symmetric = TRUE,
+                only.values = TRUE)$values <= 1e-8)) {
+    nearestPD(vcovMatrix)
   }
   return(list(varComp = varComp, vcovMatrix = vcovMatrix))
 }
+
 
 #' Select markers to be excluded from GWAS scan.
 #'
