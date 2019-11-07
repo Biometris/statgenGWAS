@@ -9,9 +9,9 @@ stg1 <- runSingleTraitGwas(gData = gDataTest, traits = 2, trials = "ph1",
                            thrType = "small", nSnpLOD = 1)
 stgM0 <- runSingleTraitGwas(gData = gDataTest, trials = 1, GLSMethod = "multi")
 
-expect_error(summary(stg, trials = TRUE),
+expect_error(summary(stg0, trials = TRUE),
              "trials should be a character or numeric vector")
-expect_error(summary(stg, trials = 7),
+expect_error(summary(stg0, trials = 7),
              "All trials should be in object")
 
 sumStg0 <- capture.output(summary(stg0))
