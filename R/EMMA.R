@@ -61,37 +61,6 @@ EMMA <- function(gData,
                  lLim = -10,
                  uLim = 10,
                  eps = .Machine$double.eps ^ 0.25) {
-  ## Checks.
-  chkGData(gData, comps = "pheno")
-  if (missing(trial) || length(trial) > 1 ||
-      !(is.numeric(trial) || is.character(trial))) {
-    stop("trial should be a single numeric or character.\n")
-  }
-  if ((is.character(trial) && !trial %in% names(gData$pheno)) ||
-      (is.numeric(trial) && trial > length(gData$pheno))) {
-    stop("trial should be a list item in pheno.\n")
-  }
-  chkTraits(trait, trial, gData, multi = FALSE)
-  if (!is.null(K) && !(inherits(K, "Matrix") || is.matrix(K))) {
-    stop("K should be a matrix.\n")
-  }
-  if (is.null(K) && is.null(gData$kinship)) {
-    stop("gData contains no matrix kinship so K should be provided.\n")
-  }
-  chkCovar(covar, gData)
-  if (!is.null(snpName) && (length(snpName) > 1 || !is.character(snpName))) {
-    stop("snpName should be a single character.\n")
-  }
-  if (!is.null(Z) && !is.matrix(Z)) {
-    stop("Z should be a matrix.\n")
-  }
-  chkNum(nGrids, min = 1)
-  chkNum(lLim)
-  chkNum(uLim)
-  if (lLim >= uLim) {
-    stop("lLim should be smaller than uLim.\n")
-  }
-  chkNum(eps, min = 0)
   ## Add column genotype to trial.
   phTr <- gData$pheno[[trial]]
   ## Remove data with missings in trait or any of the covars.
