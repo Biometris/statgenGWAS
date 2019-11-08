@@ -142,7 +142,7 @@ runSingleTraitGwas <- function(gData,
   chkTrials(trials, gData)
   ## If trials is null set trials to all trials in pheno.
   if (is.null(trials)) {
-    trials <- 1:length(gData$pheno)
+    trials <- seq_along(gData$pheno)
   }
   chkTraits(traits, trials, gData, multi = TRUE)
   chkCovar(covar, gData)

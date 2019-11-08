@@ -66,7 +66,7 @@ summary.GWAS <- function(object,
   if ((is.character(trials) &&
        !all(trials %in% names(object$GWAResult))) ||
       (is.numeric(trials) &&
-       !all(trials %in% 1:length(object$GWAResult)))) {
+       !all(trials %in% seq_along(object$GWAResult)))) {
     stop("All trials should be in object.\n")
   }
   ## Convert character input to numeric.
@@ -75,7 +75,7 @@ summary.GWAS <- function(object,
   }
   ## If NULL then summary of all trials.
   if (is.null(trials)) {
-    trials <- 1:length(object$GWAResult)
+    trials <- seq_along(object$GWAResult)
   }
   for (trial in trials) {
     GWAResult <- object$GWAResult[[trial]]
@@ -269,7 +269,7 @@ plot.GWAS <- function(x,
     stop("trial should be a character or numerical value.\n")
   }
   if ((is.character(trial) && !trial %in% names(x$GWAResult)) ||
-      (is.numeric(trial) && !trial %in% 1:length(x$GWAResult))) {
+      (is.numeric(trial) && !trial %in% seq_along(x$GWAResult))) {
     stop("trial should be in x.\n")
   }
   ## Convert character input to numeric.

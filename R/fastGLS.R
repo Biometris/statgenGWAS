@@ -41,6 +41,6 @@ fastGLS <- function(y,
   colnames(resCpp) <- c("pValue", "effect", "effectSe", "RLR2")
   ## Convert output to data.table.
   resCpp <- as.data.table(resCpp, keep.rownames = TRUE)
-  setkeyv(resCpp, cols = "rn")
+  data.table::setkeyv(resCpp, cols = "rn")
   return(resCpp)
 }

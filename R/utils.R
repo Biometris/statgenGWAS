@@ -119,14 +119,14 @@ chrSpecKin <- function(markers,
                  denominator = 1)
     ## Compute number of markers for other chromosomes.
     denom[which(chrs == chr)] <- ncol(markers[, -chrMrk, drop = FALSE])
-    for (i in setdiff(1:length(chrs), which(chr == chrs))) {
+    for (i in setdiff(seq_along(chrs), which(chr == chrs))) {
       ## Add computed kinship to all other matrices in KChr.
       KChr[[i]] <- KChr[[i]] + K
     }
   }
   ## Divide matrix for current chromosome by number of markers in other
   ## chromosomes.
-  for (i in 1:length(KChr)) {
+  for (i in seq_along(KChr)) {
     KChr[[i]] <- KChr[[i]] / denom[i]
   }
   return(KChr)

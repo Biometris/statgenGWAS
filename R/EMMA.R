@@ -47,9 +47,9 @@ EMMA <- function(dat,
   nonMiss <- dat[!is.na(dat[trait]), "genotype"]
   nonMissId <- which(!is.na(dat[trait]))
   if (!is.null(covar)) {
-    misCov <- rownames(covar)[rowSums(is.na(covar)) == 0]
-    nonMiss <- nonMiss[nonMiss %in% misCov]
-    nonMissId <- intersect(nonMissId, which(dat[["genotype"]] %in% misCov))
+    nonMissCov <- rownames(covar)[rowSums(is.na(covar)) == 0]
+    nonMiss <- nonMiss[nonMiss %in% nonMissCov]
+    nonMissId <- intersect(nonMissId, which(dat[["genotype"]] %in% nonMissCov))
   }
   K <- K[nonMiss, nonMiss]
   y <- dat[nonMissId, trait]
