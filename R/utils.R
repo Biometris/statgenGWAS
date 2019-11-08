@@ -81,7 +81,7 @@ computeKin <- function(GLSMethod,
       K <- gData$kinship
     } else {
       ## Compute chromosome specific kinship matrices.
-      K <- chrSpecKin(gData = createGData(geno = markers, map = map),
+      K <- chrSpecKin(markers = markers, map = map, 
                       kinshipMethod = kinshipMethod)
     }
     K <- lapply(X = K, FUN = function(k) {
@@ -93,36 +93,32 @@ computeKin <- function(GLSMethod,
 }
 
 ## Compute chromosome specific kinship matrices.
-chrSpecKin <- function(gData,
+chrSpecKin <- function(markers, 
+                       map,
                        kinshipMethod) {
-  chrs <- unique(gData$map$chr[rownames(gData$map) %in%
-                                 colnames(gData$markers)])
+  chrs <- unique(map[rownames(map) %in% colnames(markers), "chr"])
   if (length(chrs) == 1) {
     stop("Chromosome specific kinship calculation not possible since ",
          "map contains only 1 chromosome.\n")
   }
   ## Create list of zero matrices.
-  KChr <- setNames(
-    replicate(n = length(chrs),
-              matrix(data = 0, nrow = nrow(gData$markers),
-                     ncol = nrow(gData$markers),
-                     dimnames = list(rownames(gData$markers),
-                                     rownames(gData$markers))),
-              simplify = FALSE),
-    paste0("KChr", chrs))
+  KChr <- setNames(replicate(n = length(chrs), 
+                             matrix(data = 0, nrow = nrow(markers),
+                                    ncol = nrow(markers),
+                                    dimnames = list(rownames(markers),
+                                                    rownames(markers))),
+                             simplify = FALSE), chrs)
   ## Create vector of marker numbers per chromosome.
   denom <- setNames(rep(x = 0, times = length(chrs)), chrs)
   for (chr in chrs) {
     ## Extract markers for current chromosome.
-    chrMrk <- which(colnames(gData$markers) %in%
-                      rownames(gData$map[gData$map$chr == chr, ]))
+    chrMrk <- which(colnames(markers) %in% rownames(map[map[["chr"]] == chr, ]))
     ## Compute kinship for current chromosome only. Denominator = 1, division
     ## is done later.
-    K <- kinship(X = gData$markers[, chrMrk, drop = FALSE],
-                 method = kinshipMethod, denominator = 1)
+    K <- kinship(X = markers[, chrMrk, drop = FALSE], method = kinshipMethod, 
+                 denominator = 1)
     ## Compute number of markers for other chromosomes.
-    denom[which(chrs == chr)] <-
-      ncol(gData$markers[, -chrMrk, drop = FALSE])
+    denom[which(chrs == chr)] <- ncol(markers[, -chrMrk, drop = FALSE])
     for (i in setdiff(1:length(chrs), which(chr == chrs))) {
       ## Add computed kinship to all other matrices in KChr.
       KChr[[i]] <- KChr[[i]] + K
