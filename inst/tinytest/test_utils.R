@@ -2,30 +2,6 @@ load(file = "testdata.rda")
 
 ### Test utils
 
-## Test dfBind
-
-# Check that columns are copied correctly.
-df1 <- data.frame(a = 1:2, b = 1:2)
-df2 <- data.frame(a = 1:2, c = 1:2)
-df3 <- data.frame(c = 1:2, d = 1:2)
-expect_equal(colnames(statgenGWAS:::dfBind(list(df1, df1))), c("a", "b"))
-expect_equal(colnames(statgenGWAS:::dfBind(list(df1, df2))), c("a", "b", "c"))
-expect_equal(colnames(statgenGWAS:::dfBind(list(df1, df3))), 
-             c("a", "b", "c", "d"))
-expect_equal(colnames(statgenGWAS:::dfBind(list(df1, df2, df3))), 
-             c("a", "b", "c", "d"))
-
-# Check that NAs are inserted for missing columns.
-expect_equivalent(unlist(statgenGWAS:::dfBind(list(df1, df2))),
-                  c(1, 2, 1, 2, 1, 2, NA, NA, NA, NA, 1, 2))
-expect_equivalent(unlist(statgenGWAS:::dfBind(list(df1, df2, df1))),
-                  c(1, 2, 1, 2, 1,2, 1, 2, NA, NA, 1, 2, NA, NA, 1, 2, NA, NA))
-
-# Check that empty data.frames are removed before binding.
-expect_equal(statgenGWAS:::dfBind(list(data.frame(), df1)), df1)
-expect_equal(statgenGWAS:::dfBind(list(df1, data.frame())), df1)
-expect_equal(statgenGWAS:::dfBind(list(data.frame())), data.frame())
-
 ## Test matrixRoot
 
 M1 <- matrix(1:4, nrow = 2)
