@@ -118,45 +118,18 @@ exclMarkers <- function(snpCov,
   exclude <- integer()
   if (any(snpCov %in% colnames(markers))) {
     snpCovNumbers <- which(colnames(markers) %in% snpCov)
-    if (length(dim(markers)) == 2) {
-      for (snp in snpCovNumbers) {
-        ## Rough selection based on allele frequency. Done for speed.
-        candidates <- which(allFreq == allFreq[snp])
-        ## Exclude all snps that are identical to snps in snpCovariates.
-        snpInfo <- as.numeric(markers[, snp])
-        exclude <- union(exclude,
-                         candidates[apply(X = markers[, candidates,
-                                                      drop = FALSE],
-                                          MARGIN = 2, FUN = function(x) {
-                                            identical(as.numeric(x), snpInfo)
-                                          })])
-      }
-    } else if (length(dim(markers)) == 3) {
-      ## Compute mean value for reference allele.
-      allMeans <- apply(markers[ , , -ref], c(3, 2), mean)
-      for (snp in snpCovNumbers) {
-        for (allele in rownames(allMeans[allMeans[, snp] != 0, ])) {
-          ## Rough selection based on mean. Done for speed.
-          candidates <- which(allMeans == allMeans[allele, snp], arr.ind = TRUE)
-          exclude <- union(exclude,
-                           candidates[apply(X = candidates, MARGIN = 1,
-                                            FUN = function(m) {
-                                              identical(markers[, m[2], m[1]],
-                                                        markers[, snp, allele])
-                                            }), 2])
-        }
-      }
-      ## Rough selection based on mean. Done for speed.
-      candidates <- which(allMeans == allMeans[snp])
+    
+    for (snp in snpCovNumbers) {
+      ## Rough selection based on allele frequency. Done for speed.
+      candidates <- which(allFreq == allFreq[snp])
       ## Exclude all snps that are identical to snps in snpCovariates.
-      snpInfo <- as.numeric(markers[, snp, ])
+      snpInfo <- as.numeric(markers[, snp])
       exclude <- union(exclude,
-                       candidates[apply(X = markers[, candidates, ,
+                       candidates[apply(X = markers[, candidates,
                                                     drop = FALSE],
                                         MARGIN = 2, FUN = function(x) {
                                           identical(as.numeric(x), snpInfo)
                                         })])
-      
     }
   }
   return(exclude)
@@ -227,18 +200,13 @@ extrSignSnps <- function(GWAResult,
       snpSelection <- signSnpNr
       snpStatus <- rep("significant snp", length(signSnpNr))
     }
-    if (length(dim(markers)) == 2) {
-      ## Compute variance of marker scores, based on genotypes for which
-      ## phenotypic data is available. For inbreeders, this depends on
-      ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
-      ## 1 if there are heterozygotes).
-      snpVar <- 4 * GWAResult[snpSelection, "effect"] ^ 2 / maxScore ^ 2 *
-        apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
-      propSnpVar <- snpVar / as.numeric(var(pheno[trait]))
-    } else if (length(dim(markers)) == 3) {
-      ### temporary value tbd.
-      propSnpVar <- NA
-    }
+    ## Compute variance of marker scores, based on genotypes for which
+    ## phenotypic data is available. For inbreeders, this depends on
+    ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
+    ## 1 if there are heterozygotes).
+    snpVar <- 4 * GWAResult[snpSelection, "effect"] ^ 2 / maxScore ^ 2 *
+      apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
+    propSnpVar <- snpVar / as.numeric(var(pheno[trait]))
     ## Create data.table with significant snps.
     signSnp <- data.table::data.table(GWAResult[snpSelection, ],
                                       snpStatus = as.factor(snpStatus),
@@ -280,15 +248,12 @@ getSNPsInRegionSufLD <- function(snp,
   crit2 <- map[["chr"]] == map[snp, "chr"]
   candidateSnps <- setdiff(which(crit1 & crit2), snp)
   ## Compute R2 for candidate SNPs.
-  if (length(dim(markers)) == 2) {
-    R2 <- suppressWarnings(cor(markers[, snp, drop = FALSE],
-                               markers[, candidateSnps, drop = FALSE]) ^ 2)
-    ## Select SNPs based on R2.
-    candidateSnpsNames <- colnames(R2[, R2[, 1] > minR2, drop = FALSE])
-  } else if (length(dim(markers)) == 3) {
-    ### temporary.
-    candidateSnpsNames <- rownames(map)[candidateSnps]
-  }
+  R2 <- suppressWarnings(cor(markers[, snp, drop = FALSE],
+                             markers[, candidateSnps, drop = FALSE]) ^ 2)
+  ## Select SNPs based on R2.
+  candidateSnpsNames <- colnames(R2[, R2[, 1] > minR2, drop = FALSE])
+  ### temporary.
+  candidateSnpsNames <- rownames(map)[candidateSnps]
   return(which(rownames(map) %in% candidateSnpsNames))
 }
 

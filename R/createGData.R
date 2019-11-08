@@ -12,11 +12,8 @@
 #' @param geno A matrix or data.frame with genotypes in the rows and markers in
 #' the columns. A matrix from the \code{matrix} in the base package may be
 #' provided as well as as matrix from the Matrix package.\cr
-#' A three dimensional array of probabilities may be provided as well with
-#' genotypes in the first, markers in the second and alleles in the third
-#' dimension.\cr
-#' If no row names are provided, they are taken from \code{pheno} (if supplied and
-#' dimension matches). If no column names are provided, the row names
+#' If no row names are provided, they are taken from \code{pheno} (if supplied 
+#' and dimension matches). If no column names are provided, the row names
 #' from \code{map} are used (if supplied and dimension matches).
 #' @param map A data.frame with columns \code{chr} for chromosome and
 #' \code{pos} for position. Positions can be in base pair (bp) or centimorgan (cM). They
@@ -223,21 +220,15 @@ createGData <- function(gData = NULL,
   if (!is.null(geno)) {
     ## Either a 2D matrix/data.frame or a 3D array of probabilities is allowed.
     if (!is.data.frame(geno) && !inherits(geno, "Matrix") &&
-        !is.matrix(geno) && !(is.array(geno) && length(dim(geno)) == 3)) {
-      stop("geno should be a matrix, data.frame or an array.\n")
+        !is.matrix(geno)) {
+      stop("geno should be a matrix or a data.frame.\n")
     }
-    isMat <- length(dim(geno)) == 2
-    isPMat <- length(dim(geno)) == 3
-    if (isMat) {
-      if (!is.matrix(geno)) {
-        ## Convert geno to matrix.
-        ## This should work for matrices with only numerical entries and
-        ## matrices with (some) non numeric entries.
-        markers <- as.matrix(geno)
-      } else {
-        markers <- geno
-      }
-    } else if (isPMat) {
+    if (!is.matrix(geno)) {
+      ## Convert geno to matrix.
+      ## This should work for matrices with only numerical entries and
+      ## matrices with (some) non numeric entries.
+      markers <- as.matrix(geno)
+    } else {
       markers <- geno
     }
     ## Check for row names in markers. 
@@ -268,12 +259,7 @@ createGData <- function(gData = NULL,
       }
     } else {
       ## Sort alphabetically by genotypes.
-      ## Distinguish between matrix and array because of number of dims.
-      if (isMat) {
-        markers <- markers[order(rownames(markers)), , drop = FALSE]
-      } else if (isPMat) {
-        markers <- markers[order(rownames(markers)), , , drop = FALSE]
-      }
+      markers <- markers[order(rownames(markers)), , drop = FALSE]
     }
     if (is.null(colnames(markers))) {
       ## Check for column names in markers. If not available take them from map.
@@ -297,38 +283,10 @@ createGData <- function(gData = NULL,
         warning("Not all markers in geno are in map. Extra markers ",
                 "will be removed.\n", call. = FALSE)
       }
-      if (isMat) {
-        ## This not only removes markers that are not in map but orders them in
-        ## the same order as in map as well.
-        ## Distinguish between matrix and array because of number of dims.
-        markers <- markers[, colnames(markers) %in% rownames(map), drop = FALSE]
-      } else if (isPMat) {
-        markers <- markers[, colnames(markers) %in% rownames(map), ,
-                           drop = FALSE]
-        ## Check that probabilities for each marker sum to one.
-        ## Always rescale values.
-        ## Throw a warning if difference from one too large.
-        genoMrk <- setNames(as.data.frame(matrix(nrow = 0, ncol = 2)),
-                            c("geno", "marker"))
-        for (mrk in colnames(markers)) {
-          mrkProbs <- rowSums(markers[, mrk, ], na.rm = TRUE)
-          if (any(abs(mrkProbs - 1) > 1e-2)) {
-            genoMrk <-
-              rbind(genoMrk,
-                    data.frame(geno =
-                                 names(mrkProbs[abs(mrkProbs - 1) > 1e-2]),
-                               marker = mrk, stringsAsFactors = FALSE))
-          }
-          markers[, mrk, ] <- markers[, mrk, ] / mrkProbs
-        }
-        if (nrow(genoMrk) > 0) {
-          genoMrk$genoMarker <- paste(genoMrk$geno, "\t", genoMrk$marker)
-          warning(paste0("Probabilities differ from 1 for the following ",
-                         "combinations of genotype and markers:\n",
-                         paste(genoMrk$genoMarker, collapse = "\n")),
-                  call. = FALSE)
-        }
-      }
+      ## This not only removes markers that are not in map but orders them in
+      ## the same order as in map as well.
+      ## Distinguish between matrix and array because of number of dims.
+      markers <- markers[, colnames(markers) %in% rownames(map), drop = FALSE]
     }
     if (!is.null(gData$markers)) {
       ## gData already contained a markers object. Overwrite with a warning.

@@ -102,7 +102,7 @@ expect_warning(createGData(gData = gd0, pheno = pheno),
 
 # Checks for geno.
 expect_error(createGData(geno = 1),
-             "geno should be a matrix, data.frame or an array")
+             "geno should be a matrix or a data.frame")
 
 # Check that input is converted to matrix.
 gd <- createGData(geno = as.data.frame(geno))
