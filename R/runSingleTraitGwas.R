@@ -333,11 +333,6 @@ runSingleTraitGwas <- function(gData,
       }
       ## Compute LOD score.
       GWAResult[, "LOD" := -log10(GWAResult[["pValue"]])]
-      ## Add gene information if available.
-      if (!is.null(gData$genes)) {
-        GWAResult <- cbind(GWAResult, gene1 = gData$genes$gene1,
-                           gene2 = gData$genes$gene2)
-      }
       ## When thrType is bonferroni or small, determine the LOD threshold.
       if (thrType == "bonf") {
         ## Compute LOD threshold using Bonferroni correction.
