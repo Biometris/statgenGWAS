@@ -177,8 +177,8 @@ runSingleTraitGwas <- function(gData,
   ## Compute kinship matrix (GSLMethod single)
   ## or kinship matrices per chromosome (GLSMethod multi).
   K <- computeKin(GLSMethod = GLSMethod, kin = kin, gData = gData,
-                     markers = gData$markers, map = gData$map,
-                     kinshipMethod = kinshipMethod)
+                  markers = gData$markers, map = gData$map,
+                  kinshipMethod = kinshipMethod)
   ## Compute max value in markers
   maxScore <- min(max(gData$markers, na.rm = TRUE), 2)
   ## Define data.frames for total results.
@@ -293,7 +293,7 @@ runSingleTraitGwas <- function(gData,
           segMarkersChr <- setdiff(segMarkersChr, exclude)
           ## If there are no segregating markers for current chromosome 
           ## continue with next chromosome.
-          ## This is highly unlike for real data.
+          ## This is highly unlikely for real data.
           if (!length(segMarkersChr)) break
           X <- markersRedChr[nonMissRepId, segMarkersChr, drop = FALSE]
           Z <- if (length(covTr) > 0) {
