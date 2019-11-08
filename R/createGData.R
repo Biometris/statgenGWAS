@@ -126,10 +126,10 @@ createGData <- function(gData = NULL,
       warning("Existing map will be overwritten.\n", call. = FALSE)
     }
     ## Extract columns and order.
-    if (all(rownames(map) == as.character(1:nrow(map)))) {
+    map <- map[order(map[["chr"]], map[["pos"]]), c("chr", "pos")]
+    if (all(rownames(map) %in% as.character(1:nrow(map)))) {
       ## If no marker name in input compute them from chromosome and position.
       ## Names are made unique if necessary by adding a suffix _1, _2, etc.
-      map <- map[order(map$chr, map$pos), c("chr", "pos")]
       replicates <- aggregate(chr ~ chr + pos, data = map, FUN = length)$chr
       suffix <- unlist(sapply(X = replicates, FUN = function(n) {
         if (n == 1) {
@@ -138,14 +138,11 @@ createGData <- function(gData = NULL,
           return(paste0("_", 1:n))
         }
       }))
-      rownames(map) <- paste0("chr", map$chr, "_", map$pos, suffix)
+      rownames(map) <- paste0("chr", map[["chr"]], "_", map[["pos"]], suffix)
       warning(paste("map contains no marker names. Names constructed from",
                     "chromosome and position.\n"),
               call. = FALSE)
-    } else {
-      ## No duplicates. Still order output.
-      map <- map[order(map$chr, map$pos), c("chr", "pos")]
-    }
+    } 
   } else if (!is.null(gData$map)) {
     ## No map input, but available from gData object. Set map to
     ## map from gData for use later on.
@@ -313,20 +310,20 @@ createGData <- function(gData = NULL,
     ## If kin is a list of matrices the number of matrices in the list should
     ## match the number of chromosomes in map.
     if (!is.null(map) && is.list(kin) &&
-        length(kin) != length(unique(map$chr))) {
+        length(kin) != length(unique(map[["chr"]]))) {
       stop("kin should be the same length as the number of ",
            "chromosomes in map.\n")
     }
     ## If kin is a named list of matrices names of list items should match names
     ## of chromosomes in map.
     if (!is.null(map) && is.list(kin) &&
-        !is.null(names(kin)) && all(names(kin) != unique(map$chr))) {
+        !is.null(names(kin)) && all(names(kin) != unique(map[["chr"]]))) {
       stop("Names of kin should correspond to names of chromosomes in map.\n")
     }
     ## If kin is an unnamed list of matrices add default names.
     if (is.list(kin) && is.null(names(kin))) {
       warning("kin contains no names. Default names added.\n", call. = FALSE)
-      names(kin) <- unique(map$chr)
+      names(kin) <- unique(map[["chr"]])
     }
     ## Row and colnames should be provided.
     if (!is.list(kin)) {
@@ -431,7 +428,7 @@ summary.gData <- function(object, ...) {
   if (!is.null(map)) {
     cat("map\n")
     cat("\tNumber of markers:", nrow(map), "\n")
-    cat("\tNumber of chromosomes:", length(unique(map$chr)), "\n\n")
+    cat("\tNumber of chromosomes:", length(unique(map[["chr"]])), "\n\n")
   }
   if (!is.null(markers)) {
     cat("markers\n")
@@ -464,10 +461,3 @@ summary.gData <- function(object, ...) {
     print(summary(covar))
   }
 }
-
-
-
-
-
-
-
