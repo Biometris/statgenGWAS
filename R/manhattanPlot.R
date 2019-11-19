@@ -32,6 +32,7 @@
 #' @import ggplot2
 #' @importFrom graphics plot
 #'
+#' @noRd
 #' @keywords internal
 manhattanPlot <- function(xValues,
                           yValues,

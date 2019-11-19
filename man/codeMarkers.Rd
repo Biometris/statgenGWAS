@@ -4,10 +4,20 @@
 \alias{codeMarkers}
 \title{Code and impute markers}
 \usage{
-codeMarkers(gData, refAll = "minor", nMissGeno = 1, nMiss = 1,
-  MAF = NULL, removeDuplicates = TRUE, keep = NULL, impute = TRUE,
-  imputeType = c("random", "fixed", "beagle"), fixedValue = NULL,
-  naStrings = NA, verbose = FALSE)
+codeMarkers(
+  gData,
+  refAll = "minor",
+  nMissGeno = 1,
+  nMiss = 1,
+  MAF = NULL,
+  removeDuplicates = TRUE,
+  keep = NULL,
+  impute = TRUE,
+  imputeType = c("random", "fixed", "beagle"),
+  fixedValue = NULL,
+  naStrings = NA,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{gData}{An object of class \code{gData} containing at least

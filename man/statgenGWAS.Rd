@@ -3,7 +3,6 @@
 \docType{package}
 \name{statgenGWAS}
 \alias{statgenGWAS}
-\alias{statgenGWAS-package}
 \title{\code{statgenGWAS} package}
 \description{
 statgenGWAS

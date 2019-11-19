@@ -5,8 +5,14 @@
 \alias{createGData}
 \title{S3 Class gData}
 \usage{
-createGData(gData = NULL, geno = NULL, map = NULL, kin = NULL,
-  pheno = NULL, covar = NULL)
+createGData(
+  gData = NULL,
+  geno = NULL,
+  map = NULL,
+  kin = NULL,
+  pheno = NULL,
+  covar = NULL
+)
 }
 \arguments{
 \item{gData}{An optional gData object to be modified. If \code{NULL}, a new

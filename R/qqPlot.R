@@ -16,6 +16,7 @@
 #' @import ggplot2
 #' @importFrom graphics plot
 #'
+#' @noRd
 #' @keywords internal
 qqPlot <- function(pValues,
                    ...,

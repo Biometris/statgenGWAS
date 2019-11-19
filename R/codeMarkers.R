@@ -377,6 +377,7 @@ codeMarkers <- function(gData,
 
 #' Helper function for imputation using beagle.
 #' 
+#' @noRd
 #' @keywords internal
 imputeBeagle <- function(markersRecoded,
                          map) {

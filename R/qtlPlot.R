@@ -38,6 +38,7 @@
 #' @import ggplot2
 #' @importFrom graphics plot
 #'
+#' @noRd
 #' @keywords internal
 qtlPlot <- function(dat,
                     map,

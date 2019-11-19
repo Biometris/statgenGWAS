@@ -34,6 +34,7 @@
 #'
 #' @import stats
 #'
+#' @noRd
 #' @keywords internal
 EMMA <- function(dat, 
                  trait,

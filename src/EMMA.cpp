@@ -19,6 +19,7 @@ using namespace arma;
 //' being the number of genotypes. q has to be at least one (typically an
 //' intercept).
 //'
+//' @noRd
 //' @keywords internal
 // [[Rcpp::export]]
 void emmaEigenR(const arma::mat k,

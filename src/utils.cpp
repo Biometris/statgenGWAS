@@ -15,6 +15,7 @@ using namespace arma;
 //'
 //' @return A matrix Y such that \eqn{Y^2 = X}.
 //'
+//' @noRd
 //' @keywords internal
 // [[Rcpp::export]]
 arma::mat matrixRoot(const arma::mat x) {
@@ -36,6 +37,7 @@ arma::mat matrixRoot(const arma::mat x) {
 //'
 //' @return The reduced kinship matrix
 //'
+//' @noRd
 //' @keywords internal
 // [[Rcpp::export]]
 arma::mat reduceKinship(const arma::mat K,

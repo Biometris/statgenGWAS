@@ -11,6 +11,7 @@
 #' being the number of genotypes. q has to be at least one (typically an
 #' intercept).
 #'
+#' @noRd
 #' @keywords internal
 emmaEigenR <- function(k, x, eigVals, eigVecs) {
     invisible(.Call(`_statgenGWAS_emmaEigenR`, k, x, eigVals, eigVecs))
@@ -57,6 +58,7 @@ vanRadenCPP <- function(x, denom = NULL) {
 #'
 #' @return A matrix Y such that \eqn{Y^2 = X}.
 #'
+#' @noRd
 #' @keywords internal
 matrixRoot <- function(x) {
     .Call(`_statgenGWAS_matrixRoot`, x)
@@ -73,6 +75,7 @@ matrixRoot <- function(x) {
 #'
 #' @return The reduced kinship matrix
 #'
+#' @noRd
 #' @keywords internal
 reduceKinship <- function(K, nPca) {
     .Call(`_statgenGWAS_reduceKinship`, K, nPca)

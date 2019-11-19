@@ -29,6 +29,7 @@
 #' @references Sun et al. (2010) Variation explained in mixed-model association
 #' mapping. Heredity, February 2010, Vol. 105, p. 333–340.
 #'
+#' @noRd
 #' @keywords internal
 fastGLS <- function(y,
                     X,

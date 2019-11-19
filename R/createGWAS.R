@@ -28,6 +28,7 @@
 #'
 #' @seealso \code{\link{summary.GWAS}}, \code{\link{plot.GWAS}}
 #'
+#' @noRd
 #' @keywords internal
 createGWAS <- function(GWAResult = NULL,
                        signSnp = NULL,

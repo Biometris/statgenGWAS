@@ -4,13 +4,28 @@
 \alias{runSingleTraitGwas}
 \title{Perform single-trait GWAS}
 \usage{
-runSingleTraitGwas(gData, traits = NULL, trials = NULL, covar = NULL,
-  snpCov = NULL, kin = NULL, kinshipMethod = c("astle", "IBS",
-  "vanRaden"), remlAlgo = c("EMMA", "NR"), GLSMethod = c("single",
-  "multi"), useMAF = TRUE, MAF = 0.01, MAC = 10,
-  genomicControl = FALSE, thrType = c("bonf", "fixed", "small"),
-  alpha = 0.05, LODThr = 4, nSnpLOD = 10, sizeInclRegion = 0,
-  minR2 = 0.5, nCores = NULL)
+runSingleTraitGwas(
+  gData,
+  traits = NULL,
+  trials = NULL,
+  covar = NULL,
+  snpCov = NULL,
+  kin = NULL,
+  kinshipMethod = c("astle", "IBS", "vanRaden"),
+  remlAlgo = c("EMMA", "NR"),
+  GLSMethod = c("single", "multi"),
+  useMAF = TRUE,
+  MAF = 0.01,
+  MAC = 10,
+  genomicControl = FALSE,
+  thrType = c("bonf", "fixed", "small"),
+  alpha = 0.05,
+  LODThr = 4,
+  nSnpLOD = 10,
+  sizeInclRegion = 0,
+  minR2 = 0.5,
+  nCores = NULL
+)
 }
 \arguments{
 \item{gData}{An object of class \code{gData} containing at least \code{map},

@@ -1,5 +1,7 @@
-## Add covariates and snpCovariates to phenotypic data and convert covariate
-## factors to dummy varables.
+#' Add covariates and snpCovariates to phenotypic data and convert covariate
+#' factors to dummy varables.
+#' 
+#' @noRd
 #' @keywords internal
 expandPheno <- function(gData,
                         trial,
@@ -48,10 +50,12 @@ expandPheno <- function(gData,
   return(list(phTr = phTr, covTr = covTr))
 }
 
-## Helper function for computing (or extracting kinship matrices)
-## 1 - If kin is supplied use kin
-## 2 - Get kin from gData object
-## 3 - Compute kin from markers (and map for GLSMethod multi)
+#' Helper function for computing (or extracting kinship matrices)
+#' 1 - If kin is supplied use kin
+#' 2 - Get kin from gData object
+#' 3 - Compute kin from markers (and map for GLSMethod multi)
+#' 
+#' @noRd
 #' @keywords internal
 computeKin <- function(GLSMethod,
                        kin = NULL,

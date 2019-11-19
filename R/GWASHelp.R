@@ -1,7 +1,8 @@
 #' Estimate variance components in single trait GWAS
 #'
 #' Helper function for estimating variance components in single trait GWAS.
-#'
+#' 
+#' @noRd
 #' @keywords internal
 estVarComp <- function(GLSMethod,
                        remlAlgo,
@@ -69,6 +70,9 @@ estVarComp <- function(GLSMethod,
 }
 
 #' Helper function for estimating variance components using NR method.
+#' 
+#' @noRd
+#' @keywords internal
 estVarCompNR <- function(dat,
                          fixed,
                          K, 
@@ -110,6 +114,7 @@ estVarCompNR <- function(dat,
 #'
 #' @return A numerical vector of markers to be exluded from the GWAS scan.
 #'
+#' @noRd
 #' @keywords internal
 exclMarkers <- function(snpCov,
                         markers,
@@ -154,7 +159,8 @@ exclMarkers <- function(snpCov,
 #'
 #' @references Devlin, B. and Roeder K. (1999) Genomic control for association
 #' studies. Biometrics, December 1999, Vol. 55(4), p. 997-1004.
-#'
+#' 
+#' @noRd
 #' @keywords internal
 genCtrlPVals <- function(pVals,
                          nObs,
@@ -174,6 +180,7 @@ genCtrlPVals <- function(pVals,
   return(list(pValues = pValsNew, inflation = inflation))
 }
 
+#' @noRd
 #' @keywords internal
 extrSignSnps <- function(GWAResult,
                          LODThr,
@@ -236,7 +243,8 @@ extrSignSnps <- function(GWAResult,
 #'
 #' @return An integer vector with indices of the SNPs that are within the
 #' given \code{sizeInclRegion} and have a minimum LD with the reference SNP.
-#'
+#' 
+#' @noRd
 #' @keywords internal
 getSNPsInRegionSufLD <- function(snp,
                                  map,
