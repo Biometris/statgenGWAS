@@ -4,12 +4,16 @@
 \alias{summary.gData}
 \title{Summary function for the class \code{gData}}
 \usage{
-\method{summary}{gData}(object, ...)
+\method{summary}{gData}(object, ..., trials = NULL)
 }
 \arguments{
 \item{object}{An object of class \code{gData}}
 
 \item{...}{Not used}
+
+\item{trials}{A vector of trials to include in the summary. These can
+be either numeric indices or character names of list items in \code{pheno}.
+If \code{NULL}, all trials are included.}
 }
 \description{
 Gives a summary for an object of S3 class \code{gData}.

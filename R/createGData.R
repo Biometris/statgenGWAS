@@ -418,9 +418,19 @@ createGData <- function(gData = NULL,
 #'
 #' @param object An object of class \code{gData}
 #' @param ... Not used
+#' @param trials A vector of trials to include in the summary. These can
+#' be either numeric indices or character names of list items in \code{pheno}.
+#' If \code{NULL}, all trials are included.
 #'
 #' @export
-summary.gData <- function(object, ...) {
+summary.gData <- function(object, 
+                          ...,
+                          trials = NULL) {
+  chkTrials(trials, object)
+  ## If trials is null set trials to all trials in pheno.
+  if (is.null(trials)) {
+    trials <- seq_along(object$pheno)
+  }
   map <- object$map
   markers <- object$markers
   pheno <-  object$pheno
@@ -442,16 +452,17 @@ summary.gData <- function(object, ...) {
   if (!is.null(pheno)) {
     cat("pheno\n")
     cat("\tNumber of trials:", length(pheno), "\n\n")
-    for (i in 1:length(pheno)) {
-      if (!is.null(names(pheno)[i])) {
-        cat("\t", names(pheno)[i], ":\n", sep = "")
+    phenoTr <- pheno[trials]
+    for (i in 1:length(phenoTr)) {
+      if (!is.null(names(phenoTr)[i])) {
+        cat("\t", names(phenoTr)[i], ":\n", sep = "")
       } else {
         cat("\tTrial ", i, ":\n", sep = "")
       }
-      cat("\t\tNumber of traits:", ncol(pheno[[i]]) - 1, "\n")
-      cat("\t\tNumber of genotypes:", length(unique(pheno[[i]]$genotype)),
+      cat("\t\tNumber of traits:", ncol(phenoTr[[i]]) - 1, "\n")
+      cat("\t\tNumber of genotypes:", length(unique(phenoTr[[i]]$genotype)),
           "\n\n")
-      print(summary(pheno[[i]][, -1]))
+      print(summary(phenoTr[[i]][, -1]))
       cat("\n")
     }
   }
