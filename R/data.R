@@ -1,8 +1,3 @@
-#' Data for vignette
-#'
-#' Data used in vignette
-"gDataRiceCodedBeagle"
-
 #' DROPS data sets
 #' 
 #' This dataset comes from the European Union project DROPS (DROught-tolerant 
