@@ -1,86 +1,96 @@
-## ----eval=FALSE----------------------------------------------------------
-#  markersRaw <- read.csv(gzcon(
-#    url("http://ricediversity.org/data/sets/44kgwas/RiceDiversity.44K.MSU6.Genotypes.csv.gz"),
-#    text = TRUE), stringsAsFactors = FALSE)
-#  phenoRaw <- read.delim(
-#    "http://ricediversity.org/data/sets/44kgwas/RiceDiversity_44K_Phenotypes_34traits_PLINK.txt",
-#    stringsAsFactors = FALSE)
-#  covarRaw <- read.csv(
-#    "http://ricediversity.org/data/sets/44kgwas/RiceDiversity.44K.germplasm.csv",
-#    skip = 1,
-#    stringsAsFactors = FALSE)
+## ----setup, include = FALSE---------------------------------------------------
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>",
+fig.dim = c(7, 4)
+)
+library(statgenGWAS)
 
-## ----eval=FALSE----------------------------------------------------------
-#  ## Create mapRice with columns chr and pos and SNP names as row names.
-#  mapRice <- data.frame(chr = markersRaw$chr,
-#                        pos = markersRaw$position,
-#                        row.names = markersRaw$id)
-#  ## Create markersRice by removing the 'map' columns from the raw data and then transposing the result
-#  markersRice <- t(markersRaw[, 4:ncol(markersRaw)])
-#  ## Add SNP names as column names
-#  colnames(markersRice) <- markersRaw$id
-#  ## Missing values are coded in more than one way. Set everything that is not A, C, T or G to NA.
-#  markersRice[!markersRice %in% c("A", "C", "T", "G")] <- NA
+## ----loadData-----------------------------------------------------------------
+data(dropsMarkers)
+data(dropsMap)
+data(dropsPheno)
 
-## ----eval=FALSE----------------------------------------------------------
-#  library(statgenGWAS)
-#  gDataRice <- createGData(geno = markersRice, map = mapRice)
+## ----convertMarkers-----------------------------------------------------------
+## Add genotypes as row names of dropsMarkers and drop Ind column.
+rownames(dropsMarkers) <- dropsMarkers$Ind
+dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
 
-## ----eval=FALSE----------------------------------------------------------
-#  phenoRice <- cbind(genotype = paste0("NSFTV_", phenoRaw$NSFTVID),
-#                     phenoRaw[, 3:(ncol(phenoRaw) - 2)],
-#                     stringsAsFactors = FALSE)
-#  covarRice <- covarRaw[!is.na(covarRaw$NSFTV.ID), c("PC1", "PC2", "PC3", "PC4")]
-#  rownames(covarRice) <- paste0("NSFTV_", covarRaw[!is.na(covarRaw$NSFTV.ID), "NSFTV.ID"])
+## ----convertMap---------------------------------------------------------------
+## Add genotypes as row names of dropsMap.
+rownames(dropsMap) <- dropsMap$SNP.names
+## Rename Chomosome and Position columns.
+colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <-
+  c("chr", "pos")
 
-## ----eval=FALSE----------------------------------------------------------
-#  gDataRice <- createGData(gData = gDataRice, pheno = phenoRice, covar = covarRice)
+## ----createGdata--------------------------------------------------------------
+## Create a gData object containing map and marker information.
+gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap)
 
-## ----eval=FALSE----------------------------------------------------------
-#  summary(gDataRice)
+## ----addPheno-----------------------------------------------------------------
+## Convert phenotypic data to a list
+dropsPhenoList <- split(x = dropsPheno, f = dropsPheno$Experiment)
+## Rename Variety_ID to genotype and select relevant columns.
+dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
+  colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
+  trial <- trial[c("genotype", "grain.yield", "grain.number", "seed.size",
+                   "anthesis", "silking", "plant.height", "tassel.height",
+                   "ear.height")]
+  return(trial)
+})
+## Add phenotypic data to gDataDrops
+gDataDrops <- createGData(gData = gDataDrops, pheno = dropsPhenoList)
 
-## ----eval=FALSE----------------------------------------------------------
-#  gDataRiceCoded <- codeMarkers(gData = gDataRice)
+## ----sumGData-----------------------------------------------------------------
+## Summarize gDataDrops
+summary(gDataDrops, trials = "Bol12R")
 
-## ----eval=FALSE----------------------------------------------------------
-#  ## Perform imputation using beagle.
-#  gDataRiceCodedBeagle <- codeMarkers(gdata = gDataRice,
-#                                      removeDuplicates = FALSE,
-#                                      imputeType = "beagle")
+## ----removeDupMarkers---------------------------------------------------------
+## Remove duplicate markers from gDataDrops
+gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE) 
 
-## ----eval=FALSE----------------------------------------------------------
-#  ## Load the data imputed by beagle directly.
-#  data(gDataRiceCodedBeagle)
+## ----addMissings--------------------------------------------------------------
+## Copy gData object.
+gDataDropsMiss <- gDataDrops
+## Add random missing values to 1% of the values in the marker matrix.
+set.seed(1)
+nVal <- nrow(gDataDropsMiss$markers) * ncol(gDataDropsMiss$markers)
+gDataDropsMiss$markers[sample(x = 1:nVal, size = nVal / 100)] <- NA
 
-## ----eval=FALSE----------------------------------------------------------
-#  summary(gDataRiceCodedBeagle)
+## ----imputeMissings-----------------------------------------------------------
+## Impute missing values with random value.
+## Remove SNPs and genotypes with proportion of NA larger than 0.01
+gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss, nMissGeno = 0.01, 
+                                 nMiss = 0.01, impute = TRUE, 
+                                 imputeType = "random", verbose = TRUE)
 
-## ----eval=FALSE----------------------------------------------------------
-#  GWASRicePlantHeight0 <- runSingleTraitGwas(gData = gDataRiceCodedBeagle,
-#                                             traits = "Plant.height")
+## ----imputeMissingsBeagle, eval=FALSE-----------------------------------------
+#  ## Impute missing values using beagle software.
+#  gDataDropsImputedBeagle <- codeMarkers(gData = gDataDropsMiss, impute = TRUE,
+#                                         imputeType = "beagle", verbose = TRUE)
 
-## ----eval=FALSE----------------------------------------------------------
-#  summary(GWASRicePlantHeight0)
-#  plot(GWASRicePlantHeight0, type = "qq")
-#  plot(GWASRicePlantHeight0)
+## ----stg----------------------------------------------------------------------
+## Run single trait GWAS for trial 'Bol12W' and trait 'grain.yield'
+GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup, traits = "grain.yield",                                 trials = "Bol12W")
 
-## ----eval=FALSE----------------------------------------------------------
-#  GWASRicePlantHeight <-
-#    runSingleTraitGwas(gData = gDataRiceCodedBeagle, traits = "Plant.height",
-#                       covar = c("PC1", "PC2", "PC3", "PC4"), GLSMethod = "multi",
-#                       kinshipMethod = "IBS", thrType = "fixed", LODThr = 4)
-#  
-#  summary(GWASRicePlantHeight)
-#  plot(GWASRicePlantHeight, type = "qq")
-#  plot(GWASRicePlantHeight)
+## ----sumStg-------------------------------------------------------------------
+## Create summary of GWASDrops.
+summary(GWASDrops)
 
-## ----eval=FALSE----------------------------------------------------------
-#  GWASRicePlantHeightMult <-
-#    runSingleTraitGwas(gData = gDataRiceCodedBeagle,
-#                       covar = c("PC1", "PC2", "PC3", "PC4"), GLSMethod = "multi",
-#                       kinshipMethod = "IBS", thrType = "fixed", LODThr = 4)
-#  
-#  summary(GWASRicePlantHeightMult)
-#  plot(GWASRicePlantHeightMult, type = "qq", trait = "Plant.height")
-#  plot(GWASRicePlantHeightMult, type = "qtl")
+## ----qqStg--------------------------------------------------------------------
+## Plot a qq plot of GWAS Drops.
+plot(GWASDrops, plotType = "qq")
+
+## ----manhattanStg-------------------------------------------------------------
+## Plot a manhattan plot of GWAS Drops.
+plot(GWASDrops, plotType = "manhattan")
+
+## ----eval=FALSE---------------------------------------------------------------
+#  ## Run single trait GWAS for trial 'Bol12W' and trait 'grain.yield'
+#  ## Use chromosome specific kinship matrices computed using method of van Raden.
+#  GWASDropsChrSpec <- runSingleTraitGwas(gData = gDataDropsDedup,
+#                                         traits = "grain.yield",
+#                                         trials = "Bol12W",
+#                                         GLSMethod = "multi",
+#                                         kinshipMethod = "vanRaden")
 

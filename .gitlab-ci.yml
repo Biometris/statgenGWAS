@@ -84,5 +84,5 @@ coverage:
     ## Add R_LIBS_USER to libpaths.
     - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
   script:
-    - Rscript -e 'covr::package_coverage()'
+    - Rscript -e 'covr::package_coverage(function_exclusions = "imputeBeagle")'
   coverage: '/Coverage:\s*(\d+.\d+\%)/'
