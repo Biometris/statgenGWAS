@@ -262,9 +262,8 @@ codeMarkers <- function(gData,
   }
   ## Impute missing values.
   if (impute) {
-    if (verbose) {
-      cat(sum(is.na(markersRecoded)), "missing values imputed.\n")
-    }
+    ## Count number of missings in markers to print after imputing.
+    noMiss <- sum(is.na(markersRecoded))
     if (imputeType == "fixed") {
       ## Replace missing values by fixed value.
       markersRecoded[is.na(markersRecoded)] <- fixedValue
@@ -292,6 +291,11 @@ codeMarkers <- function(gData,
     } else if (imputeType == "beagle") {
       markersRecoded <- imputeBeagle(markersRecoded = markersRecoded, 
                                      map = gData$map)
+    }
+    if (verbose) {
+      ## Print after imputing.
+      ## Mainly relevant for beagle since it may take very long to run.
+      cat(noMiss, "missing values imputed.\n")
     }
     if (refAll[1] == "minor") {
       ## Correct for position of minor allele after imputation.
