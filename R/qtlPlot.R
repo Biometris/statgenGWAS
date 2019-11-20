@@ -72,9 +72,13 @@ qtlPlot <- function(dat,
       !is.logical(exportPptx)) {
     stop("exportPptx should be a single logical value.\n")
   }
-  if (exportPptx && (is.null(pptxName) || length(pptxName) > 1 ||
-                     !is.character(pptxName))) {
-    stop("pptxName should be a single character string.\n")
+  if (exportPptx) {
+    if (is.null(pptxName) || length(pptxName) > 1 || !is.character(pptxName)) {
+      stop("pptxName should be a single character string.\n")
+    }
+    if (tools::file_ext(pptxName) != "pptx") {
+      stop(pptxName, " should have '.pptx' extension.\n")
+    }
   }
   ## Check that all necessary columns are in the data
   reqCols <- c("chr", "trait", "effect", "pos")

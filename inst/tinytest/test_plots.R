@@ -131,7 +131,7 @@ expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1",
              "pptxName should be a single character string")
 expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
                   exportPptx = TRUE, pptxName = tmpPpt),
-             "should have '.pptx' extension.")
+             "should have '.pptx' extension")
 
 expect_silent(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
                    exportPptx = TRUE, pptxName = tmpPptx))
