@@ -4,7 +4,7 @@
 #' yielding PlantS). A panel of 256 maize hybrids was grown with two water 
 #' regimes (irrigated or rainfed), in seven fields in 2012 and 2013, 
 #' respectively, spread along a climatic transect from western to eastern 
-#' Europe, plus one site in Chile in 2013. This resulted in 29 experiments 
+#' Europe, plus one site in Chile in 2013. This resulted in 28 experiments 
 #' defined as the combination of one year, one site and one water regime, with 
 #' two and three repetitions for rainfed and irrigated treatments, respectively.
 #' A detailed environmental characterisation was carried out, with hourly 
@@ -44,7 +44,7 @@
 #' \item{\strong{dropsPheno}}{This data.frame contains the genotypic means 
 #' (Best Linear Unbiased Estimation, BLUEs), with one value per experiment 
 #' (Location × year × water regime) per genotype.\cr
-#' A data.frame with 7134 rows and 14 columns.\cr
+#' A data.frame with 6888 rows and 14 columns.\cr
 #' \describe{
 #' \item{Experiment}{experiments ID described by the three first letters of the
 #' city’s name followed by the year of experiment and the water regime with W 
@@ -72,6 +72,10 @@
 #' }
 #' }
 #' }
+#' 
+#' @note From the source data, the Experiments from 2011 have been removed since
+#' these do not contain all genotypes. Also the experiment Gra13W has been 
+#' removed.
 #' 
 #' @usage NULL
 #' @format NULL
