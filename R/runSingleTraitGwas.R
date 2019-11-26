@@ -294,7 +294,7 @@ runSingleTraitGwas <- function(gData,
           ## If there are no segregating markers for current chromosome 
           ## continue with next chromosome.
           ## This is highly unlikely for real data.
-          if (!length(segMarkersChr)) break
+          if (!length(segMarkersChr)) next
           X <- markersRedChr[nonMissRepId, segMarkersChr, drop = FALSE]
           Z <- if (length(covTr) > 0) {
             ## Define covariate matrix Z.
