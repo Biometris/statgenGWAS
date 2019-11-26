@@ -44,7 +44,7 @@
 #' \item{\strong{dropsPheno}}{This data.frame contains the genotypic means 
 #' (Best Linear Unbiased Estimation, BLUEs), with one value per experiment 
 #' (Location × year × water regime) per genotype.\cr
-#' A data.frane with 7390 rows and 14 columns.\cr
+#' A data.frame with 7134 rows and 14 columns.\cr
 #' \describe{
 #' \item{Experiment}{experiments ID described by the three first letters of the
 #' city’s name followed by the year of experiment and the water regime with W 
