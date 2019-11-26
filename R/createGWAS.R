@@ -107,24 +107,21 @@ summary.GWAS <- function(object,
         cat("\t\tResidual variance:",
             GWASInfo$varComp[[trial]][[trait]][2], "\n\n")
       }
-      if (!is.null(GWASInfo$thrType) && !is.null(GWASInfo$thrType)) {
+      if (!is.null(GWASInfo$thrType)) {
         ## Print significant SNP info.
         cat("\t\tLOD-threshold:", object$thr[[trial]][trait], "\n")
-        signSnpTrait <- signSnp[signSnp$trait == trait, ]
+        signSnpTrait <- signSnp[signSnp[["snpStatus"]] == "significant snp" &
+                                  signSnp[["trait"]] == 
+                                  get("trait", envir = parent.frame(3))]
         if (!is.null(signSnpTrait)) {
-          nSignSnp <-
-            nrow(signSnpTrait[signSnpTrait$snpStatus == "significant snp", ])
+          nSignSnp <- nrow(signSnpTrait)
           cat("\t\tNumber of significant SNPs:" , nSignSnp, "\n")
           if (nSignSnp > 0) {
             cat("\t\tSmallest p-value among the significant SNPs:",
-                min(signSnpTrait[signSnpTrait$snpStatus == "significant snp",
-                                 "pValue"]), "\n")
+                min(signSnpTrait[["pValue"]]), "\n")
             cat("\t\tLargest p-value among the significant SNPs: ",
-                max(signSnpTrait[signSnpTrait$snpStatus == "significant snp",
-                                 "pValue"]),
-                " (LOD-score: ",
-                min(signSnpTrait[signSnpTrait$snpStatus == "significant snp",
-                                 "LOD"]), ")\n\n", sep = "")
+                max(signSnpTrait[["pValue"]]),
+                " (LOD-score: ", min(signSnpTrait[["LOD"]]), ")\n\n", sep = "")
           } else {
             cat("\n")
           }
