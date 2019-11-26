@@ -52,7 +52,7 @@ createGWAS <- function(GWAResult = NULL,
 #' @param object An object of class \code{GWAS}
 #' @param ... Not used
 #' @param trials A vector of strings or numeric indices indicating for
-#' which trial the summary should be made. If \code{NULL}, a summary is
+#' which trials the summary should be made. If \code{NULL}, a summary is
 #' made for all trials.
 #'
 #' @export

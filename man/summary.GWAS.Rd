@@ -12,7 +12,7 @@
 \item{...}{Not used}
 
 \item{trials}{A vector of strings or numeric indices indicating for
-which trial the summary should be made. If \code{NULL}, a summary is
+which trials the summary should be made. If \code{NULL}, a summary is
 made for all trials.}
 }
 \description{

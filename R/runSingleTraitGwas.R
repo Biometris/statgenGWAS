@@ -225,7 +225,7 @@ runSingleTraitGwas <- function(gData,
       ## Create a reduced marker file removing genotypes that are missing and
       ## markers that are not in map
       markersRed <- gData$markers[nonMiss, colnames(gData$markers) %in%
-                                    rownames(mapRed)]
+                                    rownames(mapRed), drop = FALSE]
       ## Compute allele frequencies based on genotypes for which phenotypic
       ## data is available.
       allFreq <- colMeans(markersRed, na.rm = TRUE) / maxScore
@@ -343,7 +343,7 @@ runSingleTraitGwas <- function(gData,
         LODThr <- sort(na.omit(GWAResult[["LOD"]]), decreasing = TRUE)[nSnpLOD]
       }
       LODThrTr[trait] <- LODThr
-      ## Select the SNPs whose LOD-scores is above the threshold.
+      ## Select the SNPs whose LOD-scores are above the threshold.
       signSnpTotTr[[trait]] <-
         extrSignSnps(GWAResult = GWAResult, LODThr = LODThr,
                      sizeInclRegion = sizeInclRegion, minR2 = minR2,
