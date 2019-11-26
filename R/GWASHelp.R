@@ -213,7 +213,7 @@ extrSignSnps <- function(GWAResult,
     ## 1 if there are heterozygotes).
     snpVar <- 4 * GWAResult[snpSelection, "effect"] ^ 2 / maxScore ^ 2 *
       apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
-    propSnpVar <- snpVar / as.numeric(var(pheno[trait]))
+    propSnpVar <- snpVar[["effect"]] / as.numeric(var(pheno[trait]))
     ## Create data.table with significant snps.
     signSnp <- data.table::data.table(GWAResult[snpSelection, ],
                                       snpStatus = as.factor(snpStatus),
