@@ -154,25 +154,26 @@ qtlPlot <- function(dat,
   plotDat$trait <- factor(plotDat$trait, levels = unique(plotDat$trait))
   plotDat <- droplevels(plotDat)
   ## Create theme for plot
-  qtlPlotTheme <-
-    theme(plot.background = element_blank(),
-          panel.grid.major.x = element_line(color = ifelse(printVertGrid,
-                                                           "white", "gray")),
-          panel.grid.major.y = element_line(color = "white"),
-          panel.grid.minor = element_blank(),
-          plot.title = element_text(size = 20, face = "bold", vjust = 2) ,
-          axis.ticks = element_blank(),
-          panel.border = element_blank(),
-          axis.line = element_blank(),
-          legend.position = "none",
-          panel.background = element_rect(fill = "gray"),
-          axis.text.x = element_text(size = 0),
-          axis.text.y = element_text(size = 13, color = "black"),
-          axis.title = element_text(size = 20, color = "navyblue"),
-          strip.background = element_rect(fill = "gray40"),
-          strip.text = element_text(),
-          strip.text.x = element_text(size = 14),
-          strip.text.y = element_text(size = 0))
+  qtlPlotTheme <- theme(plot.background = element_blank(),
+                        panel.grid.major.x = 
+                          element_line(color = ifelse(printVertGrid,
+                                                      "white", "gray")),
+                        panel.grid.major.y = element_line(color = "white"),
+                        panel.grid.minor = element_blank(),
+                        plot.title = element_text(size = 20, face = "bold", 
+                                                  vjust = 2) ,
+                        axis.ticks = element_blank(),
+                        panel.border = element_blank(),
+                        axis.line = element_blank(),
+                        legend.position = "none",
+                        panel.background = element_rect(fill = "gray"),
+                        axis.text.x = element_text(size = 0),
+                        axis.text.y = element_text(size = 13, color = "black"),
+                        axis.title = element_text(size = 20, color = "navyblue"),
+                        strip.background = element_rect(fill = "gray40"),
+                        strip.text = element_text(),
+                        strip.text.x = element_text(size = 14),
+                        strip.text.y = element_text(size = 0))
   ## Create the plot object
   p <- ggplot(data = plotDat,
               ## Y data is sorted in reverse order because of the way ggplot plots.
@@ -180,10 +181,6 @@ qtlPlot <- function(dat,
               ## Point color depends on the effect direction.
               aes_string(x = "pos", y = "reorder(trait, -sort)", 
                          size = "abs(eff)", color = "factor(color)")) +
-    ## use custom made theme
-    qtlPlotTheme +
-    ylab(yLab) +
-    xlab("Chromosomes")  +
     # add vertical lines at the bin positions
     geom_vline(aes_(xintercept = ~pos), data = binPositions,
                linetype = 1, color = "white") +
@@ -193,11 +190,15 @@ qtlPlot <- function(dat,
     ## Do not resize the x axis (otherwise every chromosome has the same size.
     ## Do not add extra space between two facets.
     ## Place the chromosome labels at the bottom.
-    facet_grid(". ~ chr", scales = "free", space = "free",
-               switch = "both") +
+    facet_grid(". ~ chr", scales = "free", space = "free", switch = "both") +
     ## Ascribe a color to the allelic direction (column 'color').
     scale_color_manual(labels = c("neg", "pos"), 
-                       values = c("darkblue", "green4"))
+                       values = c("darkblue", "green4")) +
+    ## Turn off clipping so points are plotted outside plot area.
+    coord_cartesian(clip = "off") +
+    ## use custom made theme
+    qtlPlotTheme +
+    labs(x = "Chromosomes", y = yLab) 
   if (exportPptx) {
     ## Save figure in .pptx
     if (requireNamespace("officer", quietly = TRUE) &&
