@@ -76,7 +76,7 @@
 #' or base pairs. Otherwise 0.
 #' @param minR2 A numerical value between 0 and 1. Restricts the SNPs included
 #' in the region close to significant SNPs to only those SNPs that are in
-#' sufficient Linkage Disequilibruim (LD) with the significant snp, where LD
+#' sufficient Linkage Disequilibrium (LD) with the significant snp, where LD
 #' is measured in terms of \eqn{R^2}. If for example \code{sizeInclRegion} = 200000
 #' and \code{minR2} = 0.5, then for every significant SNP also those SNPs whose
 #' LD (\eqn{R^2}) with the significant SNP is at least 0.5 AND which are at

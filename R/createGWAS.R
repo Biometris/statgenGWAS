@@ -6,13 +6,13 @@
 #' of those should be provided as input.\cr
 #' \code{summary} and \code{plot} functions are available.
 #'
-#' @param GWAResult An optional data.frame or list of data.frames containing the
+#' @param GWAResult An optional data.table or list of data.frames containing the
 #' overall analysis results. Should a least contain columns \code{trait}, the
 #' evaluated trait, \code{snp}, the name of the SNP,
 #' \code{chr}, the chromosome number, \code{pos}, the position of the SNP on the 
 #' chromosome, \code{pValue}, the p-values from the analysis and \code{LOD} 
 #' the LOD-score.
-#' @param signSnp An optional data.frame or list of data.frames containing
+#' @param signSnp An optional data.table or list of data.frames containing
 #' information on the significant SNPs and optionally the SNPs close to the
 #' significant SNPs. Should at least contain columns \code{trait}, the
 #' evaluated trait, \code{snp}, the name of the SNP, \code{pValue}, the p-values
