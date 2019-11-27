@@ -110,9 +110,11 @@ summary.GWAS <- function(object,
       if (!is.null(GWASInfo$thrType)) {
         ## Print significant SNP info.
         cat("\t\tLOD-threshold:", object$thr[[trial]][trait], "\n")
-        signSnpTrait <- signSnp[signSnp[["snpStatus"]] == "significant snp" &
-                                  signSnp[["trait"]] == 
-                                  get("trait", envir = parent.frame(3))]
+        ## Work around the problem that subsetting a data.table on a variable
+        ## by the same name as a column in the data is difficult.
+        snpTrait <- signSnp[["trait"]] == trait
+        signSnpTrait <- signSnp[signSnp[["snpStatus"]] == "significant snp" & 
+                                  snpTrait]
         if (!is.null(signSnpTrait)) {
           nSignSnp <- nrow(signSnpTrait)
           cat("\t\tNumber of significant SNPs:" , nSignSnp, "\n")
