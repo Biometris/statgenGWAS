@@ -239,7 +239,7 @@ extrSignSnps <- function(GWAResult,
 #' @param sizeInclRegion A numerical value indicating the size of the region on
 #' the chromosome in which to look for SNPs.
 #' @param minR2 A numerical value between 0 and 1 indicating the minimum
-#' LD (in terms of r^2) that the SNPs should have with the reference SNP.
+#' LD (in terms of R^2) that the SNPs should have with the reference SNP.
 #'
 #' @return An integer vector with indices of the SNPs that are within the
 #' given \code{sizeInclRegion} and have a minimum LD with the reference SNP.
@@ -256,12 +256,14 @@ getSNPsInRegionSufLD <- function(snp,
   crit2 <- map[["chr"]] == map[snp, "chr"]
   candidateSnps <- setdiff(which(crit1 & crit2), snp)
   ## Compute R2 for candidate SNPs.
-  R2 <- suppressWarnings(cor(markers[, snp, drop = FALSE],
-                             markers[, candidateSnps, drop = FALSE]) ^ 2)
-  ## Select SNPs based on R2.
-  candidateSnpsNames <- colnames(R2[, R2[, 1] > minR2, drop = FALSE])
-  ### temporary.
-  candidateSnpsNames <- rownames(map)[candidateSnps]
-  return(which(rownames(map) %in% candidateSnpsNames))
+  if (length(candidateSnps) > 0) {
+    R2 <- suppressWarnings(cor(markers[, snp, drop = FALSE],
+                               markers[, candidateSnps, drop = FALSE]) ^ 2)
+    ## Select SNPs based on R2.
+    candidateSnpsNames <- colnames(R2[, R2[, 1] > minR2, drop = FALSE])
+    return(which(rownames(map) %in% candidateSnpsNames))
+  } else {
+    return(integer())
+  }
 }
 
