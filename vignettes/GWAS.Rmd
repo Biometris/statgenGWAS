@@ -20,6 +20,7 @@ comment = "#>",
 fig.dim = c(7, 4)
 )
 library(statgenGWAS)
+options(width = 100, digits = 2)
 ```
 
 The statgenGWAS package has been designed for performing single trait Genome Wide Association Studies (GWAS).
@@ -84,8 +85,7 @@ The map used as input when creating a **gData** object should at least have the 
 ## Add genotypes as row names of dropsMap.
 rownames(dropsMap) <- dropsMap$SNP.names
 ## Rename Chomosome and Position columns.
-colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <-
-  c("chr", "pos")
+colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <- c("chr", "pos")
 ```
 
 Now a gData object containing only map and marker information can be created. This object can be used as a base and phenotypic data, a kinship matrix and covariates may be added later on.
@@ -94,7 +94,7 @@ Now a gData object containing only map and marker information can be created. Th
 gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap)
 ```
 
-The next step involves adding phenotypic data to the gData object just created. dropsPheno contains genotypic means for 27 trials. To be able to run a GWAS analysis per trial the data has to be added as a list of 27 data.frames. These data.frames should have "genotype" as their first column and may only contain traits after that. Other columns need to be dropped.    
+The next step involves adding phenotypic data to the gData object just created. dropsPheno contains genotypic means for 28 trials. To be able to run a GWAS analysis per trial the data has to be added as a list of 28 data.frames. These data.frames should have "genotype" as their first column and may only contain traits after that. Other columns need to be dropped.    
 The phenotypic data can be added to *gDataDrops* using the same function that was used for creating the object. Adding an argument *gData = * to the function call will add new info to an existing object. If gDataDrops would have been non-empty that the phenotypic data already present would be overwritten.
 ```{r addPheno}
 ## Convert phenotypic data to a list
@@ -112,7 +112,7 @@ gDataDrops <- createGData(gData = gDataDrops, pheno = dropsPhenoList)
 ```
 Note that if the phenotypic data consists of only one trial/experiment it can be added as a single data.frame without first converting it to a list. In this case createGData will still convert the input to a list with one item.
 
-To get an idea of the contents of the data a summary of the gData object can be made. This will give an overview of the content of the map and markers and also print a summary per trait per trial. Since there are 29 trials and eight traits in gDataDrops the output is restricted here to one trial using the `trials` parameter of the summary functions
+To get an idea of the contents of the data a summary of the gData object can be made. This will give an overview of the content of the map and markers and also print a summary per trait per trial. Since there are 28 trials and eight traits in gDataDrops the output is restricted here to one trial using the `trials` parameter of the summary functions
 ```{r sumGData}
 ## Summarize gDataDrops
 summary(gDataDrops, trials = "Bol12R")
@@ -120,7 +120,7 @@ summary(gDataDrops, trials = "Bol12R")
 
 ## **Recoding and cleaning of markers**
 
-Marker data has to be numerical and without missing values in order to do GWAS analysis. The marker data available for the DROPS project has already been converted from A/T/C/G to 0/1/2. However, still the *codeMarkers* function in the package can be used to remove duplicate markers.
+Marker data has to be numerical and without missing values in order to do GWAS analysis. This can be done using the *codeMarkers* function. The marker data available for the DROPS project has already been converted from A/T/C/G to 0/1/2. However, still the *codeMarkers* function in the package can be used to further clean the markers, e.g. by removing the duplicate markers.
 ```{r removeDupMarkers}
 ## Remove duplicate markers from gDataDrops
 gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE) 
@@ -145,30 +145,74 @@ To re-impute the missing values added above, *codeMarkers* has to be run with th
 * imputeType = "random": Impute missing values with a random value based on the non-missing values for a SNP. 
 * imputeType = "beagle": Impute missing values using the independent beagle software [@Browning2016]. This software is include in the package and is called with its default settings. Since running beagle takes a long time for the current data the call to beagle is only shown here but not run.    
  
-Before imputation genotypes with a high proportion of missing values in the marker matrix can be removed by setting the parameter nMissGeno. Setting it to 0.1 will remove all genotypes with a proportion of missing values higher than 0.1. In a similar way SNPs with a high proportion of missing values can be removed setting nMiss. The default value for both parameters is 1, so genotypes and SNPs with only missing values are always removed.  
+Before imputation, genotypes with a high proportion of missing values in the marker matrix can be removed by setting the parameter nMissGeno. Setting it to 0.1 will remove all genotypes with a proportion of missing values higher than 0.1. In a similar way SNPs with a high proportion of missing values can be removed setting nMiss. The default value for both parameters is 1, so genotypes and SNPs with only missing values are always removed.  
 The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF) lower than the specified MAF. As with removing duplicate SNPs this will be done both before and after imputation.
 
 ```{r imputeMissings}
 ## Impute missing values with random value.
 ## Remove SNPs and genotypes with proportion of NA larger than 0.01
-gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss, nMissGeno = 0.01, 
-                                 nMiss = 0.01, impute = TRUE, 
-                                 imputeType = "random", verbose = TRUE)
+gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss, 
+                                 nMissGeno = 0.01, 
+                                 nMiss = 0.01, 
+                                 impute = TRUE, 
+                                 imputeType = "random", 
+                                 verbose = TRUE)
 ```
 
 ```{r imputeMissingsBeagle, eval=FALSE}
 ## Impute missing values using beagle software.
-gDataDropsImputedBeagle <- codeMarkers(gData = gDataDropsMiss, impute = TRUE,
-                                       imputeType = "beagle", verbose = TRUE)
+gDataDropsImputedBeagle <- codeMarkers(gData = gDataDropsMiss, 
+                                       impute = TRUE,
+                                       imputeType = "beagle",
+                                       verbose = TRUE)
 ```
 
 ## **Single trait GWAS**
 
-The cleaned gData object can be used for performing single trait GWAS analysis. With all the default settings the analysis already performs quite well.
+The cleaned gData object can be used for performing single trait GWAS analysis. With all the default settings the analysis already performs quite well. In the examples below the trial Mur13W is used to demonstrate the options of the *runSingleTraitGwas* function. 
 ```{r stg}
-## Run single trait GWAS for trial 'Bol12W' and trait 'grain.yield'
-GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup, traits = "grain.yield",                                 trials = "Bol12W")
+## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W 
+GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
+                                trials = "Mur13W",
+                                traits = c("grain.yield", "anthesis"))
 ```
+
+The output of the *runSingleTraitGwas* function is an object of class GWAS. This is a list consisting of five components.  
+**GWAResult**: a list of data.tables, one for each trial for which the analysis was run. Each data.table contains per SNP:
+
+| | |
+|:-----|:--------------------------------------------------|
+| trait | trait name |
+| snp | SNP name |
+| chr | chromosome on which the SNP is located |
+| pos | position of the SNP on the chromosome |
+| allFreq | allele frequency of the SNP |
+| pValue | pValue for the SNP |
+| effect | effect of the SNP on the trait value |
+| effectSe | standard error of the effect of the SNP on the trait value |
+| RLR2 | likelihood-ratio-based R2 as defined in @Sun2010 |
+| LOD | LOD score for the SNP, defined as -log10(pValue) |
+```{r gwaRes}
+print(head(GWASDrops$GWAResult$Mur13W), row.names = FALSE)
+```
+
+**signSnp**: a list of data.tables, one for each trial for which the analysis was run, containing the significant SNPs. Optionally also the SNPs close to the significant SNPs are included in the data.table. See [**3.6.2**](#sign) for more information on how to do this. The data.tables in signSnp consist of the same columns as those in GWAResult described above. Two extra columns are added:
+
+| | |
+|:-----|:--------------------------------------------------|
+| snpStatus | either "significant SNP" or "within ... kb of a significant snp" |
+| propSnpVar | proportion of the variance explained by the SNP |
+```{r signSnp}
+print(GWASDrops$signSnp$Mur13W, row.names = FALSE)
+```
+
+**kinship**: the kinship matrix (or matrices) used in the GWAS analysis. This can either be the user provided kinship matrix or the kinship matrix computed when running the *runSingleTraitGwas* function.
+
+**thr**: a list of thresholds, one for each trial for which the analysis was run, used for determining significant SNPs. 
+
+**GWASInfo**: additional information on the analysis, e.g. the call and the type of threshold used.
+
+### GWAS Summary
 
 For a quick overview of the results, e.g. the number of significant SNPs, use the summary function.
 ```{r sumStg}
@@ -176,34 +220,183 @@ For a quick overview of the results, e.g. the number of significant SNPs, use th
 summary(GWASDrops)
 ```
 
-A qq plot of observed LOD scores against expected LOD scores [@Segura2012] can be made by setting ```plotType = "qq"``` when plotting the results.
+### GWAS Plots
+
+#### QQ plots
+
+A qq plot of observed LOD scores against expected LOD scores [@Segura2012] can be made by setting `plotType = "qq"` when plotting the results. This plot gives a first impression on the quality of the GWAS model.
 ```{r qqStg} 
 ## Plot a qq plot of GWAS Drops.
-plot(GWASDrops, plotType = "qq")
+plot(GWASDrops, plotType = "qq", trait = "grain.yield")
 ```
 
-A manhattan plot is made by setting ```plotType = "manhattan"```. Significant SNPs are marked in red.
+#### Manhattan plots
+
+A manhattan plot is made by setting `plotType = "manhattan"`. Significant SNPs are marked in red.
 ```{r manhattanStg}
 ## Plot a manhattan plot of GWAS Drops.
-plot(GWASDrops, plotType = "manhattan")
+plot(GWASDrops, plotType = "manhattan", trait = "grain.yield")
 ```
+
+To change the threshold when plotting without having to redo the GWAS analysis, use the parameter `yThr`. Use `chr` to only plot a subset of chromosomes.
+```{r manhattanStgThr}
+## Plot a manhattan plot of GWAS Drops.
+## Set significance threshold to 4 and only plot chromosomes 6 to 8.
+plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", yThr = 4, chr = 6:8)
+```
+
+If the number of SNPs get large, the plotting might get slow. This can be fixed by setting the parameter `lod`. For the SNPs with a LOD-value below `lod`, only 5% will be plotted. The chance of a SNP being plotted is proportional to its LOD-value. SNPs with a higher LOD have a higher chance of being plotted. Since most SNPs will have low LOD-values, this restriction doesn't very much affect the resulting plot. Note that the 5% of the SNPs that is plotted, is selected randomly. For reproducible results make sure to set a seed. 
+
+```{r manhattanLod}
+## Plot a manhattan plot of GWAS Drops.
+## Plot only 5% of SNPs with a LOD below 3.
+set.seed(1)
+plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", lod = 3)
+```
+
+Other options allow the user to specify known effects (`effects`), which will be used for determining true/false positives and false negatives. These are displayed in green, orange and yellow, respectively. Also the visual appearence of the plot can be altered. See for specifics on how to do this `help(plot.GWAS)`
+
+#### QTL plots
+
+A qtl plot can be made by setting `plotType = "qtl"`. In this plot the effects of the significant SNPs are marked as circles on the chromosomes [@Millet2016]. Effects for multiple traits are displayed horizontally above each other and can thus be compared.
+
+```{r qtlStg}
+## Plot a qtl plot of GWAS Drops for Mur13W.
+plot(GWASDrops, plotType = "qtl")
+```
+
+In this case, for "anthesis" there are no significant SNPs so the line is left out. To change the threshold when plotting without having to redo the GWAS analysis, use the parameter `yThr`. 
+
+```{r qtlStgThr}
+## Plot a qtl plot of GWAS Drops for Mur13W.
+## Set significance threshold to 4.
+plot(GWASDrops, plotType = "qtl", yThr = 4)
+```
+
+Now there are significant SNPs for both traits. However since the traits are measured on a different scale, the effects for antheses seem a lot larger than those for grain.yield. This scaling issue can be solved by setting `normalize = TRUE`.
+
+```{r qtlStgNorm}
+## Plot a qtl plot of GWAS Drops for Mur13W.
+## Set significance threshold to 4 and normalize trait values.
+plot(GWASDrops, plotType = "qtl", yThr = 4, normalize = TRUE)
+```
+
+Now the effects are on the same scale and comparable.  
+
+Other parameters can be used to plot a subset of the chromosomes (`chr`), directly export the plot to .pptx (`exportPptx = TRUE` and specify `pptxName`). Note that the officer and rvg packages are required for this. A full list of parameters can be found by running `help(plot.GWAS)`. 
 
 ## Kinship matrices
 
-In the default function call of the *runSingleTraitGwas* function a single kinship matrix is computed using the algorithm proposed by @Astle2009. Several different methods for computing the kinship matrix are available in the package. Kinship matrices can be computed directly using the *kinship* function or as part of the algorithm in *runSingleTraitGwas*. For both the available methods are the algorithms proposed by @Astle2009 (```kinshipMethod = "astle"```) and @VanRaden2008 (```kinshipMethod = "vanRaden"```) or Identity by State (IBS) (```kinshipMethod = "IBS"```). Users can also provide their own kinship matrices as input for the *runSingleTraitGwas* function by specifying the parameter kin.     
-In most cases using chromosome specific kinship matrices considerably improves the predicting power of the algorithm. Chromosome specific kinship matrices are calculated per chromosome using one of the methods described above, ignoring the information on the chromosome itself. E.g. the kinship matrix for chromosome one is computed from the markers that are not on chromosome one. Calling *runSingleTraitGwas* with ```GLSMethod = "multi"``` assures computation of chromosome specific kinship matrices.
+In the default function call of the *runSingleTraitGwas* function a single kinship matrix is computed using the algorithm proposed by @Astle2009. Several different methods for computing the kinship matrix are available in the package. Kinship matrices can be computed directly using the *kinship* function or as part of the algorithm in *runSingleTraitGwas*. For both the available methods are the algorithms proposed by @Astle2009 (`kinshipMethod = "astle"`) and @VanRaden2008 (`kinshipMethod = "vanRaden"`) or Identity by State (IBS) (`kinshipMethod = "IBS"`). Users can also provide their own kinship matrices as input for the *runSingleTraitGwas* function by specifying the parameter kin.     
+In most cases using chromosome specific kinship matrices considerably improves the predicting power of the algorithm. Chromosome specific kinship matrices are calculated per chromosome using one of the methods described above, ignoring the information on the chromosome itself. E.g. the kinship matrix for chromosome one is computed from the markers that are not on chromosome one. Calling *runSingleTraitGwas* with `GLSMethod = "multi"` assures computation of chromosome specific kinship matrices.
 
-```{r eval=FALSE}
-## Run single trait GWAS for trial 'Bol12W' and trait 'grain.yield'
+```{r stgChrSpec}
+## Run single trait GWAS for trial 'Mur13W' and trait 'grain.yield'
 ## Use chromosome specific kinship matrices computed using method of van Raden.
 GWASDropsChrSpec <- runSingleTraitGwas(gData = gDataDropsDedup, 
                                        traits = "grain.yield",
-                                       trials = "Bol12W",
+                                       trials = "Mur13W",
                                        GLSMethod = "multi",
                                        kinshipMethod = "vanRaden")
 ```
 
+## Further options {#opts}
+
+The *runSingleTraitGwas* function has many parameters that can be specified. In this section similar parameters are grouped and explained with examples on how to use them.
+
+### Multiple trails and traits
+
 The analysis can be performed for more than one trait in a single function call. Not specifying traits at all will perform the analysis for all traits that are present in the phenotypic data in the gData object. The results will be combined in a single output object with the traits specified in the column *trait* in *GWAResult* and *signSnp* within this object. Running for multiple trials is also possible and will generate a list of outputs within *GWAResult* and *signSnp* in the output object. Not specifying the trials will run the GWAS analysis for all trials in the phenotypic data in the gData object.
+
+### Significance thresholds {#sign}
+
+The threshold for selecting significant SNPs in a GWAS analysis is computed by default using Bonferroni correction, with an alpha of 0.05. Alpha may be modified setting the option *alpha* when calling *runSingleTraitGwas*. Two other threshold types can be used as well, a fixed threshold (`thrType = "fixed"`) specifying *LODThr* for the value of the threshold, or a threshold that defines the n SNP with the highest LOD score as significant SNPs. Set `thrType = "Small"` together with `nSnpLOD = n` to do this.
+
+```{r stgSNPFixThr}
+## Run single trait GWAS for trait 'grain.yield' for Mur13W.
+## Use a fixed significance threshold of 4.
+GWASDropsFixThr <- runSingleTraitGwas(gData = gDataDropsDedup,
+                                      trials = "Mur13W",
+                                      traits = "grain.yield",
+                                      thrType = "fixed",
+                                      LODThr = 4)
+```
+
+### Variance components
+
+There are two ways to compute the variance components used in the GWAS analysis. Either the EMMA algorithm ([@Kang2008]) or the Newton Raphson algorithm ([@Tunnicliffe1989]). Specify the method by setting the parameter `remlAlgo` to either `EMMA` or `NR`.
+
+```{r stgSNPNR}
+## Run single trait GWAS for trait 'grain.yield' for Mur13W.
+## Use the Newton Raphson algorithm for computing the variance components.
+GWASDropsNR <- runSingleTraitGwas(gData = gDataDropsDedup,
+                                  trials = "Mur13W",
+                                  traits = "grain.yield",
+                                  remlAlgo = "NR")
+```
+
+### Genomic control correction {#gcCorr}
+
+In the GWAS object returned by *runSingleTraitGwas* the inflation factor ([@Devlin1999]) is returned in the GWASInfo. It is also shown in the summary. Ideally this factor should be 1, meaning there is no inflation at all. In practice however this rarely happens. Its value for Mur13W can be checked as follows:
+```{r inflation}
+GWASDrops$GWASInfo$inflationFactor$Mur13W
+```
+Both values are very close to 1, so in this case there is no need to apply any correction based on this. If the values are further away from 1, the inflation can be corrected for by setting `genomicControl = TRUE` in *runSingleTraitGwas*.
+
+```{r stgSNPGenomicCorrection}
+## Run single trait GWAS for trait 'grain.yield' for Mur13W.
+## Perform genomicCorrection on the p-Values.
+GWASDropsGenControl <- runSingleTraitGwas(gData = gDataDropsDedup,
+                                          trials = "Mur13W",
+                                          traits = "grain.yield",
+                                          genomicControl = TRUE)
+```
+
+### Covariates
+
+Covariates can be included as extra fixed effects in the GWAS model. These covariates should be in to the gData object and can then be added to the model by specifying `covar` when running the GWAS.  
+It is also possible to add one or more SNPs as covariates in the model. For this use the parameter `snpCov`.
+
+```{r stgSNPCovar}
+## Run single trait GWAS for trait 'grain.yield' for Mur13W.
+## Use PZE-106021410, the most significant SNP, a SNP covariate.
+GWASDropsSnpCov <- runSingleTraitGwas(gData = gDataDropsDedup,
+                                      trials = "Mur13W",
+                                      traits = "grain.yield",
+                                      snpCov = "PZE-106021410")
+```
+
+### Minor Allele Frequency
+
+It is recommended to remove SNPs with a low minor allele frequency (MAF) from the data before starting a GWAS analysis. However it is also possible to do so in the analysis itself. The difference between these approaches is that *recodeMarkers* removes the SNPs, but *runSingleTraitGwas* leaves them in and sets the computed values to NA. It the latter case it will still be possible to see the allele frequency of the SNP.  
+By default all SNPs with a MAF lower than 0.01 are removed during the analysis. This can be controlled by the parameter `MAF`. Setting MAF to 0 will still remove duplicate SNPs since duplicates cause problems when fitting the underlying models. Instead of removing SNPs with a low MAF it is also possible to remove SNPs with a low minor allele count (MAC). This is done setting `useMAF = FALSE` and then specifying `MAC`.   
+
+```{r stgMAC}
+## Run single trait GWAS for trait 'grain.yield' for Mur13W.
+## Only include SNPs that have a MAC of at least 20
+GWASDropsMAC <- runSingleTraitGwas(gData = gDataDropsDedup,
+                                   trials = "Mur13W",
+                                   traits = "grain.yield",
+                                   useMAF = FALSE,
+                                   MAC = 20)
+```
+
+### SNPs close to significant SNPs
+
+Apart from the significant SNPs, it could also be interesting to see the SNPs that are close to the significant SNPs. These can be included in the output by setting `sizeIncludedRegion` to a positive value. When doing so SNPs that are within a distance of `sizeIncludedRegion` (based on the information in the map) from a significant SNP are included in the signSnp data.table within the GWAS object. Only SNPs that are in a sufficient linkage disequilibrium (LD), measured in terms of $R^2$, are included. The minimum $R^2$ required to be included can be specified by setting `minR2`.
+
+```{r stgInclReg}
+## Run single trait GWAS for trait 'grain.yield' for Mur13W.
+## Include SNPs within 200000 centimorgan of significant SNPs 
+## with a minimum LD of 0.1.
+GWASDropsInclClose <- runSingleTraitGwas(gData = gDataDropsDedup,
+                                         trials = "Mur13W",
+                                         traits = "grain.yield",
+                                         sizeInclRegion = 200000,
+                                         minR2 = 0.1)
+## Check signSnp in output.
+print(head(GWASDropsInclClose$signSnp$Mur13W), row.names = FALSE)
+```
 
 ----
 
