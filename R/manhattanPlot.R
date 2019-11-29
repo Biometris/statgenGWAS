@@ -8,8 +8,8 @@
 #' @param xValues A vector of cumulative marker positions.
 #' @param yValues A vector of LOD-scores.
 #' @param map A data.frame with at least the columns chr, the number of the
-#' chromosome and cumPos, the cumulative position of the snp the cumulative
-#' position of the snp starting from the first chromosome.
+#' chromosome and cumPos, the cumulative position of the SNP the cumulative
+#' position of the SNP starting from the first chromosome.
 #' @param xLab A character string, the x-axis label.
 #' @param yLab A character string, the y-axis label.
 #' @param xSig A vector of integers, indicating which components in the vectors

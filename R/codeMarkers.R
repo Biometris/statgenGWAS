@@ -148,7 +148,7 @@ codeMarkers <- function(gData,
   }
   markersOrig <- gData$markers
   if (verbose) {
-    cat("Input contains ", ncol(markersOrig), " markers for ", 
+    cat("Input contains ", ncol(markersOrig), " SNPs for ", 
         nrow(markersOrig), " genotypes.\n", sep = "")
   }
   ## Replace naStrings by NA.
@@ -173,7 +173,7 @@ codeMarkers <- function(gData,
     snpMiss <- colMeans(is.na(markersClean)) < nMiss
     markersClean <- markersClean[, snpMiss | snpKeep, drop = FALSE]
     if (verbose) {
-      cat(sum(!(snpMiss | snpKeep)), " markers removed because proportion of",
+      cat(sum(!(snpMiss | snpKeep)), " SNPs removed because proportion of",
           " missing values larger than or equal to ", nMiss, ".\n", sep = "")
     }
     snpKeep <- snpKeep[snpMiss | snpKeep]
@@ -234,7 +234,7 @@ codeMarkers <- function(gData,
     snpMAF <- snpMAFs >= maxAll * MAF & snpMAFs <= maxAll * (1 - MAF)
     markersRecoded <- markersRecoded[, snpMAF | snpKeep, drop = FALSE]
     if (verbose) {
-      cat(sum(!(snpMAF | snpKeep)), " markers removed because MAF smaller ",
+      cat(sum(!(snpMAF | snpKeep)), " SNPs removed because MAF smaller ",
           "than ", MAF, ".\n", sep = "")
     }
     snpKeep <- snpKeep[snpMAF | snpKeep]
@@ -256,8 +256,7 @@ codeMarkers <- function(gData,
     snpKeep <- c(rep(TRUE, sum(snpKeep)),
                  rep(FALSE, ncol(markersRecoded) - sum(snpKeep)))
     if (verbose) {
-      cat(length(randOrder) - ncol(markersRecoded),
-          "duplicate markers removed.\n")
+      cat(length(randOrder) - ncol(markersRecoded), "duplicate SNPs removed.\n")
     }
   }
   ## Impute missing values.
@@ -309,7 +308,7 @@ codeMarkers <- function(gData,
       snpMAF <- snpMAFs >= maxAll * MAF & snpMAFs <= maxAll * (1 - MAF)
       markersRecoded <- markersRecoded[, snpMAF | snpKeep, drop = FALSE]
       if (verbose) {
-        cat(sum(!(snpMAF | snpKeep)), "markers removed because MAF smaller",
+        cat(sum(!(snpMAF | snpKeep)), "SNPs removed because MAF smaller",
             "than ", MAF, " after imputation.\n")
       }
       snpKeep <- snpKeep[snpMAF | snpKeep]
@@ -330,7 +329,7 @@ codeMarkers <- function(gData,
               markersDedup)
       if (verbose) {
         cat(length(randOrder) - ncol(markersRecoded),
-            "duplicate markers removed after imputation.\n")
+            "duplicate SNPs removed after imputation.\n")
       }
     }
   }
@@ -342,7 +341,7 @@ codeMarkers <- function(gData,
                                                colnames(markersRecoded)],
                      drop = FALSE]
   }
-  ## Remove removed markers and genotypes from map, pheno, kinship and covar.
+  ## Remove removed SNPs and genotypes from map, pheno, kinship and covar.
   mapNew <- covarNew <- NULL
   if (!is.null(gData$map)) {
     mapNew <- gData$map[rownames(gData$map) %in% colnames(markersRecoded), ]
@@ -369,7 +368,7 @@ codeMarkers <- function(gData,
                               rownames(markersRecoded), , drop = FALSE]
   }
   if (verbose) {
-    cat("Output contains", ncol(markersRecoded), "markers for",
+    cat("Output contains", ncol(markersRecoded), "SNPs for",
         nrow(markersRecoded), "genotypes.\n")
   }
   ## Return gData object with recoded and imputed markers.

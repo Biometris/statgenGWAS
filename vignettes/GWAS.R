@@ -28,7 +28,7 @@ colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <- c(
 gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap)
 
 ## ----addPheno-------------------------------------------------------------------------------------
-## Convert phenotypic data to a list
+## Convert phenotypic data to a list.
 dropsPhenoList <- split(x = dropsPheno, f = dropsPheno$Experiment)
 ## Rename Variety_ID to genotype and select relevant columns.
 dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
@@ -38,15 +38,15 @@ dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
                    "ear.height")]
   return(trial)
 })
-## Add phenotypic data to gDataDrops
+## Add phenotypic data to gDataDrops.
 gDataDrops <- createGData(gData = gDataDrops, pheno = dropsPhenoList)
 
 ## ----sumGData-------------------------------------------------------------------------------------
-## Summarize gDataDrops
-summary(gDataDrops, trials = "Bol12R")
+## Summarize gDataDrops.
+summary(gDataDrops, trials = "Mur13W")
 
 ## ----removeDupMarkers-----------------------------------------------------------------------------
-## Remove duplicate markers from gDataDrops
+## Remove duplicate SNPs from gDataDrops.
 gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE) 
 
 ## ----addMissings----------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ gDataDropsMiss$markers[sample(x = 1:nVal, size = nVal / 100)] <- NA
 
 ## ----imputeMissings-------------------------------------------------------------------------------
 ## Impute missing values with random value.
-## Remove SNPs and genotypes with proportion of NA larger than 0.01
+## Remove SNPs and genotypes with proportion of NA larger than 0.01.
 gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss, 
                                  nMissGeno = 0.01, 
                                  nMiss = 0.01, 
@@ -75,7 +75,7 @@ gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss,
 #                                         verbose = TRUE)
 
 ## ----stg------------------------------------------------------------------------------------------
-## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W 
+## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.
 GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
                                 trials = "Mur13W",
                                 traits = c("grain.yield", "anthesis"))
@@ -154,7 +154,7 @@ GWASDrops$GWASInfo$inflationFactor$Mur13W
 
 ## ----stgSNPGenomicCorrection----------------------------------------------------------------------
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
-## Perform genomicCorrection on the p-Values.
+## Perform genomic correction on the p-Values.
 GWASDropsGenControl <- runSingleTraitGwas(gData = gDataDropsDedup,
                                           trials = "Mur13W",
                                           traits = "grain.yield",
@@ -179,8 +179,7 @@ GWASDropsMAC <- runSingleTraitGwas(gData = gDataDropsDedup,
 
 ## ----stgInclReg-----------------------------------------------------------------------------------
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
-## Include SNPs within 200000 centimorgan of significant SNPs 
-## with a minimum LD of 0.1.
+## Include SNPs within 200000 centimorgan of significant SNPs with a minimum LD of 0.1.
 GWASDropsInclClose <- runSingleTraitGwas(gData = gDataDropsDedup,
                                          trials = "Mur13W",
                                          traits = "grain.yield",

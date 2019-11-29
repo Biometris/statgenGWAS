@@ -199,13 +199,12 @@ extrSignSnps <- function(GWAResult,
                                     sizeInclRegion = sizeInclRegion, 
                                     minR2 = minR2))
       snpSelection <- sort(union(snpSelection, signSnpNr))
-      snpStatus <- rep(paste("within", sizeInclRegion / 1000,
-                             "kb of a significant snp"),
+      snpStatus <- rep(paste("within", sizeInclRegion, "of a significant SNP"),
                        length(snpSelection))
-      snpStatus[snpSelection %in% signSnpNr] <- "significant snp"
+      snpStatus[snpSelection %in% signSnpNr] <- "significant SNP"
     } else {
       snpSelection <- signSnpNr
-      snpStatus <- rep("significant snp", length(signSnpNr))
+      snpStatus <- rep("significant SNP", length(signSnpNr))
     }
     ## Compute variance of marker scores, based on genotypes for which
     ## phenotypic data is available. For inbreeders, this depends on

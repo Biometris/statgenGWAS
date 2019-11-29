@@ -154,17 +154,17 @@ expect_equal(capture.output(gd <- codeMarkers(gData = gData, MAF = 0.2,
              character())
 consOut <- capture.output(codeMarkers(gData = gData, MAF = 0.2,
                                       impute = FALSE, verbose = TRUE))
-expect_true(any(grepl(pattern = "4 markers for 3 genotypes", x = consOut)))
-expect_true(any(grepl(pattern = "1 markers removed because MAF", x = consOut)))
-expect_true(any(grepl(pattern = "1 duplicate markers removed", x = consOut)))
-expect_true(any(grepl(pattern = "2 markers for 3 genotypes", x = consOut)))
+expect_true(any(grepl(pattern = "4 SNPs for 3 genotypes", x = consOut)))
+expect_true(any(grepl(pattern = "1 SNPs removed because MAF", x = consOut)))
+expect_true(any(grepl(pattern = "1 duplicate SNPs removed", x = consOut)))
+expect_true(any(grepl(pattern = "2 SNPs for 3 genotypes", x = consOut)))
 
 consOut2 <- capture.output(codeMarkers(gData = gData6, MAF = 0.2,
                                        naStrings = "*", verbose = TRUE))
 expect_true(any(grepl(pattern = "2 values replaced by NA", x = consOut2)))
 expect_true(any(grepl(pattern = "1 missing values imputed", x = consOut2)))
-expect_true(any(grepl(pattern = "0 markers removed because MAF", x = consOut2)))
-expect_true(any(grepl(pattern = "0 duplicate markers removed after imputation",
+expect_true(any(grepl(pattern = "0 SNPs removed because MAF", x = consOut2)))
+expect_true(any(grepl(pattern = "0 duplicate SNPs removed after imputation",
                       x = consOut2)))
 
 # Check that markers with only NA are always removed.

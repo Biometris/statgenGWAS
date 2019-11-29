@@ -40,7 +40,7 @@ sig2 <- stg2$signSnp$ph1
 expect_true(inherits(sig2, "data.table"))
 expect_equal(nrow(sig2), 2)
 expect_equal(as.character(sig2[["snpStatus"]]), 
-             c("significant snp", "within 0.001 kb of a significant snp"))
+             c("significant SNP", "within 1 of a significant SNP"))
 expect_equal(sig2[["LOD"]] > 0.2, c(TRUE, FALSE))
 
 ## Test option useMAF.

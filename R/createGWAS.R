@@ -113,7 +113,7 @@ summary.GWAS <- function(object,
         ## Work around the problem that subsetting a data.table on a variable
         ## by the same name as a column in the data is difficult.
         snpTrait <- signSnp[["trait"]] == trait
-        signSnpTrait <- signSnp[signSnp[["snpStatus"]] == "significant snp" & 
+        signSnpTrait <- signSnp[signSnp[["snpStatus"]] == "significant SNP" & 
                                   snpTrait]
         if (!is.null(signSnpTrait)) {
           nSignSnp <- nrow(signSnpTrait)

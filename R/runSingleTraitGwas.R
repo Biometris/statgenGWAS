@@ -77,10 +77,10 @@
 #' @param minR2 A numerical value between 0 and 1. Restricts the SNPs included
 #' in the region close to significant SNPs to only those SNPs that are in
 #' sufficient Linkage Disequilibrium (LD) with the significant snp, where LD
-#' is measured in terms of \eqn{R^2}. If for example \code{sizeInclRegion} = 200000
-#' and \code{minR2} = 0.5, then for every significant SNP also those SNPs whose
-#' LD (\eqn{R^2}) with the significant SNP is at least 0.5 AND which are at
-#' most 200kb away from this significant snp are included. Ignored if
+#' is measured in terms of \eqn{R^2}. If for example \code{sizeInclRegion} = 
+#' 200000 and \code{minR2} = 0.5, then for every significant SNP also those SNPs 
+#' whose LD (\eqn{R^2}) with the significant SNP is at least 0.5 AND which are 
+#' at most 200000 away from this significant snp are included. Ignored if
 #' \code{sizeInclRegion} = 0.
 #' @param nCores A numerical value indicating the number of cores to be used by
 #' the parallel part of the algorithm. If \code{NULL} the number of cores used
