@@ -40,7 +40,7 @@ The data.frame **map** is used to describe the physical positions of the markers
 The marker matrix is stored in the matrix **marker** within the gData object. It has the names of the markers in its column names and the genotypes in its row names. Markers can either be coded as character strings or as numerical values. In the former case, before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be do using the function **_codeMarkers_**. 
 
 ## **Phenotypic data**  
-Phenotypic data, either directly from field trials or after summarizing can be stored in **pheno** in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different trials or different summarizations of the original data. The first column of all elements of pheno should be *genotype* and all the other columns should represent different traits. Storing additional variables should be done in **covar**. A single data.frame will be converted to a one-item list upon creation of a gData object. 
+Phenotypic data, either directly from field trials or after summarizing can be stored in **pheno** in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different trials or different summarizations of the original data. The first column of all elements of pheno should be *genotype* and all the other columns should represent different traits. Storing additional variables should be done in **covar**. A single data.frame will be converted to a one-item list upon creation of a gData object.
 
 ## **Kinship matrix**  
 The kinship matrix describes the genetic relatedness between the different genotypes. It is stored in the matrix **kinship** in the gData object. This should be a square matrix with genotypes in both row and column names and a measure for the genetic relatedness in its cells. There are many ways of computing genetic relatedness some of which are included in this package. Instead of providing one kinship matrix a list of kinship matrices can be provided with each matrix in this list a chromosome specific kinship matrix, usually computed using all markers that are not on the corresponding chromosome. If a named list of kinship matrices is provided, its names should match the names or numbers of the chromosomes in **map**. Unnamed lists will be given default names. 
@@ -52,13 +52,27 @@ Further covariates that can be used in the analyses can be stored in the data.fr
 
 # Single Trait GWAS
 
-stG
+## Theoretical background
+
+Suppose there are $n$ measurements of a phenotype for $t$ genotypes. Then a lineair mixed model for association mapping is typically expressed as
+$$y = X\beta + Zu + e$$  
+Here $y$ is a $n \times 1$ vector of observed phenotypes. $X$ is an $n \times q$ matrix of fixed effects, including mean, SNPs and other confounding variables. $\beta$ is a $q \times 1$ vector of coefficients of the fixed effects. $Z$ is the $n \times t$ incidence matrix mapping the observed phenotypes to the individuals. $u$ then is the random effect of the mixed model with $var(u) = \sigma^2_gK$, where $K$ is the kinship matrix derived from the marker information of the individual. Finally $e$ is an $n \times n$ matrix of residual effects, with $var(\epsilon) = \sigma^2_eI$. For this model the phenotypic variance-covariance matrix $Sigma$ can be represented as $Sigma = \sigma^2_gZKZ^{-1} + \sigma^2_eI$. 
+
+$Sigma$ can then be used to obtain generalized least-square (GLS) effect size estimates and F-test P values for each SNP from the model.
+
+## Application in the package
+
+The single trait GWAS algorithm implemented in the statgenSSA package consists of two main steps. These steps are repeated for each combination of trial and trait for which the analysis is run.  
+
+First the phenotypic variance-covariance matrix $Sigma$ is estimated. Two ways for doing this are included in the package, either using the Efficient Mixed Model Association (EMMA) algorithm [@Kang2008] or the Newton-Raphson (NR) algorithm [@Tunnicliffe1989]. 
+
+The effect size estimates and F-test P values are obtained using the GLS algoritm proposed by @Segura2012.
 
 ----
 
 # Worked example
 
-As an example of the functionality of the package a worked example is provided using maize data from the European Union project DROPS. The data is available from https://data.inra.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN and the relevant data sets are included as data.frames in the statgenGWAS package.
+As an example of the functionality of the package a worked example is provided using maize data from the European Union project DROPS. The data is available from https://data.inra.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN [@Millet2019] and the relevant data sets are included as data.frames in the statgenGWAS package.
 
 ## **Load data**
 
@@ -322,9 +336,9 @@ GWASDropsFixThr <- runSingleTraitGwas(gData = gDataDropsDedup,
                                       LODThr = 4)
 ```
 
-### Variance components
+### Variance covariance matrix
 
-There are two ways to compute the variance components used in the GWAS analysis. Either the EMMA algorithm [@Kang2008] or the Newton Raphson algorithm [@Tunnicliffe1989]. Specify the method by setting the parameter `remlAlgo` to either `"EMMA"` or `"NR"`. By default the EMMA algorithm is used.
+There are two ways to compute the phenotypic variance covariance matrix used in the GWAS analysis. Either the EMMA algorithm or the Newton-Raphson algorithm. Specify the method by setting the parameter `remlAlgo` to either `"EMMA"` or `"NR"`. By default the EMMA algorithm is used.
 
 ```{r stgSNPNR}
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
