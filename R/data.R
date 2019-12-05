@@ -50,17 +50,15 @@
 #' city’s name followed by the year of experiment and the water regime with W 
 #' for watered and R for rain-fed.}
 #' \item{parent1}{identifier of donor dent line}
-#' \item{Code_ID}{identifier of the genotype}
-#' \item{Variety_ID}{identifier of the genotype}
-#' \item{Accession_ID}{identifier of the genotype}
+#' \item{Code_ID, Variety_ID, Accession_ID}{identifier of the genotype}
 #' \item{geno.panel}{project in which the genetic material was generated} 
-#' \item{grain.yield}{genotypic mean for yield adjusted at 15% grain moisture, 
+#' \item{grain.yield}{genotypic mean for yield adjusted at 15\% grain moisture, 
 #' in ton per hectare (t ha-1)}
 #' \item{grain.number}{genotypic mean for number of grain per square meter}
 #' \item{grain.weight}{genotypic mean for individual grain weight in milligram
 #'  (mg)}
 #' \item{anthesis}{genotypic mean for male flowering (pollen shed), in thermal
-#' time cumulated since emergence (d20°C)}
+#' time cumulated since emergence ($d_20°C$)}
 #' \item{silking}{genotypic mean for female flowering (silking emergence), in 
 #' thermal time cumulated since emergence (d20°C)}
 #' \item{plant.height}{genotypic mean for plant height, from ground level to 
