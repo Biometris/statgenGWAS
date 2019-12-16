@@ -1,9 +1,6 @@
-#' \code{statgenGWAS} package
-#'
-#' statgenGWAS
-#'
-#' @docType package
-#' @name statgenGWAS
+#' @keywords internal
+"_PACKAGE"
+
 #' @useDynLib statgenGWAS, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @importFrom utils hasName

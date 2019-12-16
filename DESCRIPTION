@@ -3,28 +3,57 @@ Type: Package
 Title: Genome Wide Association Studies 
 Version: 0.0.2
 Date: 2019-09-01
-Authors@R: c(
-    person(given = "Bart-Jan", 
-           family = "van Rossum", 
-           email = "bart-jan.vanrossum@wur.nl", 
-           role = c("aut", "cre")),
-    person(given = "Willem", 
-           family = "Kruijer", 
-           email = "willem.kruijer@wur.nl",
-           comment = c(ORCID = "0000-0001-7179-1733"),
-           role = "aut"),
-    person(given = "Emilie",
-           family = "Millet",
-           email = "emilie.millet@wur.nl",
-           comment = c(ORCID = "0000-0002-2913-4892"),
-           role = c("ctb"))
-           )
-Description: Fast single trait Genome Wide Association Studies (GWAS) including 
-    functions for visualizing results.
+Authors@R: c(person(given = "Bart-Jan", 
+                    family = "van Rossum", 
+                    email = "bart-jan.vanrossum@wur.nl", 
+                    role = c("aut", "cre")),
+             person(given = "Fred", 
+                    family = "van Eeuwijk",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0003-3672-2921")),
+             person(given = "Martin", 
+                    family = "Boer",
+                    role = "ctb"),
+             person(given = "Marcos",
+                    family = "Malosetti",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-8150-1397")),
+             person(given = "Daniela", 
+                    family = "Bustos-Korts",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0003-3827-6726")),
+             person(given = "Emilie", 
+                    family = "Millet",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-2913-4892")),
+             person(given = "Joao", 
+                    family = "Paulo",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-4180-0763")),
+             person(given = "Maikel", 
+                    family = "Verouden",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-4893-3323")),
+             person(given = "Willem", 
+                    family = "Kruijer",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0001-7179-1733")),
+             person(given = "Ron", 
+                    family = "Wehrens",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-8798-5599")),
+             person(given = "Choazhi", 
+                    family = "Zheng",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0001-6030-3933"))
+            )
+Description: The statgen packages, developed by Biometris, are developed to 
+    streamline the analysis of typical plant breeding experiments. statgenGWAS
+    can be used for fast single trait Genome Wide Association Studies (GWAS).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 Depends: R (>= 3.5)
 Imports: data.table,
     ggplot2 (>= 3.0.0),
