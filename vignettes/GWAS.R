@@ -14,12 +14,12 @@ data(dropsPheno)
 
 ## ----convertMarkers-------------------------------------------------------------------------------
 ## Add genotypes as row names of dropsMarkers and drop Ind column.
-rownames(dropsMarkers) <- dropsMarkers$Ind
+rownames(dropsMarkers) <- dropsMarkers[["Ind"]]
 dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
 
 ## ----convertMap-----------------------------------------------------------------------------------
 ## Add genotypes as row names of dropsMap.
-rownames(dropsMap) <- dropsMap$SNP.names
+rownames(dropsMap) <- dropsMap[["SNP.names"]]
 ## Rename Chomosome and Position columns.
 colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <- c("chr", "pos")
 
@@ -29,7 +29,7 @@ gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap)
 
 ## ----addPheno-------------------------------------------------------------------------------------
 ## Convert phenotypic data to a list.
-dropsPhenoList <- split(x = dropsPheno, f = dropsPheno$Experiment)
+dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
 ## Rename Variety_ID to genotype and select relevant columns.
 dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
   colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
@@ -120,7 +120,7 @@ plot(GWASDrops, plotType = "qtl", yThr = 4)
 
 ## ----qtlStgNorm-----------------------------------------------------------------------------------
 ## Plot a qtl plot of GWAS Drops for Mur13W.
-## Set significance threshold to 4 and normalize trait values.
+## Set significance threshold to 4 and normalize effect estimates.
 plot(GWASDrops, plotType = "qtl", yThr = 4, normalize = TRUE)
 
 ## ----stgChrSpec-----------------------------------------------------------------------------------

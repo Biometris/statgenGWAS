@@ -54,19 +54,15 @@ Further covariates that can be used in the analyses can be stored in the data.fr
 
 ## Theoretical background
 
-Suppose there are $n$ measurements of a phenotype for $t$ genotypes. Then a lineair mixed model for association mapping is typically expressed as
-$$y = X\beta + Zu + e$$  
-Here $y$ is a $n \times 1$ vector of observed phenotypes. $X$ is an $n \times q$ matrix of fixed effects, including mean, SNPs and other confounding variables. $\beta$ is a $q \times 1$ vector of coefficients of the fixed effects. $Z$ is the $n \times t$ incidence matrix mapping the observed phenotypes to the individuals. $u$ then is the random effect of the mixed model with $var(u) = \sigma^2_gK$, where $K$ is the kinship matrix derived from the marker information of the individual. Finally $e$ is an $n \times n$ matrix of residual effects, with $var(\epsilon) = \sigma^2_eI$. For this model the phenotypic variance-covariance matrix $Sigma$ can be represented as $Sigma = \sigma^2_gZKZ^{-1} + \sigma^2_eI$. 
-
-$Sigma$ can then be used to obtain generalized least-square (GLS) effect size estimates and F-test P values for each SNP from the model.
+Suppose there are $n$ measurements of a phenotype for $t$ genotypes. Then a very common linear mixed model for association mapping is
+$$y = X\beta + Zu + e,$$  
+where $y$ is an $n \times 1$ vector of observed phenotypes and $X$ is an $n \times q$ design matrix for the fixed effects, including an intercept, covariates, and the SNP of interest. $\beta$ is the $q \times 1$ vector of coefficients of these fixed effects, the last element ($\beta_{\textrm{SNP}}$) being the SNP-effect of interest. $Z$ is the $n \times t$ incidence matrix assigning individuals to genotypes.  $u$ is the vector of genetic random effects, with $var(u) = \sigma^2_g K$, where $K$ is a marker-based relatedness matrix. Finally, $e$ is a $n \times 1$ vector of residual (non-genetic) errors, with $var(\epsilon) = \sigma^2_e I_n$. For this model the phenotypic variance-covariance matrix is $\Sigma = \sigma^2_g ZKZ^{t} + \sigma^2_e I_n$. 
 
 ## Application in the package
 
-The single trait GWAS algorithm implemented in the statgenSSA package consists of two main steps. These steps are repeated for each combination of trial and trait for which the analysis is run.  
+Single trait GWAS in the statgenSSA package follows the approach of @Kang2010 and related papers: (1) for the 'empty' model (i.e., without any SNP in the fixed effects), we obtain REML-estimates of the variance components $\sigma^2_g$ and $\sigma^2_e$, which give an estimate $\hat \Sigma$ of the variance-covariance matrix. (2) fixing $\hat \Sigma$, we use generalized least-squares (GLS) to test the null-hypothesis $\beta_{\textrm{SNP}} = 0$ using an F-test, for each SNP in turn. The last step gives vectors of estimated effect-size and P-values for all SNPs. These steps are repeated for each combination of trial and trait for which the analysis is run.  
 
-First the phenotypic variance-covariance matrix $Sigma$ is estimated. Two ways for doing this are included in the package, either using the Efficient Mixed Model Association (EMMA) algorithm [@Kang2008] or the Newton-Raphson (NR) algorithm [@Tunnicliffe1989]. 
-
-The effect size estimates and F-test P values are obtained using the GLS algoritm proposed by @Segura2012.
+The REML-estimates in step (1) can be computed using either the Efficient Mixed Model Association (EMMA) algorithm [@Kang2008], or the Newton-Raphson (NR) algorithm [@Tunnicliffe1989]. Our implementation of GLS borrows some code of @Segura2012.
 
 ----
 
@@ -82,7 +78,7 @@ data(dropsMarkers)
 data(dropsMap)
 data(dropsPheno)
 ```
-dropsMarkers contains the coded marker information for 41722 SNPs and 246 genotypes. dropsMap contains information about the positions of those SNPs on the B73 reference genome V2. dropsPheno contains data for the genotypic means (Best Linear Unbiased Estimators, BLUEs), with one value per experiment per genotype, for eight traits. For a more detailed description of the contents of the data see ```help(dropsData)```
+dropsMarkers contains the coded marker information for 41722 SNPs and 246 genotypes. dropsMap contains information about the positions of those SNPs on the B73 reference genome V2. dropsPheno contains data for the genotypic means (Best Linear Unbiased Estimators, BLUEs), with one value per experiment per genotype, for eight traits. For a more detailed description of the contents of the data see ```help(dropsData)```.
 
 ## **Create gData object**
 
@@ -90,14 +86,14 @@ The next step is to create a **gData** object from the raw data that can be used
 When creating a **gData** object the markers should be input as a matrix or data.frame with genotypes in the row names and markers in the column names. The latter is already satisfied so only the row names should be added and the Ind column used for that should be dropped.
 ```{r convertMarkers}
 ## Add genotypes as row names of dropsMarkers and drop Ind column.
-rownames(dropsMarkers) <- dropsMarkers$Ind
+rownames(dropsMarkers) <- dropsMarkers[["Ind"]]
 dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
 ```
 
 The map used as input when creating a **gData** object should at least have the columns "chr" and "pos" and the row names should be the names of the SNPs. Other columns are ignored when creating a **gData** object, so they can be left as they are.
 ```{r convertMap}
 ## Add genotypes as row names of dropsMap.
-rownames(dropsMap) <- dropsMap$SNP.names
+rownames(dropsMap) <- dropsMap[["SNP.names"]]
 ## Rename Chomosome and Position columns.
 colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <- c("chr", "pos")
 ```
@@ -112,7 +108,7 @@ The next step involves adding phenotypic data to the gData object just created. 
 The phenotypic data can be added to *gDataDrops* using the same function that was used for creating the object. Adding an argument `gData` to the function call will add new data to an existing gData object. If gDataDrops would have been non-empty, the phenotypic data already present would be overwritten.
 ```{r addPheno}
 ## Convert phenotypic data to a list.
-dropsPhenoList <- split(x = dropsPheno, f = dropsPheno$Experiment)
+dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
 ## Rename Variety_ID to genotype and select relevant columns.
 dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
   colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
@@ -143,7 +139,6 @@ gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE)
 Note that duplicate SNPs are removed at random. To get reproducible results make sure to set a seed.
 
 To demonstrate the options of the *codeMarkers* function, we randomly replace 1% of the values in the marker matrix by NA.
-
 ```{r addMissings}
 ## Copy gData object.
 gDataDropsMiss <- gDataDrops
@@ -201,11 +196,11 @@ The output of the *runSingleTraitGwas* function is an object of class GWAS. This
 | chr | chromosome on which the SNP is located |
 | pos | position of the SNP on the chromosome |
 | allFreq | allele frequency of the SNP |
-| pValue | pValue for the SNP |
+| pValue | P-value for the SNP |
 | effect | effect of the SNP on the trait value |
 | effectSe | standard error of the effect of the SNP on the trait value |
 | RLR2 | likelihood-ratio-based R2 as defined in @Sun2010 |
-| LOD | LOD score for the SNP, defined as -log10(pValue) |
+| LOD | LOD score for the SNP, defined as $-\log_{10}(pValue)$ |
 ```{r gwaRes}
 print(head(GWASDrops$GWAResult$Mur13W), row.names = FALSE)
 ```
@@ -236,9 +231,11 @@ summary(GWASDrops)
 
 ### GWAS Plots
 
+The plot.GWAS function can be used to visualize the results in GWASDrops, with a QQ-plot, Manhattan plot or QTL-plot. 
+
 #### QQ plots
 
-A qq plot of observed LOD scores against expected LOD scores [@Segura2012] can be made by setting `plotType = "qq"` when plotting the results. This plot gives a first impression on the quality of the GWAS model.
+A QQ-plot of the observed against the expected $-\log_{10}(p)$ values can be made by setting `plotType = "qq"`. Most of the SNPs are expected to have no effect, resulting in P-values uniformly distributed on $[0,1]$, and leading to the identity function ($y=x$) on the $-\log_{10}(p)$ scale. As in the plot below, deviations from this line should only occur on the right side of the plot, for a small number of SNPs with an effect on the phenotype (and possibly SNPs in LD). There is **inflation** if the observed $-\log_{10}(p)$ values are always above the line $y=x$, and (less common) **deflation** if they are always below this line. A QQ-plot thefore gives a first impression of the quality of the GWAS model: if for example $-\log_{10}(p)$ values are consistently too large (inflation), the correction for genetic relatedness may not be adequate.
 ```{r qqStg} 
 ## Plot a qq plot of GWAS Drops.
 plot(GWASDrops, plotType = "qq", trait = "grain.yield")
@@ -268,11 +265,11 @@ set.seed(1)
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", lod = 3)
 ```
 
-The user can specify known effects (`effects`), which will be used for determining true/false positives and false negatives. These are displayed in green, orange and yellow, respectively. Also the visual appearence of the plot can be altered. See for specifics on how to do this `help(plot.GWAS)`
+The user can specify known effects (`effects`), which will be used for determining true/false positives and false negatives. These are displayed in green, orange and yellow, respectively. Also the visual appearence of the plot can be altered. See for specifics on how to do this `help(plot.GWAS)`.
 
 #### QTL plots
 
-A qtl plot can be made by setting `plotType = "qtl"`. In this plot the effects of the significant SNPs are marked as circles on the chromosomes [@Millet2016]. Effects for multiple traits are displayed horizontally above each other and can thus be compared.
+A qtl plot can be made by setting `plotType = "qtl"`. In this plot the significant SNPs are marked by circles at their genomic positions, with diameter proportional to the estimated effect size; for an example see @Millet2016. Typically, this is done for multiple traits or environments, with the genomic position on the x-axis, which are displayed horizontally above each other and can thus be compared.
 
 ```{r qtlStg}
 ## Plot a qtl plot of GWAS Drops for Mur13W.
@@ -287,11 +284,11 @@ In this case, for "anthesis" there are no significant SNPs so the line is left o
 plot(GWASDrops, plotType = "qtl", yThr = 4)
 ```
 
-Now there are significant SNPs for both traits. However since the traits are measured on a different scale, the effects for anthesis seem a lot larger than those for grain.yield. This scaling issue can be solved by setting `normalize = TRUE`.
+Now there are significant SNPs for both traits. However since the traits are measured on a different scale, the effect estimates cannot be compared. For better comparison, one can set `normalize = TRUE`, which divides the estimates by the standard deviation of the phenotype.
 
 ```{r qtlStgNorm}
 ## Plot a qtl plot of GWAS Drops for Mur13W.
-## Set significance threshold to 4 and normalize trait values.
+## Set significance threshold to 4 and normalize effect estimates.
 plot(GWASDrops, plotType = "qtl", yThr = 4, normalize = TRUE)
 ```
 
@@ -301,8 +298,9 @@ Other parameters can be used to plot a subset of the chromosomes (`chr`) and dir
 
 ## Kinship matrices
 
-In the default function call of the *runSingleTraitGwas* function a single kinship matrix is computed using the algorithm proposed by @Astle2009. Several different methods for computing the kinship matrix are available in the package. Kinship matrices can be computed directly using the *kinship* function or as part of the algorithm in *runSingleTraitGwas*. For both, the available methods are the algorithms proposed by @Astle2009 (`kinshipMethod = "astle"`) and @VanRaden2008 (`kinshipMethod = "vanRaden"`) or Identity by State (IBS) (`kinshipMethod = "IBS"`). Users can also provide their own kinship matrices as input for the *runSingleTraitGwas* function, by specifying the parameter `kin`.     
-In most cases using chromosome specific kinship matrices considerably improves the predicting power of the algorithm. In the package chromosome specific kinship matrices are calculated per chromosome using one of the methods described above, ignoring the information on the chromosome itself. E.g. the kinship matrix for chromosome one is computed from the markers that are not on chromosome one. Calling *runSingleTraitGwas* with `GLSMethod = "multi"` assures computation of chromosome specific kinship matrices.
+The *runSingleTraitGwas* function has an argument `kinshipMethod`, which defines the kinship matrix used for association mapping. Kinship matrices can be computed directly using the *kinship* function or within the *runSingleTraitGwas* function. There are four options: (1) using the covariance between the scaled SNP-scores (`kinshipMethod = "astle"`, the default; see e.g. equation (2.2) in @Astle2009) (2) Identity by State (`kinshipMethod = "IBS"`; see e.g. equation (2.3) in @Astle2009) (3) using the formula by @VanRaden2008 (`kinshipMethod = "vanRaden"`) (4) User-defined, in which case the parameter `kin` needs to be specified.
+
+By default, the same kinship matrix is used for testing all SNPs (`GLSMethod = "single"`). When `GLSMethod = "multi"`, the kinship matrix is chromosome-specific. In this case, the function fits variance components and computes effect-estimates and P-values for each chromosome in turn, using the kinship matrix for that chromosome. Each chromosome-specific kinship matrix is computed using the method specified by the argument `kinshipMethod`, using all SNPs that are **not** on this chromosome. As shown by @Rincent2014, this often gives a considerable improvement in power.
 
 ```{r stgChrSpec}
 ## Run single trait GWAS for trial 'Mur13W' and trait 'grain.yield'
@@ -324,7 +322,7 @@ The analysis can be performed for more than one trait in a single function call.
 
 ### Significance thresholds {#sign}
 
-The threshold for selecting significant SNPs in a GWAS analysis is computed by default using Bonferroni correction, with an alpha of 0.05. The alpha can be modified setting the option *alpha* when calling *runSingleTraitGwas*. Two other threshold types can be used as well, a fixed threshold (`thrType = "fixed"`) specifying *LODThr* for the value of the threshold, or a threshold that defines the n SNPs with the highest LOD score as significant SNPs. Set `thrType = "small"` together with `nSnpLOD = n` to do this.
+The threshold for selecting significant SNPs in a GWAS analysis is computed by default using Bonferroni correction, with an alpha of 0.05. The alpha can be modified setting the option *alpha* when calling *runSingleTraitGwas*. Two other threshold types can be used: a fixed threshold (`thrType = "fixed"`) specifying the $-\log_{10}(p)$ (*LODThr*) value of the threshold, or a threshold that defines the n SNPs with the highest $-\log_{10}(p)$ scores as significant SNPs. Set `thrType = "small"` together with `nSnpLOD = n` to do this. In the following example, we select all SNPs with $p < 10^{-4}$.
 
 ```{r stgSNPFixThr}
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
@@ -368,8 +366,9 @@ GWASDropsGenControl <- runSingleTraitGwas(gData = gDataDropsDedup,
 
 ### Covariates
 
-Covariates can be included as extra fixed effects in the GWAS model. These covariates should be in to the gData object and can then be added to the model by specifying `covar` when running the GWAS analysis.  
-It is also possible to add one or more SNPs as covariates in the model. For this use the parameter `snpCov`.
+Covariates can be included as extra fixed effects in the GWAS model. The *runSingleTraitGwas* function distinguishes between 'usual' covariates and SNP-covariates. The former could be design factors such as block, or other traits one wants to condition on. In the latter case, the covariate(s) are one or more of the markers contained in the genotypic data. SNP-covariates can be set with the parameter `snpCov`, which should be a vector of marker-names. Similarly, other covariates should be specified using the parameter `covar`, containing a vector of covariate names. The gData object should contain these covariates in gData$covar.
+
+In case SNP-covariates are used, GWAS for all the other SNPs is performed with the the SNP-covariates as extra fixed effect; also the null model used to estimate the variance components includes these effects. For each SNP in SNP-covariates, a p-value is obtained using the same F-test and null model to estimate the variance components, but with only all other SNPs (if any) in SNP-covariates as fixed effects.
 
 ```{r stgSNPCovar}
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
@@ -397,7 +396,7 @@ GWASDropsMAC <- runSingleTraitGwas(gData = gDataDropsDedup,
 
 ### SNPs close to significant SNPs
 
-Apart from the significant SNPs, it could also be interesting to see the SNPs that are close to the significant SNPs. These can be included in the output by setting `sizeIncludedRegion` to a positive value. When doing so SNPs that are within a distance of `sizeIncludedRegion` from a significant SNP (based on the information in the map) are included in the signSnp data.table within the GWAS object. Only SNPs that are in a sufficient linkage disequilibrium (LD) with the significant SNP, measured in terms of $R^2$, are included. The minimum $R^2$ required to be included can be specified by setting `minR2`.
+Apart from the significant SNPs themselves, it is usually of interest to identify SNPs that are close to the significant SNPs. These can be included in the output by setting `sizeIncludedRegion` to a positive value. When doing so, SNPs that are within a distance of `sizeIncludedRegion` from a significant SNP (based on the information in the map) are included in the signSnp data.table in the output. Only SNPs having sufficient linkage disequilibrium (LD) with the significant SNP are included. LD is measured in terms of the squared Pearson correlation ($R^2$). The minimum $R^2$ required to be included can be specified by setting `minR2`.
 
 ```{r stgInclReg}
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.

@@ -58,7 +58,7 @@
 #' \item{grain.weight}{genotypic mean for individual grain weight in milligram
 #'  (mg)}
 #' \item{anthesis}{genotypic mean for male flowering (pollen shed), in thermal
-#' time cumulated since emergence ($d_20°C$)}
+#' time cumulated since emergence (d20°C)}
 #' \item{silking}{genotypic mean for female flowering (silking emergence), in 
 #' thermal time cumulated since emergence (d20°C)}
 #' \item{plant.height}{genotypic mean for plant height, from ground level to 
@@ -71,7 +71,7 @@
 #' }
 #' }
 #' 
-#' @note From the source data, the Experiments from 2011 have been removed since
+#' @note From the source data, the experiments from 2011 have been removed since
 #' these do not contain all genotypes. Also the experiment Gra13W has been 
 #' removed.
 #' 
