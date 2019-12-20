@@ -1,9 +1,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// Add a flag to enable OpenMP at compile time
-// [[Rcpp::plugins(openmp)]]
-
 // Protect against compilers without OpenMP
 #ifdef _OPENMP
 #include <omp.h>

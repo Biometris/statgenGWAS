@@ -54,7 +54,6 @@ arma::vec emmaREMLLL(double logDelta,
   arma::vec ll = 0.5 * (nq * (log(nq / (2 * M_PI)) - 1 - log(sum(square(etas1) /
     lambda) + etas2 / delta)) - sum(log(lambda)) + (t - n) * logDelta);
   return ll;
-  //return arma::conv_to< std::vector<double>>::from(ll);
 }
 
 // [[Rcpp::export]]

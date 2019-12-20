@@ -80,7 +80,7 @@ chkMarkers <- function(markers,
            "recodeMarkers first for recoding.\n", call. = FALSE)
     }
   } else if (dim == 3) {
-    if (!inherits(markers, "array")) {
+    if (!inherits(markers, "array") || length(dim(markers)) != 3) {
       stop("markers should be a three-dimensional array.\n", call. = FALSE)
     }
   }

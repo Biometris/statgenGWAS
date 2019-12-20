@@ -13,6 +13,11 @@ The statgen packages, developed by Biometris, are developed to
 \author{
 \strong{Maintainer}: Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl}
 
+Authors:
+\itemize{
+  \item Willem Kruijer (\href{https://orcid.org/0000-0001-7179-1733}{ORCID})
+}
+
 Other contributors:
 \itemize{
   \item Fred van Eeuwijk (\href{https://orcid.org/0000-0003-3672-2921}{ORCID}) [contributor]
@@ -22,7 +27,6 @@ Other contributors:
   \item Emilie Millet (\href{https://orcid.org/0000-0002-2913-4892}{ORCID}) [contributor]
   \item Joao Paulo (\href{https://orcid.org/0000-0002-4180-0763}{ORCID}) [contributor]
   \item Maikel Verouden (\href{https://orcid.org/0000-0002-4893-3323}{ORCID}) [contributor]
-  \item Willem Kruijer (\href{https://orcid.org/0000-0001-7179-1733}{ORCID}) [contributor]
   \item Ron Wehrens (\href{https://orcid.org/0000-0002-8798-5599}{ORCID}) [contributor]
   \item Choazhi Zheng (\href{https://orcid.org/0000-0001-6030-3933}{ORCID}) [contributor]
 }

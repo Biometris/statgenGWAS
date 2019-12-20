@@ -96,7 +96,7 @@ testMrk2 <- matrix(c(1:3, NA), nrow = 2)
 expect_error(statgenGWAS:::chkMarkers(markers = testMrk2), 
              "markers contains missing values")
 
-expect_error(statgenGWAS:::chkMarkers(markers = gDataTest$markers, dim = 3),
+expect_error(statgenGWAS:::chkMarkers(markers = testMrk, dim = 3),
              "markers should be a three-dimensional array")
 
 expect_silent(statgenGWAS:::chkMarkers(markers = gDataTest$markers))

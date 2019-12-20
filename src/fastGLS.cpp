@@ -4,9 +4,6 @@
 // Correctly setup the build environment
 // [[Rcpp::depends(RcppArmadillo)]]
 
-// Add a flag to enable OpenMP at compile time
-// [[Rcpp::plugins(openmp)]]
-
 // Protect against compilers without OpenMP
 #ifdef _OPENMP
 #include <omp.h>
@@ -63,7 +60,9 @@ arma::mat fastGLSCPP(const arma::mat &X,
   res.col(2) = sqrt(nn);
   int nThr = getThr(nCores);
   // Compute RSS per marker.
+#ifdef _OPENMP  
 #pragma omp parallel for num_threads(nThr)
+#endif  
   for (uword i = 0; i < p; i++) {
     arma::mat Qx, Rx;
     arma::qr_econ(Qx, Rx, tMQtQ * X.col(i));
