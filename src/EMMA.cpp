@@ -69,14 +69,14 @@ double goldenSectionSearch(double upperBound,
   double resphi = (3 - sqrt(5)) / 2;
   // a and b are the current bounds; the minimum is between them.
   // c is the center pointer pushed slightly left towards a
-  if (abs(upperBound - lowerBound) < absolutePrecision) {
+  if (fabs(upperBound - lowerBound) < absolutePrecision) {
     return (upperBound + lowerBound) / 2;
   }
   //  Create a new possible center, in the area between c and b, pushed against c
-  double centerNew = center + resphi * (upperBound - center);
+  double centerNew = lowerBound + resphi * (upperBound - lowerBound);
   if (arma::as_scalar(emmaREMLLL(centerNew, lambda, etas1, n, t, etas2)) <
     arma::as_scalar(emmaREMLLL(center, lambda, etas1, n, t, etas2))) {
-    return goldenSectionSearch(center, centerNew, upperBound,
+    return goldenSectionSearch(upperBound, centerNew, center,
                                absolutePrecision, lambda, etas1, n, t, etas2);
   } else {
     return goldenSectionSearch(centerNew, center, lowerBound,
@@ -126,13 +126,13 @@ List emmaCPP(arma::vec y,
   // Check first item in dLL. If < eps include LL value as possible optimum.
   if (dLL(0) < eps) {
     optLogDelta(rel) = lLim;
-    optLL(rel) = arma::as_scalar(emmaREMLLL(lLim, eigVals, etas1, 0, 0, etas2));
+    optLL(rel) = arma::as_scalar(emmaREMLLL(lLim, eigVals, etas1, 0.0, 0.0, etas2));
     rel ++;
   }
   // Check last item in dLL. If > - eps include LL value as possible optimum.
   if (dLL(m - 1) > -eps) {
     optLogDelta(rel) = uLim;
-    optLL(rel) = arma::as_scalar(emmaREMLLL(uLim, eigVals, etas1, 0, 0, etas2));
+    optLL(rel) = arma::as_scalar(emmaREMLLL(uLim, eigVals, etas1, 0.0, 0.0, etas2));
     rel ++;
   }
   // If derivative changes sign on an interval, compute local optimum for LL
@@ -140,10 +140,10 @@ List emmaCPP(arma::vec y,
   for (unsigned int i = 0; i < m - 2; i++) {
     if ((dLL(i) > 0 && dLL(i + 1) < 0) || dLL(i) * dLL(i + 1) < pow(eps, 2)) {
       optLogDelta(rel) = goldenSectionSearch(logDelta(i + 1),
-                  (-1 + sqrt(5)) / 2 * (logDelta(i) + logDelta(i + 1)),
-                  logDelta(i), eps, eigVals, etas1, 0, 0, etas2);
+                  logDelta(i) + (((3 - sqrt(5)) / 2) * (logDelta(i + 1) - logDelta(i))),
+                  logDelta(i), eps, eigVals, etas1, 0.0, 0.0, etas2);
       optLL(rel) = arma::as_scalar(emmaREMLLL(optLogDelta(rel), eigVals, etas1,
-                                   0, 0, etas2));
+                                   0.0, 0.0, etas2));
       rel ++;
     }
   }

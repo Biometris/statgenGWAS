@@ -68,7 +68,7 @@ expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 
 stg4 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
                            thrType = "small", nSnpLOD = 1)
-expect_equivalent(stg4$thr$ph1, 0.254604498474883)
+expect_equivalent(stg4$thr$ph1, 0.25448394608549)
 expect_equal(nrow(stg4$signSnp$ph1), 1)
 
 ## Test option genomicControl.
@@ -78,8 +78,6 @@ stg5 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 
 # Should only affect pValue and LOD
 expect_equal(stg5$GWAResult$ph1$pValue, 
-             c(0.392467215642598, 0.5, 0.730980175370005))
+             c(0.392496645680849, 0.5, 0.730937753019775))
 expect_equal(stg5$GWAResult$ph1$LOD, 
-             c(0.406196615759945, 0.301029995663981, 0.136094401214728))
-
-
+             c(0.406164050430888, 0.301029995663981, 0.136119606176322))

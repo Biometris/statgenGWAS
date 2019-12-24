@@ -117,7 +117,7 @@ arma::mat nearestPD(arma::mat x,
     arma::vec eigVals(n);
     arma::mat eigVecs( size(x) );
     arma::eig_sym(eigVals, eigVecs, xUpdate);
-    double eps = posdTol * as_scalar(abs( eigVals.tail(1) ));
+    double eps = posdTol * fabs(as_scalar(eigVals.tail(1)));
     if (eigVals(0) < eps) {
       eigVals = clamp(eigVals, eps, eigVals.max());
       arma::vec oDiag = xUpdate.diag();

@@ -212,6 +212,10 @@ runSingleTraitGwas <- function(gData,
     for (trait in traits) {
       ## Remove missings and select relevant columns only.
       phTrTr <- phTr[!is.na(phTr[trait]), c("genotype", trait, covTr)]
+      ## If only NA values skip this trait.
+      if (nrow(phTrTr) == 0) {
+        next
+      }
       ## Select genotypes where trait is not missing.
       nonMissRepId <- phTrTr[["genotype"]]
       nonMiss <- unique(nonMissRepId)

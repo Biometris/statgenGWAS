@@ -10,9 +10,9 @@ covar <- gDataTest$covar
 # Check with default settings.
 
 expect_equivalent(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma)[[1]],
-                  c(0.020597492367456, 1.85412717490278))
+                  c(0.0210850718415217, 1.85373628827768))
 expect_equivalent(statgenGWAS:::EMMA(dat = pheno, trait = "X1", K = Sigma)[[1]],
-                  c(0.020597492367456, 1.85412717490278))
+                  c(0.0210850718415217, 1.85373628827768))
 
 # Check with covariates.
 # Use combinations of covariates and SNP covariates.

@@ -58,9 +58,9 @@ arma::mat fastGLSCPP(const arma::mat &X,
   res.col(1) = betaVec;
   // Add SE beta to third column.
   res.col(2) = sqrt(nn);
-  int nThr = getThr(nCores);
   // Compute RSS per marker.
 #ifdef _OPENMP  
+  int nThr = getThr(nCores);
 #pragma omp parallel for num_threads(nThr)
 #endif  
   for (uword i = 0; i < p; i++) {
