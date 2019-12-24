@@ -8,7 +8,6 @@ variables:
   R_LIBS_USER: "$CI_PROJECT_DIR/ci/lib"
 
 before_script:
-  - mkdir -p ~/tmp
   ## Make sure configure and cleanup files are executable.
   - chmod +x configure
   - chmod +x cleanup
@@ -16,7 +15,6 @@ before_script:
   - mkdir -p $R_LIBS_USER
   ## Add R_LIBS_USER to libpaths.
   - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
-  - echo 'TMPDIR="~/tmp"' >> .Rprofile
 
 R-release:
   stage: build
