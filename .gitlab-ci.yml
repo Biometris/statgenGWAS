@@ -9,7 +9,7 @@ variables:
 
 before_script:
   - mkdir -p ~/tmp
-  - export TMPDIR="~/tmp""
+  - export TMPDIR="~/tmp"
   ## Make sure configure and cleanup files are executable.
   - chmod +x configure
   - chmod +x cleanup
