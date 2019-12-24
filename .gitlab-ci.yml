@@ -8,6 +8,9 @@ variables:
   R_LIBS_USER: "$CI_PROJECT_DIR/ci/lib"
 
 before_script:
+  ## Make sure configure and cleanup files are executable.
+  - chmod +x configure
+  - chmod +x cleanup
   ## Create directory for caching R packages.
   - mkdir -p $R_LIBS_USER
   ## Add R_LIBS_USER to libpaths.
