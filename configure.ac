@@ -1,22 +1,19 @@
-## -*- mode: autoconf; autoconf-indentation: 4; -*-
-##
-##  Copyright (C) 2016 - 2019 Dirk Eddelbuettel for
-##  the RcppArmadillo package. Licensed under GPL-2 or later
-##  This file is a subset of the configure.ac used by
-##  RcppArmadillo, adapted to the statgenGWAS package by
-##  Bart-Jan van Rossum
+#                                               -*- Autoconf -*-
+# statgenGWAS configure.ac
+# (with most code borrowed from netdiffuseR configure.ac)
+#
+# Process this file with autoconf to produce a configure script.
 
-## require at least autoconf 2.61
-AC_PREREQ(2.61)
+AC_PREREQ([2.69])
 
-## Process this file with autoconf to produce a configure script.
-AC_INIT([statgenGWAS], 1.0.0)
+AC_INIT(statgenGWAS, m4_esyscmd_s([awk '/^Version:/ {print $2}' DESCRIPTION]))
 
 ## Set R_HOME, respecting an environment variable if one is set
 : ${R_HOME=$(R RHOME)}
 if test -z "${R_HOME}"; then
-	AC_MSG_ERROR([Could not determine R_HOME.])
+  AC_MSG_ERROR([Could not determine R_HOME.])
 fi
+
 ## Use R to set CXX and CXXFLAGS
 CXX=$(${R_HOME}/bin/R CMD config CXX)
 CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
@@ -25,36 +22,37 @@ CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
 AC_LANG(C++)
 AC_REQUIRE_CPP
 
-## Default the OpenMP flag to the empty string.
-## If and only if OpenMP is found, expand to $(SHLIB_OPENMP_CXXFLAGS)
-openmp_flag=""
-openmp_cflag=""
+dnl this the meat of R's m4/openmp.m4
+  OPENMP_[]_AC_LANG_PREFIX[]FLAGS=
+  AC_ARG_ENABLE([openmp],
+    [AS_HELP_STRING([--disable-openmp], [do not use OpenMP])])
+  if test "$enable_openmp" != no; then
+    AC_CACHE_CHECK([for $[]_AC_CC[] option to support OpenMP],
+      [ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp],
+      [AC_LINK_IFELSE([_AC_LANG_OPENMP],
+	 [ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp='none needed'],
+	 [ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp='unsupported'
+	  for ac_option in -fopenmp -xopenmp -qopenmp \
+                           -openmp -mp -omp -qsmp=omp -homp \
+			   -fopenmp=libomp \
+                           -Popenmp --openmp; do
+	    ac_save_[]_AC_LANG_PREFIX[]FLAGS=$[]_AC_LANG_PREFIX[]FLAGS
+	    _AC_LANG_PREFIX[]FLAGS="$[]_AC_LANG_PREFIX[]FLAGS $ac_option"
+	    AC_LINK_IFELSE([_AC_LANG_OPENMP],
+	      [ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp=$ac_option])
+	    _AC_LANG_PREFIX[]FLAGS=$ac_save_[]_AC_LANG_PREFIX[]FLAGS
+	    if test "$ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp" != unsupported; then
+	      break
+	    fi
+	  done])])
+    case $ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp in #(
+      "none needed" | unsupported)
+	;; #(
+      *)
+	OPENMP_[]_AC_LANG_PREFIX[]FLAGS=$ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp ;;
+    esac
+  fi
 
-## Check for broken systems produced by a corporation based in Cupertino
-AC_MSG_CHECKING([for macOS])
-RSysinfoName=$("${R_HOME}/bin/Rscript" --vanilla -e 'cat(Sys.info()[["sysname"]])')
-if test x"${RSysinfoName}" == x"Darwin"; then
-   AC_MSG_RESULT([found])
-   AC_MSG_WARN([OpenMP unavailable and turned off.])
-   openmp_flag="-DARMA_DONT_USE_OPENMP"
-else
-   AC_MSG_RESULT([not found as on ${RSysinfoName}])
-   ## Check for OpenMP
-   AC_MSG_CHECKING([for OpenMP])
-   ## if R has -fopenmp we should be good
-   allldflags=$(${R_HOME}/bin/R CMD config --ldflags)
-   hasOpenMP=$(echo ${allldflags} | grep -- -fopenmp)
-   if test x"${hasOpenMP}" == x""; then
-	  AC_MSG_RESULT([missing])
-	  openmp_flag="-DARMA_DONT_USE_OPENMP"
-   else
-	  AC_MSG_RESULT([found])
-	  openmp_flag='$(SHLIB_OPENMP_CXXFLAGS)'
-	  openmp_cflag='$(SHLIB_OPENMP_CFLAGS)'
-   fi
-fi
-
-AC_SUBST([OPENMP_CFLAG], ["${openmp_cflag}"])
-AC_SUBST([OPENMP_FLAG], ["${openmp_flag}"])
+AC_SUBST(OPENMP_CXXFLAGS)
 AC_CONFIG_FILES([src/Makevars])
 AC_OUTPUT
