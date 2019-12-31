@@ -2,16 +2,8 @@ load(file = "testdata.rda")
 
 ### Test utils
 
-## Test matrixRoot
-
 M1 <- matrix(1:4, nrow = 2)
 M2 <- matrix(c(1:2, 2:1), nrow = 2)
-expect_error(statgenGWAS:::matrixRoot(M1), 
-             "should be a symmetric positive definite matrix")
-expect_error(statgenGWAS:::matrixRoot(M2), 
-             "should be a symmetric positive definite matrix")
-expect_equal(statgenGWAS:::matrixRoot(crossprod(M2)),
-             matrix(c(2, 1, 1, 2), nrow = 2))
 
 ## Test reduceKinship
 

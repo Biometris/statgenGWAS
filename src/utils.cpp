@@ -6,26 +6,6 @@
 using namespace Rcpp;
 using namespace arma;
 
-//' Compute square root of a symmetric, positive definite matrix
-//'
-//' Given a symmetric, positive definite matrix X a matrix Y is computed such
-//' that \eqn{Y^2 = X}. Computation is done using eigendecomposition of X.
-//'
-//' @param X A symmetric, positive definite matrix.
-//'
-//' @return A matrix Y such that \eqn{Y^2 = X}.
-//'
-//' @noRd
-//' @keywords internal
-// [[Rcpp::export]]
-arma::mat matrixRoot(const arma::mat &x) {
-  if (x.is_sympd()) {
-    return sqrtmat_sympd(x);
-  } else {
-    throw std::runtime_error("x should be a symmetric positive definite matrix.\n");
-  }
-}
-
 //' Reduce the kinship matrix
 //'
 //' The kinship matrix is reduced using nPca eigenvectors of K.

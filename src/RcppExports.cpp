@@ -133,17 +133,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// matrixRoot
-arma::mat matrixRoot(const arma::mat& x);
-RcppExport SEXP _statgenGWAS_matrixRoot(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(matrixRoot(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // reduceKinship
 arma::mat reduceKinship(const arma::mat K, const int nPca);
 RcppExport SEXP _statgenGWAS_reduceKinship(SEXP KSEXP, SEXP nPcaSEXP) {
@@ -187,7 +176,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_statgenGWAS_astleCPP", (DL_FUNC) &_statgenGWAS_astleCPP, 2},
     {"_statgenGWAS_IBSCPP", (DL_FUNC) &_statgenGWAS_IBSCPP, 2},
     {"_statgenGWAS_vanRadenCPP", (DL_FUNC) &_statgenGWAS_vanRadenCPP, 2},
-    {"_statgenGWAS_matrixRoot", (DL_FUNC) &_statgenGWAS_matrixRoot, 1},
     {"_statgenGWAS_reduceKinship", (DL_FUNC) &_statgenGWAS_reduceKinship, 2},
     {"_statgenGWAS_nearestPD", (DL_FUNC) &_statgenGWAS_nearestPD, 10},
     {NULL, NULL, 0}
