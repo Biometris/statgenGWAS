@@ -134,12 +134,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // matrixRoot
-arma::mat matrixRoot(const arma::mat x);
+arma::mat matrixRoot(const arma::mat& x);
 RcppExport SEXP _statgenGWAS_matrixRoot(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(matrixRoot(x));
     return rcpp_result_gen;
 END_RCPP

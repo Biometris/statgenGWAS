@@ -9,8 +9,8 @@ variables:
 
 before_script:
   ## Make sure configure and cleanup files are executable.
-  - apt-get update & apt-get install -y build-essential gobjc++ libomp-dev autoconf
-  - autoconf
+  - apt-get update & apt-get install -y build-essential gobjc++ libomp-dev
+  - chmod +x configure
   - chmod +x cleanup
   ## Create directory for caching R packages.
   - mkdir -p $R_LIBS_USER

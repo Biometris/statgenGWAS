@@ -18,7 +18,7 @@ using namespace arma;
 //' @noRd
 //' @keywords internal
 // [[Rcpp::export]]
-arma::mat matrixRoot(const arma::mat x) {
+arma::mat matrixRoot(const arma::mat &x) {
   if (x.is_sympd()) {
     return sqrtmat_sympd(x);
   } else {
