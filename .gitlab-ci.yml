@@ -11,6 +11,7 @@ before_script:
   ## Make sure configure and cleanup files are executable.
   - chmod +x configure
   - chmod +x cleanup
+  - apt-get update & apt-get install -y build-essential
   ## Create directory for caching R packages.
   - mkdir -p $R_LIBS_USER
   ## Add R_LIBS_USER to libpaths.
@@ -77,6 +78,7 @@ coverage:
     - develop
     - master
   before_script:
+    - apt-get update & apt-get install -y build-essential
     ## Add R_LIBS_USER to libpaths.
     - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
   script:
