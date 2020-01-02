@@ -79,6 +79,8 @@ coverage:
     - master
   before_script:
     - apt-get update & apt-get install -y build-essential gobjc++ libomp-dev
+    - chmod +x configure
+    - chmod +x cleanup
     ## Add R_LIBS_USER to libpaths.
     - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
   script:
