@@ -1,6 +1,6 @@
 ## Test environments
 * local Windows 10, R 3.6.2
-* debian (on gitlab-ci), R 3.6.1
+* debian (on gitlab-ci), R 3.6.2
 * r-hub (devel and release)
 
 ## R CMD check results
