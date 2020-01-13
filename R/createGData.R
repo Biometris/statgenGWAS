@@ -435,40 +435,79 @@ summary.gData <- function(object,
   markers <- object$markers
   pheno <-  object$pheno
   covar <- object$covar
+  totSum <- vector(mode = "list")
   if (!is.null(map)) {
-    cat("map\n")
-    cat("\tNumber of markers:", nrow(map), "\n")
-    cat("\tNumber of chromosomes:", length(unique(map[["chr"]])), "\n\n")
+    mapSum <- list(nMarkers = nrow(map), nChr = length(unique(map[["chr"]])))
+    totSum$mapSum <- mapSum
   }
   if (!is.null(markers)) {
-    cat("markers\n")
-    cat("\tNumber of markers:", ncol(markers), "\n")
-    cat("\tNumber of genotypes:", nrow(markers), "\n")
-    cat("\tContent:\n")
-    tab <- (round(prop.table(table(as.vector(markers), useNA = "always")), 2))
-    cat("\t", names(tab), "\n")
-    cat("\t", tab, "\n\n")
+    markerSum <- list(nMarkers = ncol(markers), nGeno = nrow(markers),
+                      markerContent = round(prop.table(table(as.vector(markers), 
+                                                             useNA = "always")), 
+                                            2))
+    totSum$markerSum <- markerSum
   }
   if (!is.null(pheno)) {
+    phenoSum <- sapply(X = names(pheno[trials]), FUN = function(trial) {
+      trSum <- do.call(cbind, lapply(X = pheno[[trial]][, -1], FUN = summaryNA))
+      attr(x = trSum, which = "nGeno") <- 
+        length(unique(pheno[[trial]][["genotype"]]))
+      return(trSum)
+    }, simplify = FALSE)
+    totSum$phenoSum <- phenoSum
+  }
+  if (!is.null(covar)) {
+    covarSum <- summary(covar)
+    totSum$covarSum <- covarSum
+  }
+  return(structure(totSum, class = "summary.gData"))
+}
+
+#' Printing summazed objects of class gData
+#'
+#' \code{print} method for object of class summary.gData created by summarizing
+#' objects of class gData.
+#'
+#' @param x An object of class \code{summary.gData}
+#' @param ... Ignored.
+#'
+#' @noRd
+#' @export
+print.summary.gData <- function(x, 
+                                ...) {
+  if (!is.null(x$mapSum)) {
+    cat("map\n")
+    cat("\tNumber of markers:", x$mapSum$nMarkers, "\n")
+    cat("\tNumber of chromosomes:", x$mapSum$nChr, "\n\n")
+  }
+  if (!is.null(x$markerSum)) {
+    cat("markers\n")
+    cat("\tNumber of markers:", x$markerSum$nMarkers, "\n")
+    cat("\tNumber of genotypes:", x$markerSum$nGeno, "\n")
+    cat("\tContent:\n")
+    cat("\t", names(x$markerSum$markerContent), "\n")
+    cat("\t", x$markerSum$markerContent, "\n\n")
+  }
+  if (!is.null(x$phenoSum)) {
     cat("pheno\n")
-    cat("\tNumber of trials:", length(pheno), "\n\n")
-    phenoTr <- pheno[trials]
-    for (i in 1:length(phenoTr)) {
-      if (!is.null(names(phenoTr)[i])) {
-        cat("\t", names(phenoTr)[i], ":\n", sep = "")
+    cat("\tNumber of trials:", length(x$phenoSum), "\n\n")
+    for (i in seq_along(x$phenoSum)) {
+      if (!is.null(names(x$phenoSum)[i])) {
+        cat("\t", names(x$phenoSum)[i], ":\n", sep = "")
       } else {
         cat("\tTrial ", i, ":\n", sep = "")
       }
-      cat("\t\tNumber of traits:", ncol(phenoTr[[i]]) - 1, "\n")
-      cat("\t\tNumber of genotypes:", length(unique(phenoTr[[i]]$genotype)),
-          "\n\n")
-      print(summary(phenoTr[[i]][, -1]))
+      cat("\t\tNumber of traits:", ncol(x$phenoSum[[i]]), "\n")
+      cat("\t\tNumber of genotypes:", 
+          attr(x = x$phenoSum[[i]], which = "nGeno"), "\n\n")
+      attr(x = x$phenoSum[[i]], which = "nGeno") <- NULL
+      print(x$phenoSum[[i]])
       cat("\n")
     }
   }
-  if (!is.null(covar)) {
+  if (!is.null(x$covarSum)) {
     cat("covar\n")
-    cat("\tNumber of covariates:", ncol(covar), "\n")
-    print(summary(covar))
+    cat("\tNumber of covariates:", ncol(x$covarSum), "\n")
+    print(x$covarSum)
   }
 }
