@@ -152,27 +152,38 @@ expect_equivalent(codeMarkers(gData = gData2, removeDuplicates = FALSE,
 expect_equal(capture.output(gd <- codeMarkers(gData = gData, MAF = 0.2,
                                               impute = FALSE)),
              character())
-consOut <- capture.output(codeMarkers(gData = gData, MAF = 0.2,
-                                      impute = FALSE, verbose = TRUE))
-expect_true(any(grepl(pattern = "4 SNPs for 3 genotypes", x = consOut)))
-expect_true(any(grepl(pattern = "1 SNPs removed because MAF", x = consOut)))
-expect_true(any(grepl(pattern = "1 duplicate SNPs removed", x = consOut)))
-expect_true(any(grepl(pattern = "2 SNPs for 3 genotypes", x = consOut)))
+expect_message(codeMarkers(gData = gData, MAF = 0.2,
+                           impute = FALSE, verbose = TRUE), 
+               "4 SNPs for 3 genotypes")
+expect_message(codeMarkers(gData = gData, MAF = 0.2,
+                           impute = FALSE, verbose = TRUE), 
+               "1 SNPs removed because MAF")
+expect_message(codeMarkers(gData = gData, MAF = 0.2,
+                           impute = FALSE, verbose = TRUE), 
+               "1 duplicate SNPs removed")
+expect_message(codeMarkers(gData = gData, MAF = 0.2,
+                           impute = FALSE, verbose = TRUE), 
+               "2 SNPs for 3 genotypes")
 
-consOut2 <- capture.output(codeMarkers(gData = gData6, MAF = 0.2,
-                                       naStrings = "*", verbose = TRUE))
-expect_true(any(grepl(pattern = "2 values replaced by NA", x = consOut2)))
-expect_true(any(grepl(pattern = "1 missing values imputed", x = consOut2)))
-expect_true(any(grepl(pattern = "0 SNPs removed because MAF", x = consOut2)))
-expect_true(any(grepl(pattern = "0 duplicate SNPs removed after imputation",
-                      x = consOut2)))
+expect_message(codeMarkers(gData = gData6, MAF = 0.2, imputeType = "fixed",
+                           fixedValue = 1, naStrings = "*", verbose = TRUE),
+               "2 values replaced by NA")
+expect_message(codeMarkers(gData = gData6, MAF = 0.2, imputeType = "fixed",
+                           fixedValue = 1, naStrings = "*", verbose = TRUE),
+               "1 missing values imputed")
+expect_message(codeMarkers(gData = gData6, MAF = 0.2, imputeType = "fixed",
+                           fixedValue = 1, naStrings = "*", verbose = TRUE),
+               "0 SNPs removed because MAF")
+expect_message(codeMarkers(gData = gData6, MAF = 0.2, imputeType = "fixed",
+                           fixedValue = 1, naStrings = "*", verbose = TRUE),
+               "0 duplicate SNPs removed after imputation")
 
 # Check that markers with only NA are always removed.
 
 gDataNA <- gData
 gDataNA$markers[, 1] <- NA
 expect_equivalent(codeMarkers(gData = gDataNA, impute = FALSE)$markers,
-                  matrix(c(1, 2, 0, 0, NA, 1), nrow = 3))
+                  matrix(c(0, NA, 1, 1, 2, 0), nrow = 3))
 
 # Check that genotypes with only NA are always removed.
 
@@ -185,7 +196,7 @@ expect_equivalent(codeMarkers(gData = gDataNA, impute = FALSE)$markers,
 # map, pheno, kinship and covar as well.
 gd <- codeMarkers(gData = gData, nMiss = 0.1, nMissGeno = 0.4, keep = "SNP1",
                   impute = FALSE)
-expect_equal(rownames(gd$map), c("SNP1", "SNP3", "SNP4"))
+expect_equal(rownames(gd$map), c("SNP1", "SNP2", "SNP3"))
 expect_equal(gd$pheno$pheno$genotype, c("IND1", "IND3"))
 expect_equal(rownames(gd$kinship), c("IND1", "IND3"))
 expect_equal(colnames(gd$kinship), c("IND1", "IND3"))

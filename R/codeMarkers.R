@@ -317,7 +317,7 @@ codeMarkers <- function(gData,
       markersRecoded <- markersRecoded[, snpMAF | snpKeep, drop = FALSE]
       if (verbose) {
         codeSum <- c(codeSum, 
-                     paste(sum(!(snpMAF | snpKeep)), "SNPs removed because ", 
+                     paste(sum(!(snpMAF | snpKeep)), "SNPs removed because", 
                            "MAF smaller than ", MAF, " after imputation.\n"))
       }
       snpKeep <- snpKeep[snpMAF | snpKeep]
