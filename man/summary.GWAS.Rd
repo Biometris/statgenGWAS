@@ -7,9 +7,9 @@
 \method{summary}{GWAS}(object, ..., trials = NULL)
 }
 \arguments{
-\item{object}{An object of class \code{GWAS}}
+\item{object}{An object of class \code{GWAS}.}
 
-\item{...}{Not used}
+\item{...}{Not used.}
 
 \item{trials}{A vector of strings or numeric indices indicating for
 which trials the summary should be made. If \code{NULL}, a summary is

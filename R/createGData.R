@@ -55,7 +55,8 @@
 #'
 #' @seealso \code{\link{summary.gData}}
 #'
-#' @examples set.seed(1234)
+#' @examples 
+#' set.seed(1234)
 #' ## Create genotypic data.
 #' geno <- matrix(sample(x = c(0, 1, 2), size = 15, replace = TRUE), nrow = 3)
 #' dimnames(geno) <- list(paste0("G", 1:3), paste0("M", 1:5))
@@ -416,11 +417,25 @@ createGData <- function(gData = NULL,
 #'
 #' Gives a summary for an object of S3 class \code{gData}.
 #'
-#' @param object An object of class \code{gData}
-#' @param ... Not used
+#' @param object An object of class \code{gData}.
+#' @param ... Not used.
 #' @param trials A vector of trials to include in the summary. These can
 #' be either numeric indices or character names of list items in \code{pheno}.
 #' If \code{NULL}, all trials are included.
+#' 
+#' @return A list with a most four components:
+#' \describe{
+#' \item{mapSum}{A list with number of markers and number of chromosomes in 
+#' the map.}
+#' \item{markerSum}{A list with number of markers, number of genotypes and 
+#' the distribution of the values within the markers.}
+#' \item{phenoSum}{A list of data.frames, one per trial with a summary of all
+#' traits within the trial.}
+#' \item{covarSum}{A list of data.frames, one per trial with a summary of all 
+#' covariates within the trial.}
+#' }
+#' All components are only present in the output if the corresponding content is
+#' present in the gData object.
 #'
 #' @export
 summary.gData <- function(object, 
@@ -468,8 +483,8 @@ summary.gData <- function(object,
 #' \code{print} method for object of class summary.gData created by summarizing
 #' objects of class gData.
 #'
-#' @param x An object of class \code{summary.gData}
-#' @param ... Ignored.
+#' @param x An object of class \code{summary.gData}.
+#' @param ... Not used.
 #'
 #' @noRd
 #' @export

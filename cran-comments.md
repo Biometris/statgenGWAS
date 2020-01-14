@@ -1,3 +1,10 @@
+## Resubmission
+
+* Updated package description in DESCRIPTION
+* Removed printing to console using cat from codeMarkers function.
+  cat is still used, but only for printing to file and in summary/print 
+  functions
+
 ## Test environments
 * local Windows 10, R 3.6.2
 * debian (on gitlab-ci), R 3.6.2
@@ -12,10 +19,8 @@ New submission
 * This is a new release.
 
 Possibly mis-spelled words in DESCRIPTION:
-  Biometris (50:49)
-  GWAS (52:72)
-  statgen (50:18)
-  statgenGWAS (51:68)
+  Biometris (52:53)
+  GWAS (50:65)
 
 * These are spelled correctly.
 

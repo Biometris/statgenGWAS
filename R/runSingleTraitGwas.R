@@ -88,28 +88,76 @@
 #'
 #' @return An object of class \code{\link{GWAS}}.
 #'
-#' @references Astle W., Balding D. J. (2009) Population structure and cryptic
-#' relatedness in genetic association studies, Stat. Sci., November 2009,
-#' Vol. 24, no. 4, p. 451–471.
-#' @references Devlin, B. and Roeder K. (1999) Genomic control for association
-#' studies. Biometrics, December 1999, Vol. 55(4), p. 997-1004.
+#' @references Astle, William, and David J. Balding. 2009. Population Structure
+#' and Cryptic Relatedness in Genetic Association Studies. Statistical Science 
+#' 24 (4): 451–71. \url{https://doi.org/10.1214/09-sts307}.
+#' @references Devlin, B., and Kathryn Roeder. 1999. Genomic Control for 
+#' Association Studies. Biometrics 55 (4): 997–1004. 
+#' \url{https://doi.org/10.1111/j.0006-341x.1999.00997.x}.
 #' @references Kang et al. (2008) Efficient Control of Population Structure in
-#' Model Organism Association Mapping. Genetics, March 2008, Vol. 178, no. 3,
-#' p. 1709-1723.
+#' Model Organism Association Mapping. Genetics 178 (3): 1709–23. 
+#' \url{https://doi.org/10.1534/genetics.107.080101}.
+#' @references Millet, E. J., Pommier, C., et al. (2019). A multi-site 
+#' experiment in a network of European fields for assessing the maize yield 
+#' response to environmental scenarios [Data set]. 
+#' \url{https://doi.org/10.15454/IASSTN}
 #' @references Rincent et al. (2014) Recovering power in association mapping
-#' panels with variable levels of linkage disequilibrium. Genetics, May 2014.
-#' Vol. 197. p. 375–387.
+#' panels with variable levels of linkage disequilibrium. Genetics 197 (1): 
+#' 375–87. \url{https://doi.org/10.1534/genetics.113.159731}.
 #' @references Segura et al. (2012) An efficient multi-locus mixed-model
 #' approach for genome-wide association studies in structured populations.
-#' Nature Genetics, June 2012, Vol. 44, p. 825–830.
+#' Nature Genetics 44 (7): 825–30. \url{https://doi.org/10.1038/ng.2314}.
 #' @references Sun et al. (2010) Variation explained in mixed-model association
-#' mapping. Heredity, February 2010, Vol. 105, p. 333–340.
+#' mapping. Heredity 105 (4): 333–40. \url{https://doi.org/10.1038/hdy.2010.11}.
 #' @references Tunnicliffe W. (1989) On the use of marginal likelihood in time
-#' series model estimation. JRSS, Vol.51(1), p.15-27.
+#' series model estimation. JRSS 51 (1): 15–27.
 #' @references VanRaden P.M. (2008) Efficient methods to compute genomic
-#' predictions. J Dairy Sci, November 2008, Vol. 91 p. 4414–4423.
+#' predictions. Journal of Dairy Science 91 (11): 4414–23. 
+#' \url{https://doi.org/10.3168/jds.2007-0980}.
+#' 
+#' @examples 
+#' ## Create a gData object Using the data from the DROPS project.
+#' ## See the included vignette for a more extensive description on the steps.
+#' data(dropsMarkers)
+#' data(dropsMap)
+#' data(dropsPheno)
+#' ## Add genotypes as row names of dropsMarkers and drop Ind column.
+#' rownames(dropsMarkers) <- dropsMarkers[["Ind"]]
+#' dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
+#' ## Add genotypes as row names of dropsMap.
+#' rownames(dropsMap) <- dropsMap[["SNP.names"]]
+#' ## Rename Chomosome and Position columns.
+#' colnames(dropsMap)[match(c("Chromosome", "Position"), 
+#'                    colnames(dropsMap))] <- c("chr", "pos")
+#' ## Convert phenotypic data to a list.
+#' dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
+#' ## Rename Variety_ID to genotype and select relevant columns.
+#' dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
+#'   colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
+#'   trial <- trial[c("genotype", "grain.yield", "grain.number", "seed.size",
+#'                  "anthesis", "silking", "plant.height", "tassel.height",
+#'                  "ear.height")]
+#' return(trial)
+#' }) 
+#' gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap, 
+#'                           pheno = dropsPhenoList)
+#'                           
+#' ## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.
+#' GWASDrops <- runSingleTraitGwas(gData = gDataDrops,
+#'                                trials = "Mur13W",
+#'                                traits = "grain.yield")
+#'                                
+#' ## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.
+#' ## Use chromosome specific kinship matrices calculated using vanRaden method.
+#' \donttest{
+#' GWASDropsMult <- runSingleTraitGwas(gData = gDataDrops,
+#'                                     trials = "Mur13W",
+#'                                     traits = "grain.yield",
+#'                                     kinshipMethod = "vanRaden",
+#'                                     GLSMethod = "multi")  
+#' }
 #'
-#' @seealso \code{\link{GWAS}}, \code{\link{kinship}}
+#' @seealso \code{\link{GWAS}}, \code{\link{kinship}}, \code{\link{dropsData}}
 #'
 #' @importFrom data.table :=
 #' @import data.table

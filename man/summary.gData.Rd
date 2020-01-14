@@ -7,13 +7,28 @@
 \method{summary}{gData}(object, ..., trials = NULL)
 }
 \arguments{
-\item{object}{An object of class \code{gData}}
+\item{object}{An object of class \code{gData}.}
 
-\item{...}{Not used}
+\item{...}{Not used.}
 
 \item{trials}{A vector of trials to include in the summary. These can
 be either numeric indices or character names of list items in \code{pheno}.
 If \code{NULL}, all trials are included.}
+}
+\value{
+A list with a most four components:
+\describe{
+\item{mapSum}{A list with number of markers and number of chromosomes in 
+the map.}
+\item{markerSum}{A list with number of markers, number of genotypes and 
+the distribution of the values within the markers.}
+\item{phenoSum}{A list of data.frames, one per trial with a summary of all
+traits within the trial.}
+\item{covarSum}{A list of data.frames, one per trial with a summary of all 
+covariates within the trial.}
+}
+All components are only present in the output if the corresponding content is
+present in the gData object.
 }
 \description{
 Gives a summary for an object of S3 class \code{gData}.

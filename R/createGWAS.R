@@ -49,8 +49,8 @@ createGWAS <- function(GWAResult = NULL,
 #'
 #' Gives a summary for an object of S3 class \code{GWAS}.
 #'
-#' @param object An object of class \code{GWAS}
-#' @param ... Not used
+#' @param object An object of class \code{GWAS}.
+#' @param ... Not used.
 #' @param trials A vector of strings or numeric indices indicating for
 #' which trials the summary should be made. If \code{NULL}, a summary is
 #' made for all trials.
@@ -155,9 +155,9 @@ summary.GWAS <- function(object,
 #' \item{a qtl plot of effect sizes and directions for multiple traits}
 #' }
 #' Manhattan plots and qq plots are made for a single trait which
-#' should be indicated using the parameter \code{trait} unless the analysis was
-#' done for only one trait in which case it is detected automatically. The qtl
-#' plot will plot all traits analysed.\cr
+#' should be indicated using the parameter \code{trait}. If the analysis was
+#' done for only one trait it is detected automatically. The qtl plot will plot
+#' all traits analysed.\cr
 #' See details for a detailed description of the plots and the plot options
 #' specific to the different plots.
 #'

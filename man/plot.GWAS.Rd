@@ -42,9 +42,9 @@ plot can be made:
 \item{a qtl plot of effect sizes and directions for multiple traits}
 }
 Manhattan plots and qq plots are made for a single trait which
-should be indicated using the parameter \code{trait} unless the analysis was
-done for only one trait in which case it is detected automatically. The qtl
-plot will plot all traits analysed.\cr
+should be indicated using the parameter \code{trait}. If the analysis was
+done for only one trait it is detected automatically. The qtl plot will plot
+all traits analysed.\cr
 See details for a detailed description of the plots and the plot options
 specific to the different plots.
 }

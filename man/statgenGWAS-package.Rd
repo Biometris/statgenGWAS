@@ -6,9 +6,9 @@
 \alias{statgenGWAS-package}
 \title{statgenGWAS: Genome Wide Association Studies}
 \description{
-The statgen packages, developed by Biometris, are developed to 
-    streamline the analysis of typical plant breeding experiments. statgenGWAS
-    can be used for fast single trait Genome Wide Association Studies (GWAS).
+Fast single trait Genome Wide Association Studies (GWAS). One of a
+    series of statistical genetic packages for streamlining the analysis of 
+    typical plant breeding experiments developed by Biometris.
 }
 \author{
 \strong{Maintainer}: Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl}
