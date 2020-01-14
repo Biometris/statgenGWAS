@@ -165,9 +165,11 @@ gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap,
                           pheno = dropsPhenoList)
                           
 ## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.
+ \donttest{
 GWASDrops <- runSingleTraitGwas(gData = gDataDrops,
                                trials = "Mur13W",
                                traits = "grain.yield")
+ }
                                
 ## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.
 ## Use chromosome specific kinship matrices calculated using vanRaden method.
