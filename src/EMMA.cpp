@@ -66,13 +66,14 @@ double goldenSectionSearch(double upperBound,
                            double n,
                            double t,
                            arma::vec etas2) {
-  double resphi = (3 - sqrt(5)) / 2;
-  // a and b are the current bounds; the minimum is between them.
-  // c is the center pointer pushed slightly left towards a
+  double resphi = (3 - sqrt(5.0)) / 2;
+  // lowerBound and upperBound are the current bounds; the minimum is between them.
+  // center is the center pointer pushed slightly left towards a
   if (fabs(upperBound - lowerBound) < absolutePrecision) {
     return (upperBound + lowerBound) / 2;
   }
-  //  Create a new possible center, in the area between c and b, pushed against c
+  //  Create a new possible center, in the area between center and upperBound,
+  // pushed against center
   double centerNew = lowerBound + resphi * (upperBound - lowerBound);
   if (arma::as_scalar(emmaREMLLL(centerNew, lambda, etas1, n, t, etas2)) <
     arma::as_scalar(emmaREMLLL(center, lambda, etas1, n, t, etas2))) {
@@ -140,7 +141,7 @@ List emmaCPP(arma::vec y,
   for (unsigned int i = 0; i < m - 2; i++) {
     if ((dLL(i) > 0 && dLL(i + 1) < 0) || dLL(i) * dLL(i + 1) < pow(eps, 2)) {
       optLogDelta(rel) = goldenSectionSearch(logDelta(i + 1),
-                  logDelta(i) + (((3 - sqrt(5)) / 2) * (logDelta(i + 1) - logDelta(i))),
+                  logDelta(i) + (((3 - sqrt(5.0)) / 2) * (logDelta(i + 1) - logDelta(i))),
                   logDelta(i), eps, eigVals, etas1, 0.0, 0.0, etas2);
       optLL(rel) = arma::as_scalar(emmaREMLLL(optLogDelta(rel), eigVals, etas1,
                                    0.0, 0.0, etas2));
