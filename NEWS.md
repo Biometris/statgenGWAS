@@ -1,4 +1,4 @@
-# statgenGWAS 1.0.1.1
+# statgenGWAS 1.0.2
 
 * Fixed problem with compilation on Solaris
 
