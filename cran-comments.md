@@ -1,22 +1,14 @@
-## Resubmission
-
-* Updated package description in DESCRIPTION
-* Removed printing to console using cat from codeMarkers function.
-  cat is still used, but only for printing to file and in summary/print 
-  functions
+This is a patch released solving compilation problems on Solaris. 
 
 ## Test environments
 * local Windows 10, R 3.6.2
 * debian (on gitlab-ci), R 3.6.2
 * r-hub (devel and release)
+* solaris via rhub
 
 ## R CMD check results
 
 0 errors | 0 warnings | 3 notes
-
-New submission
-
-* This is a new release.
 
 Possibly mis-spelled words in DESCRIPTION:
   Biometris (52:53)
