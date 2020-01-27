@@ -6,6 +6,7 @@ image: docker-registry.wur.nl/rossu027/r-verasreml:latest
 
 variables:
   R_LIBS_USER: "$CI_PROJECT_DIR/ci/lib"
+  OMP_THREAD_LIMIT: "2"
 
 before_script:
   ## Make sure configure and cleanup files are executable.
@@ -77,12 +78,6 @@ coverage:
   only:
     - develop
     - master
-  before_script:
-    - apt-get update & apt-get install -y build-essential gobjc++ libomp-dev
-    - chmod +x configure
-    - chmod +x cleanup
-    ## Add R_LIBS_USER to libpaths.
-    - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
   script:
     - Rscript -e 'covr::package_coverage(function_exclusions = "imputeBeagle")'
   coverage: '/Coverage:\s*(\d+.\d+\%)/'

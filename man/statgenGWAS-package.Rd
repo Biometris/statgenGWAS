@@ -7,7 +7,7 @@
 \title{statgenGWAS: Genome Wide Association Studies}
 \description{
 Fast single trait Genome Wide Association Studies (GWAS) following 
-    the method described in Kang et al. (2010), <https://doi.org/10.1038/ng.548>.
+    the method described in Kang et al. (2010), <doi:10.1038/ng.548>.
     One of a series of statistical genetic packages for streamlining the 
     analysis of typical plant breeding experiments developed by Biometris.
 }
