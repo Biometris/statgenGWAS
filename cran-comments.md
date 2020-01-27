@@ -1,4 +1,6 @@
-This is a patch released solving compilation problems on Solaris. 
+This is a patch releases
+* removed deprecated functions from the rvg package. 
+* now respecting OMP_THREAD_LIMIT in parallelization.
 
 ## Test environments
 * local Windows 10, R 3.6.2
@@ -11,8 +13,9 @@ This is a patch released solving compilation problems on Solaris.
 0 errors | 0 warnings | 3 notes
 
 Possibly mis-spelled words in DESCRIPTION:
-  Biometris (52:53)
-  GWAS (50:65)
+Kang (51:29)
+  al (51:37)
+  et (51:34)
 
 * These are spelled correctly.
 
