@@ -217,3 +217,7 @@ expect_equal(length(p$layers), length(p1$layers) - 3)
 p1 <- plot(stg1, plotType = "manhattan", trial = "ph1", trait = "X1")
 # One new layer should be added for the significant SNP.
 expect_equal(length(p$layers), length(p1$layers) - 1)
+
+## Cleanup temporary files.
+unlink(tmpPptx)
+unlink(tmpPpt)
