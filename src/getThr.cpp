@@ -10,17 +10,19 @@ using namespace Rcpp;
 int getThr(Rcpp::Nullable<Rcpp::IntegerVector> nCores = R_NilValue) {
   int nThr = 1;
 #ifdef _OPENMP
-  // get thread limit from OMP_THREAD_LIMIT. Set to 2 by CRAN. INT_MAX if unset.
-  int thrLim = omp_get_thread_limit();  
-  // get max number of threads from OMP_NUM_THREADS. 
+  // get maximum number of processes.
+  nThr = omp_get_num_procs();
+  // restrict to max procs - 1.
+  nThr = std::max(nThr - 1, 1);
+  // Restrict to  thread limit from OMP_THREAD_LIMIT. 
+  // Set to 2 by CRAN. INT_MAX if unset.
+  nThr = std::min(nThr, omp_get_thread_limit());
+  // Restrict to max number of threads from OMP_NUM_THREADS. 
   // Initialized when OpenMP is started.
-  int maxThr = omp_get_max_threads();
-  int maxThrUsed = std::min(thrLim, maxThr);
+  nThr = std::min(nThr, omp_get_max_threads());
   if (nCores.isNotNull()) {
-    nThr = std::min(IntegerVector(nCores)[0], maxThrUsed);
-  } else {
-    nThr = maxThrUsed - 1;
-  }
-#endif
+    nThr = std::min(IntegerVector(nCores)[0], nThr);
+  } 
+#endif  
   return nThr;
 }
