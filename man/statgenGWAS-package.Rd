@@ -6,9 +6,18 @@
 \alias{statgenGWAS-package}
 \title{statgenGWAS: Genome Wide Association Studies}
 \description{
-Fast single trait Genome Wide Association Studies (GWAS). One of a
-    series of statistical genetic packages for streamlining the analysis of 
-    typical plant breeding experiments developed by Biometris.
+Fast single trait Genome Wide Association Studies (GWAS) following 
+    the method described in Kang et al. (2010), <https://doi.org/10.1038/ng.548>.
+    One of a series of statistical genetic packages for streamlining the 
+    analysis of typical plant breeding experiments developed by Biometris.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/Biometris/statgenGWAS/}
+  \item Report bugs at \url{https://github.com/Biometris/statgenGWAS/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl}

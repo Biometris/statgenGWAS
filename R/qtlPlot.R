@@ -198,20 +198,21 @@ qtlPlot <- function(dat,
     coord_cartesian(clip = "off") +
     ## use custom made theme
     qtlPlotTheme +
-    labs(x = "Chromosomes", y = yLab) 
+    labs(x = "Chromosomes", y = yLab)  
   if (exportPptx) {
     ## Save figure in .pptx
-    if (requireNamespace("officer", quietly = TRUE) &&
-        requireNamespace("rvg", quietly = TRUE)) {
+    if (requireNamespace("officer", quietly = TRUE)) {
       ## Create empty .pptx file
       pptOut <- officer::read_pptx()
       ## Add new slide (always necessary)
       pptOut <- officer::add_slide(x = pptOut, layout = "Title and Content",
                                    master = "Office Theme")
       ## Add plot to the document
-      pptOut <- rvg::ph_with_vg_at(x = pptOut, ggobj = p, left = 0.9,
-                                   top = 0.9, width = 8, height = 6.4)
-      ## Add date to slide
+      pptOut <- officer::ph_with(x = pptOut, value  = p, 
+                                 location = officer::ph_location(left = 0.9,
+                                                                 top = 1,
+                                                                 width = 8,
+                                                                 height = 6.4))      ## Add date to slide
       pptOut <- officer::ph_with(x = pptOut, value = format(Sys.Date()), 
                                  location = officer::ph_location_type(type = "dt"))
       ##Write .pptx

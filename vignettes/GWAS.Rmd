@@ -294,7 +294,7 @@ plot(GWASDrops, plotType = "qtl", yThr = 4, normalize = TRUE)
 
 Now the effects are on the same scale and comparable.  
 
-Other parameters can be used to plot a subset of the chromosomes (`chr`) and directly export the plot to .pptx (`exportPptx = TRUE` and specify `pptxName`). Note that the officer and rvg packages are required for this. A full list of parameters can be found by running `help(plot.GWAS)`. 
+Other parameters can be used to plot a subset of the chromosomes (`chr`) and directly export the plot to .pptx (`exportPptx = TRUE` and specify `pptxName`). Note that the officer package is required for this. A full list of parameters can be found by running `help(plot.GWAS)`. 
 
 ## Kinship matrices
 

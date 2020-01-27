@@ -2,7 +2,7 @@ Package: statgenGWAS
 Type: Package
 Title: Genome Wide Association Studies 
 Version: 1.0.3
-Date: 2020-01-20
+Date: 2020-01-27
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 
@@ -47,9 +47,10 @@ Authors@R: c(person(given = "Bart-Jan",
                     role = "ctb",
                     comment = c(ORCID = "0000-0001-6030-3933"))
             )
-Description: Fast single trait Genome Wide Association Studies (GWAS). One of a
-    series of statistical genetic packages for streamlining the analysis of 
-    typical plant breeding experiments developed by Biometris.
+Description: Fast single trait Genome Wide Association Studies (GWAS) following 
+    the method described in Kang et al. (2010), <https://doi.org/10.1038/ng.548>.
+    One of a series of statistical genetic packages for streamlining the 
+    analysis of typical plant breeding experiments developed by Biometris.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -62,7 +63,8 @@ Imports: data.table,
 Suggests: knitr,
     rmarkdown,
     officer,
-    rvg,
     tinytest
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo
+URL: https://github.com/Biometris/statgenGWAS/
+BugReports: https://github.com/Biometris/statgenGWAS/issues
