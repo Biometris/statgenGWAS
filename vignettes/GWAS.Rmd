@@ -381,8 +381,8 @@ GWASDropsSnpCov <- runSingleTraitGwas(gData = gDataDropsDedup,
 
 ### Minor Allele Frequency
 
-It is recommended to remove SNPs with a low minor allele frequency (MAF) from the data before starting a GWAS analysis. However it is also possible to do so in the analysis itself. The difference between these approaches is that *recodeMarkers* removes the SNPs, whereas *runSingleTraitGwas* excludes them from the analysis but leaves them in the output (with results set to NA). In the latter case it will still be possible to see the allele frequency of the SNP.  
-By default all SNPs with a MAF lower than 0.01 are excluded from the analysis. This can be controlled by the parameter `MAF`. Setting MAF to 0 will still excluede duplicate SNPs since duplicates cause problems when fitting the underlying models. Instead of excluding SNPs with a low MAF it is also possible to exclude SNPs with a low minor allele count (MAC). This is done setting `useMAF = FALSE` and then specifying `MAC`.   
+It is recommended to remove SNPs with a low minor allele frequency (MAF) from the data before starting a GWAS analysis. However it is also possible to do so in the analysis itself. The difference between these approaches is that *codeMarkers* removes the SNPs, whereas *runSingleTraitGwas* excludes them from the analysis but leaves them in the output (with results set to NA). In the latter case it will still be possible to see the allele frequency of the SNP.  
+By default all SNPs with a MAF lower than 0.01 are excluded from the analysis. This can be controlled by the parameter `MAF`. Setting MAF to 0 will still exclude duplicate SNPs since duplicates cause problems when fitting the underlying models. Instead of excluding SNPs with a low MAF it is also possible to exclude SNPs with a low minor allele count (MAC). This is done setting `useMAF = FALSE` and then specifying `MAC`.   
 
 ```{r stgMAC}
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.

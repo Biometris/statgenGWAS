@@ -77,7 +77,7 @@ chkMarkers <- function(markers,
   if (dim == 2) {
     if (!is.numeric(markers)) {
       stop("markers in gData should be a numerical matrix. Use ",
-           "recodeMarkers first for recoding.\n", call. = FALSE)
+           "codeMarkers first for recoding.\n", call. = FALSE)
     }
   } else if (dim == 3) {
     if (!inherits(markers, "array") || length(dim(markers)) != 3) {
