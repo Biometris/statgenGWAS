@@ -21,7 +21,7 @@
 #' matrices.
 #' @param thr An optional numerical value, the threshold used in performing the
 #' GWAS analysis.
-#' @param GWASInfo a list containing extra information concering the GWAS
+#' @param GWASInfo a list containing extra information concerning the GWAS
 #' analysis.
 #'
 #' @return An object of class GWAS, a list of the input items.
@@ -298,8 +298,10 @@ plot.GWAS <- function(x,
         trait <- trait[1]
       }
     }
-    GWAResult <- GWAResult[trait == as.name(trait), ]
-    signSnp <- signSnp[trait == as.name(trait), ]
+    GWASel <- GWAResult[["trait"]] == trait
+    GWAResult <- GWAResult[GWASel, ]
+    signSel <- signSnp[["trait"]] == trait
+    signSnp <- signSnp[signSel, ]
   }
   if (plotType == "manhattan") {
     ## Compute chromosome boundaries.
