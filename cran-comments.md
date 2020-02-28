@@ -1,6 +1,6 @@
-This is a patch releases
-* removed deprecated functions from the rvg package. 
-* now respecting OMP_THREAD_LIMIT in parallelization.
+This is a patch release
+* Added stringsAsFactors = TRUE where applicable to comply with new standards in R 4.0.
+* Fixed a small bug in plotting function.
 
 ## Test environments
 * local Windows 10, R 3.6.2
@@ -10,14 +10,7 @@ This is a patch releases
 
 ## R CMD check results
 
-0 errors | 0 warnings | 3 notes
-
-Possibly mis-spelled words in DESCRIPTION:
-Kang (51:29)
-  al (51:37)
-  et (51:34)
-
-* These are spelled correctly.
+0 errors | 0 warnings | 2 notes
 
 installed size is  6.0Mb
   sub-directories of 1Mb or more:
