@@ -188,7 +188,7 @@ codeMarkers <- function(gData,
   }
   ## Recode markers.
   if (!is.numeric(markersClean)) {
-    markersRecoded <- as.data.frame(markersClean)
+    markersRecoded <- as.data.frame(markersClean, stringsAsFactors = TRUE)
     ## Extract alleles per SNP.
     alleles <- lapply(X = markersRecoded, FUN = levels)
     if (refAll[1] == "minor") {
