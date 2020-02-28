@@ -107,8 +107,8 @@ createGData <- function(gData = NULL,
   ## Check that at least one input argument, other than gData, is provided.
   if (is.null(geno) && is.null(map) && is.null(kin) && is.null(pheno) &&
       is.null(covar)) {
-    stop(paste("At least one of geno, map, kin, pheno and covar should",
-               "be provided.\n"))
+    stop("At least one of geno, map, kin, pheno and covar should be", 
+         "provided.\n")
   }
   ## Modify map.
   if (!is.null(map)) {
@@ -140,9 +140,8 @@ createGData <- function(gData = NULL,
         }
       }))
       rownames(map) <- paste0("chr", map[["chr"]], "_", map[["pos"]], suffix)
-      warning(paste("map contains no marker names. Names constructed from",
-                    "chromosome and position.\n"),
-              call. = FALSE)
+      warning("map contains no marker names. Names constructed from ",
+              "chromosome and position.\n", call. = FALSE)
     } 
   } else if (!is.null(gData$map)) {
     ## No map input, but available from gData object. Set map to
