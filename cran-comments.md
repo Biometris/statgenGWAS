@@ -3,7 +3,7 @@ This is a patch release
 * Fixed a small bug in plotting function.
 
 ## Test environments
-* local Windows 10, R 3.6.2
+* local Windows 10, R 3.6.3
 * debian (on gitlab-ci), R 3.6.2
 * r-hub (devel and release)
 * solaris via rhub
