@@ -1,6 +1,6 @@
 # statgenGWAS develop
 
-* Removed use of deprecated `ggplot2::expand_scale` in favor of `ggplot2::expansion`.
+* Removed use of deprecated `ggplot2::expand_scale`.
 
 # statgenGWAS 1.0.4
 
