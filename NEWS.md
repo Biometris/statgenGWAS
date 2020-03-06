@@ -1,3 +1,7 @@
+# statgenGWAS develop
+
+* Removed use of deprecated `ggplot2::expand_scale` in favor of `ggplot2::expansion`.
+
 # statgenGWAS 1.0.4
 
 * StringsAsFactors = TRUE added where applicable to comply with new defaults in R 4.0.

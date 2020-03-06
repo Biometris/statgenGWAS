@@ -88,7 +88,7 @@ manhattanPlot <- function(xValues,
   }, aes_string(x = "x", y = "y", color = "chr")) +
     geom_point(na.rm = TRUE) +
     scale_y_continuous(limits = c(0, yMax),
-                       expand = expand_scale(mult = c(0, 0.1))) +
+                       expand = expansion(mult = c(0, 0.1))) +
     scale_x_continuous(breaks = xMarks, labels = chrs, limits = c(0, NA), 
                        expand = c(0, 0)) +
     scale_color_manual(values = colPalette, labels = NULL) +
