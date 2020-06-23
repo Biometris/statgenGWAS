@@ -71,6 +71,8 @@
 #' \code{thrType} = "fixed".
 #' @param nSnpLOD A numerical value indicating the number of SNPs with the
 #' smallest p-values that are selected when \code{thrType} = "small".
+#' @param rho A numerical value ...
+#' @param pThr A numerical value ...
 #' @param sizeInclRegion An integer. Should the results for SNPs close to
 #' significant SNPs be included? If so, the size of the region in centimorgan
 #' or base pairs. Otherwise 0.
@@ -114,6 +116,9 @@
 #' @references VanRaden P.M. (2008) Efficient methods to compute genomic
 #' predictions. Journal of Dairy Science 91 (11): 4414–23. 
 #' \url{https://doi.org/10.3168/jds.2007-0980}.
+#' @references Brzyski D. et al. (2017) Controlling the Rate of GWAS False 
+#' Discoveries. Genetics 205 (1): 61-75.
+#' \url{https://doi.org/10.1534/genetics.116.193987 }
 #' 
 #' @examples 
 #' ## Create a gData object Using the data from the DROPS project.
@@ -179,10 +184,12 @@ runSingleTraitGwas <- function(gData,
                                MAF = 0.01,
                                MAC = 10,
                                genomicControl = FALSE,
-                               thrType = c("bonf", "fixed", "small"),
-                               alpha = 0.05 ,
+                               thrType = c("bonf", "fixed", "small", "fdr"),
+                               alpha = 0.05,
                                LODThr = 4,
                                nSnpLOD = 10,
+                               pThr = 0.05,
+                               rho = 0.3,
                                sizeInclRegion = 0,
                                minR2 = 0.5,
                                nCores = NULL) {
@@ -223,6 +230,10 @@ runSingleTraitGwas <- function(gData,
     chkNum(LODThr, min = 0)
   } else if (thrType == "small") {
     chkNum(nSnpLOD, min = 0)
+  } else if (thrType == "fdr") {
+    chkNum(alpha, min = 0)
+    chkNum(rho, min = 0, max = 1)
+    chkNum(pThr, min = 0, max = 1)
   }
   ## Compute kinship matrix (GSLMethod single)
   ## or kinship matrices per chromosome (GLSMethod multi).
@@ -398,11 +409,18 @@ runSingleTraitGwas <- function(gData,
       }
       LODThrTr[trait] <- LODThr
       ## Select the SNPs whose LOD-scores are above the threshold.
+      if (thrType == "fdr") {
+        signSnpTotTr[[trait]] <-
+          extrSignSnpsFDR(GWAResult = GWAResult, markers = markersRed,
+                          maxScore = maxScore, pheno = phTrTr, trait = trait,
+                          rho = rho, pThr = pThr, alpha = alpha)
+      } else {
       signSnpTotTr[[trait]] <-
         extrSignSnps(GWAResult = GWAResult, LODThr = LODThr,
                      sizeInclRegion = sizeInclRegion, minR2 = minR2,
                      map = mapRed, markers = markersRed,
                      maxScore = maxScore, pheno = phTrTr, trait = trait)
+      }
       ## Sort columns.
       data.table::setkeyv(x = GWAResult, cols = c("trait", "chr", "pos"))
       GWATotTr[[trait]] <- GWAResult

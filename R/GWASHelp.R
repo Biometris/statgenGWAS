@@ -211,9 +211,58 @@ extrSignSnps <- function(GWAResult,
     ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
     ## 1 if there are heterozygotes).
     snpVar <- 4 * GWAResult[snpSelection, "effect"] ^ 2 / maxScore ^ 2 *
-      apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
+      apply(X = markers[, GWAResult[snpSelection][["snp"]], drop = FALSE], 
+            MARGIN = 2, FUN = var)
     propSnpVar <- snpVar[["effect"]] / as.numeric(var(pheno[trait]))
     ## Create data.table with significant snps.
+    signSnp <- data.table::data.table(GWAResult[snpSelection, ],
+                                      snpStatus = as.factor(snpStatus),
+                                      propSnpVar = propSnpVar)
+  } else {
+    ## No significant SNPs. Return empty data.table.
+    signSnp <- data.table::data.table()
+  }
+  return(signSnp)
+}
+
+#' @noRd
+#' @keywords internal
+extrSignSnpsFDR <- function(GWAResult, 
+                            markers,
+                            maxScore,
+                            pheno,
+                            trait,
+                            rho = 0.3,
+                            pThr = 0.05,
+                            alpha = 0.05) {
+  pVals <- setNames(GWAResult$pValue, GWAResult$snp)
+  
+  BpVals <- numeric()
+  B <- pVals[pVals < pThr]
+  BMarkers <- markers[, colnames(markers) %in% names(B), drop = FALSE]
+  clusters <- list()
+  nCluster <- 0
+  
+  while (length(B) > 0) {
+    nCluster <- nCluster + 1
+    clusterRep <- which.min(B) 
+    BpVals <- c(BpVals, B[clusterRep])
+    LD <- cor(BMarkers[, names(clusterRep)], BMarkers)
+    LDSet <- names(LD[, LD > rho])  
+    B <- B[!names(B) %in% LDSet]
+    clusters[[nCluster]] <- union(names(clusterRep), LDSet)
+  }
+  
+  isSign <- BpVals < (1:nCluster) * (alpha / length(pVals))
+  nSign <- sum(cumsum(!isSign) < 1)
+  snpSelection <- names(isSign)[]
+  if (nSign > 0) {
+    snpSelection <- unlist(clusters[1:nSign])
+    snpStatus <- ifelse(snpSelection %in% names(BpVals), "significant SNP",
+                        "within LD of significant SNP")
+    snpVar <- 4 * GWAResult[snpSelection, "effect"] ^ 2 / maxScore ^ 2 *
+      apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
+    propSnpVar <- snpVar[["effect"]] / as.numeric(var(pheno[trait]))
     signSnp <- data.table::data.table(GWAResult[snpSelection, ],
                                       snpStatus = as.factor(snpStatus),
                                       propSnpVar = propSnpVar)
@@ -259,7 +308,7 @@ getSNPsInRegionSufLD <- function(snp,
     R2 <- suppressWarnings(cor(markers[, snp, drop = FALSE],
                                markers[, candidateSnps, drop = FALSE]) ^ 2)
     ## Select SNPs based on R2.
-    candidateSnpsNames <- colnames(R2[, R2[, 1] > minR2, drop = FALSE])
+    candidateSnpsNames <- colnames(R2[, R2 > minR2, drop = FALSE])
     return(which(rownames(map) %in% candidateSnpsNames))
   } else {
     return(integer())
