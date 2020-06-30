@@ -18,10 +18,12 @@ runSingleTraitGwas(
   MAF = 0.01,
   MAC = 10,
   genomicControl = FALSE,
-  thrType = c("bonf", "fixed", "small"),
+  thrType = c("bonf", "fixed", "small", "fdr"),
   alpha = 0.05,
   LODThr = 4,
   nSnpLOD = 10,
+  pThr = 0.05,
+  rho = 0.3,
   sizeInclRegion = 0,
   minR2 = 0.5,
   nCores = NULL
@@ -105,6 +107,10 @@ specified.}
 
 \item{nSnpLOD}{A numerical value indicating the number of SNPs with the
 smallest p-values that are selected when \code{thrType} = "small".}
+
+\item{pThr}{A numerical value ...}
+
+\item{rho}{A numerical value ...}
 
 \item{sizeInclRegion}{An integer. Should the results for SNPs close to
 significant SNPs be included? If so, the size of the region in centimorgan
@@ -217,6 +223,10 @@ series model estimation. JRSS 51 (1): 15–27.
 VanRaden P.M. (2008) Efficient methods to compute genomic
 predictions. Journal of Dairy Science 91 (11): 4414–23. 
 \url{https://doi.org/10.3168/jds.2007-0980}.
+
+Brzyski D. et al. (2017) Controlling the Rate of GWAS False 
+Discoveries. Genetics 205 (1): 61-75.
+\url{https://doi.org/10.1534/genetics.116.193987 }
 }
 \seealso{
 \code{\link{GWAS}}, \code{\link{kinship}}, \code{\link{dropsData}}
