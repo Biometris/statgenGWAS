@@ -316,7 +316,7 @@ GWASDropsChrSpec <- runSingleTraitGwas(gData = gDataDropsDedup,
 
 The *runSingleTraitGwas* function has many more parameters that can be specified. In this section similar parameters are grouped and explained with examples on how to use them.
 
-### Multiple trails and traits
+### Multiple trials and traits
 
 The analysis can be performed for more than one trait in a single function call. Not specifying `traits` at all will perform the analysis for all traits that are present in the phenotypic data in the gData object. The results will be combined in a single output object with the traits specified in the column *trait* in *GWAResult* and *signSnp* within this object. Running for multiple trials is also possible and will generate a list of outputs within *GWAResult* and *signSnp* in the output object. Not specifying `trials` will run the GWAS analysis for all trials in the phenotypic data in the gData object.
 
