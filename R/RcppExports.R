@@ -29,6 +29,10 @@ emmaCPP <- function(y, k, x, nGrids = 100L, uLim = 10, lLim = -10, eps = 1e-3) {
     .Call(`_statgenGWAS_emmaCPP`, y, k, x, nGrids, uLim, lLim, eps)
 }
 
+codeCharMarkers <- function(markers, refAlls, minor, maxAll, nCores = NULL) {
+    .Call(`_statgenGWAS_codeCharMarkers`, markers, refAlls, minor, maxAll, nCores)
+}
+
 fastGLSCPP <- function(X, y, sigma, size_param = NULL, nCores = NULL) {
     .Call(`_statgenGWAS_fastGLSCPP`, X, y, sigma, size_param, nCores)
 }

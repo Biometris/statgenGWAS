@@ -14,7 +14,7 @@ int getThr(Rcpp::Nullable<Rcpp::IntegerVector> nCores = R_NilValue) {
   nThr = omp_get_num_procs();
   // restrict to max procs - 1.
   nThr = std::max(nThr - 1, 1);
-  // Restrict to  thread limit from OMP_THREAD_LIMIT. 
+  // Restrict to thread limit from OMP_THREAD_LIMIT. 
   // Set to 2 by CRAN. INT_MAX if unset.
   nThr = std::min(nThr, omp_get_thread_limit());
   // Restrict to max number of threads from OMP_NUM_THREADS. 

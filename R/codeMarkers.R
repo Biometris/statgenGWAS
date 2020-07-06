@@ -246,10 +246,10 @@ codeMarkers <- function(gData,
     snpKeep <- snpKeep[snpMAF | snpKeep]
   }
   ## Remove duplicated markers.
-  ## Before duplicated was used for this but this only removes one occurence
+  ## Before duplicated was used for this but this only removes one occurrence
   ## per duplicate. Unique does not.
   if (removeDuplicates) {
-    ## Only using unique would always remove the first occurence.
+    ## Only using unique would always remove the first occurrence.
     ## Using sample to make it random, always putting keep SNPs first.
     randOrder <- c(c(1:ncol(markersRecoded))[snpKeep],
                    sample(x = c(1:ncol(markersRecoded))[!snpKeep]))
