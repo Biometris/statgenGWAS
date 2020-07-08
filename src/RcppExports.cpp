@@ -72,17 +72,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // codeCharMarkers
-NumericMatrix codeCharMarkers(CharacterMatrix& markers, std::vector< std::string > refAlls, bool& minor, double& maxAll, Rcpp::Nullable<Rcpp::IntegerVector> nCores);
-RcppExport SEXP _statgenGWAS_codeCharMarkers(SEXP markersSEXP, SEXP refAllsSEXP, SEXP minorSEXP, SEXP maxAllSEXP, SEXP nCoresSEXP) {
+List codeCharMarkers(CharacterMatrix& markers, std::vector< std::string > refAlls, bool& minor, Rcpp::Nullable<Rcpp::IntegerVector> nCores);
+RcppExport SEXP _statgenGWAS_codeCharMarkers(SEXP markersSEXP, SEXP refAllsSEXP, SEXP minorSEXP, SEXP nCoresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterMatrix& >::type markers(markersSEXP);
     Rcpp::traits::input_parameter< std::vector< std::string > >::type refAlls(refAllsSEXP);
     Rcpp::traits::input_parameter< bool& >::type minor(minorSEXP);
-    Rcpp::traits::input_parameter< double& >::type maxAll(maxAllSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::IntegerVector> >::type nCores(nCoresSEXP);
-    rcpp_result_gen = Rcpp::wrap(codeCharMarkers(markers, refAlls, minor, maxAll, nCores));
+    rcpp_result_gen = Rcpp::wrap(codeCharMarkers(markers, refAlls, minor, nCores));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -186,7 +185,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_statgenGWAS_emmaREMLLL", (DL_FUNC) &_statgenGWAS_emmaREMLLL, 6},
     {"_statgenGWAS_goldenSectionSearch", (DL_FUNC) &_statgenGWAS_goldenSectionSearch, 9},
     {"_statgenGWAS_emmaCPP", (DL_FUNC) &_statgenGWAS_emmaCPP, 7},
-    {"_statgenGWAS_codeCharMarkers", (DL_FUNC) &_statgenGWAS_codeCharMarkers, 5},
+    {"_statgenGWAS_codeCharMarkers", (DL_FUNC) &_statgenGWAS_codeCharMarkers, 4},
     {"_statgenGWAS_fastGLSCPP", (DL_FUNC) &_statgenGWAS_fastGLSCPP, 5},
     {"_statgenGWAS_getThr", (DL_FUNC) &_statgenGWAS_getThr, 1},
     {"_statgenGWAS_astleCPP", (DL_FUNC) &_statgenGWAS_astleCPP, 2},

@@ -188,48 +188,18 @@ codeMarkers <- function(gData,
   }
   ## Recode markers.
   if (!is.numeric(markersClean)) {
-    markersRecoded <- as.data.frame(markersClean, stringsAsFactors = TRUE)
-    ## Extract alleles per SNP.
-    alleles <- lapply(X = markersRecoded, FUN = levels)
     if (refAll[1] == "minor") {
-      ## Set first allele per SNP as reference allele.
-      firstAlls <- sapply(X = alleles, FUN = "[[", 1)
-      ## Split either on punctuation or on single letters.
-      refAlls <-
-        sapply(X = strsplit(x = firstAlls,
-                            split = ifelse(length(grep(pattern = "[[:punct:]]",
-                                                       x = firstAlls)) == 0,
-                                           "", "[[:punct:]]")),
-               FUN = "[[", 1)
-      ## Get maximum number of alleles.
-      maxAll <- unname(nchar(gsub(pattern = "[[:punct:]]",
-                                  replacement = "",
-                                  x = alleles[[1]][1])) %/% nchar(refAlls[1]))
-    } else {
+      refAlls <- character()
+    } else if (length(refAll) > 1) {
       refAlls <- refAll
-      ## Get maximum number of alleles.
-      maxAll <- nchar(levels(markersRecoded[, 1][1])) %/% nchar(refAll)
+    } else {
+      refAlls <- rep(x = refAll, times = ncol(markersClean))
     }
-    ## Recode markers by counting the number of times the reference marker is
-    ## in the alleles. nchar keeps NA so no need to work around NAs.
-    codedAlls <- mapply(FUN = function(x, y) {
-      (nchar(x) - nchar(gsub(pattern = y, replacement = "", x = x))) /
-        nchar(y)}, alleles, refAlls, SIMPLIFY = FALSE)
-    ## Replace alleles by coded alleles by redefining factor levels.
-    for (i in 1:ncol(markersRecoded)) {
-      levels(markersRecoded[[i]]) <- as.character(codedAlls[[i]])
-    }
-    markersRecoded <- as.matrix(markersRecoded)
-    markersRecoded <- matrix(as.numeric(markersRecoded),
-                             nrow = nrow(markersClean),
-                             dimnames = dimnames(markersClean))
-    if (refAll[1] == "minor") {
-      ## Correct for position of minor allele.
-      markersRecoded[, colMeans(markersRecoded, na.rm = TRUE) > maxAll / 2] <-
-        maxAll -
-        markersRecoded[, colMeans(markersRecoded, na.rm = TRUE) > maxAll / 2]
-    }
-  } else {# Numeric input.
+    markersCharRecoded <- codeCharMarkers(markersClean, refAlls, 
+                                          refAll[1] == "minor", NULL)
+    markersRecoded <- markersCharRecoded$markersRecoded
+    maxAll <- markersCharRecoded$maxAll
+  } else { # Numeric input.
     markersRecoded <- markersClean
     maxAll <- max(markersRecoded, na.rm = TRUE)
   }
@@ -241,7 +211,7 @@ codeMarkers <- function(gData,
     if (verbose) {
       codeSum <- c(codeSum, 
                    paste0(sum(!(snpMAF | snpKeep)), " SNPs removed because ", 
-                   "MAF smaller than ", MAF, ".\n"))
+                          "MAF smaller than ", MAF, ".\n"))
     }
     snpKeep <- snpKeep[snpMAF | snpKeep]
   }
@@ -323,10 +293,10 @@ codeMarkers <- function(gData,
       snpKeep <- snpKeep[snpMAF | snpKeep]
     }
     ## Remove duplicated markers after imputation.
-    ## Before duplicated was used for this but this only removes one occurence
+    ## Before duplicated was used for this but this only removes one occurrence
     ## per duplicate. Unique does not.
     if (removeDuplicates) {
-      ## Only using unique would always remove the first occurence.
+      ## Only using unique would always remove the first occurrence.
       ## Using sample to make it random, always putting keep SNPs first.
       randOrder <- c(c(1:ncol(markersRecoded))[snpKeep],
                      sample(x = c(1:ncol(markersRecoded))[!snpKeep]))
@@ -352,30 +322,33 @@ codeMarkers <- function(gData,
                      drop = FALSE]
   }
   ## Remove removed SNPs and genotypes from map, pheno, kinship and covar.
-  mapNew <- covarNew <- NULL
+  ## Replace corresponding slots in original gData object since recreating it 
+  ## is both needlessly time consuming and produces warnings for replacing
+  ## existing outputs.
+  genoNew <- rownames(markersRecoded)
   if (!is.null(gData$map)) {
     mapNew <- gData$map[rownames(gData$map) %in% colnames(markersRecoded), ]
+    gData$map <- mapNew
   }
   if (!is.null(gData$pheno)) {
     gData$pheno <- lapply(X = gData$pheno, FUN = function(trial) {
-      trial[trial$genotype %in% rownames(markersRecoded), ]
+      trial[trial$genotype %in% genoNew, ]
     })
   }
   if (!is.null(gData$kinship)) {
     if (!is.list(gData$kinship)) {
       gData$kinship <-
-        gData$kinship[rownames(gData$kinship) %in% rownames(markersRecoded),
-                      colnames(gData$kinship) %in% rownames(markersRecoded)]
+        gData$kinship[rownames(gData$kinship) %in% genoNew,
+                      colnames(gData$kinship) %in% genoNew]
     } else {
       gData$kinship <- lapply(X = gData$kinship, FUN = function(k) {
-        k[rownames(k) %in% rownames(markersRecoded),
-          colnames(k) %in% rownames(markersRecoded)]
+        k[rownames(k) %in% genoNew, colnames(k) %in% genoNew]
       })
     }
   }
   if (!is.null(gData$covar)) {
-    covarNew <- gData$covar[rownames(gData$covar) %in%
-                              rownames(markersRecoded), , drop = FALSE]
+    gData$covar <- gData$covar[rownames(gData$covar) %in% genoNew, , 
+                               drop = FALSE]
   }
   if (verbose) {
     codeSum <- c(codeSum, 
@@ -384,10 +357,11 @@ codeMarkers <- function(gData,
     message(codeSum)
   }
   ## Return gData object with recoded and imputed markers.
-  ## SuppressWarnnings needed since original geno will be overwritten.
-  return(suppressWarnings(
-    createGData(gData = gData, geno = markersRecoded, map = mapNew,
-                covar = covarNew)))
+  ## Replace corresponding slots in original gData object since recreating it 
+  ## is both needlessly time consuming and produces warnings for replacing
+  ## existing outputs.
+  gData$markers <- markersRecoded
+  return(gData)
 }
 
 #' Helper function for imputation using beagle.
@@ -477,5 +451,6 @@ imputeBeagle <- function(markersRecoded,
   colnames(markersRecoded) <- beagleOut[, 3]
   return(markersRecoded)
 }
+
 
 
