@@ -60,7 +60,7 @@ where $y$ is an $n \times 1$ vector of observed phenotypes and $X$ is an $n \tim
 
 ## Application in the package
 
-Single trait GWAS in the statgenSSA package follows the approach of @Kang2010 and related papers: (1) for the 'empty' model (i.e., without any SNP in the fixed effects), we obtain REML-estimates of the variance components $\sigma^2_g$ and $\sigma^2_e$, which give an estimate $\hat \Sigma$ of the variance-covariance matrix. (2) fixing $\hat \Sigma$, we use generalized least-squares (GLS) to test the null-hypothesis $\beta_{\textrm{SNP}} = 0$ using an F-test, for each SNP in turn. The last step gives vectors of estimated effect-size and P-values for all SNPs. These steps are repeated for each combination of trial and trait for which the analysis is run.  
+Single trait GWAS in the statgenGWAS package follows the approach of @Kang2010 and related papers: (1) for the 'empty' model (i.e., without any SNP in the fixed effects), we obtain REML-estimates of the variance components $\sigma^2_g$ and $\sigma^2_e$, which give an estimate $\hat \Sigma$ of the variance-covariance matrix. (2) fixing $\hat \Sigma$, we use generalized least-squares (GLS) to test the null-hypothesis $\beta_{\textrm{SNP}} = 0$ using an F-test, for each SNP in turn. The last step gives vectors of estimated effect-size and P-values for all SNPs. These steps are repeated for each combination of trial and trait for which the analysis is run.  
 
 The REML-estimates in step (1) can be computed using either the Efficient Mixed Model Association (EMMA) algorithm [@Kang2008], or the Newton-Raphson (NR) algorithm [@Tunnicliffe1989]. Our implementation of GLS borrows some code of @Segura2012.
 
@@ -152,7 +152,7 @@ To re-impute the missing values added above, *codeMarkers* has to be run with `i
 
 * `imputeType = "fixed"`: Impute all missing values by a single fixed value. Use the parameter `fixedValue` to set this value. 
 * `imputeType = "random"`: Impute missing values with a random value based on the non-missing values for a SNP. 
-* `imputeType = "beagle"`: Impute missing values using the independent beagle software [@Browning2016]. This software is included in the package and is called with its default settings. It requieres java to run. Since running beagle takes a long time for the current data, the call to beagle is only shown here but not run.    
+* `imputeType = "beagle"`: Impute missing values using the independent beagle software [@Browning2016]. This software is included in the package and is called with its default settings. It requires java to run. Since running beagle takes a long time for the current data, the call to beagle is only shown here but not run.    
  
 Before imputation, genotypes with a high proportion of missing values in the marker matrix can be removed by setting the parameter nMissGeno. Setting it to 0.1 will remove all genotypes with a proportion of missing values higher than 0.1. In a similar way SNPs with a high proportion of missing values can be removed setting nMiss. The default value for both parameters is 1, so genotypes and SNPs with only missing values are always removed.  
 The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF) lower than the specified MAF. As with removing duplicate SNPs this will be done both before and after imputation.
@@ -186,7 +186,7 @@ GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
                                 traits = c("grain.yield", "anthesis"))
 ```
 
-The output of the *runSingleTraitGwas* function is an object of class GWAS. This is a list consisting of five components desribed below.  
+The output of the *runSingleTraitGwas* function is an object of class GWAS. This is a list consisting of five components described below.  
 **GWAResult**: a list of data.tables, one for each trial for which the analysis was run. Each data.table has the following columns:
 
 | | |
@@ -235,7 +235,7 @@ The plot.GWAS function can be used to visualize the results in GWASDrops, with a
 
 #### QQ plots
 
-A QQ-plot of the observed against the expected $-\log_{10}(p)$ values can be made by setting `plotType = "qq"`. Most of the SNPs are expected to have no effect, resulting in P-values uniformly distributed on $[0,1]$, and leading to the identity function ($y=x$) on the $-\log_{10}(p)$ scale. As in the plot below, deviations from this line should only occur on the right side of the plot, for a small number of SNPs with an effect on the phenotype (and possibly SNPs in LD). There is **inflation** if the observed $-\log_{10}(p)$ values are always above the line $y=x$, and (less common) **deflation** if they are always below this line. A QQ-plot thefore gives a first impression of the quality of the GWAS model: if for example $-\log_{10}(p)$ values are consistently too large (inflation), the correction for genetic relatedness may not be adequate.
+A QQ-plot of the observed against the expected $-\log_{10}(p)$ values can be made by setting `plotType = "qq"`. Most of the SNPs are expected to have no effect, resulting in P-values uniformly distributed on $[0,1]$, and leading to the identity function ($y=x$) on the $-\log_{10}(p)$ scale. As in the plot below, deviations from this line should only occur on the right side of the plot, for a small number of SNPs with an effect on the phenotype (and possibly SNPs in LD). There is **inflation** if the observed $-\log_{10}(p)$ values are always above the line $y=x$, and (less common) **deflation** if they are always below this line. A QQ-plot therefore gives a first impression of the quality of the GWAS model: if for example $-\log_{10}(p)$ values are consistently too large (inflation), the correction for genetic relatedness may not be adequate.
 ```{r qqStg} 
 ## Plot a qq plot of GWAS Drops.
 plot(GWASDrops, plotType = "qq", trait = "grain.yield")
