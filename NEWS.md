@@ -1,6 +1,7 @@
 # statgenGWAS develop
 
 * An option fdr (false discovery rate) is added for selecting significant SNPs when running single trait GWAS. The procedure for this is based on Brzyski et al. (2017). See the function documentation and vignette for a more extensive explanation.
+* The summary function for objects of class GWAS now has an option traits for restricting the number of traits for which the summary is printed.
 * Problem where codeMarkers was getting very slow for large character matrix inputs is fixed by moving part of the code to c++.
 * Removed use of deprecated `ggplot2::expand_scale`.
 

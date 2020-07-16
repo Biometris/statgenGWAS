@@ -4,7 +4,7 @@
 \alias{summary.GWAS}
 \title{Summary function for the class \code{GWAS}}
 \usage{
-\method{summary}{GWAS}(object, ..., trials = NULL)
+\method{summary}{GWAS}(object, ..., trials = NULL, traits = NULL)
 }
 \arguments{
 \item{object}{An object of class \code{GWAS}.}
@@ -14,6 +14,9 @@
 \item{trials}{A vector of strings or numeric indices indicating for
 which trials the summary should be made. If \code{NULL}, a summary is
 made for all trials.}
+
+\item{traits}{A vector of strings indicating which traits to include in the
+summary. If \code{NULL}, all traits are included in the summary.}
 }
 \description{
 Gives a summary for an object of S3 class \code{GWAS}.

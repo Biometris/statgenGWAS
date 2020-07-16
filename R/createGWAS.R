@@ -54,11 +54,14 @@ createGWAS <- function(GWAResult = NULL,
 #' @param trials A vector of strings or numeric indices indicating for
 #' which trials the summary should be made. If \code{NULL}, a summary is
 #' made for all trials.
+#' @param traits A vector of strings indicating which traits to include in the
+#' summary. If \code{NULL}, all traits are included in the summary.
 #'
 #' @export
 summary.GWAS <- function(object, 
                          ..., 
-                         trials = NULL) {
+                         trials = NULL,
+                         traits = NULL) {
   ## Checks.
   if (!is.null(trials) && !is.character(trials) &&
       !is.numeric(trials)) {
@@ -82,11 +85,20 @@ summary.GWAS <- function(object,
     GWAResult <- object$GWAResult[[trial]]
     signSnp <- object$signSnp[[trial]]
     GWASInfo <- object$GWASInfo
-    traits <- unique(GWAResult$trait)
+    if (is.null(traits)) {
+      traitsTr <- unique(GWAResult$trait)
+    } else {
+      if (!all(traits %in% GWAResult$trait)) {
+        stop("All traits should be present in ", deparse(substitute(object)))
+      } else {
+        traitsTr <- traits 
+      }
+    }
     ## Print trial.
     cat(names(object$GWAResult)[trial], ":\n", sep = "")
     ## Print traits.
-    cat("\tTraits analysed:", paste(traits, collapse = ", "), "\n\n")
+    cat("\tTraits analysed:", paste(unique(GWAResult$trait), 
+                                    collapse = ", "), "\n\n")
     ## Print SNP numbers.
     cat("\tData are available for", length(unique(GWAResult$snp)),
         "SNPs.\n")
@@ -95,7 +107,7 @@ summary.GWAS <- function(object,
           "of them were not analyzed because their minor allele frequency is",
           "below", GWASInfo$MAF, "\n\n")
     }
-    for (trait in traits) {
+    for (trait in traitsTr) {
       cat("\tTrait:", trait, "\n\n")
       if (substr(GWASInfo$call[[1]], 4, 4) == "S" &&
           !is.null(GWASInfo$GLSMethod) && GWASInfo$GLSMethod == "single") {

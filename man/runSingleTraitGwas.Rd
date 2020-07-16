@@ -23,7 +23,7 @@ runSingleTraitGwas(
   LODThr = 4,
   nSnpLOD = 10,
   pThr = 0.05,
-  rho = 0.3,
+  rho = 0.5,
   sizeInclRegion = 0,
   minR2 = 0.5,
   nCores = NULL
