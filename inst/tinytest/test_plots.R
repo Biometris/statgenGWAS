@@ -73,9 +73,9 @@ expect_error(plot(stg, plotType = "qtl", trial = "ph1", yThr = -1),
 expect_silent(plot(stg, plotType = "qtl", trial = "ph1", yThr = 0.2))
 
 # Check option chr.
-expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", chr = 3),
+expect_error(plot(stg1, plotType = "qtl", trial = "ph1", chr = 3),
              "Select at least one valid chromosome for plotting")
-p1 <- plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", chr = 1)
+p1 <- plot(stg1, plotType = "qtl", trial = "ph1", chr = 1)
 expect_equal(nrow(p1$data), 7)
 
 # Check option normalize.

@@ -389,14 +389,22 @@ plot.GWAS <- function(x,
     qqPlot(pValues = na.omit(GWAResult$pValue), ..., output = output)
   } else if (plotType == "qtl") {
     if (!is.null(dotArgs$yThr)) {
+      ## Threshold modified, update significant SNPs.
       chkNum(dotArgs$yThr, min = 0)
       yThr <- dotArgs$yThr
+      GWAResult[["sign"]] <- !is.na(GWAResult$LOD) & GWAResult$LOD > yThr
     } else {
-      ## Get yThr from GWAS object.
-      yThr <- x$thr[[trial]][[1]]
+      ## Get significant SNPs from signSnp.
+      ## Ignore SNPs that are not significant themselves both close to 
+      ## significant SNPs.
+      signSnps <- signSnp[signSnp[["snpStatus"]] == "significant SNP", 
+                          c("trait", "snp")]
+      signSnps <- interaction(signSnps)
+      GWAResult[["sign"]] <- 
+        interaction(GWAResult[, c("trait", "snp")]) %in% signSnps
     }
-    GWAResult$sign <- !is.na(GWAResult$LOD) & GWAResult$LOD > yThr
-    if (!sum(GWAResult$sign)) {
+    ## At least one significant SNP needed to create a plot.
+    if (!sum(GWAResult[["sign"]])) {
       stop("No significant SNPs found. No plot can be made.\n")
     }
     map <- GWAResult[!is.na(GWAResult$pos), c("chr", "pos")]

@@ -114,7 +114,11 @@ manhattanPlot <- function(xValues,
                  color = "green", na.rm = TRUE)
   }
   if (!is.null(yThr)) {
-    p <- p + geom_hline(yintercept = yThr, linetype = 2)
+    ## na.rm = TRUE is needed for plotting the results of GWAS with 
+    ## thrType = "fdr".
+    ## This results in several local thresholds that cannot be displayed as 
+    ## a single line.
+    p <- p + geom_hline(yintercept = yThr, linetype = 2, na.rm = TRUE)
   }
   if (output) {
     plot(p)

@@ -406,6 +406,8 @@ runSingleTraitGwas <- function(gData,
         ## Compute LOD threshold by computing the 10log of the nSnpLOD item
         ## of ordered p values.
         LODThr <- sort(na.omit(GWAResult[["LOD"]]), decreasing = TRUE)[nSnpLOD]
+      } else if (thrType == "fdr") {
+        LODThr <- NA
       }
       LODThrTr[trait] <- LODThr
       ## Select the SNPs whose LOD-scores are above the threshold.
@@ -415,11 +417,11 @@ runSingleTraitGwas <- function(gData,
                           maxScore = maxScore, pheno = phTrTr, trait = trait,
                           rho = rho, pThr = pThr, alpha = alpha)
       } else {
-      signSnpTotTr[[trait]] <-
-        extrSignSnps(GWAResult = GWAResult, LODThr = LODThr,
-                     sizeInclRegion = sizeInclRegion, minR2 = minR2,
-                     map = mapRed, markers = markersRed,
-                     maxScore = maxScore, pheno = phTrTr, trait = trait)
+        signSnpTotTr[[trait]] <-
+          extrSignSnps(GWAResult = GWAResult, LODThr = LODThr,
+                       sizeInclRegion = sizeInclRegion, minR2 = minR2,
+                       map = mapRed, markers = markersRed,
+                       maxScore = maxScore, pheno = phTrTr, trait = trait)
       }
       ## Sort columns.
       data.table::setkeyv(x = GWAResult, cols = c("trait", "chr", "pos"))
