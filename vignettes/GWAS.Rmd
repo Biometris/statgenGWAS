@@ -334,6 +334,12 @@ GWASDropsFixThr <- runSingleTraitGwas(gData = gDataDropsDedup,
                                       LODThr = 4)
 ```
 
+#### Controlling false discovery rate
+
+A final option for selecting significant SNPs is by setting `thrType = "fdr"`. When doing so the significant SNPs won't be selected by computing a genome wide threshold, but by trying to control the rate of false discoveries as much as possible. This method is described in @Brzyski2016.    
+
+First the SNPs are restricted to the SNPs with a p-Value below `pThr`. Then clusters of SNPs are created using a two step iterative process in which first the SNP with the lowest p-Value is selected as cluster representative. This SNP and all SNPs that have a correlation with this SNP of $\rho$ or higher (specified by the function parameter `rho`) will form a cluster. The selected SNPs are removed from the list and the procedure is repeated until no SNPs are left. Finally to determine the number of significant clusters the first cluster is determined for which the p-Value of the cluster representative is not smaller than $cluster_{number} * \alpha / m$ where $m$ is the number of SNPs and $\alpha$ can be specified by the corresponding function parameter. All previous clusters are selected as significant.
+
 ### Variance covariance matrix
 
 There are two ways to compute the phenotypic variance covariance matrix used in the GWAS analysis. Either the EMMA algorithm or the Newton-Raphson algorithm. Specify the method by setting the parameter `remlAlgo` to either `"EMMA"` or `"NR"`. By default the EMMA algorithm is used.

@@ -158,7 +158,7 @@ be specified in \code{nSnpLOD}
 \item{fdr}{Following the algorithm proposed by Brzyski D. et al. (2017), 
 SNPs are selected in such a way that the False Discovery Rate (fdr) is 
 minimized. To do this, first the SNPs are restricted to the SNPs with a 
-p-Value below \code{pThr}. Then clusters of SNPs are created using an 
+p-Value below \code{pThr}. Then clusters of SNPs are created using a 
 two step iterative process in which first the SNP with the lowest p-Value is 
 selected as cluster representative. This SNP and all SNPs that have a 
 correlation with this SNP of \code{pho} or higher will form a cluster. 
