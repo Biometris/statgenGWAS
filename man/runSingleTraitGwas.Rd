@@ -91,16 +91,11 @@ are set to missing (\code{NA}). Ignored if \code{useMAF} is \code{TRUE}.}
 Roeder (1999) be applied?}
 
 \item{thrType}{A character string indicating the type of threshold used for
-the selection of candidate loci. Either \code{bonf} for using the
-Bonferroni threshold, a LOD-threshold of \eqn{-log10(alpha/p)}, where p is
-the number of markers and alpha can be specified in \code{alpha},
-\code{fixed} for a self-chosen fixed LOD-threshold, specified in \code{LODThr}
-or \code{small}, the LOD-threshold is chosen such as the SNPs with the
-\code{nSnpLOD} smallest p-values are selected. \code{nSnpLOD} can be
-specified.}
+the selection of candidate loci. See Details.}
 
 \item{alpha}{A numerical value used for calculating the LOD-threshold for
-\code{thrType} = "bonf".}
+\code{thrType} = "bonf" and the significant p-Values for \code{thrType} = 
+"fdr".}
 
 \item{LODThr}{A numerical value used as a LOD-threshold when
 \code{thrType} = "fixed".}
@@ -108,9 +103,11 @@ specified.}
 \item{nSnpLOD}{A numerical value indicating the number of SNPs with the
 smallest p-values that are selected when \code{thrType} = "small".}
 
-\item{pThr}{A numerical value ...}
+\item{pThr}{A numerical value just as the cut off value for p-Values for 
+\code{thrType} = "fdr".}
 
-\item{rho}{A numerical value ...}
+\item{rho}{A numerical value used a the minimum value for SNPs to be 
+considered correlated when using \code{thrType} = "fdr".}
 
 \item{sizeInclRegion}{An integer. Should the results for SNPs close to
 significant SNPs be included? If so, the size of the region in centimorgan
@@ -139,10 +136,41 @@ object. A covariance matrix is computed using the EMMA algorithm (Kang et
 al., 2008) or the Newton-Raphson algorithm (Tunnicliffe, 1989) in the
 \code{sommer} package. Then a Generalized Least Squares (GLS) method is used
 for estimating the marker effects and corresponding p-values. This is done
-using either one kinship matrix for all chromosomes or different chromosome-specific
-kinship matrices for each chromosome. Significant SNPs are selected
-based on a user defined threshold.
+using either one kinship matrix for all chromosomes or different 
+chromosome-specific kinship matrices for each chromosome. Significant SNPs 
+are selected based on a user defined threshold.
 }
+\section{Threshold types for the selection of candidate loci}{
+
+For the selection of candidate loci from the GWAS output four different 
+methods can be used. The method used can be specified in the function 
+parameter \code{thrType}. Further parameters can be used to fine tune the 
+method.
+\describe{
+\item{bonf}{The Bonferroni threshold, a LOD-threshold of 
+\eqn{-log10(alpha / m)}, where m is the number of SNPs and alpha can be 
+specified by the function parameter \code{alpha}}
+\item{fixed}{A fixed LOD-threshold, specified by the function parameter
+\code{LODThr}}
+\item{small}{The n SNPs with with the smallest p-Values are selected. n can
+be specified in \code{nSnpLOD}
+}
+\item{fdr}{Following the algorithm proposed by Brzyski D. et al. (2017), 
+SNPs are selected in such a way that the False Discovery Rate (fdr) is 
+minimized. To do this, first the SNPs are restricted to the SNPs with a 
+p-Value below \code{pThr}. Then clusters of SNPs are created using an 
+two step iterative process in which first the SNP with the lowest p-Value is 
+selected as cluster representative. This SNP and all SNPs that have a 
+correlation with this SNP of \code{pho} or higher will form a cluster. 
+The selected SNPs are removed from the list and the procedure repeated until 
+no SNPs are left. Finally to determine the number of significant clusters 
+the first cluster is determined for which the p-Value of the cluster 
+representative is not smaller than \eqn{cluster_number * alpha / m} where 
+m is the number of SNPs and alpha can be specified by the function parameter 
+\code{alpha}. All previous clusters are selected as significant.}
+}
+}
+
 \examples{
 ## Create a gData object Using the data from the DROPS project.
 ## See the included vignette for a more extensive description on the steps.
@@ -193,6 +221,10 @@ Astle, William, and David J. Balding. 2009. Population Structure
 and Cryptic Relatedness in Genetic Association Studies. Statistical Science 
 24 (4): 451–71. \url{https://doi.org/10.1214/09-sts307}.
 
+Brzyski D. et al. (2017) Controlling the Rate of GWAS False 
+Discoveries. Genetics 205 (1): 61-75.
+\url{https://doi.org/10.1534/genetics.116.193987}
+
 Devlin, B., and Kathryn Roeder. 1999. Genomic Control for 
 Association Studies. Biometrics 55 (4): 997–1004. 
 \url{https://doi.org/10.1111/j.0006-341x.1999.00997.x}.
@@ -223,10 +255,6 @@ series model estimation. JRSS 51 (1): 15–27.
 VanRaden P.M. (2008) Efficient methods to compute genomic
 predictions. Journal of Dairy Science 91 (11): 4414–23. 
 \url{https://doi.org/10.3168/jds.2007-0980}.
-
-Brzyski D. et al. (2017) Controlling the Rate of GWAS False 
-Discoveries. Genetics 205 (1): 61-75.
-\url{https://doi.org/10.1534/genetics.116.193987 }
 }
 \seealso{
 \code{\link{GWAS}}, \code{\link{kinship}}, \code{\link{dropsData}}
