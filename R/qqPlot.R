@@ -13,7 +13,6 @@
 #' structured populations. Nature genetics. 2012;44(7):825-830.
 #' doi:10.1038/ng.2314.
 #'
-#' @import ggplot2
 #' @importFrom graphics plot
 #'
 #' @noRd
@@ -40,16 +39,17 @@ qqPlot <- function(pValues,
   } else {
     plotTitle <- "QQ-plot"
   }
-  p <- ggplot(plotDat, aes_string(x = "expected", y = "observed")) +
-    geom_point() +
-    geom_line() +
-    geom_abline(slope = 1, intercept = 0, color = "blue") +
+  p <- ggplot2::ggplot(plotDat, 
+                       ggplot2::aes_string(x = "expected", y = "observed")) +
+    ggplot2::geom_point() +
+    ggplot2::geom_line() +
+    ggplot2::geom_abline(slope = 1, intercept = 0, color = "blue") +
     ## Center title.
-    theme(plot.title = element_text(hjust = 0.5)) +
+    ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
     ## Add custom axis labels.
-    labs(x = expression(Expected~~-log[10](p)), 
-         y = expression(Observed~~-log[10](p))) +
-    ggtitle(plotTitle)
+    ggplot2::labs(x = expression(Expected~~-log[10](p)), 
+                  y = expression(Observed~~-log[10](p))) +
+    ggplot2::ggtitle(plotTitle)
   if (output) {
     plot(p)
   }

@@ -29,7 +29,6 @@
 #' and real effects are given false positives get an orange dot, true negatives
 #' a yellow dot and true positives a green dot.
 #'
-#' @import ggplot2
 #' @importFrom graphics plot
 #'
 #' @noRd
@@ -68,7 +67,7 @@ manhattanPlot <- function(xValues,
     chkNum(yThr, min = 0)
   }
   chkNum(signLwd, min = 0)
-  ## Extract central chromosome postions from map.
+  ## Extract central chromosome positions from map.
   ## Differentiate cases to deal with character chromosomes.
   if (is.numeric(map$chr)) {
     chrs <- as.numeric(levels(as.factor(map$chr)))
@@ -81,44 +80,45 @@ manhattanPlot <- function(xValues,
   ## ylim has to be set to cope with subsetting based on lod.
   plotDat <- data.frame(x = xValues, y = yValues, chr = as.factor(map$chr))
   yMax <- max(c(yValues, yThr), na.rm = TRUE)
-  p <- ggplot(data = if (length(c(xSig, xEffects)) == 0) {
+  p <- ggplot2::ggplot(data = if (length(c(xSig, xEffects)) == 0) {
     plotDat
   } else {
     plotDat[-c(xSig, xEffects),  ]
-  }, aes_string(x = "x", y = "y", color = "chr")) +
-    geom_point(na.rm = TRUE) +
-    scale_y_continuous(limits = c(0, yMax),
-                       expand = c(0, 0, 0.1, 0)) +
-    scale_x_continuous(breaks = xMarks, labels = chrs, limits = c(0, NA), 
-                       expand = c(0, 0)) +
-    scale_color_manual(values = colPalette, labels = NULL) +
-    coord_cartesian(clip = "off") +
-    labs(x = xLab, y = yLab) +
-    theme(legend.position = "none",
-          panel.grid.major.x = element_blank(),
-          panel.grid.minor.x = element_blank())
+  }, ggplot2::aes_string(x = "x", y = "y", color = "chr")) +
+    ggplot2::geom_point(na.rm = TRUE) +
+    ggplot2::scale_y_continuous(limits = c(0, yMax),
+                                expand = c(0, 0, 0.1, 0)) +
+    ggplot2::scale_x_continuous(breaks = xMarks, labels = chrs, limits = c(0, NA), 
+                                expand = c(0, 0)) +
+    ggplot2::scale_color_manual(values = colPalette, labels = NULL) +
+    ggplot2::coord_cartesian(clip = "off") +
+    ggplot2::labs(x = xLab, y = yLab) +
+    ggplot2::theme(legend.position = "none",
+                   panel.grid.major.x = ggplot2::element_blank(),
+                   panel.grid.minor.x = ggplot2::element_blank())
   if (length(xSig) > 0 && length(xEffects) == 0) {
-    p <- p + geom_point(data = plotDat[xSig, , drop = FALSE], color = "red")
+    p <- p + ggplot2::geom_point(data = plotDat[xSig, , drop = FALSE], 
+                                 color = "red")
   } else if (length(xSig) == 0 && length(xEffects) > 0) {
-    p <- p + geom_point(data = plotDat[xEffects, , drop = FALSE], 
-                        color = "blue")
+    p <- p + ggplot2::geom_point(data = plotDat[xEffects, , drop = FALSE], 
+                                 color = "blue")
   } else if (length(xSig) > 0 && length(xEffects) > 0) {
     falsePos <- setdiff(xSig, xEffects)
     trueNeg <- setdiff(xEffects, xSig)
     truePos <- intersect(xSig, xEffects)
-    p <- p + geom_point(data = plotDat[falsePos, , drop = FALSE],
-                        color = "orange", na.rm = TRUE) +
-      geom_point(data = plotDat[trueNeg, , drop = FALSE],
-                 color = "yellow", na.rm = TRUE) +
-      geom_point(data = plotDat[truePos, , drop = FALSE],
-                 color = "green", na.rm = TRUE)
+    p <- p + ggplot2::geom_point(data = plotDat[falsePos, , drop = FALSE],
+                                 color = "orange", na.rm = TRUE) +
+      ggplot2::geom_point(data = plotDat[trueNeg, , drop = FALSE],
+                          color = "yellow", na.rm = TRUE) +
+      ggplot2::geom_point(data = plotDat[truePos, , drop = FALSE],
+                          color = "green", na.rm = TRUE)
   }
   if (!is.null(yThr)) {
     ## na.rm = TRUE is needed for plotting the results of GWAS with 
     ## thrType = "fdr".
     ## This results in several local thresholds that cannot be displayed as 
     ## a single line.
-    p <- p + geom_hline(yintercept = yThr, linetype = 2, na.rm = TRUE)
+    p <- p + ggplot2::geom_hline(yintercept = yThr, linetype = 2, na.rm = TRUE)
   }
   if (output) {
     plot(p)

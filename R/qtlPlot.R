@@ -35,7 +35,6 @@
 #' Allelic effects vary with drought and heat scenarios. Plant Physiology,
 #' October 2016, Vol. 172, p. 749–764
 #'
-#' @import ggplot2
 #' @importFrom graphics plot
 #'
 #' @noRd
@@ -113,9 +112,9 @@ qtlPlot <- function(dat,
         dat0$eff <- dat0[["effect"]]
       } else {
         dat0[!is.na(dat0[["effect"]]), "eff"] <- 
-        scale(dat0[!is.na(dat0[["effect"]]), "effect"], center = FALSE,
-              scale = apply(dat0[!is.na(dat0[["effect"]]), "effect", 
-                                 drop = FALSE], 2, sd, na.rm = TRUE))
+          scale(dat0[!is.na(dat0[["effect"]]), "effect"], center = FALSE,
+                scale = apply(dat0[!is.na(dat0[["effect"]]), "effect", 
+                                   drop = FALSE], 2, sd, na.rm = TRUE))
       }
       return(dat0)
     })
@@ -154,51 +153,55 @@ qtlPlot <- function(dat,
   plotDat$trait <- factor(plotDat$trait, levels = unique(plotDat$trait))
   plotDat <- droplevels(plotDat)
   ## Create theme for plot
-  qtlPlotTheme <- theme(plot.background = element_blank(),
-                        panel.grid.major.x = 
-                          element_line(color = ifelse(printVertGrid,
-                                                      "white", "gray")),
-                        panel.grid.major.y = element_line(color = "white"),
-                        panel.grid.minor = element_blank(),
-                        plot.title = element_text(size = 20, face = "bold", 
-                                                  vjust = 2) ,
-                        axis.ticks = element_blank(),
-                        panel.border = element_blank(),
-                        axis.line = element_blank(),
-                        legend.position = "none",
-                        panel.background = element_rect(fill = "gray"),
-                        axis.text.x = element_text(size = 0),
-                        axis.text.y = element_text(size = 13, color = "black"),
-                        axis.title = element_text(size = 20, color = "navyblue"),
-                        strip.background = element_rect(fill = "gray40"),
-                        strip.text = element_text(),
-                        strip.text.x = element_text(size = 14),
-                        strip.text.y = element_text(size = 0))
+  qtlPlotTheme <- 
+    ggplot2::theme(plot.background = ggplot2::element_blank(),
+                   panel.grid.major.x = 
+                     ggplot2::element_line(color = ifelse(printVertGrid,
+                                                          "white", "gray")),
+                   panel.grid.major.y = ggplot2::element_line(color = "white"),
+                   panel.grid.minor = ggplot2::element_blank(),
+                   plot.title = ggplot2::element_text(size = 20, face = "bold", 
+                                                      vjust = 2) ,
+                   axis.ticks = ggplot2::element_blank(),
+                   panel.border = ggplot2::element_blank(),
+                   axis.line = ggplot2::element_blank(),
+                   legend.position = "none",
+                   panel.background = ggplot2::element_rect(fill = "gray"),
+                   axis.text.x = ggplot2::element_text(size = 0),
+                   axis.text.y = ggplot2::element_text(size = 13, color = "black"),
+                   axis.title = ggplot2::element_text(size = 20, color = "navyblue"),
+                   strip.background = ggplot2::element_rect(fill = "gray40"),
+                   strip.text = ggplot2::element_text(),
+                   strip.text.x = ggplot2::element_text(size = 14),
+                   strip.text.y = ggplot2::element_text(size = 0))
   ## Create the plot object
-  p <- ggplot(data = plotDat,
-              ## Y data is sorted in reverse order because of the way ggplot plots.
-              ## Point size proportional to allelic effect.
-              ## Point color depends on the effect direction.
-              aes_string(x = "pos", y = "reorder(trait, -sort)", 
-                         size = "abs(eff)", color = "factor(color)")) +
+  ## Y data is sorted in reverse order because of the way ggplot plots.
+  ## Point size proportional to allelic effect.
+  ## Point color depends on the effect direction.
+  p <- ggplot2::ggplot(data = plotDat,
+                       ggplot2::aes_string(x = "pos", 
+                                           y = "reorder(trait, -sort)", 
+                                           size = "abs(eff)",
+                                           color = "factor(color)")) +
     # add vertical lines at the bin positions
-    geom_vline(aes_(xintercept = ~pos), data = binPositions,
-               linetype = 1, color = "white") +
+    ggplot2::geom_vline(ggplot2::aes_(xintercept = ~pos), data = binPositions,
+                        linetype = 1, color = "white") +
     ## Add the points with a slight transparency in case of overlap.
-    geom_point(alpha = I(0.7), na.rm = TRUE) +
+    ggplot2::geom_point(alpha = I(0.7), na.rm = TRUE) +
     ## Split of the plot according to the chromosomes on the x axis.
     ## Do not resize the x axis (otherwise every chromosome has the same size.
     ## Do not add extra space between two facets.
     ## Place the chromosome labels at the bottom.
-    facet_grid(". ~ chr", scales = "free", space = "free", switch = "both") +
+    ggplot2::facet_grid(". ~ chr", scales = "free", space = "free", 
+                        switch = "both") +
     ## Ascribe a color to the allelic direction (column 'color').
-    scale_color_manual(labels = c("neg", "pos"), 
-                       values = c("darkblue", "green4")) +
+    ggplot2::scale_color_manual(labels = c("neg", "pos"), 
+                                values = c("darkblue", "green4")) +
     ## Turn off clipping so points are plotted outside plot area.
-    coord_cartesian(clip = "off") +
+    ggplot2::coord_cartesian(clip = "off") +
     ## use custom made theme
     qtlPlotTheme +
-    labs(x = "Chromosomes", y = yLab)  
+    ggplot2::labs(x = "Chromosomes", y = yLab)  
   if (exportPptx) {
     ## Save figure in .pptx
     if (requireNamespace("officer", quietly = TRUE)) {
@@ -212,7 +215,8 @@ qtlPlot <- function(dat,
                                  location = officer::ph_location(left = 0.9,
                                                                  top = 1,
                                                                  width = 8,
-                                                                 height = 6.4))      ## Add date to slide
+                                                                 height = 6.4))      
+      ## Add date to slide
       pptOut <- officer::ph_with(x = pptOut, value = format(Sys.Date()), 
                                  location = officer::ph_location_type(type = "dt"))
       ##Write .pptx
