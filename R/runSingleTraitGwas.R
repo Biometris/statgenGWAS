@@ -340,7 +340,6 @@ runSingleTraitGwas <- function(gData,
                                           key = "snp")
       if (GLSMethod == "single") {
         ## Determine segregating markers. Exclude snps used as covariates.
-        #segMarkers <- which(allFreq >= MAF & allFreq <= (1 - MAF))
         segMarkers <- which(abs(allFreq) < 1 -  MAF)
         ## Exclude snpCovariates from segregating markers.
         exclude <- exclMarkers(snpCov = snpCov, markers = markersRed,
@@ -377,7 +376,6 @@ runSingleTraitGwas <- function(gData,
                                         rownames(mapRedChr), drop = FALSE]
           allFreqChr <- colMeans(markersRedChr, na.rm = TRUE) / maxScore
           ## Determine segregating markers. Exclude snps used as covariates.
-          #segMarkersChr <- which(allFreqChr >= MAF & allFreqChr <= (1 - MAF))
           segMarkersChr <- which(abs(allFreqChr) < 1 -  MAF)
           ## Exclude snpCovariates from segregating markers.
           exclude <- exclMarkers(snpCov = snpCov, markers = markersRedChr,
@@ -413,7 +411,7 @@ runSingleTraitGwas <- function(gData,
         }
       }
       ## Effects should be for a single allele, not for 2
-      if (maxScore == 1) {
+      if (diff(range(markersRed)) == 1) {
         GWAResult[, "effect" := GWAResult[["effect"]] / 2]
       }
       ## Calculate the genomic inflation factor.
