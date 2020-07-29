@@ -218,6 +218,8 @@ extrSignSnps <- function(GWAResult,
     signSnp <- data.table::data.table(GWAResult[snpSelection, ],
                                       snpStatus = as.factor(snpStatus),
                                       propSnpVar = propSnpVar)
+    ## Sort columns.
+    data.table::setkeyv(x = signSnp, cols = c("trait", "chr", "pos"))
   } else {
     ## No significant SNPs. Return empty data.table.
     signSnp <- data.table::data.table()
@@ -286,6 +288,8 @@ extrSignSnpsFDR <- function(GWAResult,
     signSnp <- data.table::data.table(GWAResult[snpSelection, ],
                                       snpStatus = as.factor(snpStatus),
                                       propSnpVar = propSnpVar)
+    ## Sort columns.
+    data.table::setkeyv(x = signSnp, cols = c("trait", "chr", "pos"))
   } else {
     ## No significant SNPs. Return empty data.table.
     signSnp <- data.table::data.table()
