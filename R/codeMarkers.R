@@ -260,7 +260,7 @@ codeMarkers <- function(gData,
                                           (1 - p) ^ (maxAll:0) * p ^ (0:maxAll))
                 } else {
                   ## only homozygous markers.
-                  x[is.na(x)] <- sample(x = c(0, 2), size = sum(is.na(x)),
+                  x[is.na(x)] <- sample(x = c(0, maxAll), size = sum(is.na(x)),
                                         replace = TRUE, prob = c(1 - p, p))
                 }
                 return(x)

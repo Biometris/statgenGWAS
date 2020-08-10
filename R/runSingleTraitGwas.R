@@ -413,6 +413,7 @@ runSingleTraitGwas <- function(gData,
       ## Effects should be for a single allele, not for 2
       if (diff(range(markersRed)) == 1) {
         GWAResult[, "effect" := GWAResult[["effect"]] / 2]
+        GWAResult[, "effectSe" := GWAResult[["effectSe"]] / 2]
       }
       ## Calculate the genomic inflation factor.
       GC <- genCtrlPVals(pVals = GWAResult[["pValue"]], nObs = length(nonMiss),
