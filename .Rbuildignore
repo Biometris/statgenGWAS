@@ -16,3 +16,4 @@ ci
 ^docs$
 ^pkgdown$
 ^\.github$
+.editorconfig
