@@ -1,0 +1,49 @@
+home:
+  title: An R package for fast GWAS
+
+navbar:
+  title: "statgenGWAS"
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Vignettes"
+      href: articles/index.html
+  right:
+    - icon: fa-newspaper-o
+      text: "news"
+      href: news/index.html
+    - icon: fa-file-code-o
+      text: "functions"
+      href: reference/index.html
+    - icon: fa-seedling
+      text: "other packages"
+      menu:
+        - text: "statgenSTA"
+          href: https://biometris.github.io/statgenSTA
+    - icon: fa-github fa-lg
+      text: "github"
+      href: https://github.com/Biometris/statgenGWAS
+
+articles:
+  - title: "Vignettes"
+    desc: >
+      This vignette provides a full description of the statgenGWAS package
+      including a fully worked example.
+    contents:
+      - GWAS
+      
+reference:
+- title: Data preparation
+- contents:
+  - createGData
+  - codeMarkers
+  - summary.gData
+  - kinship
+- title: Single trait GWAS
+- contents:
+  - runSingleTraitGwas
+  - summary.GWAS
+  - plot.GWAS
+- title: Example data
+- contents:
+  - dropsData      

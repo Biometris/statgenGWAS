@@ -1,4 +1,4 @@
-# statgenGWAS develop
+# statgenGWAS 1.0.4.1
 
 * An option fdr (false discovery rate) is added for selecting significant SNPs when running single trait GWAS. The procedure for this is based on Brzyski et al. (2017). See the function documentation and vignette for an extensive explanation.
 * The summary function for objects of class GWAS now has an option traits for restricting the number of traits for which the summary is printed.
@@ -8,7 +8,7 @@
 
 # statgenGWAS 1.0.4
 
-* StringsAsFactors = TRUE added where applicable to comply with new defaults in R 4.0.
+* stringsAsFactors = TRUE added where applicable to comply with new defaults in R 4.0.
 * Bug in plotting of GWAS objects fixed. The first trait was always plotted in case more than one trait was present.
 
 # statgenGWAS 1.0.3

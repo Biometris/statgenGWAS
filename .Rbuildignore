@@ -12,3 +12,7 @@ ci
 ^src/Makevars$
 ^cran-comments\.md$
 ^/\.gitattributes$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$

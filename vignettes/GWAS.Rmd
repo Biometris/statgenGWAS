@@ -334,7 +334,7 @@ GWASDropsFixThr <- runSingleTraitGwas(gData = gDataDropsDedup,
                                       LODThr = 4)
 ```
 
-#### Controlling false discovery rate
+**Controlling false discovery rate**
 
 A final option for selecting significant SNPs is by setting `thrType = "fdr"`. When doing so the significant SNPs won't be selected by computing a genome wide threshold, but by trying to control the rate of false discoveries as in @Brzyski2016.    
 
