@@ -68,7 +68,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-          brew install automake   
+          brew install automake
+          brew cask install xquartz
 
       - name: Install dependencies
         run: |
