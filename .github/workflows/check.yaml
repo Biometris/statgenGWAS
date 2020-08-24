@@ -68,6 +68,9 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
+        run: |
+          sudo chmod +x configure
+          sudo chmod +x cleanup
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")

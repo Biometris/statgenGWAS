@@ -24,7 +24,7 @@ AC_REQUIRE_CPP
 openmp_flag=""
 openmp_cflag=""
 
-## Check for broken systems produced by a corporation based in Cupertino
+## Check for broken systems produced by the corporation based in Cupertino
 AC_MSG_CHECKING([for macOS])
 RSysinfoName=$("${R_HOME}/bin/Rscript" --vanilla -e 'cat(Sys.info()[["sysname"]])')
 if test x"${RSysinfoName}" == x"Darwin"; then
