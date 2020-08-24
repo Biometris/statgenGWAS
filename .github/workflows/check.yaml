@@ -70,6 +70,7 @@ jobs:
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
           brew install automake
           brew cask install xquartz
+          xcode-select --install
 
       - name: Install dependencies
         run: |
