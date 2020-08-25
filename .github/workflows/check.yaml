@@ -69,7 +69,8 @@ jobs:
       - name: Install macOS system dependencies
         if: runner.os == 'macOS'
         run: |
-          brew install automake pkg-config
+          brew install automake 
+          brew install pkg-config
           autoreconf -d configure.ac 
           brew cask install xquartz
 
