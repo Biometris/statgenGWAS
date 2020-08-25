@@ -59,9 +59,10 @@ expect_equal(stg3$GWAResult$ph1$pValue[3], NA_real_)
 
 ## Test option thrType.
 
-# Fixed and bonf are tested implicitely in other tests. 
-# Only test small here.
+# Fixed and bonf are tested implicitly in other tests. 
+# Only test other options here.
 
+# Test "small"
 expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
                                 thrType = "small", nSnpLOD = -1),
              "nSnpLOD should be a single numerical value greater than 0")
@@ -70,6 +71,25 @@ stg4 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
                            thrType = "small", nSnpLOD = 1)
 expect_equivalent(stg4$thr$ph1, 0.25448394608549)
 expect_equal(nrow(stg4$signSnp$ph1), 1)
+
+# Test "fdr"
+
+expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
+                                thrType = "fdr", alpha = -1),
+             "alpha should be a single numerical value greater than 0")
+expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
+                                thrType = "fdr", rho = -1),
+             "rho should be a single numerical value between 0 and 1")
+expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
+                                thrType = "fdr", pThr = -1),
+             "pThr should be a single numerical value between 0 and 1")
+stg5 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
+                           thrType = "fdr", pThr = 0.9, alpha = 2, rho = 0.1)
+expect_true(is.na(stg5$thr$ph1))
+expect_equal(nrow(stg5$signSnp$ph1), 3)
+expect_equal(as.character(stg5$signSnp$ph1$snpStatus),
+             c("significant SNP", "within LD of significant SNP", 
+               "within LD of significant SNP"))
 
 ## Test option genomicControl.
 
