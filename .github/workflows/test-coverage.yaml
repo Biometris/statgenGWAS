@@ -15,7 +15,7 @@ jobs:
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      TT_AT_HOME: TRUE
+      TT_AT_HOME: "TRUE"
     steps:
       - uses: actions/checkout@v2
 
@@ -39,7 +39,6 @@ jobs:
 
       - name: Install macOS system dependencies
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
           brew cask install xquartz
 
       - name: Install dependencies
