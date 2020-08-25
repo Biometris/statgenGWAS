@@ -39,3 +39,65 @@ remotes::install_github("Biometris/statgenGWAS", ref = "develop", dependencies =
 ```
 
 ## Examples
+
+Example using the data from the EPPN2020 project. The same data is used in the vignette and described there in detail.
+
+First get the data in the form required by the package, converting it to an object of class **g**(enomic)**Data**.
+```{r createGData}
+library(statgenGWAS)
+## Read data.
+data("dropsMarkers")
+data("dropsMap")
+data("dropsPheno")
+
+## Add genotypes as row names of dropsMarkers and drop Ind column.
+rownames(dropsMarkers) <- dropsMarkers[["Ind"]]
+dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
+
+## Add genotypes as row names of dropsMap.
+rownames(dropsMap) <- dropsMap[["SNP.names"]]
+## Rename Chomosome and Position columns.
+colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <- c("chr", "pos")
+
+## Convert phenotypic data to a list.
+dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
+## Rename Variety_ID to genotype and select relevant columns.
+dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
+  colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
+  trial <- trial[c("genotype", "grain.yield", "grain.number", "seed.size",
+                   "anthesis", "silking", "plant.height", "tassel.height",
+                   "ear.height")]
+  return(trial)
+})
+
+## Create a gData object all data.
+gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap, pheno = dropsPhenoList)
+```
+
+```{r removeDupMarkers}
+## Remove duplicate SNPs from gDataDrops.
+gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE) 
+```
+
+```{r stg}
+## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.
+GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
+                                trials = "Mur13W",
+                                traits = c("grain.yield", "anthesis"))
+```
+
+```{r qqStg} 
+## QQ plot of GWAS Drops.
+plot(GWASDrops, plotType = "qq", trait = "grain.yield")
+```
+
+```{r manhattanStg}
+## Manhattan plot of GWAS Drops.
+plot(GWASDrops, plotType = "manhattan", trait = "grain.yield")
+```
+
+```{r qtlStgNorm}
+## Qtl plot of GWAS Drops.
+## Set significance threshold to 4 and normalize effect estimates.
+plot(GWASDrops, plotType = "qtl", yThr = 4, normalize = TRUE)
+```
