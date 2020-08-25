@@ -26,9 +26,11 @@ jobs:
           - {os: ubuntu-20.04, r: 'devel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
 
     env:
+      # otherwise remotes::fun() errors cause the build to fail. 
+      # Example: Unavailability of binaries
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
-
+      
     steps:
       - name: Configure git
         run: git config --global core.autocrlf false
@@ -67,7 +69,7 @@ jobs:
       - name: Install macOS system dependencies
         if: runner.os == 'macOS'
         run: |
-          brew install autoconf automake libtool
+          brew install automake
           brew cask install xquartz
 
       - name: Install dependencies

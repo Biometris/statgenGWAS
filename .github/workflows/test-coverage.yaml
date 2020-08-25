@@ -15,7 +15,7 @@ jobs:
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      TT_AT_HOME: "TRUE"
+      TT_AT_HOME: true
     steps:
       - uses: actions/checkout@v2
 
@@ -37,9 +37,9 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install macOS system dependencies
-        run: |
-          brew cask install xquartz
+      #- name: Install macOS system dependencies
+      #  run: |
+      #    brew cask install xquartz
 
       - name: Install dependencies
         run: |
