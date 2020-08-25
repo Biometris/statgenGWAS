@@ -70,8 +70,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install automake 
-          brew install pkg-config
-          autoreconf -d configure.ac 
+          autoreconf -di configure.ac 
           brew cask install xquartz
 
       - name: Install dependencies
