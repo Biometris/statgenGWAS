@@ -41,14 +41,9 @@
 #' @return An object of class \code{gData} with the following components:
 #' \item{\code{map}}{a data.frame containing map data. Map is sorted by
 #' chromosome and position.}
-#' \item{\code{markers}}{a sparse matrix from the Matrix package containing
-#' marker information in case of numerical genotypic data, a standard matrix
-#' otherwise.\cr
-#' If \code{geno} is a three dimensional array, \code{markers} is a three dimensional
-#' array as well.}
+#' \item{\code{markers}}{a matrix containing marker information.}
 #' \item{\code{pheno}}{a list of data.frames containing phenotypic data.}
-#' \item{\code{kinship}}{a kinship matrix of class \code{dsyMatrix} from the
-#'  Matrix package.}
+#' \item{\code{kinship}}{a kinship matrix.}
 #' \item{\code{covar}}{a data.frame with extra covariates.}
 #'
 #' @author Bart-Jan van Rossum

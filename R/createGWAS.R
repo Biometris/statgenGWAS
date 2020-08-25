@@ -163,13 +163,13 @@ summary.GWAS <- function(object,
 #' plot can be made:
 #' \itemize{
 #' \item{a manhattan plot, i.e. a plot of LOD-scores per SNP}
-#' \item{a qq plot of observed LOD-scores versus expected LOD-scores}
+#' \item{a QQ plot of observed LOD-scores versus expected LOD-scores}
 #' \item{a qtl plot of effect sizes and directions for multiple traits}
 #' }
-#' Manhattan plots and qq plots are made for a single trait which
+#' Manhattan plots and QQ plots are made for a single trait which
 #' should be indicated using the parameter \code{trait}. If the analysis was
-#' done for only one trait it is detected automatically. The qtl plot will plot
-#' all traits analysed.\cr
+#' done for only one trait, it is detected automatically. The qtl plot will plot
+#' all traits analyzed.\cr
 #' See details for a detailed description of the plots and the plot options
 #' specific to the different plots.
 #'
@@ -178,7 +178,7 @@ summary.GWAS <- function(object,
 #' plotted. Significant markers are highlighted with red dots. By default these
 #' are taken from the result of the GWAS analysis however the LOD-threshold for
 #' significant parameters may be modified using the parameter \code{yThr}. The
-#' treshold is plotted as a horizontal line. If there are previously known
+#' threshold is plotted as a horizontal line. If there are previously known
 #' marker effect, false positives and true negatives can also be marked.\cr
 #' Extra parameter options:
 #' \describe{
@@ -197,7 +197,7 @@ summary.GWAS <- function(object,
 #' \item{\code{signLwd}}{A numerical value giving the thickness of the
 #' points that are false/true positives/negatives. Default = 0.6}
 #' \item{\code{lod}}{A positive numerical value. For the SNPs with a LOD-value
-#' below this value, only 5\% is plotted. The chance of a SNP being plotting is
+#' below this value, only 5\% is plotted. The chance of a SNP being plotted is
 #' proportional to its LOD-score. This option can be useful when plotting a
 #' large number of SNPs. The 5\% of SNPs plotted is selected randomly. For 
 #' reproducible results use set.seed before calling the function.}
@@ -206,9 +206,9 @@ summary.GWAS <- function(object,
 #' subset of chromosomes.}
 #' }
 #'
-#' @section QQ Plot:
-#' From the LOD-scores calculated in the GWAS analysis, a qq-plot is generated with
-#' observed LOD-scores versus expected LOD-scores. Code is adapted from
+#' @section QQ-Plot:
+#' From the LOD-scores calculated in the GWAS analysis, a QQ-plot is generated 
+#' with observed LOD-scores versus expected LOD-scores. Code is adapted from
 #' Segura et al. (2012).
 #'
 #' @section QTL Plot:
@@ -385,7 +385,7 @@ plot.GWAS <- function(x,
                                                      "effects"))]
             ))
   } else if (plotType == "qq") {
-    ## Create qq-plot.
+    ## Create QQ-plot.
     qqPlot(pValues = na.omit(GWAResult$pValue), ..., output = output)
   } else if (plotType == "qtl") {
     if (!is.null(dotArgs$yThr)) {

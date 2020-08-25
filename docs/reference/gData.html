@@ -223,14 +223,9 @@ should be in the rows.</p></td>
     <p>An object of class <code>gData</code> with the following components:</p>
 <dt><code>map</code></dt><dd><p>a data.frame containing map data. Map is sorted by
 chromosome and position.</p></dd>
-<dt><code>markers</code></dt><dd><p>a sparse matrix from the Matrix package containing
-marker information in case of numerical genotypic data, a standard matrix
-otherwise.<br />
-If <code>geno</code> is a three dimensional array, <code>markers</code> is a three dimensional
-array as well.</p></dd>
+<dt><code>markers</code></dt><dd><p>a matrix containing marker information.</p></dd>
 <dt><code>pheno</code></dt><dd><p>a list of data.frames containing phenotypic data.</p></dd>
-<dt><code>kinship</code></dt><dd><p>a kinship matrix of class <code>dsyMatrix</code> from the
- Matrix package.</p></dd>
+<dt><code>kinship</code></dt><dd><p>a kinship matrix.</p></dd>
 <dt><code>covar</code></dt><dd><p>a data.frame with extra covariates.</p></dd>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

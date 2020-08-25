@@ -165,7 +165,7 @@ correlation with this SNP of \code{pho} or higher will form a cluster.
 The selected SNPs are removed from the list and the procedure repeated until 
 no SNPs are left. Finally to determine the number of significant clusters 
 the first cluster is determined for which the p-Value of the cluster 
-representative is not smaller than \eqn{cluster_number * alpha / m} where 
+representative is not smaller than \eqn{cluster_{number} * alpha / m} where 
 m is the number of SNPs and alpha can be specified by the function parameter 
 \code{alpha}. All previous clusters are selected as significant.}
 }
@@ -199,11 +199,11 @@ gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap,
                           pheno = dropsPhenoList)
                           
 ## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.
- \donttest{
+\donttest{
 GWASDrops <- runSingleTraitGwas(gData = gDataDrops,
                                trials = "Mur13W",
                                traits = "grain.yield")
- }
+}
                                
 ## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.
 ## Use chromosome specific kinship matrices calculated using vanRaden method.
@@ -257,5 +257,5 @@ predictions. Journal of Dairy Science 91 (11): 4414–23.
 \url{https://doi.org/10.3168/jds.2007-0980}.
 }
 \seealso{
-\code{\link{GWAS}}, \code{\link{kinship}}, \code{\link{dropsData}}
+\code{\link{summary.GWAS}}, \code{\link{plot.GWAS}}
 }

@@ -60,7 +60,12 @@ where $y$ is an $n \times 1$ vector of observed phenotypes and $X$ is an $n \tim
 
 ## Application in the package
 
-Single trait GWAS in the statgenGWAS package follows the approach of @Kang2010 and related papers: (1) for the 'empty' model (i.e., without any SNP in the fixed effects), we obtain REML-estimates of the variance components $\sigma^2_g$ and $\sigma^2_e$, which give an estimate $\hat \Sigma$ of the variance-covariance matrix. (2) fixing $\hat \Sigma$, we use generalized least-squares (GLS) to test the null-hypothesis $\beta_{\textrm{SNP}} = 0$ using an F-test, for each SNP in turn. The last step gives vectors of estimated effect-size and P-values for all SNPs. These steps are repeated for each combination of trial and trait for which the analysis is run.  
+Single trait GWAS in the statgenGWAS package follows the approach of @Kang2010 and related papers:
+
+1. For the 'empty' model (i.e., without any SNP in the fixed effects), we obtain REML-estimates of the variance components $\sigma^2_g$ and $\sigma^2_e$, which give an estimate $\hat \Sigma$ of the variance-covariance matrix. 
+2. Fixing $\hat \Sigma$, we use generalized least-squares (GLS) to test the null-hypothesis $\beta_{\textrm{SNP}} = 0$ using an F-test, for each SNP in turn. The last step gives vectors of estimated effect-size and P-values for all SNPs. 
+
+These steps are repeated for each combination of trial and trait for which the analysis is run.  
 
 The REML-estimates in step (1) can be computed using either the Efficient Mixed Model Association (EMMA) algorithm [@Kang2008], or the Newton-Raphson (NR) algorithm [@Tunnicliffe1989]. Our implementation of GLS borrows some code of @Segura2012.
 
@@ -83,14 +88,14 @@ dropsMarkers contains the coded marker information for 41722 SNPs and 246 genoty
 ## **Create gData object**
 
 The next step is to create a **gData** object from the raw data that can be used for the GWAS analysis. For this the raw data has to be converted to a suitable format for a **gData** object.
-When creating a **gData** object the markers should be input as a matrix or data.frame with genotypes in the row names and markers in the column names. The latter is already satisfied so only the row names should be added and the Ind column used for that should be dropped.
+When creating a **gData** object, the markers should be input as a matrix or data.frame with genotypes in the row names and markers in the column names. The latter is already satisfied so only the row names should be added and the Ind column used for that should be dropped.
 ```{r convertMarkers}
 ## Add genotypes as row names of dropsMarkers and drop Ind column.
 rownames(dropsMarkers) <- dropsMarkers[["Ind"]]
 dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
 ```
 
-The map used as input when creating a **gData** object should at least have the columns "chr" and "pos" and the row names should be the names of the SNPs. Other columns are ignored when creating a **gData** object, so they can be left as they are.
+The map used as input when creating a **gData** object, should at least have the columns "chr" and "pos" and the row names should be the names of the SNPs. Other columns are ignored when creating a **gData** object, so they can be left as they are.
 ```{r convertMap}
 ## Add genotypes as row names of dropsMap.
 rownames(dropsMap) <- dropsMap[["SNP.names"]]
@@ -107,22 +112,20 @@ gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap)
 The next step involves adding phenotypic data to the gData object just created. dropsPheno contains genotypic means for 28 trials. To be able to run a GWAS analysis per trial the data has to be added as a list of 28 data.frames. These data.frames should have "genotype" as their first column and may only contain traits after that. Other columns need to be dropped.    
 The phenotypic data can be added to *gDataDrops* using the same function that was used for creating the object. Adding an argument `gData` to the function call will add new data to an existing gData object. If gDataDrops would have been non-empty, the phenotypic data already present would be overwritten.
 ```{r addPheno}
-## Convert phenotypic data to a list.
-dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
-## Rename Variety_ID to genotype and select relevant columns.
-dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
-  colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
-  trial <- trial[c("genotype", "grain.yield", "grain.number", "seed.size",
-                   "anthesis", "silking", "plant.height", "tassel.height",
-                   "ear.height")]
-  return(trial)
-})
+## Rename Variety_ID to genotype.
+colnames(dropsPheno)[colnames(dropsPheno) == "Variety_ID"] <- "genotype"
+## Select relevant columns and convert data to a list.
+dropsPhenoList <- split(x = dropsPheno[c("genotype", "grain.yield",
+                                         "grain.number", "seed.size",
+                                         "anthesis", "silking", "plant.height",
+                                         "tassel.height", "ear.height")], 
+                        f = dropsPheno[["Experiment"]])
 ## Add phenotypic data to gDataDrops.
 gDataDrops <- createGData(gData = gDataDrops, pheno = dropsPhenoList)
 ```
 Note that if the phenotypic data consists of only one trial/experiment, it can be added as a single data.frame without first converting it to a list. In this case createGData will convert the input to a list with one item.
 
-To get an idea of the contents of the data a summary of the gData object can be made. This will give an overview of the content of the map and markers and also print a summary per trait per trial. Since there are 28 trials and 8 traits in gDataDrops giving a very large summary, the output is restricted here to one trial using the `trials` parameter of the summary function.
+To get an idea of the contents of the data a summary of the gData object can be made. This will give an overview of the content of the map and markers and also print a summary per trait per trial. Since there are 28 trials and 8 traits in gDataDrops giving a very large summary, the output is restricted here to one trial, Mur13W, using the `trials` parameter of the summary function.
 ```{r sumGData}
 ## Summarize gDataDrops.
 summary(gDataDrops, trials = "Mur13W")
@@ -233,11 +236,11 @@ summary(GWASDrops)
 
 The plot.GWAS function can be used to visualize the results in GWASDrops, with a QQ-plot, Manhattan plot or QTL-plot. 
 
-#### QQ plots
+#### QQ-plots
 
 A QQ-plot of the observed against the expected $-\log_{10}(p)$ values can be made by setting `plotType = "qq"`. Most of the SNPs are expected to have no effect, resulting in P-values uniformly distributed on $[0,1]$, and leading to the identity function ($y=x$) on the $-\log_{10}(p)$ scale. As in the plot below, deviations from this line should only occur on the right side of the plot, for a small number of SNPs with an effect on the phenotype (and possibly SNPs in LD). There is **inflation** if the observed $-\log_{10}(p)$ values are always above the line $y=x$, and (less common) **deflation** if they are always below this line. A QQ-plot therefore gives a first impression of the quality of the GWAS model: if for example $-\log_{10}(p)$ values are consistently too large (inflation), the correction for genetic relatedness may not be adequate.
 ```{r qqStg} 
-## Plot a qq plot of GWAS Drops.
+## Plot a QQ-plot of GWAS Drops.
 plot(GWASDrops, plotType = "qq", trait = "grain.yield")
 ```
 
@@ -249,14 +252,14 @@ A manhattan plot is made by setting `plotType = "manhattan"`. Significant SNPs a
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield")
 ```
 
-To change the threshold when plotting, without having to redo the GWAS analysis, use the parameter `yThr`. Use `chr` to only plot a subset of chromosomes.
+To change the threshold when plotting, without having to redo the GWAS analysis, use the parameter `yThr`. Use `chr` to plot a subset of chromosomes.
 ```{r manhattanStgThr}
 ## Plot a manhattan plot of GWAS Drops.
 ## Set significance threshold to 4 and only plot chromosomes 6 to 8.
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", yThr = 4, chr = 6:8)
 ```
 
-If the number of SNPs gets large, the plotting might get slow. This can be dealt with by setting the parameter `lod`. For the SNPs with a LOD-value below `lod`, only 5% will be plotted. The chance of a SNP being plotted is proportional to its LOD-value. SNPs with a higher LOD have a higher chance of being plotted. Since most SNPs will have low LOD-values, this restriction doesn't very much affect the resulting plot. Note that the 5% of the SNPs that is plotted, is selected randomly. For reproducible results make sure to set a seed. 
+If the number of SNPs gets large, the plotting might get slow. This can be dealt with by setting the parameter `lod`. When doing so, for the SNPs with a LOD-value below `lod`, only 5% will be plotted. The chance of a SNP being plotted is proportional to its LOD-value. SNPs with a higher LOD have a higher chance of being plotted. Since most SNPs will have low LOD-values, this restriction doesn't very much affect the resulting plot. Note that the 5% of the SNPs that is plotted, is selected randomly. For reproducible results make sure to set a seed. 
 
 ```{r manhattanLod}
 ## Plot a manhattan plot of GWAS Drops.
@@ -298,7 +301,12 @@ Other parameters can be used to plot a subset of the chromosomes (`chr`) and dir
 
 ## Kinship matrices
 
-The *runSingleTraitGwas* function has an argument `kinshipMethod`, which defines the kinship matrix used for association mapping. Kinship matrices can be computed directly using the *kinship* function or within the *runSingleTraitGwas* function. There are four options: (1) using the covariance between the scaled SNP-scores (`kinshipMethod = "astle"`, the default; see e.g. equation (2.2) in @Astle2009) (2) Identity by State (`kinshipMethod = "IBS"`; see e.g. equation (2.3) in @Astle2009) (3) using the formula by @VanRaden2008 (`kinshipMethod = "vanRaden"`) (4) User-defined, in which case the parameter `kin` needs to be specified.
+The *runSingleTraitGwas* function has an argument `kinshipMethod`, which defines the kinship matrix used for association mapping. Kinship matrices can be computed directly using the *kinship* function or within the *runSingleTraitGwas* function. There are four options: 
+
+1. using the covariance between the scaled SNP-scores (`kinshipMethod = "astle"`, the default; see e.g. equation (2.2) in @Astle2009) 
+2. Identity by State (`kinshipMethod = "IBS"`; see e.g. equation (2.3) in @Astle2009) 
+3. using the formula by @VanRaden2008 (`kinshipMethod = "vanRaden"`) 
+4. User-defined, in which case the parameter `kin` needs to be specified.
 
 By default, the same kinship matrix is used for testing all SNPs (`GLSMethod = "single"`). When `GLSMethod = "multi"`, the kinship matrix is chromosome-specific. In this case, the function fits variance components and computes effect-estimates and P-values for each chromosome in turn, using the kinship matrix for that chromosome. Each chromosome-specific kinship matrix is computed using the method specified by the argument `kinshipMethod`, using all SNPs that are **not** on this chromosome. As shown by @Rincent2014, this often gives a considerable improvement in power.
 

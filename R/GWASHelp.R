@@ -237,7 +237,7 @@ extrSignSnpsFDR <- function(GWAResult,
                             rho = 0.3,
                             pThr = 0.05,
                             alpha = 0.05) {
-  ## Get named vector of p Values
+  ## Get named vector of p Values.
   pVals <- setNames(GWAResult$pValue, GWAResult$snp)
   ## Subset p Values base on threshold.
   B <- pVals[pVals < pThr]

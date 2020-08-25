@@ -28,16 +28,14 @@ colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <- c(
 gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap)
 
 ## ----addPheno-------------------------------------------------------------------------------------
-## Convert phenotypic data to a list.
-dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
-## Rename Variety_ID to genotype and select relevant columns.
-dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
-  colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
-  trial <- trial[c("genotype", "grain.yield", "grain.number", "seed.size",
-                   "anthesis", "silking", "plant.height", "tassel.height",
-                   "ear.height")]
-  return(trial)
-})
+## Rename Variety_ID to genotype.
+colnames(dropsPheno)[colnames(dropsPheno) == "Variety_ID"] <- "genotype"
+## Select relevant columns and convert data to a list.
+dropsPhenoList <- split(x = dropsPheno[c("genotype", "grain.yield",
+                                         "grain.number", "seed.size",
+                                         "anthesis", "silking", "plant.height",
+                                         "tassel.height", "ear.height")], 
+                        f = dropsPheno[["Experiment"]])
 ## Add phenotypic data to gDataDrops.
 gDataDrops <- createGData(gData = gDataDrops, pheno = dropsPhenoList)
 
@@ -91,7 +89,7 @@ print(GWASDrops$signSnp$Mur13W, row.names = FALSE)
 summary(GWASDrops)
 
 ## ----qqStg----------------------------------------------------------------------------------------
-## Plot a qq plot of GWAS Drops.
+## Plot a QQ-plot of GWAS Drops.
 plot(GWASDrops, plotType = "qq", trait = "grain.yield")
 
 ## ----manhattanStg---------------------------------------------------------------------------------

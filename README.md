@@ -38,8 +38,8 @@ remotes::install_github("Biometris/statgenGWAS", ref = "develop", dependencies =
 
 ## Examples
 
-Example using the data from the EPPN2020 project. The same data is used
-in the vignette and described there in detail.
+Example using the data from the European Union project DROPS. The same
+data is used in the vignette and described there in detail.
 
 First get the data in the form required by the package, converting it to
 an object of class **g**(enomic)**Data**.
@@ -60,16 +60,14 @@ rownames(dropsMap) <- dropsMap[["SNP.names"]]
 ## Rename Chomosome and Position columns.
 colnames(dropsMap)[match(c("Chromosome", "Position"), colnames(dropsMap))] <- c("chr", "pos")
 
-## Convert phenotypic data to a list.
-dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
-## Rename Variety_ID to genotype and select relevant columns.
-dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
-  colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
-  trial <- trial[c("genotype", "grain.yield", "grain.number", "seed.size",
-                   "anthesis", "silking", "plant.height", "tassel.height",
-                   "ear.height")]
-  return(trial)
-})
+## Rename Variety_ID in phenotypic data to genotype.
+colnames(dropsPheno)[colnames(dropsPheno) == "Variety_ID"] <- "genotype"
+## Select relevant columns and convert data to a list.
+dropsPhenoList <- split(x = dropsPheno[c("genotype", "grain.yield",
+                                         "grain.number", "seed.size",
+                                         "anthesis", "silking", "plant.height",
+                                         "tassel.height", "ear.height")], 
+                        f = dropsPheno[["Experiment"]])
 
 ## Create a gData object all data.
 gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap, pheno = dropsPhenoList)

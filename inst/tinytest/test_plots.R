@@ -17,7 +17,7 @@ expect_error(plot(stg, trial = 3), "trial should be in x")
 # Plotting is always done for a single trial.
 expect_error(plot(stg, "multiple trials detected"))
 
-## Test qq plot
+## Test QQ-plot
 
 # Check on random p-Values.
 

@@ -119,6 +119,55 @@
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
+<p>Example using the data from the European Union project DROPS. The same data is used in the vignette and described there in detail.</p>
+<p>First get the data in the form required by the package, converting it to an object of class <strong>g</strong>(enomic)<strong>Data</strong>.</p>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">statgenGWAS</span>)
+<span class="co">## Read data.</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dropsMarkers"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dropsMap"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dropsPheno"</span>)
+
+<span class="co">## Add genotypes as row names of dropsMarkers and drop Ind column.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">dropsMarkers</span>) <span class="kw">&lt;-</span> <span class="no">dropsMarkers</span><span class="kw">[[</span><span class="st">"Ind"</span>]]
+<span class="no">dropsMarkers</span> <span class="kw">&lt;-</span> <span class="no">dropsMarkers</span>[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">dropsMarkers</span>) <span class="kw">!=</span> <span class="st">"Ind"</span>]
+
+<span class="co">## Add genotypes as row names of dropsMap.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">dropsMap</span>) <span class="kw">&lt;-</span> <span class="no">dropsMap</span><span class="kw">[[</span><span class="st">"SNP.names"</span>]]
+<span class="co">## Rename Chomosome and Position columns.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">dropsMap</span>)[<span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Chromosome"</span>, <span class="st">"Position"</span>), <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">dropsMap</span>))] <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"chr"</span>, <span class="st">"pos"</span>)
+
+<span class="co">## Rename Variety_ID in phenotypic data to genotype.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">dropsPheno</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">dropsPheno</span>) <span class="kw">==</span> <span class="st">"Variety_ID"</span>] <span class="kw">&lt;-</span> <span class="st">"genotype"</span>
+<span class="co">## Select relevant columns and convert data to a list.</span>
+<span class="no">dropsPhenoList</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">dropsPheno</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"genotype"</span>, <span class="st">"grain.yield"</span>,
+                                         <span class="st">"grain.number"</span>, <span class="st">"seed.size"</span>,
+                                         <span class="st">"anthesis"</span>, <span class="st">"silking"</span>, <span class="st">"plant.height"</span>,
+                                         <span class="st">"tassel.height"</span>, <span class="st">"ear.height"</span>)],
+                        <span class="kw">f</span> <span class="kw">=</span> <span class="no">dropsPheno</span><span class="kw">[[</span><span class="st">"Experiment"</span>]])
+
+<span class="co">## Create a gData object all data.</span>
+<span class="no">gDataDrops</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/gData.html">createGData</a></span>(<span class="kw">geno</span> <span class="kw">=</span> <span class="no">dropsMarkers</span>, <span class="kw">map</span> <span class="kw">=</span> <span class="no">dropsMap</span>, <span class="kw">pheno</span> <span class="kw">=</span> <span class="no">dropsPhenoList</span>)</pre></div>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="co">## Remove duplicate SNPs from gDataDrops.</span>
+<span class="no">gDataDropsDedup</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/codeMarkers.html">codeMarkers</a></span>(<span class="no">gDataDrops</span>, <span class="kw">impute</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="co">#&gt; Input contains 41722 SNPs for 246 genotypes.</span>
+<span class="co">#&gt; 0 genotypes removed because proportion of missing values larger than or equal to 1.</span>
+<span class="co">#&gt; 0 SNPs removed because proportion of missing values larger than or equal to 1.</span>
+<span class="co">#&gt; 5098 duplicate SNPs removed.</span>
+<span class="co">#&gt; Output contains 36624 SNPs for 246 genotypes.</span></pre></div>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="co">## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.</span>
+<span class="no">GWASDrops</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span>(<span class="kw">gData</span> <span class="kw">=</span> <span class="no">gDataDropsDedup</span>,
+                                <span class="kw">trials</span> <span class="kw">=</span> <span class="st">"Mur13W"</span>,
+                                <span class="kw">traits</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"grain.yield"</span>, <span class="st">"anthesis"</span>))</pre></div>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="co">## QQ plot of GWAS Drops.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">GWASDrops</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"qq"</span>, <span class="kw">trait</span> <span class="kw">=</span> <span class="st">"grain.yield"</span>)</pre></div>
+<p><img src="reference/figures/README-qqStg-1.png" width="75%"></p>
+<div class="sourceCode" id="cb7"><pre class="r"><span class="co">## Manhattan plot of GWAS Drops.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">GWASDrops</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"manhattan"</span>, <span class="kw">trait</span> <span class="kw">=</span> <span class="st">"grain.yield"</span>)</pre></div>
+<p><img src="reference/figures/README-manhattanStg-1.png" width="75%"></p>
+<div class="sourceCode" id="cb8"><pre class="r"><span class="co">## Qtl plot of GWAS Drops.</span>
+<span class="co">## Set significance threshold to 4 and normalize effect estimates.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">GWASDrops</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"qtl"</span>, <span class="kw">yThr</span> <span class="kw">=</span> <span class="fl">4</span>, <span class="kw">normalize</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<p><img src="reference/figures/README-qtlStgNorm-1.png" width="75%"></p>
 </div>
 </div>
   </div>

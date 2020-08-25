@@ -1,6 +1,6 @@
-#' qq-plot of observed versus expected LOD-scores
+#' QQ-plot of observed versus expected LOD-scores
 #'
-#' Given a vector of pvalues, generate a qq-plot of observed LOD-scores versus
+#' Given a vector of pvalues, generate a QQ-plot of observed LOD-scores versus
 #' expected LOD-scores. Code taken from Segura et al. and adapted
 #'
 #' @inheritParams manhattanPlot
