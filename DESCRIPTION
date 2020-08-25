@@ -68,3 +68,4 @@ VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo
 URL: https://github.com/Biometris/statgenGWAS/
 BugReports: https://github.com/Biometris/statgenGWAS/issues
+NeedsCompilation: yes
