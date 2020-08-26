@@ -4,7 +4,8 @@
 AC_PREREQ(2.61)
 
 ## Process this file with autoconf to produce a configure script.
-AC_INIT(statgenGWAS, m4_esyscmd_s([awk -e '/^Version:/ {print $2}' DESCRIPTION]))
+## AC_INIT(statgenGWAS, m4_esyscmd_s([awk '/^Version:/ {print $2}' DESCRIPTION]))
+AC_INIT(statgenGWAS, 1.0.4.1)
 
 ## Set R_HOME, respecting an environment variable if one is set
 : ${R_HOME=$(R RHOME)}
