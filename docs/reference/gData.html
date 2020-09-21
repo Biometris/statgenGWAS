@@ -157,12 +157,12 @@ warning.</p>
     </div>
 
     <pre class="usage"><span class='fu'>createGData</span>(
-  <span class='kw'>gData</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>geno</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>kin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>pheno</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>covar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  gData = <span class='kw'>NULL</span>,
+  geno = <span class='kw'>NULL</span>,
+  map = <span class='kw'>NULL</span>,
+  kin = <span class='kw'>NULL</span>,
+  pheno = <span class='kw'>NULL</span>,
+  covar = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -231,29 +231,33 @@ chromosome and position.</p></dd>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='summary.gData.html'>summary.gData</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Bart-Jan van Rossum</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1234</span>)
 <span class='co'>## Create genotypic data.</span>
-<span class='no'>geno</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>geno</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"M"</span>, <span class='fl'>1</span>:<span class='fl'>5</span>))
+<span class='kw'>geno</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>), size = <span class='fl'>15</span>, replace = <span class='fl'>TRUE</span>), nrow = <span class='fl'>3</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='kw'>geno</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"M"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>))
 
 <span class='co'>## Construct map.</span>
-<span class='no'>map</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>chr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>), <span class='kw'>pos</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>,
-                  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"M"</span>, <span class='fl'>1</span>:<span class='fl'>5</span>))
+<span class='kw'>map</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(chr = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>), pos = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>,
+                  row.names = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"M"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>))
 
 <span class='co'>## Compute kinship matrix.</span>
-<span class='no'>kin</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kinship.html'>kinship</a></span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>geno</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"IBS"</span>)
+<span class='kw'>kin</span> <span class='op'>&lt;-</span> <span class='fu'><a href='kinship.html'>kinship</a></span>(X = <span class='kw'>geno</span>, method = <span class='st'>"IBS"</span>)
 
 <span class='co'>## Create phenotypic data.</span>
-<span class='no'>pheno</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>),
-                    <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>),
-                    <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='no'>pheno</span>) <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"genotype"</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"T"</span>, <span class='fl'>1</span>:<span class='fl'>4</span>)))
+<span class='kw'>pheno</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>),
+                    <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(n = <span class='fl'>12</span>, mean = <span class='fl'>50</span>, sd = <span class='fl'>5</span>), nrow = <span class='fl'>3</span>),
+                    stringsAsFactors = <span class='fl'>FALSE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/dimnames.html'>dimnames</a></span>(<span class='kw'>pheno</span>) <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"genotype"</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"T"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)))
 
 <span class='co'>## Combine all data in gData object.</span>
-<span class='no'>gData</span> <span class='kw'>&lt;-</span> <span class='fu'>createGData</span>(<span class='kw'>geno</span> <span class='kw'>=</span> <span class='no'>geno</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='no'>map</span>, <span class='kw'>kin</span> <span class='kw'>=</span> <span class='no'>kin</span>, <span class='kw'>pheno</span> <span class='kw'>=</span> <span class='no'>pheno</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>gData</span>)</div><div class='output co'>#&gt; map
+<span class='kw'>gData</span> <span class='op'>&lt;-</span> <span class='fu'>createGData</span>(geno = <span class='kw'>geno</span>, map = <span class='kw'>map</span>, kin = <span class='kw'>kin</span>, pheno = <span class='kw'>pheno</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>gData</span>)
+</div><div class='output co'>#&gt; map
 #&gt; 	Number of markers: 5 
 #&gt; 	Number of chromosomes: 2 
 #&gt; 
@@ -281,14 +285,15 @@ chromosome and position.</p></dd>
 #&gt; NA's     0.00000  0.00000  0.00000  0.00000
 #&gt; </div><div class='input'>
 <span class='co'>## Construct covariate.</span>
-<span class='no'>covar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>C1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>), <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>))
+<span class='kw'>covar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(C1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>), row.names = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>))
 
 <span class='co'>## Compute alternative kinship matrix.</span>
-<span class='no'>kin2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kinship.html'>kinship</a></span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>geno</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"astle"</span>)
+<span class='kw'>kin2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='kinship.html'>kinship</a></span>(X = <span class='kw'>geno</span>, method = <span class='st'>"astle"</span>)
 
 <span class='co'>## Add covariates to previously created gData object and overwrite</span>
 <span class='co'>## current kinship matrix by newly computed one.</span>
-<span class='no'>gData2</span> <span class='kw'>&lt;-</span> <span class='fu'>createGData</span>(<span class='kw'>gData</span> <span class='kw'>=</span> <span class='no'>gData</span>, <span class='kw'>kin</span> <span class='kw'>=</span> <span class='no'>kin2</span>, <span class='kw'>covar</span> <span class='kw'>=</span> <span class='no'>covar</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Existing kinship will be overwritten.</span></div><div class='input'>
+<span class='kw'>gData2</span> <span class='op'>&lt;-</span> <span class='fu'>createGData</span>(gData = <span class='kw'>gData</span>, kin = <span class='kw'>kin2</span>, covar = <span class='kw'>covar</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Existing kinship will be overwritten.</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -305,7 +310,7 @@ chromosome and position.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

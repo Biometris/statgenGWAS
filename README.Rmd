@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/Biometris/statgenGWAS/workflows/R-CMD-check/badge.svg)](https://github.com/Biometris/statgenGWAS/actions?workflow=R-CMD-check)
 [![codecov](https://codecov.io/gh/Biometris/statgenGWAS/branch/master/graph/badge.svg)](https://codecov.io/gh/Biometris/statgenGWAS)
 
-**statgenGWAS** is an R package for fast single trait Genome Wide Association Studies (GWAS)
+**statgenGWAS** is an R package for fast single trait Genome Wide Association Studies (GWAS).
 
-statgenGWAS has extensive options for summarizing and visualizing results. The example below shows a selection of what is possible. For a full overview of all options it is best to read the [**vignette**](https://biometris.github.io/statgenGWAS/articles/GWAS.html)
+statgenGWAS has extensive options for summarizing and visualizing results. The example below shows a selection of what is possible. For a full overview of all options it is best to read the [**vignette**](https://biometris.github.io/statgenGWAS/articles/GWAS.html).
 
 ## Installation
 

@@ -10,12 +10,12 @@ downloads](https://cranlogs.r-pkg.org/badges/statgenGWAS)](https://www.r-pkg.org
 [![codecov](https://codecov.io/gh/Biometris/statgenGWAS/branch/master/graph/badge.svg)](https://codecov.io/gh/Biometris/statgenGWAS)
 
 **statgenGWAS** is an R package for fast single trait Genome Wide
-Association Studies (GWAS)
+Association Studies (GWAS).
 
 statgenGWAS has extensive options for summarizing and visualizing
 results. The example below shows a selection of what is possible. For a
 full overview of all options it is best to read the
-[**vignette**](https://biometris.github.io/statgenGWAS/articles/GWAS.html)
+[**vignette**](https://biometris.github.io/statgenGWAS/articles/GWAS.html).
 
 ## Installation
 

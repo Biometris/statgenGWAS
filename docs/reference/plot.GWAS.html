@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot function for the class <code>GWAS</code> — plot.GWAS • statgenGWAS</title>
+<title>Plot function for the class GWAS — plot.GWAS • statgenGWAS</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Plot function for the class <code>GWAS</code> — plot.GWAS" />
+<meta property="og:title" content="Plot function for the class GWAS — plot.GWAS" />
 <meta property="og:description" content="Creates a plot of an object of S3 class GWAS. The following types of
 plot can be made:
 a manhattan plot, i.e. a plot of LOD-scores per SNP
@@ -167,13 +167,13 @@ specific to the different plots.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for GWAS</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
-  <span class='no'>x</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"manhattan"</span>, <span class='st'>"qq"</span>, <span class='st'>"qtl"</span>),
-  <span class='kw'>trial</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>trait</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(
+  <span class='kw'>x</span>,
+  <span class='kw'>...</span>,
+  plotType = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"manhattan"</span>, <span class='st'>"qq"</span>, <span class='st'>"qtl"</span>),
+  trial = <span class='kw'>NULL</span>,
+  trait = <span class='kw'>NULL</span>,
+  output = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -222,7 +222,7 @@ are taken from the result of the GWAS analysis however the LOD-threshold for
 significant parameters may be modified using the parameter <code>yThr</code>. The
 threshold is plotted as a horizontal line. If there are previously known
 marker effect, false positives and true negatives can also be marked.<br />
-Extra parameter options:</p><dl'>
+Extra parameter options:</p><dl>
 <dt><code>xLab</code></dt><dd><p>A character string, the x-axis label. Default =
 <code>"Chromosomes"</code></p></dd>
 <dt><code>yLab</code></dt><dd><p>A character string, the y-axis label. Default =
@@ -266,7 +266,7 @@ chromosome subdivision, genes of interest, known QTL, etc. Circle diameters
 are proportional to the absolute value of allelic effect. Colors indicate the
 direction of the effect: green when the allele increases the trait value,
 and blue when it decreases the value.<br />
-Extra parameter options:</p><dl'>
+Extra parameter options:</p><dl>
 <dt><code>normalize</code></dt><dd><p>Should the snpEffect be normalized? Default =
 <code>FALSE</code></p></dd>
 <dt><code>sortData</code></dt><dd><p>Should the data be sorted before plotting? Either
@@ -316,7 +316,7 @@ Nature Genetics, June 2012, Vol. 44, p. 825–830.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

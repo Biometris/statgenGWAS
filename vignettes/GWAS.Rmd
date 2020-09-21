@@ -73,7 +73,7 @@ The REML-estimates in step (1) can be computed using either the Efficient Mixed 
 
 # Worked example
 
-As an example of the functionality of the package a worked example is provided using maize data from the European Union project DROPS. The data is available from https://data.inra.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN [@Millet2019] and the relevant data sets are included as data.frames in the statgenGWAS package.
+As an example of the functionality of the package a worked example is provided using maize data from the European Union project DROPS. The data is available from https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN [@Millet2019] and the relevant data sets are included as data.frames in the statgenGWAS package.
 
 ## **Load data**
 

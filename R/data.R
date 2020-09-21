@@ -78,7 +78,7 @@
 #' @usage NULL
 #' @format NULL
 #' 
-#' @source \url{https://data.inra.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN}
+#' @source \url{https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN}
 #' 
 #' @references Millet, E. J., Pommier, C., et al. (2019). A multi-site 
 #' experiment in a network of European fields for assessing the maize yield 
