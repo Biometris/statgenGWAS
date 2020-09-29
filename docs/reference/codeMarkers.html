@@ -86,7 +86,7 @@ repeat steps 5. and 6. if missing values are imputed.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenGWAS</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -174,20 +174,20 @@ The function performs the following steps:<br /></p><ol>
 
     </div>
 
-    <pre class="usage"><span class='fu'>codeMarkers</span>(
-  <span class='kw'>gData</span>,
-  refAll = <span class='st'>"minor"</span>,
-  nMissGeno = <span class='fl'>1</span>,
-  nMiss = <span class='fl'>1</span>,
-  MAF = <span class='kw'>NULL</span>,
-  removeDuplicates = <span class='fl'>TRUE</span>,
-  keep = <span class='kw'>NULL</span>,
-  impute = <span class='fl'>TRUE</span>,
-  imputeType = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"random"</span>, <span class='st'>"fixed"</span>, <span class='st'>"beagle"</span>),
-  fixedValue = <span class='kw'>NULL</span>,
-  naStrings = <span class='fl'>NA</span>,
-  verbose = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>codeMarkers</span><span class='op'>(</span>
+  <span class='va'>gData</span>,
+  refAll <span class='op'>=</span> <span class='st'>"minor"</span>,
+  nMissGeno <span class='op'>=</span> <span class='fl'>1</span>,
+  nMiss <span class='op'>=</span> <span class='fl'>1</span>,
+  MAF <span class='op'>=</span> <span class='cn'>NULL</span>,
+  removeDuplicates <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  keep <span class='op'>=</span> <span class='cn'>NULL</span>,
+  impute <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  imputeType <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"random"</span>, <span class='st'>"fixed"</span>, <span class='st'>"beagle"</span><span class='op'>)</span>,
+  fixedValue <span class='op'>=</span> <span class='cn'>NULL</span>,
+  naStrings <span class='op'>=</span> <span class='cn'>NA</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -275,35 +275,35 @@ doi:10.1016/j.ajhg.2015.11.020</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Create markers</span>
-<span class='kw'>markers</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
-<span class='st'>"AA"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BA"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='fl'>NA</span>,  <span class='st'>"AA"</span>,
-<span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='fl'>NA</span>,  <span class='st'>"AA"</span>,
-<span class='st'>"AA"</span>,   <span class='st'>"BA"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='fl'>NA</span>,  <span class='st'>"AA"</span>,
-<span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='fl'>NA</span>,  <span class='st'>"AA"</span>,
+<span class='va'>markers</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+<span class='st'>"AA"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BA"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='cn'>NA</span>,  <span class='st'>"AA"</span>,
+<span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='cn'>NA</span>,  <span class='st'>"AA"</span>,
+<span class='st'>"AA"</span>,   <span class='st'>"BA"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='cn'>NA</span>,  <span class='st'>"AA"</span>,
+<span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='cn'>NA</span>,  <span class='st'>"AA"</span>,
 <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,  <span class='st'>"AB"</span>, <span class='st'>"AA"</span>,
-<span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,    <span class='fl'>NA</span>,    <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='fl'>NA</span>,  <span class='st'>"AA"</span>,
-<span class='st'>"AB"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='fl'>NA</span>,  <span class='st'>"AB"</span>,
-<span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,    <span class='fl'>NA</span>,    <span class='st'>"BB"</span>,    <span class='fl'>NA</span>,    <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,  <span class='st'>"AA"</span>, <span class='st'>"AA"</span>,
-<span class='st'>"AA"</span>,    <span class='fl'>NA</span>,     <span class='fl'>NA</span>,    <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,  <span class='st'>"AA"</span>, <span class='st'>"AA"</span>,
-<span class='st'>"AA"</span>,    <span class='fl'>NA</span>,    <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='fl'>NA</span>,  <span class='st'>"AA"</span>),
-ncol = <span class='fl'>10</span>, byrow = <span class='fl'>TRUE</span>, dimnames = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"IND"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>),
-<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"SNP"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)))
+<span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,    <span class='cn'>NA</span>,    <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='cn'>NA</span>,  <span class='st'>"AA"</span>,
+<span class='st'>"AB"</span>,   <span class='st'>"AB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='cn'>NA</span>,  <span class='st'>"AB"</span>,
+<span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,    <span class='cn'>NA</span>,    <span class='st'>"BB"</span>,    <span class='cn'>NA</span>,    <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,  <span class='st'>"AA"</span>, <span class='st'>"AA"</span>,
+<span class='st'>"AA"</span>,    <span class='cn'>NA</span>,     <span class='cn'>NA</span>,    <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,  <span class='st'>"AA"</span>, <span class='st'>"AA"</span>,
+<span class='st'>"AA"</span>,    <span class='cn'>NA</span>,    <span class='st'>"AA"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"BB"</span>,   <span class='st'>"AA"</span>,   <span class='st'>"AA"</span>,   <span class='cn'>NA</span>,  <span class='st'>"AA"</span><span class='op'>)</span>,
+ncol <span class='op'>=</span> <span class='fl'>10</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span>, dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"IND"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"SNP"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## create object of class 'gData'.</span>
-<span class='kw'>gData</span> <span class='op'>&lt;-</span> <span class='fu'><a href='gData.html'>createGData</a></span>(geno = <span class='kw'>markers</span>)
+<span class='va'>gData</span> <span class='op'>&lt;-</span> <span class='fu'><a href='gData.html'>createGData</a></span><span class='op'>(</span>geno <span class='op'>=</span> <span class='va'>markers</span><span class='op'>)</span>
 
 <span class='co'>## Code markers by minor allele, no imputation.</span>
-<span class='kw'>gDataCoded1</span> <span class='op'>&lt;-</span> <span class='fu'>codeMarkers</span>(gData = <span class='kw'>gData</span>, impute = <span class='fl'>FALSE</span>)
+<span class='va'>gDataCoded1</span> <span class='op'>&lt;-</span> <span class='fu'>codeMarkers</span><span class='op'>(</span>gData <span class='op'>=</span> <span class='va'>gData</span>, impute <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'>## Code markers by reference alleles, impute missings by fixed value.</span>
-<span class='kw'>gDataCoded2</span> <span class='op'>&lt;-</span> <span class='fu'>codeMarkers</span>(gData = <span class='kw'>gData</span>,
-                           refAll = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), times =  <span class='fl'>5</span>),
-                           impute = <span class='fl'>TRUE</span>, imputeType = <span class='st'>"fixed"</span>,
-                           fixedValue = <span class='fl'>1</span>)
+<span class='va'>gDataCoded2</span> <span class='op'>&lt;-</span> <span class='fu'>codeMarkers</span><span class='op'>(</span>gData <span class='op'>=</span> <span class='va'>gData</span>,
+                           refAll <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, times <span class='op'>=</span>  <span class='fl'>5</span><span class='op'>)</span>,
+                           impute <span class='op'>=</span> <span class='cn'>TRUE</span>, imputeType <span class='op'>=</span> <span class='st'>"fixed"</span>,
+                           fixedValue <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
 <span class='co'>## Code markers by minor allele, impute by random value.</span>
-<span class='kw'>gDataCoded3</span> <span class='op'>&lt;-</span> <span class='fu'>codeMarkers</span>(gData = <span class='kw'>gData</span>, impute = <span class='fl'>TRUE</span>,
-                           imputeType = <span class='st'>"random"</span>)
+<span class='va'>gDataCoded3</span> <span class='op'>&lt;-</span> <span class='fu'>codeMarkers</span><span class='op'>(</span>gData <span class='op'>=</span> <span class='va'>gData</span>, impute <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                           imputeType <span class='op'>=</span> <span class='st'>"random"</span><span class='op'>)</span>
 
 </div></pre>
   </div>

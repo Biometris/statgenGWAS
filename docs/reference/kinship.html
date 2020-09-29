@@ -75,7 +75,7 @@ marker matrices." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenGWAS</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -152,7 +152,7 @@ algorithms. The following algorithms are included: astle (Astle and Balding,
 marker matrices.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>kinship</span>(<span class='kw'>X</span>, method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"astle"</span>, <span class='st'>"IBS"</span>, <span class='st'>"vanRaden"</span>), denominator = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>kinship</span><span class='op'>(</span><span class='va'>X</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"astle"</span>, <span class='st'>"IBS"</span>, <span class='st'>"vanRaden"</span><span class='op'>)</span>, denominator <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,24 +200,24 @@ predictions. Journal of Dairy Science 91 (11): 4414–23.
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Create example matrix.</span>
-<span class='kw'>M</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), nrow = <span class='fl'>3</span>)
+<span class='va'>M</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, nrow <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 
 <span class='co'>## Compute kinship matrices using different methods.</span>
-<span class='fu'>kinship</span>(<span class='kw'>M</span>, method = <span class='st'>"astle"</span>)
+<span class='fu'>kinship</span><span class='op'>(</span><span class='va'>M</span>, method <span class='op'>=</span> <span class='st'>"astle"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;       [,1]  [,2]  [,3]
 #&gt; [1,]  0.50 -0.25 -0.25
 #&gt; [2,] -0.25  0.50 -0.25
-#&gt; [3,] -0.25 -0.25  0.50</div><div class='input'><span class='fu'>kinship</span>(<span class='kw'>M</span>, method = <span class='st'>"IBS"</span>)
+#&gt; [3,] -0.25 -0.25  0.50</div><div class='input'><span class='fu'>kinship</span><span class='op'>(</span><span class='va'>M</span>, method <span class='op'>=</span> <span class='st'>"IBS"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;           [,1]      [,2]      [,3]
 #&gt; [1,] 1.0000000 0.3333333 0.3333333
 #&gt; [2,] 0.3333333 1.0000000 0.3333333
-#&gt; [3,] 0.3333333 0.3333333 1.0000000</div><div class='input'><span class='fu'>kinship</span>(<span class='kw'>M</span>, method = <span class='st'>"vanRaden"</span>)
+#&gt; [3,] 0.3333333 0.3333333 1.0000000</div><div class='input'><span class='fu'>kinship</span><span class='op'>(</span><span class='va'>M</span>, method <span class='op'>=</span> <span class='st'>"vanRaden"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;       [,1]  [,2]  [,3]
 #&gt; [1,]  0.50 -0.25 -0.25
 #&gt; [2,] -0.25  0.50 -0.25
 #&gt; [3,] -0.25 -0.25  0.50</div><div class='input'>
 <span class='co'>## Compute kinship matrix using astle and balding method with denominator 2.</span>
-<span class='fu'>kinship</span>(<span class='kw'>M</span>, method = <span class='st'>"astle"</span>, denominator = <span class='fl'>2</span>)
+<span class='fu'>kinship</span><span class='op'>(</span><span class='va'>M</span>, method <span class='op'>=</span> <span class='st'>"astle"</span>, denominator <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;        [,1]   [,2]   [,3]
 #&gt; [1,]  0.750 -0.375 -0.375
 #&gt; [2,] -0.375  0.750 -0.375

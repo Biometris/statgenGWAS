@@ -80,7 +80,7 @@ are selected based on a user defined threshold." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenGWAS</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -162,30 +162,30 @@ chromosome-specific kinship matrices for each chromosome. Significant SNPs
 are selected based on a user defined threshold.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>runSingleTraitGwas</span>(
-  <span class='kw'>gData</span>,
-  traits = <span class='kw'>NULL</span>,
-  trials = <span class='kw'>NULL</span>,
-  covar = <span class='kw'>NULL</span>,
-  snpCov = <span class='kw'>NULL</span>,
-  kin = <span class='kw'>NULL</span>,
-  kinshipMethod = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"astle"</span>, <span class='st'>"IBS"</span>, <span class='st'>"vanRaden"</span>),
-  remlAlgo = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"EMMA"</span>, <span class='st'>"NR"</span>),
-  GLSMethod = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"single"</span>, <span class='st'>"multi"</span>),
-  useMAF = <span class='fl'>TRUE</span>,
-  MAF = <span class='fl'>0.01</span>,
-  MAC = <span class='fl'>10</span>,
-  genomicControl = <span class='fl'>FALSE</span>,
-  thrType = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bonf"</span>, <span class='st'>"fixed"</span>, <span class='st'>"small"</span>, <span class='st'>"fdr"</span>),
-  alpha = <span class='fl'>0.05</span>,
-  LODThr = <span class='fl'>4</span>,
-  nSnpLOD = <span class='fl'>10</span>,
-  pThr = <span class='fl'>0.05</span>,
-  rho = <span class='fl'>0.5</span>,
-  sizeInclRegion = <span class='fl'>0</span>,
-  minR2 = <span class='fl'>0.5</span>,
-  nCores = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>runSingleTraitGwas</span><span class='op'>(</span>
+  <span class='va'>gData</span>,
+  traits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trials <span class='op'>=</span> <span class='cn'>NULL</span>,
+  covar <span class='op'>=</span> <span class='cn'>NULL</span>,
+  snpCov <span class='op'>=</span> <span class='cn'>NULL</span>,
+  kin <span class='op'>=</span> <span class='cn'>NULL</span>,
+  kinshipMethod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"astle"</span>, <span class='st'>"IBS"</span>, <span class='st'>"vanRaden"</span><span class='op'>)</span>,
+  remlAlgo <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"EMMA"</span>, <span class='st'>"NR"</span><span class='op'>)</span>,
+  GLSMethod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"single"</span>, <span class='st'>"multi"</span><span class='op'>)</span>,
+  useMAF <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  MAF <span class='op'>=</span> <span class='fl'>0.01</span>,
+  MAC <span class='op'>=</span> <span class='fl'>10</span>,
+  genomicControl <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  thrType <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bonf"</span>, <span class='st'>"fixed"</span>, <span class='st'>"small"</span>, <span class='st'>"fdr"</span><span class='op'>)</span>,
+  alpha <span class='op'>=</span> <span class='fl'>0.05</span>,
+  LODThr <span class='op'>=</span> <span class='fl'>4</span>,
+  nSnpLOD <span class='op'>=</span> <span class='fl'>10</span>,
+  pThr <span class='op'>=</span> <span class='fl'>0.05</span>,
+  rho <span class='op'>=</span> <span class='fl'>0.5</span>,
+  sizeInclRegion <span class='op'>=</span> <span class='fl'>0</span>,
+  minR2 <span class='op'>=</span> <span class='fl'>0.5</span>,
+  nCores <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -404,45 +404,45 @@ predictions. Journal of Dairy Science 91 (11): 4414–23.
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Create a gData object Using the data from the DROPS project.</span>
 <span class='co'>## See the included vignette for a more extensive description on the steps.</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>dropsMarkers</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>dropsMap</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>dropsPheno</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dropsMarkers</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dropsMap</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>dropsPheno</span><span class='op'>)</span>
 <span class='co'>## Add genotypes as row names of dropsMarkers and drop Ind column.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>dropsMarkers</span>) <span class='op'>&lt;-</span> <span class='kw'>dropsMarkers</span>[[<span class='st'>"Ind"</span>]]
-<span class='kw'>dropsMarkers</span> <span class='op'>&lt;-</span> <span class='kw'>dropsMarkers</span>[<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>dropsMarkers</span>) != <span class='st'>"Ind"</span>]
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>dropsMarkers</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>dropsMarkers</span><span class='op'>[[</span><span class='st'>"Ind"</span><span class='op'>]</span><span class='op'>]</span>
+<span class='va'>dropsMarkers</span> <span class='op'>&lt;-</span> <span class='va'>dropsMarkers</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>dropsMarkers</span><span class='op'>)</span> <span class='op'>!=</span> <span class='st'>"Ind"</span><span class='op'>]</span>
 <span class='co'>## Add genotypes as row names of dropsMap.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>dropsMap</span>) <span class='op'>&lt;-</span> <span class='kw'>dropsMap</span>[[<span class='st'>"SNP.names"</span>]]
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>dropsMap</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>dropsMap</span><span class='op'>[[</span><span class='st'>"SNP.names"</span><span class='op'>]</span><span class='op'>]</span>
 <span class='co'>## Rename Chomosome and Position columns.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>dropsMap</span>)[<span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Chromosome"</span>, <span class='st'>"Position"</span>), 
-                   <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>dropsMap</span>))] <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr"</span>, <span class='st'>"pos"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>dropsMap</span><span class='op'>)</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Chromosome"</span>, <span class='st'>"Position"</span><span class='op'>)</span>, 
+                   <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>dropsMap</span><span class='op'>)</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='st'>"pos"</span><span class='op'>)</span>
 <span class='co'>## Convert phenotypic data to a list.</span>
-<span class='kw'>dropsPhenoList</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span>(x = <span class='kw'>dropsPheno</span>, f = <span class='kw'>dropsPheno</span>[[<span class='st'>"Experiment"</span>]])
+<span class='va'>dropsPhenoList</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>dropsPheno</span>, f <span class='op'>=</span> <span class='va'>dropsPheno</span><span class='op'>[[</span><span class='st'>"Experiment"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='co'>## Rename Variety_ID to genotype and select relevant columns.</span>
-<span class='kw'>dropsPhenoList</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(X = <span class='kw'>dropsPhenoList</span>, FUN = <span class='fu'>function</span>(<span class='kw'>trial</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>trial</span>)[<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>trial</span>) <span class='op'>==</span> <span class='st'>"Variety_ID"</span>] <span class='op'>&lt;-</span> <span class='st'>"genotype"</span>
-  <span class='kw'>trial</span> <span class='op'>&lt;-</span> <span class='kw'>trial</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"genotype"</span>, <span class='st'>"grain.yield"</span>, <span class='st'>"grain.number"</span>, <span class='st'>"seed.size"</span>,
+<span class='va'>dropsPhenoList</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span>X <span class='op'>=</span> <span class='va'>dropsPhenoList</span>, FUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>trial</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>trial</span><span class='op'>)</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>trial</span><span class='op'>)</span> <span class='op'>==</span> <span class='st'>"Variety_ID"</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"genotype"</span>
+  <span class='va'>trial</span> <span class='op'>&lt;-</span> <span class='va'>trial</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"genotype"</span>, <span class='st'>"grain.yield"</span>, <span class='st'>"grain.number"</span>, <span class='st'>"seed.size"</span>,
                  <span class='st'>"anthesis"</span>, <span class='st'>"silking"</span>, <span class='st'>"plant.height"</span>, <span class='st'>"tassel.height"</span>,
-                 <span class='st'>"ear.height"</span>)]
-<span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='kw'>trial</span>)
-}) 
-<span class='kw'>gDataDrops</span> <span class='op'>&lt;-</span> <span class='fu'><a href='gData.html'>createGData</a></span>(geno = <span class='kw'>dropsMarkers</span>, map = <span class='kw'>dropsMap</span>, 
-                          pheno = <span class='kw'>dropsPhenoList</span>)
+                 <span class='st'>"ear.height"</span><span class='op'>)</span><span class='op'>]</span>
+<span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>trial</span><span class='op'>)</span>
+<span class='op'>}</span><span class='op'>)</span> 
+<span class='va'>gDataDrops</span> <span class='op'>&lt;-</span> <span class='fu'><a href='gData.html'>createGData</a></span><span class='op'>(</span>geno <span class='op'>=</span> <span class='va'>dropsMarkers</span>, map <span class='op'>=</span> <span class='va'>dropsMap</span>, 
+                          pheno <span class='op'>=</span> <span class='va'>dropsPhenoList</span><span class='op'>)</span>
                           
 <span class='co'>## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.</span>
 <span class='co'># \donttest{</span>
-<span class='kw'>GWASDrops</span> <span class='op'>&lt;-</span> <span class='fu'>runSingleTraitGwas</span>(gData = <span class='kw'>gDataDrops</span>,
-                               trials = <span class='st'>"Mur13W"</span>,
-                               traits = <span class='st'>"grain.yield"</span>)
+<span class='va'>GWASDrops</span> <span class='op'>&lt;-</span> <span class='fu'>runSingleTraitGwas</span><span class='op'>(</span>gData <span class='op'>=</span> <span class='va'>gDataDrops</span>,
+                               trials <span class='op'>=</span> <span class='st'>"Mur13W"</span>,
+                               traits <span class='op'>=</span> <span class='st'>"grain.yield"</span><span class='op'>)</span>
 <span class='co'># }</span>
                                
 <span class='co'>## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.</span>
 <span class='co'>## Use chromosome specific kinship matrices calculated using vanRaden method.</span>
 <span class='co'># \donttest{</span>
-<span class='kw'>GWASDropsMult</span> <span class='op'>&lt;-</span> <span class='fu'>runSingleTraitGwas</span>(gData = <span class='kw'>gDataDrops</span>,
-                                    trials = <span class='st'>"Mur13W"</span>,
-                                    traits = <span class='st'>"grain.yield"</span>,
-                                    kinshipMethod = <span class='st'>"vanRaden"</span>,
-                                    GLSMethod = <span class='st'>"multi"</span>)  
+<span class='va'>GWASDropsMult</span> <span class='op'>&lt;-</span> <span class='fu'>runSingleTraitGwas</span><span class='op'>(</span>gData <span class='op'>=</span> <span class='va'>gDataDrops</span>,
+                                    trials <span class='op'>=</span> <span class='st'>"Mur13W"</span>,
+                                    traits <span class='op'>=</span> <span class='st'>"grain.yield"</span>,
+                                    kinshipMethod <span class='op'>=</span> <span class='st'>"vanRaden"</span>,
+                                    GLSMethod <span class='op'>=</span> <span class='st'>"multi"</span><span class='op'>)</span>  
 <span class='co'># }</span>
 
 </div></pre>
