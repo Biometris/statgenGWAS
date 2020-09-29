@@ -1,8 +1,8 @@
 Package: statgenGWAS
 Type: Package
 Title: Genome Wide Association Studies 
-Version: 1.0.4.1
-Date: 2020-03-02
+Version: 1.0.5
+Date: 2020-09-29
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 
@@ -66,5 +66,5 @@ Suggests: knitr,
     tinytest
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo
-URL: https://github.com/Biometris/statgenGWAS/
+URL: https://biometris.github.io/statgenGWAS/index.html, https://github.com/Biometris/statgenGWAS/
 BugReports: https://github.com/Biometris/statgenGWAS/issues

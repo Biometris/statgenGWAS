@@ -14,6 +14,7 @@ Fast single trait Genome Wide Association Studies (GWAS) following
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://biometris.github.io/statgenGWAS/index.html}
   \item \url{https://github.com/Biometris/statgenGWAS/}
   \item Report bugs at \url{https://github.com/Biometris/statgenGWAS/issues}
 }
