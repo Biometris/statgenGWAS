@@ -1,3 +1,5 @@
+# statgenGWAS 1.0.5.1
+
 # statgenGWAS 1.0.5
 
 * An option fdr (false discovery rate) is added for selecting significant SNPs when running single trait GWAS. The procedure for this is based on Brzyski et al. (2017). See the function documentation and vignette for an extensive explanation.

@@ -1,7 +1,7 @@
 Package: statgenGWAS
 Type: Package
 Title: Genome Wide Association Studies 
-Version: 1.0.5
+Version: 1.0.5.1
 Date: 2020-09-29
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 

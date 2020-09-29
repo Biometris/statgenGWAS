@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenGWAS</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5.1</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
 
       
 
-      </header><script src="GWAS_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="GWAS_files/header-attrs-2.3/header-attrs.js"></script><script src="GWAS_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to the statgenGWAS package</h1>
@@ -613,27 +613,27 @@ By default all SNPs with a MAF lower than 0.01 are excluded from the analysis. T
                                          minR2 <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
 <span class="co">## Check signSnp in output.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">GWASDropsInclClose</span><span class="op">$</span><span class="va">signSnp</span><span class="op">$</span><span class="va">Mur13W</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;        trait           snp chr      pos allFreq  pValue effect effectSe   RLR2  LOD</span>
-<span class="co">#&gt;  grain.yield PZE-106021260   6 18535896    0.84 5.5e-01 -0.080     0.13 0.0015 0.26</span>
-<span class="co">#&gt;  grain.yield PZE-106021293   6 18645872    0.94 5.5e-01  0.110     0.18 0.0015 0.26</span>
-<span class="co">#&gt;  grain.yield PZE-106021294   6 18645992    0.69 3.6e-02  0.223     0.11 0.0176 1.44</span>
-<span class="co">#&gt;  grain.yield PZE-106021320   6 18646911    0.77 4.5e-01  0.088     0.12 0.0023 0.34</span>
-<span class="co">#&gt;  grain.yield PZE-106021363   6 18846283    0.70 3.5e-07  0.522     0.10 0.0959 6.46</span>
-<span class="co">#&gt;  grain.yield PZE-106021410   6 18990291    0.70 2.3e-07  0.527     0.10 0.0984 6.63</span>
+<span class="co">#&gt;        trait           snp chr      pos allFreq pValue effect effectSe    RLR2  LOD</span>
+<span class="co">#&gt;  grain.yield PZE-106020937   6 17580232    0.93 0.7750 -0.059    0.205 0.00033 0.11</span>
+<span class="co">#&gt;  grain.yield PZE-106020972   6 17723425    0.67 0.3802  0.091    0.103 0.00314 0.42</span>
+<span class="co">#&gt;  grain.yield PZE-106021050   6 17960951    0.77 0.1719  0.161    0.117 0.00758 0.76</span>
+<span class="co">#&gt;  grain.yield PZE-106021179   6 18246324    0.81 0.5384  0.072    0.117 0.00155 0.27</span>
+<span class="co">#&gt;  grain.yield PZE-106021183   6 18247710    0.80 0.0085 -0.324    0.124 0.02756 2.07</span>
+<span class="co">#&gt;  grain.yield PZE-106021194   6 18255168    0.60 0.1518 -0.142    0.099 0.00833 0.82</span>
 <span class="co">#&gt;                          snpStatus propSnpVar</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0013</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0010</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0167</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0022</span>
-<span class="co">#&gt;                    significant SNP     0.0884</span>
-<span class="co">#&gt;                    significant SNP     0.0903</span></pre></div>
+<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00034</span>
+<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00280</span>
+<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00713</span>
+<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00129</span>
+<span class="co">#&gt;  within 2e+05 of a significant SNP    0.02672</span>
+<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00762</span></pre></div>
 <hr>
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references">
+<div id="refs" class="references hanging-indent">
 <div id="ref-Astle2009">
 <p>Astle, William, and David J. Balding. 2009. “Population Structure and Cryptic Relatedness in Genetic Association Studies.” <em>Statistical Science</em> 24 (4): 451–71. <a href="https://doi.org/10.1214/09-sts307">https://doi.org/10.1214/09-sts307</a>.</p>
 </div>
