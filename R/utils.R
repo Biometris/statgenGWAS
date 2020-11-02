@@ -15,7 +15,7 @@ expandPheno <- function(gData,
   } else {
     ## Append covariates to pheno data. Merge to remove values from pheno that
     ## are missing in covar.
-    phTr <- merge(gData$pheno[[trial]], gData$covar[covar],
+    phTr <- merge(gData$pheno[[trial]], as.data.frame(gData$covar)[covar],
                   by.x = "genotype", by.y = "row.names")
     ## Remove rows from phTr with missing covar check if there are
     ## missing values.
