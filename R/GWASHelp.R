@@ -247,31 +247,26 @@ extrSignSnpsFDR <- function(GWAResult,
   selThr <- alpha / length(pVals)
   ## Initialize values.
   BpVals <- numeric()
-  snpSelection <- character()
-  continue <- TRUE
-  nClust <- 0
-  while (length(B) > 0 && continue) {
+  snpSelection <- vector(mode = "list")
+  while (length(B) > 0) {
     ## Next cluster is represented by remaining SNP with lowest p Value.
     clusterRep <- which.min(B) 
-    ## Only continue if next p Value satisfies criterion.
-    ## After the first failure all following clusters are irrelevant.
-    if (B[clusterRep] < (nClust + 1) * selThr) {
-      ## Add p Value for representing SNP to output.
-      BpVals <- c(BpVals, B[clusterRep])
-      ## Find all remaining SNPs within LD of at least rho of representing SNP.
-      LD <- cor(BMarkers[, names(clusterRep)], BMarkers)
-      LDSet <- names(LD[, LD > rho])
-      ## Remove selected SNPs from B and from markers.
-      B <- B[!names(B) %in% LDSet]
-      BMarkers <- BMarkers[, !colnames(BMarkers) %in% LDSet, drop = FALSE]
-      ## Add LD set to selected SNPs.
-      ## Using union assures representing SNP will be the first in the list.
-      snpSelection <- c(snpSelection, union(names(snpSelection), LDSet))
-      nClust <- nClust + 1
-    } else {
-      continue <- FALSE
-    }
+    ## Add p Value for representing SNP to output.
+    BpVals <- c(BpVals, B[clusterRep])
+    ## Find all remaining SNPs within LD of at least rho of representing SNP.
+    LD <- cor(BMarkers[, names(clusterRep)], BMarkers)
+    LDSet <- names(LD[, LD > rho])
+    ## Remove selected SNPs from B and from markers.
+    B <- B[!names(B) %in% LDSet]
+    BMarkers <- BMarkers[, !colnames(BMarkers) %in% LDSet, drop = FALSE]
+    ## Add LD set to selected SNPs.
+    ## Using union assures representing SNP will be the first in the list.
+    snpSelection <- c(snpSelection, list(union(names(snpSelection), LDSet)))
   }
+  ## Compute number of clusters.
+  nClust <- max(which(BpVals < alpha / (1:length(BpVals))))
+  ## Convert SNPs in selected clusters to vector.
+  snpSelection <- c(unlist(snpSelection[1:nClust]))
   if (nClust > 0) {
     ## Create a vector of SNP statuses, differentiating between representing
     ## SNPs and everything else.
