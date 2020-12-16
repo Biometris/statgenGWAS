@@ -7,6 +7,8 @@ on:
     branches:
       - master
       - develop
+  schedule:
+    - cron: '0 3 * * *'      
 
 name: R-CMD-check
 
