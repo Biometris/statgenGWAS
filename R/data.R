@@ -36,7 +36,7 @@
 #' \describe{
 #'   \item{SNP.names}{name of the SNP}
 #'   \item{Chromosome}{number of the B73 reference genome V2}
-#'   \item{Position}{position on the B73 reference genome V2 in centimorgan}
+#'   \item{Position}{position on the B73 reference genome V2 in basepairs}
 #'   \item{allele1}{first original allele (A, T, G or C)}
 #'   \item{allele2}{second original allele (A, T, G or C)}
 #' }
