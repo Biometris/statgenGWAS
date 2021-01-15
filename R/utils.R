@@ -29,7 +29,7 @@ expandPheno <- function(gData,
       covFormula <- as.formula(paste("genotype ~ ",
                                      paste(covar[factorCovs], collapse = "+")))
       extraCov <- as.data.frame(suppressWarnings(
-        model.matrix(object = covFormula, data = droplevels(phTr))))[, -1]
+        model.matrix.lm(object = covFormula, data = droplevels(phTr))))[, -1]
       ## Add dummy variables to pheno data.
       phTr <- cbind(phTr[, -which(colnames(phTr) %in% names(factorCovs))],
                     extraCov)
