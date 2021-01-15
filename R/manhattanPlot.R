@@ -43,6 +43,7 @@ manhattanPlot <- function(xValues,
                           colPalette = rep(c("black", "grey50"), 50),
                           yThr = NULL,
                           signLwd = 0.6,
+                          title = "",
                           ...,
                           output = TRUE) {
   ## Basic argument checks
@@ -92,10 +93,11 @@ manhattanPlot <- function(xValues,
                                 expand = c(0, 0)) +
     ggplot2::scale_color_manual(values = colPalette, labels = NULL) +
     ggplot2::coord_cartesian(clip = "off") +
-    ggplot2::labs(x = xLab, y = yLab) +
+    ggplot2::labs(title = title, x = xLab, y = yLab) +
     ggplot2::theme(legend.position = "none",
                    panel.grid.major.x = ggplot2::element_blank(),
-                   panel.grid.minor.x = ggplot2::element_blank())
+                   panel.grid.minor.x = ggplot2::element_blank(),
+                   plot.title = ggplot2::element_text(hjust = 0.5))
   if (length(xSig) > 0 && length(xEffects) == 0) {
     p <- p + ggplot2::geom_point(data = plotDat[xSig, , drop = FALSE], 
                                  color = "red")

@@ -10,6 +10,7 @@
   plotType = c("manhattan", "qq", "qtl"),
   trial = NULL,
   trait = NULL,
+  title = NULL,
   output = TRUE
 )
 }
@@ -29,6 +30,8 @@ one trial, \code{trial} may be \code{NULL}.}
 \item{trait}{A character string indicating for which trait the results
 should be plotted. For \code{type} "qtl" all traits are plotted. If \code{x}
 only contains results for one trait, \code{trait} may be \code{NULL}.}
+
+\item{title}{A character string, the title of the plot.}
 
 \item{output}{Should the plot be output to the current device? If
 \code{FALSE}, only a list of ggplot objects is invisibly returned.}

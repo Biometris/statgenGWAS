@@ -18,6 +18,7 @@
 #' @noRd
 #' @keywords internal
 qqPlot <- function(pValues,
+                   title = "QQ-plot",
                    ...,
                    output = TRUE) {
   dotArgs <- list(...)
@@ -33,12 +34,6 @@ qqPlot <- function(pValues,
   observed <- -log10(sort(pValues))
   ## Create a data.frame used as input for ggplot.
   plotDat <- data.frame(expected, observed)
-  ## Construct title.
-  if (!is.null(dotArgs$title)) {
-    plotTitle <- dotArgs$title
-  } else {
-    plotTitle <- "QQ-plot"
-  }
   p <- ggplot2::ggplot(plotDat, 
                        ggplot2::aes_string(x = "expected", y = "observed")) +
     ggplot2::geom_point() +
@@ -49,7 +44,7 @@ qqPlot <- function(pValues,
     ## Add custom axis labels.
     ggplot2::labs(x = expression(Expected~~-log[10](p)), 
                   y = expression(Observed~~-log[10](p))) +
-    ggplot2::ggtitle(plotTitle)
+    ggplot2::ggtitle(title)
   if (output) {
     plot(p)
   }

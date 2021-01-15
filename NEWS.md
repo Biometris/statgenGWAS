@@ -1,5 +1,6 @@
 # statgenGWAS 1.0.5.1
 
+* The plot function now has an option title.
 * Bug when using tibbles instead of data.frames as input for covariates is fixed.
 
 # statgenGWAS 1.0.5

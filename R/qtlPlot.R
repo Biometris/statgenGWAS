@@ -46,6 +46,7 @@ qtlPlot <- function(dat,
                     binPositions = NULL,
                     printVertGrid = TRUE,
                     yLab = "Traits",
+                    title = "",
                     exportPptx = FALSE,
                     pptxName = "",
                     output = TRUE,
@@ -160,8 +161,7 @@ qtlPlot <- function(dat,
                                                           "white", "gray")),
                    panel.grid.major.y = ggplot2::element_line(color = "white"),
                    panel.grid.minor = ggplot2::element_blank(),
-                   plot.title = ggplot2::element_text(size = 20, face = "bold", 
-                                                      vjust = 2) ,
+                   plot.title = ggplot2::element_text(hjust = 0.5),
                    axis.ticks = ggplot2::element_blank(),
                    panel.border = ggplot2::element_blank(),
                    axis.line = ggplot2::element_blank(),
@@ -188,7 +188,7 @@ qtlPlot <- function(dat,
                         linetype = 1, color = "white") +
     ## Add the points with a slight transparency in case of overlap.
     ggplot2::geom_point(alpha = I(0.7), na.rm = TRUE) +
-    ## Split of the plot according to the chromosomes on the x axis.
+    ## Split of the plot according to the chromosomes on the x-axis.
     ## Do not resize the x axis (otherwise every chromosome has the same size.
     ## Do not add extra space between two facets.
     ## Place the chromosome labels at the bottom.
@@ -201,7 +201,7 @@ qtlPlot <- function(dat,
     ggplot2::coord_cartesian(clip = "off") +
     ## use custom made theme
     qtlPlotTheme +
-    ggplot2::labs(x = "Chromosomes", y = yLab)  
+    ggplot2::labs(title = title, x = "Chromosomes", y = yLab)  
   if (exportPptx) {
     ## Save figure in .pptx
     if (requireNamespace("officer", quietly = TRUE)) {

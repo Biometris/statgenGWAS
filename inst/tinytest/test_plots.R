@@ -57,6 +57,9 @@ p1 <- statgenGWAS:::qtlPlot(dat = qtlDat, map = map,
                             yLab = "Testlab")
 expect_equal(p1$labels$y, "Testlab")
 
+p1 <- statgenGWAS:::qtlPlot(dat = qtlDat, map = map, title = "Test title")
+expect_equal(p1$labels$title, "Test title")
+
 # Check for result of GWAS.
 
 expect_error(plot(stg, plotType = "qtl", trial = "ph1"),
@@ -157,9 +160,11 @@ map <- data.frame(chr = rep(1:2, each = 3), cumPos = 1:6)
 p <- statgenGWAS:::manhattanPlot(xValues = 1:6, yValues = 3:8, map = map)
 expect_true(inherits(p, "ggplot"))
 p1 <- statgenGWAS:::manhattanPlot(xValues = 1:6, yValues = 3:8, map = map, 
-                                  xLab = "labx", yLab = "laby")
+                                  xLab = "labx", yLab = "laby", 
+                                  title = "Test title")
 expect_equal(p1$labels$x, "labx")
 expect_equal(p1$labels$y, "laby")
+expect_equal(p1$labels$title, "Test title")
 
 # Check for result of GWAS.
 

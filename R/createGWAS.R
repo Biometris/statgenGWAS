@@ -256,6 +256,7 @@ summary.GWAS <- function(object,
 #' @param trait A character string indicating for which trait the results
 #' should be plotted. For \code{type} "qtl" all traits are plotted. If \code{x}
 #' only contains results for one trait, \code{trait} may be \code{NULL}.
+#' @param title A character string, the title of the plot.
 #' @param output Should the plot be output to the current device? If
 #' \code{FALSE}, only a list of ggplot objects is invisibly returned.
 #'
@@ -272,6 +273,7 @@ plot.GWAS <- function(x,
                       plotType = c("manhattan", "qq", "qtl"),
                       trial = NULL,
                       trait = NULL,
+                      title = NULL,
                       output = TRUE) {
   plotType <- match.arg(plotType)
   dotArgs <- list(...)
@@ -380,13 +382,14 @@ plot.GWAS <- function(x,
             args = c(list(xValues = map$cumPos, yValues = map$LOD,
                           map = map, xSig = signSnpNr, xEffects = xEffects,
                           chrBoundaries = chrBnd[, 2], yThr = yThr,
-                          output = output),
+                          title = title, output = output),
                      dotArgs[!(names(dotArgs) %in% c("yThr", "lod", "chr",
                                                      "effects"))]
             ))
   } else if (plotType == "qq") {
     ## Create QQ-plot.
-    qqPlot(pValues = na.omit(GWAResult$pValue), ..., output = output)
+    qqPlot(pValues = na.omit(GWAResult$pValue), title = title, ..., 
+           output = output)
   } else if (plotType == "qtl") {
     if (!is.null(dotArgs$yThr)) {
       ## Threshold modified, update significant SNPs.
@@ -416,7 +419,8 @@ plot.GWAS <- function(x,
       }
     }
     do.call(qtlPlot,
-            args = c(list(dat = GWAResult, map = map, output = output),
+            args = c(list(dat = GWAResult, map = map, title = title, 
+                          output = output),
                      dotArgs[!(names(dotArgs) %in% c("yThr", "chr"))]
             ))
   } 
