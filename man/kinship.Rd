@@ -4,7 +4,11 @@
 \alias{kinship}
 \title{Functions for calculating kinship matrices}
 \usage{
-kinship(X, method = c("astle", "IBS", "vanRaden"), denominator = NULL)
+kinship(
+  X,
+  method = c("astle", "IBS", "vanRaden", "identity"),
+  denominator = NULL
+)
 }
 \arguments{
 \item{X}{An n x m marker matrix with genotypes in the rows (n) and markers in
@@ -21,7 +25,7 @@ An n x n kinship matrix.
 A collection of functions for calculating kinship matrices using different
 algorithms. The following algorithms are included: astle (Astle and Balding,
 2009), Identity By State (IBS) and VanRaden (VanRaden, 2008) for
-marker matrices.
+marker matrices. For method identity an identity kinship matrix is returned.
 }
 \section{Marker matrices}{
 

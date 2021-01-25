@@ -3,7 +3,7 @@
 #' A collection of functions for calculating kinship matrices using different
 #' algorithms. The following algorithms are included: astle (Astle and Balding,
 #' 2009), Identity By State (IBS) and VanRaden (VanRaden, 2008) for
-#' marker matrices.
+#' marker matrices. For method identity an identity kinship matrix is returned.
 #'
 #' @section Marker matrices:
 #' In all algorithms the input matrix \code{X} is first cleaned, i.e. markers
@@ -45,14 +45,18 @@
 #'
 #' @export
 kinship <- function(X,
-                    method = c("astle", "IBS", "vanRaden"),
+                    method = c("astle", "IBS", "vanRaden", "identity"),
                     denominator = NULL) {
-  method = match.arg(method);
+  method = match.arg(method)
   if (!is.null(denominator)) {
     chkNum(denominator, min = 0)
   }
-  K <- do.call(what = paste0(method, "CPP"),
-               args = list(x = X, denom = denominator))
+  if (method == "identity") {
+    K <- diag(nrow = nrow(X), ncol = nrow(X))
+  } else {
+    K <- do.call(what = paste0(method, "CPP"),
+                 args = list(x = X, denom = denominator))
+  }
   rownames(K) <- colnames(K) <- rownames(X)
   return(K)
 }
