@@ -277,6 +277,7 @@ plot.GWAS <- function(x,
                       output = TRUE) {
   plotType <- match.arg(plotType)
   dotArgs <- list(...)
+  type <- match.arg(dotArgs$type, c("dots", "lines"))
   ## Checks.
   if (!is.null(trial) && !is.character(trial) &&
       !is.numeric(trial)) {
@@ -380,9 +381,9 @@ plot.GWAS <- function(x,
     ## Create manhattan plot.
     do.call(manhattanPlot,
             args = c(list(xValues = map$cumPos, yValues = map$LOD,
-                          map = map, xSig = signSnpNr, xEffects = xEffects,
-                          chrBoundaries = chrBnd[, 2], yThr = yThr,
-                          title = title, output = output),
+                          plotType = type, map = map, xSig = signSnpNr, 
+                          xEffects = xEffects, chrBoundaries = chrBnd[, 2], 
+                          yThr = yThr, title = title, output = output),
                      dotArgs[!(names(dotArgs) %in% c("yThr", "lod", "chr",
                                                      "effects"))]
             ))

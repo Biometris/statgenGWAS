@@ -7,6 +7,8 @@
 #'
 #' @param xValues A vector of cumulative marker positions.
 #' @param yValues A vector of LOD-scores.
+#' @param plotType A character string indicating whether the plot should 
+#' consist of dots or lines.
 #' @param map A data.frame with at least the columns chr, the number of the
 #' chromosome and cumPos, the cumulative position of the SNP the cumulative
 #' position of the SNP starting from the first chromosome.
@@ -35,6 +37,7 @@
 #' @keywords internal
 manhattanPlot <- function(xValues,
                           yValues,
+                          plotType = c("dots", "lines"),
                           map,
                           xLab = "Chromosomes",
                           yLab = expression(-log[10](p)),
@@ -53,6 +56,7 @@ manhattanPlot <- function(xValues,
   if (is.null(yValues) || !is.numeric(yValues)) {
     stop("yValues should be a numerical vector.\n")
   }
+  plotType <- match.arg(plotType)
   ## Check correspondence xValues and yValues
   if (length(xValues) != length(yValues)) {
     stop("xValues and yValues should be of the same length.\n")
@@ -86,7 +90,6 @@ manhattanPlot <- function(xValues,
   } else {
     plotDat[-c(xSig, xEffects),  ]
   }, ggplot2::aes_string(x = "x", y = "y", color = "chr")) +
-    ggplot2::geom_point(na.rm = TRUE) +
     ggplot2::scale_y_continuous(limits = c(0, yMax),
                                 expand = c(0, 0, 0.1, 0)) +
     ggplot2::scale_x_continuous(breaks = xMarks, labels = chrs, limits = c(0, NA), 
@@ -98,6 +101,11 @@ manhattanPlot <- function(xValues,
                    panel.grid.major.x = ggplot2::element_blank(),
                    panel.grid.minor.x = ggplot2::element_blank(),
                    plot.title = ggplot2::element_text(hjust = 0.5))
+  if (plotType == "dots") {
+    p <- p + ggplot2::geom_point(na.rm = TRUE)
+  } else if(plotType == "lines") {
+    p <- p + ggplot2::geom_line(data = plotDat, na.rm = TRUE)
+  }
   if (length(xSig) > 0 && length(xEffects) == 0) {
     p <- p + ggplot2::geom_point(data = plotDat[xSig, , drop = FALSE], 
                                  color = "red")
