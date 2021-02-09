@@ -169,14 +169,14 @@ genCtrlPVals <- function(pVals,
   df2 <- nObs - nCov - 2
   pValsNew <- pVals
   ## Compute F-values from input p-values.
-  fVals <- qf(p = na.omit(pVals), df1 = 1, df2 = df2, lower.tail = FALSE)
+  fVals <- qf(p = na.omit(pVals), df1 = 1, df2 = df2, lower.tail = TRUE)
   ## Compute inflation factor as in Devlin and Roeder.
   inflation <- median(fVals, na.rm = TRUE) /
-    qf(p = 0.5, df1 = 1, df2 = df2, lower.tail = FALSE)
+    qf(p = 0.5, df1 = 1, df2 = df2, lower.tail = TRUE)
   ## Compute new F-values and p-values.
   fValsNew <- fVals / inflation
   pValsNew[!is.na(pVals)] <- pf(q = fValsNew, df1 = 1, df2 = df2,
-                                lower.tail = FALSE)
+                                lower.tail = TRUE)
   return(list(pValues = pValsNew, inflation = inflation))
 }
 
