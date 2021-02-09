@@ -39,7 +39,7 @@ jobs:
 
       - name: Install macOS system dependencies
         run: |
-          brew cask install xquartz
+          brew install [--cask] xquartz
 
       - name: Install dependencies
         run: |
