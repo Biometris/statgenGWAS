@@ -98,6 +98,6 @@ stg5 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 
 # Should only affect pValue and LOD
 expect_equal(stg5$GWAResult$ph1$pValue, 
-             c(0.392496645680849, 0.5, 0.730937753019775))
+             c(0.422667073511117, 0.5, 0.673478867897455))
 expect_equal(stg5$GWAResult$ph1$LOD, 
-             c(0.406164050430888, 0.301029995663981, 0.136119606176322))
+             c(0.374001583137163, 0.301029995663981, 0.171676026814803))

@@ -121,15 +121,15 @@ expect_equal(statgenGWAS:::exclMarkers(snpCov = c("SNP1", "SNP2", "SNP3"),
 
 expect_equal(statgenGWAS:::genCtrlPVals(pVals = .5, nObs = 10)[[1]], 0.5)
 expect_equal(statgenGWAS:::genCtrlPVals(pVals = c(0.25, 0.5), nObs = 10)[[1]],
-             c(0.410638105484779, 0.63432328826532))
+             c(0.31631533107625, 0.608180791396214))
 expect_equal(statgenGWAS:::genCtrlPVals(pVals = c(0.25, 0.5), nObs = 1e6)[[1]],
-             c(0.410588927034021, 0.629472060364479))
+             c(0.316319348457703, 0.611572845675222))
 
 # Check inflation factor.
 
 expect_equal(statgenGWAS:::genCtrlPVals(pVals = .5, nObs = 10)[[2]], 1)
 expect_equal(statgenGWAS:::genCtrlPVals(pVals = c(0.25, 0.5), nObs = 10)[[2]],
-             2.04152779518634)
+             0.609008887497857)
 expect_equal(statgenGWAS:::genCtrlPVals(pVals = c(0.25, 0.5), nObs = 1e6)[[2]],
-             1.95438310682772)
+             0.611588168266905)
 
