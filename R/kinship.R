@@ -48,6 +48,7 @@ kinship <- function(X,
                     method = c("astle", "IBS", "vanRaden", "identity"),
                     denominator = NULL) {
   method = match.arg(method)
+  chkMarkers(X)
   if (!is.null(denominator)) {
     chkNum(denominator, min = 0)
   }

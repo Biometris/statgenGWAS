@@ -23,5 +23,7 @@ expect_equal(kinship(X = X, method = "IBS", denominator = 2),
 expect_equal(kinship(X = X, method = "vanRaden", denominator = 3),
              statgenGWAS:::vanRadenCPP(X, denom = 3))
 
-
-
+## Test that no NAs are allowed.
+X1 <- X
+X1[1, 1] <- NA
+expect_error(kinship(X1), "markers contains missing values")
