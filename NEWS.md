@@ -3,6 +3,7 @@
 * The plot function now has an option title.
 * Bug when using tibbles instead of data.frames as input for covariates is fixed.
 * The kinship function now has an option for returning a named identity matrix as output.
+* An extra check for the presence of . in a character marker matrix is added. 
 
 # statgenGWAS 1.0.5
 

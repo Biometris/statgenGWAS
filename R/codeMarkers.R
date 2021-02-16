@@ -188,6 +188,12 @@ codeMarkers <- function(gData,
   }
   ## Recode markers.
   if (!is.numeric(markersClean)) {
+    ## . is the default NA value in vcf format.
+    ## Perform an extra check that it is being removed.
+    if (any(markersClean == ".", na.rm = TRUE) && !"." %in% naStrings) {
+      stop("SNPs contain '.', but these are not set to missing values.\n
+           Specify '.' in naStrings to set them to missing values.") 
+    }
     if (refAll[1] == "minor") {
       refAlls <- character()
     } else if (length(refAll) > 1) {
