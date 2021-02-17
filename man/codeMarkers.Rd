@@ -10,6 +10,7 @@ codeMarkers(
   nMissGeno = 1,
   nMiss = 1,
   MAF = NULL,
+  MAC = NULL,
   removeDuplicates = TRUE,
   keep = NULL,
   impute = TRUE,
@@ -39,7 +40,12 @@ missing values higher than \code{nMiss} will be removed. SNPs with only
 missing values will always be removed.}
 
 \item{MAF}{A numerical value between 0 and 1. SNPs with a Minor Allele
-Frequency (MAF) below this value will be removed.}
+Frequency (MAF) below this value will be removed. Only one of \code{MAF} 
+and \code{MAC} may be specified.}
+
+\item{MAC}{A numerical value. SNPs with Minor Allele Count (MAC) below this 
+value will be removed. Only one of \code{MAF} and \code{MAC} may be 
+specified.}
 
 \item{removeDuplicates}{Should duplicate SNPs be removed?}
 

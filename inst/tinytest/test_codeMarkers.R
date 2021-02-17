@@ -138,6 +138,17 @@ expect_equivalent(codeMarkers(gData = gData, refAll = c("A", "B", "B", "A"),
                               impute = FALSE)$markers,
                   matrix(c(2, NA, 2, 1, 0, 2, 0, NA, 1, 1, 2, 0), nrow = 3))
 
+# Check option MAC
+
+expect_error(codeMarkers(gData = gData, MAF = 0.5, MAC = 3),
+             "Only one of MAF and MAC can be specified")
+expect_error(codeMarkers(gData = gData, MAC = 25),
+             "MAC should be a single numerical value between 0 and 10")
+
+## MAC of 6 should correspond to MAF of 0.3
+expect_equal(codeMarkers(gData = gData, MAF = 0.3, impute = FALSE),
+             codeMarkers(gData = gData, MAC = 6, impute = FALSE))
+
 # Check for using numerical input.
 
 expect_equivalent(codeMarkers(gData = gData2, impute = FALSE)$markers,
@@ -201,4 +212,5 @@ expect_equal(gd$pheno$pheno$genotype, c("IND1", "IND3"))
 expect_equal(rownames(gd$kinship), c("IND1", "IND3"))
 expect_equal(colnames(gd$kinship), c("IND1", "IND3"))
 expect_equal(rownames(gd$covar), c("IND1", "IND3"))
+
 

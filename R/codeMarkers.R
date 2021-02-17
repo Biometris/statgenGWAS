@@ -31,7 +31,11 @@
 #' missing values higher than \code{nMiss} will be removed. SNPs with only 
 #' missing values will always be removed.
 #' @param MAF A numerical value between 0 and 1. SNPs with a Minor Allele
-#' Frequency (MAF) below this value will be removed.
+#' Frequency (MAF) below this value will be removed. Only one of \code{MAF} 
+#' and \code{MAC} may be specified.
+#' @param MAC A numerical value. SNPs with Minor Allele Count (MAC) below this 
+#' value will be removed. Only one of \code{MAF} and \code{MAC} may be 
+#' specified.
 #' @param removeDuplicates Should duplicate SNPs be removed?
 #' @param keep A vector of SNPs that should never be removed in the whole
 #' process.
@@ -96,6 +100,7 @@ codeMarkers <- function(gData,
                         nMissGeno = 1,
                         nMiss = 1,
                         MAF = NULL,
+                        MAC = NULL,
                         removeDuplicates = TRUE,
                         keep = NULL,
                         impute = TRUE,
@@ -111,8 +116,14 @@ codeMarkers <- function(gData,
   }
   chkNum(nMissGeno, min = 0, max = 1)
   chkNum(nMiss, min = 0, max = 1)
+  if (!is.null(MAF) && !is.null(MAC)) {
+    stop("Only one of MAF and MAC can be specified.\n")
+  }
   if (!is.null(MAF)) {
     chkNum(MAF, min = 0, max = 1)
+  }
+  if (!is.null(MAC)) {
+    chkNum(MAC, min = 0, max = nrow(gData$markers))
   }
   if (!is.null(keep) && (!is.character(keep) ||
                          !all(keep %in% colnames(gData$markers)))) {
@@ -210,6 +221,10 @@ codeMarkers <- function(gData,
     maxAll <- max(markersRecoded, na.rm = TRUE)
   }
   ## Remove markers with low MAF.
+  ## If MAC is specified convert it to MAF.
+  if (!is.null(MAC)) {
+    MAF <- MAC / (maxAll * nrow(markersRecoded)) - 1e-5
+  }
   if (!is.null(MAF)) {
     snpMAFs <- colMeans(markersRecoded, na.rm = TRUE)
     snpMAF <- snpMAFs >= maxAll * MAF & snpMAFs <= maxAll * (1 - MAF)
