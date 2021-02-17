@@ -123,7 +123,7 @@ codeMarkers <- function(gData,
     chkNum(MAF, min = 0, max = 1)
   }
   if (!is.null(MAC)) {
-    chkNum(MAC, min = 0, max = nrow(gData$markers))
+    chkNum(MAC, min = 0, max = 2 * nrow(gData$markers))
   }
   if (!is.null(keep) && (!is.character(keep) ||
                          !all(keep %in% colnames(gData$markers)))) {

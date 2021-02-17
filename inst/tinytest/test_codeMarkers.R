@@ -142,12 +142,12 @@ expect_equivalent(codeMarkers(gData = gData, refAll = c("A", "B", "B", "A"),
 
 expect_error(codeMarkers(gData = gData, MAF = 0.5, MAC = 3),
              "Only one of MAF and MAC can be specified")
-expect_error(codeMarkers(gData = gData, MAC = 25),
-             "MAC should be a single numerical value between 0 and 10")
+expect_error(codeMarkers(gData = gData, MAC = 10),
+             "MAC should be a single numerical value between 0 and 6")
 
-## MAC of 6 should correspond to MAF of 0.3
-expect_equal(codeMarkers(gData = gData, MAF = 0.3, impute = FALSE),
-             codeMarkers(gData = gData, MAC = 6, impute = FALSE))
+## MAC of 4 should correspond to MAF of 2/3.
+expect_equal(codeMarkers(gData = gData, MAF = 2/3, impute = FALSE),
+             codeMarkers(gData = gData, MAC = 4, impute = FALSE))
 
 # Check for using numerical input.
 
