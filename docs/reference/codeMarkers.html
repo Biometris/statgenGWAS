@@ -94,7 +94,7 @@ repeat steps 5. and 6. if missing values are imputed.
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -105,21 +105,21 @@ repeat steps 5. and 6. if missing values are imputed.
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -129,11 +129,14 @@ repeat steps 5. and 6. if missing values are imputed.
     <li>
       <a href="https://biometris.github.io/statgenSTA">statgenSTA</a>
     </li>
+    <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenGWAS">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -180,6 +183,7 @@ The function performs the following steps:<br /></p><ol>
   nMissGeno <span class='op'>=</span> <span class='fl'>1</span>,
   nMiss <span class='op'>=</span> <span class='fl'>1</span>,
   MAF <span class='op'>=</span> <span class='cn'>NULL</span>,
+  MAC <span class='op'>=</span> <span class='cn'>NULL</span>,
   removeDuplicates <span class='op'>=</span> <span class='cn'>TRUE</span>,
   keep <span class='op'>=</span> <span class='cn'>NULL</span>,
   impute <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -221,7 +225,14 @@ missing values will always be removed.</p></td>
     <tr>
       <th>MAF</th>
       <td><p>A numerical value between 0 and 1. SNPs with a Minor Allele
-Frequency (MAF) below this value will be removed.</p></td>
+Frequency (MAF) below this value will be removed. Only one of <code>MAF</code> 
+and <code>MAC</code> may be specified.</p></td>
+    </tr>
+    <tr>
+      <th>MAC</th>
+      <td><p>A numerical value. SNPs with Minor Allele Count (MAC) below this 
+value will be removed. Only one of <code>MAF</code> and <code>MAC</code> may be 
+specified.</p></td>
     </tr>
     <tr>
       <th>removeDuplicates</th>

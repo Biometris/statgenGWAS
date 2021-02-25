@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -50,21 +50,21 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -74,11 +74,14 @@
 <li>
       <a href="https://biometris.github.io/statgenSTA">statgenSTA</a>
     </li>
+    <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenGWAS">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -93,13 +96,13 @@
 
       
 
-      </header><script src="GWAS_files/header-attrs-2.3/header-attrs.js"></script><script src="GWAS_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="GWAS_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to the statgenGWAS package</h1>
                         <h4 class="author">Bart-Jan van Rossum</h4>
             
-            <h4 class="date">2020-09-29</h4>
+            <h4 class="date">2021-02-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Biometris/statgenGWAS/blob/master/vignettes/GWAS.Rmd"><code>vignettes/GWAS.Rmd</code></a></small>
       <div class="hidden name"><code>GWAS.Rmd</code></div>
@@ -174,16 +177,16 @@ where <span class="math inline">\(y\)</span> is an <span class="math inline">\(n
 <div id="worked-example" class="section level1">
 <h1 class="hasAnchor">
 <a href="#worked-example" class="anchor"></a>Worked example</h1>
-<p>As an example of the functionality of the package a worked example is provided using maize data from the European Union project DROPS. The data is available from <a href="https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN" class="uri">https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN</a> <span class="citation">(Millet et al. 2019)</span> and the relevant data sets are included as data.frames in the statgenGWAS package.</p>
+<p>As an example of the functionality of the package a worked example is provided using maize data from the European Union project DROPS. The data is available from <a href="https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN" class="uri">https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN</a> <span class="citation">(E. J. Millet et al. 2019)</span> and the relevant data sets are included as data.frames in the statgenGWAS package.</p>
 <div id="load-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#load-data" class="anchor"></a><strong>Load data</strong>
 </h2>
 <p>The first step is loading the data into R.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dropsMarkers</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dropsMarkers</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dropsMap</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dropsPheno</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dropsPheno</span><span class="op">)</span></code></pre></div>
 <p>dropsMarkers contains the coded marker information for 41722 SNPs and 246 genotypes. dropsMap contains information about the positions of those SNPs on the B73 reference genome V2. dropsPheno contains data for the genotypic means (Best Linear Unbiased Estimators, BLUEs), with one value per experiment per genotype, for eight traits. For a more detailed description of the contents of the data see <code><a href="../reference/dropsData.html">help(dropsData)</a></code>.</p>
 </div>
 <div id="create-gdata-object" class="section level2">
@@ -191,24 +194,24 @@ where <span class="math inline">\(y\)</span> is an <span class="math inline">\(n
 <a href="#create-gdata-object" class="anchor"></a><strong>Create gData object</strong>
 </h2>
 <p>The next step is to create a <strong>gData</strong> object from the raw data that can be used for the GWAS analysis. For this the raw data has to be converted to a suitable format for a <strong>gData</strong> object. When creating a <strong>gData</strong> object, the markers should be input as a matrix or data.frame with genotypes in the row names and markers in the column names. The latter is already satisfied so only the row names should be added and the Ind column used for that should be dropped.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co">## Add genotypes as row names of dropsMarkers and drop Ind column.</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Add genotypes as row names of dropsMarkers and drop Ind column.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">dropsMarkers</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">dropsMarkers</span><span class="op">[[</span><span class="st">"Ind"</span><span class="op">]</span><span class="op">]</span>
-<span class="va">dropsMarkers</span> <span class="op">&lt;-</span> <span class="va">dropsMarkers</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dropsMarkers</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Ind"</span><span class="op">]</span></pre></div>
+<span class="va">dropsMarkers</span> <span class="op">&lt;-</span> <span class="va">dropsMarkers</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dropsMarkers</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Ind"</span><span class="op">]</span></code></pre></div>
 <p>The map used as input when creating a <strong>gData</strong> object, should at least have the columns “chr” and “pos” and the row names should be the names of the SNPs. Other columns are ignored when creating a <strong>gData</strong> object, so they can be left as they are.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co">## Add genotypes as row names of dropsMap.</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Add genotypes as row names of dropsMap.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">dropsMap</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">dropsMap</span><span class="op">[[</span><span class="st">"SNP.names"</span><span class="op">]</span><span class="op">]</span>
 <span class="co">## Rename Chomosome and Position columns.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dropsMap</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Chromosome"</span>, <span class="st">"Position"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dropsMap</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"pos"</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dropsMap</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Chromosome"</span>, <span class="st">"Position"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dropsMap</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"pos"</span><span class="op">)</span></code></pre></div>
 <p>Now a gData object containing only map and marker information can be created. This object can be used as a base. Phenotypic data, a kinship matrix and covariates may be added later on.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="co">## Create a gData object containing map and marker information.</span>
-<span class="va">gDataDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gData.html">createGData</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">dropsMarkers</span>, map <span class="op">=</span> <span class="va">dropsMap</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Create a gData object containing map and marker information.</span>
+<span class="va">gDataDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gData.html">createGData</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">dropsMarkers</span>, map <span class="op">=</span> <span class="va">dropsMap</span><span class="op">)</span></code></pre></div>
 <p>The next step involves adding phenotypic data to the gData object just created. dropsPheno contains genotypic means for 28 trials. To be able to run a GWAS analysis per trial the data has to be added as a list of 28 data.frames. These data.frames should have “genotype” as their first column and may only contain traits after that. Other columns need to be dropped.<br>
 The phenotypic data can be added to <em>gDataDrops</em> using the same function that was used for creating the object. Adding an argument <code>gData</code> to the function call will add new data to an existing gData object. If gDataDrops would have been non-empty, the phenotypic data already present would be overwritten.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co">## Rename Variety_ID to genotype.</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Rename Variety_ID to genotype.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dropsPheno</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">dropsPheno</span><span class="op">)</span> <span class="op">==</span> <span class="st">"Variety_ID"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"genotype"</span>
 <span class="co">## Select relevant columns and convert data to a list.</span>
 <span class="va">dropsPhenoList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dropsPheno</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"genotype"</span>, <span class="st">"grain.yield"</span>,
@@ -217,11 +220,11 @@ The phenotypic data can be added to <em>gDataDrops</em> using the same function 
                                          <span class="st">"tassel.height"</span>, <span class="st">"ear.height"</span><span class="op">)</span><span class="op">]</span>, 
                         f <span class="op">=</span> <span class="va">dropsPheno</span><span class="op">[[</span><span class="st">"Experiment"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 <span class="co">## Add phenotypic data to gDataDrops.</span>
-<span class="va">gDataDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gData.html">createGData</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDrops</span>, pheno <span class="op">=</span> <span class="va">dropsPhenoList</span><span class="op">)</span></pre></div>
+<span class="va">gDataDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gData.html">createGData</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDrops</span>, pheno <span class="op">=</span> <span class="va">dropsPhenoList</span><span class="op">)</span></code></pre></div>
 <p>Note that if the phenotypic data consists of only one trial/experiment, it can be added as a single data.frame without first converting it to a list. In this case createGData will convert the input to a list with one item.</p>
 <p>To get an idea of the contents of the data a summary of the gData object can be made. This will give an overview of the content of the map and markers and also print a summary per trait per trial. Since there are 28 trials and 8 traits in gDataDrops giving a very large summary, the output is restricted here to one trial, Mur13W, using the <code>trials</code> parameter of the summary function.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co">## Summarize gDataDrops.</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Summarize gDataDrops.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">gDataDrops</span>, trials <span class="op">=</span> <span class="st">"Mur13W"</span><span class="op">)</span>
 <span class="co">#&gt; map</span>
 <span class="co">#&gt;  Number of markers: 41722 </span>
@@ -248,30 +251,30 @@ The phenotypic data can be added to <em>gDataDrops</em> using the same function 
 <span class="co">#&gt; Mean            7.4         2986       297       63      66          259           NaN        133</span>
 <span class="co">#&gt; 3rd Qu.         8.4         3359       312       66      68          266            NA        141</span>
 <span class="co">#&gt; Max.           11.4         4510       365       71      74          294            NA        172</span>
-<span class="co">#&gt; NA's            0.0            0         0        0       0            0           246          0</span></pre></div>
+<span class="co">#&gt; NA's            0.0            0         0        0       0            0           246          0</span></code></pre></div>
 </div>
 <div id="recoding-and-cleaning-of-markers" class="section level2">
 <h2 class="hasAnchor">
 <a href="#recoding-and-cleaning-of-markers" class="anchor"></a><strong>Recoding and cleaning of markers</strong>
 </h2>
 <p>Marker data has to be numerical and without missing values in order to do GWAS analysis. This can be achieved using the <em>codeMarkers</em> function. The marker data available for the DROPS project has already been converted from A/T/C/G to 0/1/2. The <em>codeMarkers</em> function in the package can still be used to further clean the markers, e.g. by removing the duplicate SNPs.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co">## Remove duplicate SNPs from gDataDrops.</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Remove duplicate SNPs from gDataDrops.</span>
 <span class="va">gDataDropsDedup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codeMarkers.html">codeMarkers</a></span><span class="op">(</span><span class="va">gDataDrops</span>, impute <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
 <span class="co">#&gt; Input contains 41722 SNPs for 246 genotypes.</span>
 <span class="co">#&gt; 0 genotypes removed because proportion of missing values larger than or equal to 1.</span>
 <span class="co">#&gt; 0 SNPs removed because proportion of missing values larger than or equal to 1.</span>
 <span class="co">#&gt; 5098 duplicate SNPs removed.</span>
-<span class="co">#&gt; Output contains 36624 SNPs for 246 genotypes.</span></pre></div>
+<span class="co">#&gt; Output contains 36624 SNPs for 246 genotypes.</span></code></pre></div>
 <p>Note that duplicate SNPs are removed at random. To get reproducible results make sure to set a seed.</p>
 <p>To demonstrate the options of the <em>codeMarkers</em> function, we randomly replace 1% of the values in the marker matrix by NA.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co">## Copy gData object.</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Copy gData object.</span>
 <span class="va">gDataDropsMiss</span> <span class="op">&lt;-</span> <span class="va">gDataDrops</span>
 <span class="co">## Add random missing values to 1% of the values in the marker matrix.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">nVal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">gDataDropsMiss</span><span class="op">$</span><span class="va">markers</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">gDataDropsMiss</span><span class="op">$</span><span class="va">markers</span><span class="op">)</span>
-<span class="va">gDataDropsMiss</span><span class="op">$</span><span class="va">markers</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">nVal</span>, size <span class="op">=</span> <span class="va">nVal</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></pre></div>
+<span class="va">gDataDropsMiss</span><span class="op">$</span><span class="va">markers</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">nVal</span>, size <span class="op">=</span> <span class="va">nVal</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></code></pre></div>
 <p>To re-impute the missing values added above, <em>codeMarkers</em> has to be run with <code>impute = TRUE</code>. Then the type of imputation can be chosen setting the parameter <code>imputeType</code>:</p>
 <ul>
 <li>
@@ -283,8 +286,8 @@ The phenotypic data can be added to <em>gDataDrops</em> using the same function 
 </ul>
 <p>Before imputation, genotypes with a high proportion of missing values in the marker matrix can be removed by setting the parameter nMissGeno. Setting it to 0.1 will remove all genotypes with a proportion of missing values higher than 0.1. In a similar way SNPs with a high proportion of missing values can be removed setting nMiss. The default value for both parameters is 1, so genotypes and SNPs with only missing values are always removed.<br>
 The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF) lower than the specified MAF. As with removing duplicate SNPs this will be done both before and after imputation.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="co">## Impute missing values with random value.</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Impute missing values with random value.</span>
 <span class="co">## Remove SNPs and genotypes with proportion of NA larger than 0.01.</span>
 <span class="va">gDataDropsImputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codeMarkers.html">codeMarkers</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsMiss</span>, 
                                  nMissGeno <span class="op">=</span> <span class="fl">0.01</span>, 
@@ -298,24 +301,24 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <span class="co">#&gt; 882 duplicate SNPs removed.</span>
 <span class="co">#&gt; 15213 missing values imputed.</span>
 <span class="co">#&gt; 1046 duplicate SNPs removed after imputation.</span>
-<span class="co">#&gt; Output contains 25453 SNPs for 127 genotypes.</span></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="co">## Impute missing values using beagle software.</span>
+<span class="co">#&gt; Output contains 25453 SNPs for 127 genotypes.</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Impute missing values using beagle software.</span>
 <span class="va">gDataDropsImputedBeagle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/codeMarkers.html">codeMarkers</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsMiss</span>, 
                                        impute <span class="op">=</span> <span class="cn">TRUE</span>,
                                        imputeType <span class="op">=</span> <span class="st">"beagle"</span>,
-                                       verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+                                       verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="single-trait-gwas-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#single-trait-gwas-1" class="anchor"></a><strong>Single trait GWAS</strong>
 </h2>
 <p>The cleaned gData object can be used for performing single trait GWAS analysis. With all the default settings the analysis already performs quite well. In the examples below the trial Mur13W is used to demonstrate the options of the <em>runSingleTraitGwas</em> function.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="co">## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.</span>
 <span class="va">GWASDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>,
                                 trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
-                                traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grain.yield"</span>, <span class="st">"anthesis"</span><span class="op">)</span><span class="op">)</span></pre></div>
+                                traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grain.yield"</span>, <span class="st">"anthesis"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>The output of the <em>runSingleTraitGwas</em> function is an object of class GWAS. This is a list consisting of five components described below.<br><strong>GWAResult</strong>: a list of data.tables, one for each trial for which the analysis was run. Each data.table has the following columns:</p>
 <table class="table"><tbody>
 <tr class="odd">
@@ -361,15 +364,15 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 </td>
 </tr>
 </tbody></table>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">GWASDrops</span><span class="op">$</span><span class="va">GWAResult</span><span class="op">$</span><span class="va">Mur13W</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">GWASDrops</span><span class="op">$</span><span class="va">GWAResult</span><span class="op">$</span><span class="va">Mur13W</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt;        trait           snp chr    pos allFreq pValue effect effectSe    RLR2   LOD</span>
 <span class="co">#&gt;  grain.yield         SYN83   1   3498    0.60   0.38 -0.084    0.097 0.00310 0.417</span>
 <span class="co">#&gt;  grain.yield PZE-101000060   1 157104    0.72   0.51  0.067    0.102 0.00176 0.291</span>
 <span class="co">#&gt;  grain.yield PZE-101000088   1 238347    0.84   0.83 -0.027    0.125 0.00019 0.081</span>
 <span class="co">#&gt;  grain.yield PZE-101000083   1 239225    0.58   0.22 -0.113    0.092 0.00615 0.660</span>
 <span class="co">#&gt;  grain.yield PZE-101000108   1 255850    0.90   0.47 -0.124    0.170 0.00215 0.330</span>
-<span class="co">#&gt;  grain.yield PZE-101000111   1 263938    0.83   0.32 -0.117    0.119 0.00395 0.489</span></pre></div>
+<span class="co">#&gt;  grain.yield PZE-101000111   1 263938    0.83   0.32 -0.117    0.119 0.00395 0.489</span></code></pre></div>
 <p><strong>signSnp</strong>: a list of data.tables, one for each trial for which the analysis was run, containing the significant SNPs. Optionally also the SNPs close to the significant SNPs are included in the data.table. See <a href="#sign"><strong>3.6.7</strong></a> for more information on how to do this. The data.tables in signSnp consist of the same columns as those in GWAResult described above. Two extra columns are added:</p>
 <table class="table"><tbody>
 <tr class="odd">
@@ -381,8 +384,8 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <td align="left">proportion of the variance explained by the SNP</td>
 </tr>
 </tbody></table>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">GWASDrops</span><span class="op">$</span><span class="va">signSnp</span><span class="op">$</span><span class="va">Mur13W</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">GWASDrops</span><span class="op">$</span><span class="va">signSnp</span><span class="op">$</span><span class="va">Mur13W</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt;        trait           snp chr      pos allFreq  pValue effect effectSe  RLR2 LOD       snpStatus</span>
 <span class="co">#&gt;  grain.yield PZE-106021363   6 18846283    0.70 3.5e-07   0.52      0.1 0.096 6.5 significant SNP</span>
 <span class="co">#&gt;  grain.yield PZE-106021410   6 18990291    0.70 2.3e-07   0.53      0.1 0.098 6.6 significant SNP</span>
@@ -394,7 +397,7 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <span class="co">#&gt;       0.090</span>
 <span class="co">#&gt;       0.083</span>
 <span class="co">#&gt;       0.080</span>
-<span class="co">#&gt;       0.080</span></pre></div>
+<span class="co">#&gt;       0.080</span></code></pre></div>
 <p><strong>kinship</strong>: the kinship matrix (or matrices) used in the GWAS analysis. This can either be the user provided kinship matrix or the kinship matrix computed when running the <em>runSingleTraitGwas</em> function.</p>
 <p><strong>thr</strong>: a list of thresholds, one for each trial for which the analysis was run, used for determining significant SNPs.</p>
 <p><strong>GWASInfo</strong>: additional information on the analysis, e.g. the call and the type of threshold used.</p>
@@ -402,8 +405,8 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <h3 class="hasAnchor">
 <a href="#gwas-summary" class="anchor"></a>GWAS Summary</h3>
 <p>For a quick overview of the results, e.g. the number of significant SNPs, use the summary function.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="co">## Create summary of GWASDrops.</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Create summary of GWASDrops.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">GWASDrops</span><span class="op">)</span>
 <span class="co">#&gt; Mur13W:</span>
 <span class="co">#&gt;  Traits analysed: grain.yield, anthesis </span>
@@ -423,7 +426,7 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <span class="co">#&gt;      Largest p-value among the significant SNPs: 1.3e-06 (LOD-score: 5.9)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;      No genomic control correction was applied</span>
-<span class="co">#&gt;      Genomic control inflation-factor: 0.99 </span>
+<span class="co">#&gt;      Genomic control inflation-factor: 1 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Trait: anthesis </span>
 <span class="co">#&gt; </span>
@@ -435,7 +438,7 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <span class="co">#&gt;      Number of significant SNPs: 0 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;      No genomic control correction was applied</span>
-<span class="co">#&gt;      Genomic control inflation-factor: 0.97</span></pre></div>
+<span class="co">#&gt;      Genomic control inflation-factor: 1</span></code></pre></div>
 </div>
 <div id="gwas-plots" class="section level3">
 <h3 class="hasAnchor">
@@ -445,53 +448,53 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <h4 class="hasAnchor">
 <a href="#qq-plots" class="anchor"></a>QQ-plots</h4>
 <p>A QQ-plot of the observed against the expected <span class="math inline">\(-\log_{10}(p)\)</span> values can be made by setting <code>plotType = "qq"</code>. Most of the SNPs are expected to have no effect, resulting in P-values uniformly distributed on <span class="math inline">\([0,1]\)</span>, and leading to the identity function (<span class="math inline">\(y=x\)</span>) on the <span class="math inline">\(-\log_{10}(p)\)</span> scale. As in the plot below, deviations from this line should only occur on the right side of the plot, for a small number of SNPs with an effect on the phenotype (and possibly SNPs in LD). There is <strong>inflation</strong> if the observed <span class="math inline">\(-\log_{10}(p)\)</span> values are always above the line <span class="math inline">\(y=x\)</span>, and (less common) <strong>deflation</strong> if they are always below this line. A QQ-plot therefore gives a first impression of the quality of the GWAS model: if for example <span class="math inline">\(-\log_{10}(p)\)</span> values are consistently too large (inflation), the correction for genetic relatedness may not be adequate.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="co">## Plot a QQ-plot of GWAS Drops.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qq"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Plot a QQ-plot of GWAS Drops.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qq"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/qqStg-1.png" width="672"></p>
 </div>
 <div id="manhattan-plots" class="section level4">
 <h4 class="hasAnchor">
 <a href="#manhattan-plots" class="anchor"></a>Manhattan plots</h4>
 <p>A manhattan plot is made by setting <code>plotType = "manhattan"</code>. Significant SNPs are marked in red.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="co">## Plot a manhattan plot of GWAS Drops.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Plot a manhattan plot of GWAS Drops.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/manhattanStg-1.png" width="672"></p>
 <p>To change the threshold when plotting, without having to redo the GWAS analysis, use the parameter <code>yThr</code>. Use <code>chr</code> to plot a subset of chromosomes.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="co">## Plot a manhattan plot of GWAS Drops.</span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Plot a manhattan plot of GWAS Drops.</span>
 <span class="co">## Set significance threshold to 4 and only plot chromosomes 6 to 8.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span>, yThr <span class="op">=</span> <span class="fl">4</span>, chr <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span>, yThr <span class="op">=</span> <span class="fl">4</span>, chr <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/manhattanStgThr-1.png" width="672"></p>
 <p>If the number of SNPs gets large, the plotting might get slow. This can be dealt with by setting the parameter <code>lod</code>. When doing so, for the SNPs with a LOD-value below <code>lod</code>, only 5% will be plotted. The chance of a SNP being plotted is proportional to its LOD-value. SNPs with a higher LOD have a higher chance of being plotted. Since most SNPs will have low LOD-values, this restriction doesn’t very much affect the resulting plot. Note that the 5% of the SNPs that is plotted, is selected randomly. For reproducible results make sure to set a seed.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="co">## Plot a manhattan plot of GWAS Drops.</span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Plot a manhattan plot of GWAS Drops.</span>
 <span class="co">## Plot only 5% of SNPs with a LOD below 3.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span>, lod <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span>, lod <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/manhattanLod-1.png" width="672"></p>
 <p>The user can specify known effects (<code>effects</code>), which will be used for determining true/false positives and false negatives. These are displayed in green, orange and yellow, respectively. Also the visual appearence of the plot can be altered. See for specifics on how to do this <code><a href="../reference/plot.GWAS.html">help(plot.GWAS)</a></code>.</p>
 </div>
 <div id="qtl-plots" class="section level4">
 <h4 class="hasAnchor">
 <a href="#qtl-plots" class="anchor"></a>QTL plots</h4>
-<p>A qtl plot can be made by setting <code>plotType = "qtl"</code>. In this plot the significant SNPs are marked by circles at their genomic positions, with diameter proportional to the estimated effect size; for an example see <span class="citation">Millet et al. (2016)</span>. Typically, this is done for multiple traits or environments, with the genomic position on the x-axis, which are displayed horizontally above each other and can thus be compared.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span><span class="op">)</span></pre></div>
+<p>A qtl plot can be made by setting <code>plotType = "qtl"</code>. In this plot the significant SNPs are marked by circles at their genomic positions, with diameter proportional to the estimated effect size; for an example see <span class="citation">E. Millet et al. (2016)</span>. Typically, this is done for multiple traits or environments, with the genomic position on the x-axis, which are displayed horizontally above each other and can thus be compared.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span><span class="op">)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/qtlStg-1.png" width="672"></p>
 <p>In this case, for “anthesis” there are no significant SNPs so the line is left out. To change the threshold when plotting without having to redo the GWAS analysis, use the parameter <code>yThr</code>.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span>
 <span class="co">## Set significance threshold to 4.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span>, yThr <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span>, yThr <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/qtlStgThr-1.png" width="672"></p>
 <p>Now there are significant SNPs for both traits. However since the traits are measured on a different scale, the effect estimates cannot be compared. For better comparison, one can set <code>normalize = TRUE</code>, which divides the estimates by the standard deviation of the phenotype.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span>
 <span class="co">## Set significance threshold to 4 and normalize effect estimates.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span>, yThr <span class="op">=</span> <span class="fl">4</span>, normalize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span>, yThr <span class="op">=</span> <span class="fl">4</span>, normalize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="GWAS_files/figure-html/qtlStgNorm-1.png" width="672"></p>
 <p>Now the effects are on the same scale and comparable.</p>
 <p>Other parameters can be used to plot a subset of the chromosomes (<code>chr</code>) and directly export the plot to .pptx (<code>exportPptx = TRUE</code> and specify <code>pptxName</code>). Note that the officer package is required for this. A full list of parameters can be found by running <code><a href="../reference/plot.GWAS.html">help(plot.GWAS)</a></code>.</p>
@@ -509,14 +512,14 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <li>User-defined, in which case the parameter <code>kin</code> needs to be specified.</li>
 </ol>
 <p>By default, the same kinship matrix is used for testing all SNPs (<code>GLSMethod = "single"</code>). When <code>GLSMethod = "multi"</code>, the kinship matrix is chromosome-specific. In this case, the function fits variance components and computes effect-estimates and P-values for each chromosome in turn, using the kinship matrix for that chromosome. Each chromosome-specific kinship matrix is computed using the method specified by the argument <code>kinshipMethod</code>, using all SNPs that are <strong>not</strong> on this chromosome. As shown by <span class="citation">Rincent et al. (2014)</span>, this often gives a considerable improvement in power.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="co">## Run single trait GWAS for trial 'Mur13W' and trait 'grain.yield'</span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for trial 'Mur13W' and trait 'grain.yield'</span>
 <span class="co">## Use chromosome specific kinship matrices computed using method of van Raden.</span>
 <span class="va">GWASDropsChrSpec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>, 
                                        traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
                                        trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
                                        GLSMethod <span class="op">=</span> <span class="st">"multi"</span>,
-                                       kinshipMethod <span class="op">=</span> <span class="st">"vanRaden"</span><span class="op">)</span></pre></div>
+                                       kinshipMethod <span class="op">=</span> <span class="st">"vanRaden"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="opts" class="section level2">
 <h2 class="hasAnchor">
@@ -531,14 +534,14 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <h3 class="hasAnchor">
 <a href="#sign" class="anchor"></a>Significance thresholds</h3>
 <p>The threshold for selecting significant SNPs in a GWAS analysis is computed by default using Bonferroni correction, with an alpha of 0.05. The alpha can be modified setting the option <em>alpha</em> when calling <em>runSingleTraitGwas</em>. Two other threshold types can be used: a fixed threshold (<code>thrType = "fixed"</code>) specifying the <span class="math inline">\(-\log_{10}(p)\)</span> (<em>LODThr</em>) value of the threshold, or a threshold that defines the n SNPs with the highest <span class="math inline">\(-\log_{10}(p)\)</span> scores as significant SNPs. Set <code>thrType = "small"</code> together with <code>nSnpLOD = n</code> to do this. In the following example, we select all SNPs with <span class="math inline">\(p &lt; 10^{-4}\)</span>.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
 <span class="co">## Use a fixed significance threshold of 4.</span>
 <span class="va">GWASDropsFixThr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>,
                                       trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
                                       traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
                                       thrType <span class="op">=</span> <span class="st">"fixed"</span>,
-                                      LODThr <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></pre></div>
+                                      LODThr <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p><strong>Controlling false discovery rate</strong></p>
 <p>A final option for selecting significant SNPs is by setting <code>thrType = "fdr"</code>. When doing so the significant SNPs won’t be selected by computing a genome wide threshold, but by trying to control the rate of false discoveries as in <span class="citation">Brzyski et al. (2016)</span>.</p>
 <p>First, a list is defined containing all SNPs with a p-Value below <code>pThr</code>. Then clusters of SNPs are created using a two step iterative process in which SNPs with the lowest p-values are selected as cluster representatives. This SNP and all SNPs that have a correlation with this SNP of <span class="math inline">\(\rho\)</span> or higher (specified by the function parameter <code>rho</code>) will form a cluster. The selected SNPs are removed from the list and the procedure is repeated until no SNPs are left. At the end of this step, one has a list of clusters, with corresponding vector of p-values of the cluster representatives. Finally, to determine the number of significant clusters, the first cluster is determined for which the p-value of the cluster representative is larger than <span class="math inline">\(cluster_{number} * \alpha / m\)</span>, where <span class="math inline">\(m\)</span> is the number of SNPs and <span class="math inline">\(\alpha\)</span> can be specified by the corresponding function parameter. All previous clusters are selected as significant.</p>
@@ -547,64 +550,64 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 <h3 class="hasAnchor">
 <a href="#variance-covariance-matrix" class="anchor"></a>Variance covariance matrix</h3>
 <p>There are two ways to compute the phenotypic variance covariance matrix used in the GWAS analysis. Either the EMMA algorithm or the Newton-Raphson algorithm. Specify the method by setting the parameter <code>remlAlgo</code> to either <code>"EMMA"</code> or <code>"NR"</code>. By default the EMMA algorithm is used.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
 <span class="co">## Use the Newton Raphson algorithm for computing the variance components.</span>
 <span class="va">GWASDropsNR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>,
                                   trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
                                   traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
-                                  remlAlgo <span class="op">=</span> <span class="st">"NR"</span><span class="op">)</span></pre></div>
+                                  remlAlgo <span class="op">=</span> <span class="st">"NR"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="gcCorr" class="section level3">
 <h3 class="hasAnchor">
 <a href="#gcCorr" class="anchor"></a>Genomic control correction</h3>
 <p>In the GWAS object returned by <em>runSingleTraitGwas</em>, the inflation factor <span class="citation">(Devlin and Roeder 1999)</span> is returned in the GWASInfo. It is also shown in the summary. Ideally this factor should be 1, meaning there is no inflation at all. In practice however this rarely happens. Its value for Mur13W can be checked as follows:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="va">GWASDrops</span><span class="op">$</span><span class="va">GWASInfo</span><span class="op">$</span><span class="va">inflationFactor</span><span class="op">$</span><span class="va">Mur13W</span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">GWASDrops</span><span class="op">$</span><span class="va">GWASInfo</span><span class="op">$</span><span class="va">inflationFactor</span><span class="op">$</span><span class="va">Mur13W</span>
 <span class="co">#&gt; grain.yield    anthesis </span>
-<span class="co">#&gt;        0.99        0.97</span></pre></div>
+<span class="co">#&gt;           1           1</span></code></pre></div>
 <p>Both values are very close to 1, so in this case there is no need to apply any correction based on this. If the values are further away from 1, the inflation can be corrected for by setting <code>genomicControl = TRUE</code> in <em>runSingleTraitGwas</em>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
 <span class="co">## Perform genomic correction on the p-Values.</span>
 <span class="va">GWASDropsGenControl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>,
                                           trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
                                           traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
-                                          genomicControl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+                                          genomicControl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="covariates" class="section level3">
 <h3 class="hasAnchor">
 <a href="#covariates" class="anchor"></a>Covariates</h3>
 <p>Covariates can be included as extra fixed effects in the GWAS model. The <em>runSingleTraitGwas</em> function distinguishes between ‘usual’ covariates and SNP-covariates. The former could be design factors such as block, or other traits one wants to condition on. In the latter case, the covariate(s) are one or more of the markers contained in the genotypic data. SNP-covariates can be set with the parameter <code>snpCov</code>, which should be a vector of marker-names. Similarly, other covariates should be specified using the parameter <code>covar</code>, containing a vector of covariate names. The gData object should contain these covariates in gData$covar.</p>
 <p>In case SNP-covariates are used, GWAS for all the other SNPs is performed with the the SNP-covariates as extra fixed effect; also the null model used to estimate the variance components includes these effects. For each SNP in SNP-covariates, a p-value is obtained using the same F-test and null model to estimate the variance components, but with only all other SNPs (if any) in SNP-covariates as fixed effects.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit">
-<span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
 <span class="co">## Use PZE-106021410, the most significant SNP, a SNP covariate.</span>
 <span class="va">GWASDropsSnpCov</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>,
                                       trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
                                       traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
-                                      snpCov <span class="op">=</span> <span class="st">"PZE-106021410"</span><span class="op">)</span></pre></div>
+                                      snpCov <span class="op">=</span> <span class="st">"PZE-106021410"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="minor-allele-frequency" class="section level3">
 <h3 class="hasAnchor">
 <a href="#minor-allele-frequency" class="anchor"></a>Minor Allele Frequency</h3>
 <p>It is recommended to remove SNPs with a low minor allele frequency (MAF) from the data before starting a GWAS analysis. However it is also possible to do so in the analysis itself. The difference between these approaches is that <em>codeMarkers</em> removes the SNPs, whereas <em>runSingleTraitGwas</em> excludes them from the analysis but leaves them in the output (with results set to NA). In the latter case it will still be possible to see the allele frequency of the SNP.<br>
 By default all SNPs with a MAF lower than 0.01 are excluded from the analysis. This can be controlled by the parameter <code>MAF</code>. Setting MAF to 0 will still exclude duplicate SNPs since duplicates cause problems when fitting the underlying models. Instead of excluding SNPs with a low MAF it is also possible to exclude SNPs with a low minor allele count (MAC). This is done setting <code>useMAF = FALSE</code> and then specifying <code>MAC</code>.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
 <span class="co">## Only include SNPs that have a MAC of at least 20</span>
 <span class="va">GWASDropsMAC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>,
                                    trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
                                    traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
                                    useMAF <span class="op">=</span> <span class="cn">FALSE</span>,
-                                   MAC <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></pre></div>
+                                   MAC <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="snps-close-to-significant-snps" class="section level3">
 <h3 class="hasAnchor">
 <a href="#snps-close-to-significant-snps" class="anchor"></a>SNPs close to significant SNPs</h3>
 <p>Apart from the significant SNPs themselves, it is usually of interest to identify SNPs that are close to the significant SNPs. These can be included in the output by setting <code>sizeIncludedRegion</code> to a positive value. When doing so, SNPs that are within a distance of <code>sizeIncludedRegion</code> from a significant SNP (based on the information in the map) are included in the signSnp data.table in the output. Only SNPs having sufficient linkage disequilibrium (LD) with the significant SNP are included. LD is measured in terms of the squared Pearson correlation (<span class="math inline">\(R^2\)</span>). The minimum <span class="math inline">\(R^2\)</span> required to be included can be specified by setting <code>minR2</code>.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit">
-<span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span>
 <span class="co">## Include SNPs within 200000 centimorgan of significant SNPs with a minimum LD of 0.1.</span>
 <span class="va">GWASDropsInclClose</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>,
                                          trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
@@ -613,65 +616,65 @@ By default all SNPs with a MAF lower than 0.01 are excluded from the analysis. T
                                          minR2 <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
 <span class="co">## Check signSnp in output.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">GWASDropsInclClose</span><span class="op">$</span><span class="va">signSnp</span><span class="op">$</span><span class="va">Mur13W</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt;        trait           snp chr      pos allFreq pValue effect effectSe    RLR2  LOD</span>
-<span class="co">#&gt;  grain.yield PZE-106020937   6 17580232    0.93 0.7750 -0.059    0.205 0.00033 0.11</span>
-<span class="co">#&gt;  grain.yield PZE-106020972   6 17723425    0.67 0.3802  0.091    0.103 0.00314 0.42</span>
-<span class="co">#&gt;  grain.yield PZE-106021050   6 17960951    0.77 0.1719  0.161    0.117 0.00758 0.76</span>
-<span class="co">#&gt;  grain.yield PZE-106021179   6 18246324    0.81 0.5384  0.072    0.117 0.00155 0.27</span>
-<span class="co">#&gt;  grain.yield PZE-106021183   6 18247710    0.80 0.0085 -0.324    0.124 0.02756 2.07</span>
-<span class="co">#&gt;  grain.yield PZE-106021194   6 18255168    0.60 0.1518 -0.142    0.099 0.00833 0.82</span>
+<span class="co">#&gt;        trait           snp chr      pos allFreq  pValue effect effectSe   RLR2  LOD</span>
+<span class="co">#&gt;  grain.yield PZE-106021320   6 18646911    0.77 4.5e-01  0.088     0.12 0.0023 0.34</span>
+<span class="co">#&gt;  grain.yield PZE-106021349   6 18712665    0.87 6.5e-02 -0.274     0.15 0.0137 1.19</span>
+<span class="co">#&gt;  grain.yield PZE-106021363   6 18846283    0.70 3.5e-07  0.522     0.10 0.0959 6.46</span>
+<span class="co">#&gt;  grain.yield PZE-106021410   6 18990291    0.70 2.3e-07  0.527     0.10 0.0984 6.63</span>
+<span class="co">#&gt;  grain.yield PZE-106021419   6 18991091    0.74 2.9e-07  0.525     0.10 0.0971 6.54</span>
+<span class="co">#&gt;  grain.yield PZE-106021420   6 18991117    0.70 1.3e-06  0.495     0.10 0.0874 5.89</span>
 <span class="co">#&gt;                          snpStatus propSnpVar</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00034</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00280</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00713</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00129</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP    0.02672</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP    0.00762</span></pre></div>
+<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0022</span>
+<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0129</span>
+<span class="co">#&gt;                    significant SNP     0.0884</span>
+<span class="co">#&gt;                    significant SNP     0.0903</span>
+<span class="co">#&gt;                    significant SNP     0.0827</span>
+<span class="co">#&gt;                    significant SNP     0.0799</span></code></pre></div>
 <hr>
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references hanging-indent">
-<div id="ref-Astle2009">
-<p>Astle, William, and David J. Balding. 2009. “Population Structure and Cryptic Relatedness in Genetic Association Studies.” <em>Statistical Science</em> 24 (4): 451–71. <a href="https://doi.org/10.1214/09-sts307">https://doi.org/10.1214/09-sts307</a>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Astle2009" class="csl-entry">
+Astle, William, and David J. Balding. 2009. <span>“Population Structure and Cryptic Relatedness in Genetic Association Studies.”</span> <em>Statistical Science</em> 24 (4): 451–71. <a href="https://doi.org/10.1214/09-sts307">https://doi.org/10.1214/09-sts307</a>.
 </div>
-<div id="ref-Browning2016">
-<p>Browning, Brian L., and Sharon R. Browning. 2016. “Genotype Imputation with Millions of Reference Samples.” <em>The American Journal of Human Genetics</em> 98 (1): 116–26. <a href="https://doi.org/10.1016/j.ajhg.2015.11.020">https://doi.org/10.1016/j.ajhg.2015.11.020</a>.</p>
+<div id="ref-Browning2016" class="csl-entry">
+Browning, Brian L., and Sharon R. Browning. 2016. <span>“Genotype Imputation with Millions of Reference Samples.”</span> <em>The American Journal of Human Genetics</em> 98 (1): 116–26. <a href="https://doi.org/10.1016/j.ajhg.2015.11.020">https://doi.org/10.1016/j.ajhg.2015.11.020</a>.
 </div>
-<div id="ref-Brzyski2016">
-<p>Brzyski, Damian, Christine B. Peterson, Piotr Sobczyk, Emmanuel J. Candès, Malgorzata Bogdan, and Chiara Sabatti. 2016. “Controlling the Rate of GWAS False Discoveries.” <em>Genetics</em> 205 (1): 61–75. <a href="https://doi.org/10.1534/genetics.116.193987">https://doi.org/10.1534/genetics.116.193987</a>.</p>
+<div id="ref-Brzyski2016" class="csl-entry">
+Brzyski, Damian, Christine B. Peterson, Piotr Sobczyk, Emmanuel J. Candès, Malgorzata Bogdan, and Chiara Sabatti. 2016. <span>“Controlling the Rate of <span>GWAS</span> False Discoveries.”</span> <em>Genetics</em> 205 (1): 61–75. <a href="https://doi.org/10.1534/genetics.116.193987">https://doi.org/10.1534/genetics.116.193987</a>.
 </div>
-<div id="ref-Devlin1999">
-<p>Devlin, B., and Kathryn Roeder. 1999. “Genomic Control for Association Studies.” <em>Biometrics</em> 55 (4): 997–1004. <a href="https://doi.org/10.1111/j.0006-341x.1999.00997.x">https://doi.org/10.1111/j.0006-341x.1999.00997.x</a>.</p>
+<div id="ref-Devlin1999" class="csl-entry">
+Devlin, B., and Kathryn Roeder. 1999. <span>“Genomic Control for Association Studies.”</span> <em>Biometrics</em> 55 (4): 997–1004. <a href="https://doi.org/10.1111/j.0006-341x.1999.00997.x">https://doi.org/10.1111/j.0006-341x.1999.00997.x</a>.
 </div>
-<div id="ref-Kang2010">
-<p>Kang, Hyun Min, Jae Hoon Sul, Susan K Service, Noah A Zaitlen, Sit-yee Kong, Nelson B Freimer, Chiara Sabatti, and Eleazar Eskin. 2010. “Variance Component Model to Account for Sample Structure in Genome-Wide Association Studies.” <em>Nature Genetics</em> 42 (4): 348–54. <a href="https://doi.org/10.1038/ng.548">https://doi.org/10.1038/ng.548</a>.</p>
+<div id="ref-Kang2010" class="csl-entry">
+Kang, Hyun Min, Jae Hoon Sul, Susan K Service, Noah A Zaitlen, Sit-yee Kong, Nelson B Freimer, Chiara Sabatti, and Eleazar Eskin. 2010. <span>“Variance Component Model to Account for Sample Structure in Genome-Wide Association Studies.”</span> <em>Nature Genetics</em> 42 (4): 348–54. <a href="https://doi.org/10.1038/ng.548">https://doi.org/10.1038/ng.548</a>.
 </div>
-<div id="ref-Kang2008">
-<p>Kang, Hyun Min, Noah A. Zaitlen, Claire M. Wade, Andrew Kirby, David Heckerman, Mark J. Daly, and Eleazar Eskin. 2008. “Efficient Control of Population Structure in Model Organism Association Mapping.” <em>Genetics</em> 178 (3): 1709–23. <a href="https://doi.org/10.1534/genetics.107.080101">https://doi.org/10.1534/genetics.107.080101</a>.</p>
+<div id="ref-Kang2008" class="csl-entry">
+Kang, Hyun Min, Noah A. Zaitlen, Claire M. Wade, Andrew Kirby, David Heckerman, Mark J. Daly, and Eleazar Eskin. 2008. <span>“Efficient Control of Population Structure in Model Organism Association Mapping.”</span> <em>Genetics</em> 178 (3): 1709–23. <a href="https://doi.org/10.1534/genetics.107.080101">https://doi.org/10.1534/genetics.107.080101</a>.
 </div>
-<div id="ref-Millet2019">
-<p>Millet, Emilie J., Cyril Pommier, Mélanie Buy, Axel Nagel, Willem Kruijer, Therese Welz-Bolduan, Jeremy Lopez, et al. 2019. “A Multi-Site Experiment in a Network of European Fields for Assessing the Maize Yield Response to Environmental Scenarios.” Portail Data Inra. <a href="https://doi.org/10.15454/IASSTN">https://doi.org/10.15454/IASSTN</a>.</p>
+<div id="ref-Millet2019" class="csl-entry">
+Millet, Emilie J., Cyril Pommier, Mélanie Buy, Axel Nagel, Willem Kruijer, Therese Welz-Bolduan, Jeremy Lopez, et al. 2019. <span>“A Multi-Site Experiment in a Network of European Fields for Assessing the Maize Yield Response to Environmental Scenarios.”</span> Portail Data Inra. <a href="https://doi.org/10.15454/IASSTN">https://doi.org/10.15454/IASSTN</a>.
 </div>
-<div id="ref-Millet2016">
-<p>Millet, Emilie, Claude Welcker, Willem Kruijer, Sandra Negro, Stephane Nicolas, Sebastien Praud, Nicolas Ranc, et al. 2016. “Genome-Wide Analysis of Yield in Europe: Allelic Effects as Functions of Drought and Heat Scenarios.” <em>Plant Physiology</em>, July, pp.00621.2016. <a href="https://doi.org/10.1104/pp.16.00621">https://doi.org/10.1104/pp.16.00621</a>.</p>
+<div id="ref-Millet2016" class="csl-entry">
+Millet, Emilie, Claude Welcker, Willem Kruijer, Sandra Negro, Stephane Nicolas, Sebastien Praud, Nicolas Ranc, et al. 2016. <span>“Genome-Wide Analysis of Yield in Europe: Allelic Effects as Functions of Drought and Heat Scenarios.”</span> <em>Plant Physiology</em>, July, pp.00621.2016. <a href="https://doi.org/10.1104/pp.16.00621">https://doi.org/10.1104/pp.16.00621</a>.
 </div>
-<div id="ref-Rincent2014">
-<p>Rincent, Renaud, Laurence Moreau, Hervé Monod, Estelle Kuhn, Albrecht E. Melchinger, Rosa A. Malvar, Jesus Moreno-Gonzalez, et al. 2014. “Recovering Power in Association Mapping Panels with Variable Levels of Linkage Disequilibrium.” <em>Genetics</em> 197 (1): 375–87. <a href="https://doi.org/10.1534/genetics.113.159731">https://doi.org/10.1534/genetics.113.159731</a>.</p>
+<div id="ref-Rincent2014" class="csl-entry">
+Rincent, Renaud, Laurence Moreau, Hervé Monod, Estelle Kuhn, Albrecht E. Melchinger, Rosa A. Malvar, Jesus Moreno-Gonzalez, et al. 2014. <span>“Recovering Power in Association Mapping Panels with Variable Levels of Linkage Disequilibrium.”</span> <em>Genetics</em> 197 (1): 375–87. <a href="https://doi.org/10.1534/genetics.113.159731">https://doi.org/10.1534/genetics.113.159731</a>.
 </div>
-<div id="ref-Segura2012">
-<p>Segura, Vincent, Bjarni J Vilhjálmsson, Alexander Platt, Arthur Korte, Ümit Seren, Quan Long, and Magnus Nordborg. 2012. “An Efficient Multi-Locus Mixed-Model Approach for Genome-Wide Association Studies in Structured Populations.” <em>Nature Genetics</em> 44 (7): 825–30. <a href="https://doi.org/10.1038/ng.2314">https://doi.org/10.1038/ng.2314</a>.</p>
+<div id="ref-Segura2012" class="csl-entry">
+Segura, Vincent, Bjarni J Vilhjálmsson, Alexander Platt, Arthur Korte, Ümit Seren, Quan Long, and Magnus Nordborg. 2012. <span>“An Efficient Multi-Locus Mixed-Model Approach for Genome-Wide Association Studies in Structured Populations.”</span> <em>Nature Genetics</em> 44 (7): 825–30. <a href="https://doi.org/10.1038/ng.2314">https://doi.org/10.1038/ng.2314</a>.
 </div>
-<div id="ref-Sun2010">
-<p>Sun, G, C Zhu, M H Kramer, S-S Yang, W Song, H-P Piepho, and J Yu. 2010. “Variation Explained in Mixed-Model Association Mapping.” <em>Heredity</em> 105 (4): 333–40. <a href="https://doi.org/10.1038/hdy.2010.11">https://doi.org/10.1038/hdy.2010.11</a>.</p>
+<div id="ref-Sun2010" class="csl-entry">
+Sun, G, C Zhu, M H Kramer, S-S Yang, W Song, H-P Piepho, and J Yu. 2010. <span>“Variation Explained in Mixed-Model Association Mapping.”</span> <em>Heredity</em> 105 (4): 333–40. <a href="https://doi.org/10.1038/hdy.2010.11">https://doi.org/10.1038/hdy.2010.11</a>.
 </div>
-<div id="ref-Tunnicliffe1989">
-<p>Tunnicliffe, G Wilson. 1989. “On the Use of Marginal Likelihood in Time Series Model Estimation.” <em>JRSS</em> 51 (1): 15–27.</p>
+<div id="ref-Tunnicliffe1989" class="csl-entry">
+Tunnicliffe, G Wilson. 1989. <span>“On the Use of Marginal Likelihood in Time Series Model Estimation.”</span> <em>JRSS</em> 51 (1): 15–27.
 </div>
-<div id="ref-VanRaden2008">
-<p>VanRaden, P. M. 2008. “Efficient Methods to Compute Genomic Predictions.” <em>Journal of Dairy Science</em> 91 (11): 4414–23. <a href="https://doi.org/10.3168/jds.2007-0980">https://doi.org/10.3168/jds.2007-0980</a>.</p>
+<div id="ref-VanRaden2008" class="csl-entry">
+VanRaden, P. M. 2008. <span>“Efficient Methods to Compute Genomic Predictions.”</span> <em>Journal of Dairy Science</em> 91 (11): 4414–23. <a href="https://doi.org/10.3168/jds.2007-0980">https://doi.org/10.3168/jds.2007-0980</a>.
 </div>
 </div>
 </div>

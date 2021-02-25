@@ -22,7 +22,7 @@ navbar:
           href: https://biometris.github.io/statgenSTA
         - text: "statgenGxE"
           href: https://biometris.github.io/statgenGxE
-    - icon: fa-github fa-lg
+    - icon: fa-github fa-lg fab
       text: "github"
       href: https://github.com/Biometris/statgenGWAS
 

@@ -43,7 +43,7 @@
 <meta property="og:description" content="A collection of functions for calculating kinship matrices using different
 algorithms. The following algorithms are included: astle (Astle and Balding,
 2009), Identity By State (IBS) and VanRaden (VanRaden, 2008) for
-marker matrices." />
+marker matrices. For method identity an identity kinship matrix is returned." />
 
 
 
@@ -83,7 +83,7 @@ marker matrices." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -94,21 +94,21 @@ marker matrices." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -118,11 +118,14 @@ marker matrices." />
     <li>
       <a href="https://biometris.github.io/statgenSTA">statgenSTA</a>
     </li>
+    <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenGWAS">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -149,10 +152,14 @@ marker matrices." />
     <p>A collection of functions for calculating kinship matrices using different
 algorithms. The following algorithms are included: astle (Astle and Balding,
 2009), Identity By State (IBS) and VanRaden (VanRaden, 2008) for
-marker matrices.</p>
+marker matrices. For method identity an identity kinship matrix is returned.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>kinship</span><span class='op'>(</span><span class='va'>X</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"astle"</span>, <span class='st'>"IBS"</span>, <span class='st'>"vanRaden"</span><span class='op'>)</span>, denominator <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>kinship</span><span class='op'>(</span>
+  <span class='va'>X</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"astle"</span>, <span class='st'>"IBS"</span>, <span class='st'>"vanRaden"</span>, <span class='st'>"identity"</span><span class='op'>)</span>,
+  denominator <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

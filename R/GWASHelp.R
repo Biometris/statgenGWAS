@@ -240,9 +240,11 @@ extrSignSnpsFDR <- function(GWAResult,
   ## Get named vector of p Values.
   pVals <- setNames(GWAResult$pValue, GWAResult$snp)
   ## Subset p Values base on threshold.
-  B <- pVals[pVals < pThr]
+  B <- pVals[!is.na(pVals) & pVals < pThr]
   ## Subset markers based on selected p Values.
   BMarkers <- markers[, colnames(markers) %in% names(B), drop = FALSE]
+  ## Get named vector of chromosomes.
+  chrs <- setNames(GWAResult$chr[GWAResult$snp %in% names(B)], names(B))
   ## Compute selection threshold.
   selThr <- alpha / length(pVals)
   ## Initialize values.
@@ -253,11 +255,16 @@ extrSignSnpsFDR <- function(GWAResult,
     clusterRep <- which.min(B) 
     ## Add p Value for representing SNP to output.
     BpVals <- c(BpVals, B[clusterRep])
+    ## Get chromosome for clusterRep.
+    clusterRepChr <- chrs[clusterRep]
+    ## Restrict BMarkers to markers on same chromosome as clusterRep.
+    BMarkersChr <- BMarkers[, names(chrs[chrs == clusterRepChr]), drop = FALSE]
     ## Find all remaining SNPs within LD of at least rho of representing SNP.
-    LD <- cor(BMarkers[, names(clusterRep)], BMarkers)
+    LD <- cor(BMarkers[, names(clusterRep)], BMarkersChr)
     LDSet <- names(LD[, LD > rho])
     ## Remove selected SNPs from B and from markers.
     B <- B[!names(B) %in% LDSet]
+    chrs <- chrs[!names(chrs) %in% LDSet]
     BMarkers <- BMarkers[, !colnames(BMarkers) %in% LDSet, drop = FALSE]
     ## Add LD set to selected SNPs.
     ## Using union assures representing SNP will be the first in the list.

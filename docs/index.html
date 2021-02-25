@@ -42,7 +42,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -53,21 +53,21 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -77,11 +77,14 @@
 <li>
       <a href="https://biometris.github.io/statgenSTA">statgenSTA</a>
     </li>
+    <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenGWAS">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -110,21 +113,21 @@
 <ul>
 <li>Install from CRAN:</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"statgenGWAS"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"statgenGWAS"</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>Install latest development version from GitHub (requires <a href="https://github.com/r-lib/remotes">remotes</a> package):</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"Biometris/statgenGWAS"</span>, ref <span class="op">=</span> <span class="st">"develop"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"Biometris/statgenGWAS"</span>, ref <span class="op">=</span> <span class="st">"develop"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
 <p>Example using the data from the European Union project DROPS. The same data is used in the vignette and described there in detail.</p>
 <p>First get the data in the form required by the package, converting it to an object of class <strong>g</strong>(enomic)<strong>Data</strong>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://biometris.github.io/statgenGWAS/index.html">statgenGWAS</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://biometris.github.io/statgenGWAS/index.html">statgenGWAS</a></span><span class="op">)</span>
 <span class="co">## Read data.</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dropsMarkers"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dropsMap"</span><span class="op">)</span>
@@ -149,32 +152,32 @@
                         f <span class="op">=</span> <span class="va">dropsPheno</span><span class="op">[[</span><span class="st">"Experiment"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 
 <span class="co">## Create a gData object all data.</span>
-<span class="va">gDataDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gData.html">createGData</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">dropsMarkers</span>, map <span class="op">=</span> <span class="va">dropsMap</span>, pheno <span class="op">=</span> <span class="va">dropsPhenoList</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="co">## Remove duplicate SNPs from gDataDrops.</span>
+<span class="va">gDataDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gData.html">createGData</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">dropsMarkers</span>, map <span class="op">=</span> <span class="va">dropsMap</span>, pheno <span class="op">=</span> <span class="va">dropsPhenoList</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Remove duplicate SNPs from gDataDrops.</span>
 <span class="va">gDataDropsDedup</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/codeMarkers.html">codeMarkers</a></span><span class="op">(</span><span class="va">gDataDrops</span>, impute <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
 <span class="co">#&gt; Input contains 41722 SNPs for 246 genotypes.</span>
 <span class="co">#&gt; 0 genotypes removed because proportion of missing values larger than or equal to 1.</span>
 <span class="co">#&gt; 0 SNPs removed because proportion of missing values larger than or equal to 1.</span>
 <span class="co">#&gt; 5098 duplicate SNPs removed.</span>
-<span class="co">#&gt; Output contains 36624 SNPs for 246 genotypes.</span></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co">## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.</span>
+<span class="co">#&gt; Output contains 36624 SNPs for 246 genotypes.</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.</span>
 <span class="va">GWASDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/runSingleTraitGwas.html">runSingleTraitGwas</a></span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gDataDropsDedup</span>,
                                 trials <span class="op">=</span> <span class="st">"Mur13W"</span>,
-                                traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grain.yield"</span>, <span class="st">"anthesis"</span><span class="op">)</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co">## QQ plot of GWAS Drops.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qq"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></pre></div>
+                                traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grain.yield"</span>, <span class="st">"anthesis"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## QQ plot of GWAS Drops.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qq"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-qqStg-1.png" width="75%"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co">## Manhattan plot of GWAS Drops.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Manhattan plot of GWAS Drops.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-manhattanStg-1.png" width="75%"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co">## Qtl plot of GWAS Drops.</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Qtl plot of GWAS Drops.</span>
 <span class="co">## Set significance threshold to 4 and normalize effect estimates.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span>, yThr <span class="op">=</span> <span class="fl">4</span>, normalize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span>, yThr <span class="op">=</span> <span class="fl">4</span>, normalize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-qtlStgNorm-1.png" width="75%"></p>
 </div>
 </div>

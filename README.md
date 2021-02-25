@@ -19,18 +19,14 @@ full overview of all options it is best to read the
 
 ## Installation
 
-  - Install from CRAN:
-
-<!-- end list -->
+-   Install from CRAN:
 
 ``` r
 install.packages("statgenGWAS")
 ```
 
-  - Install latest development version from GitHub (requires
+-   Install latest development version from GitHub (requires
     [remotes](https://github.com/r-lib/remotes) package):
-
-<!-- end list -->
 
 ``` r
 remotes::install_github("Biometris/statgenGWAS", ref = "develop", dependencies = TRUE)
