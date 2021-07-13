@@ -268,7 +268,18 @@ set.seed(1)
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", lod = 3)
 ```
 
-The user can specify known effects (`effects`), which will be used for determining true/false positives and false negatives. These are displayed in green, orange and yellow, respectively. Also the visual appearence of the plot can be altered. See for specifics on how to do this `help(plot.GWAS)`.
+The user can specify known effects (`effects`), which will be used for determining true/false positives and false negatives. These are displayed in green, orange and yellow, respectively. 
+
+
+```{r manhattanEffects}
+## Plot a manhattan plot of GWAS Drops with significance threshold 4.
+## Assume PZE-106021410 and PZE-105012420 are SNPs with known effects.
+plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", 
+     effects = c("PZE-106021410", "PZE-105012420"))
+```
+The plot now shows PZE-106021410 in green, since it is a SNP with a known effect also found by our GWAS analyses. The other SNPs on chromosome 6 are shown in orange, they are found by our GWAS, but not known effects. PZE-105012420 is shown in yellow, it is a SNP that has a known effect but it isn't picked up as significant by our analysis. Note that PZE-106021410 and PZE-105012420 are chosen solely to demonstrate how the effects options works when making a manhattan plot, they don't represent truly known effects.
+
+Also the visual appearance of the plot can be altered, e.g by specifying the colors for the chromosomes or a custom title. See for specifics on how to do this `help(plot.GWAS)`.
 
 #### QTL plots
 
