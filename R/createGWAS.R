@@ -107,6 +107,14 @@ summary.GWAS <- function(object,
           "of them were not analyzed because their minor allele frequency is",
           "below", GWASInfo$MAF, "\n\n")
     }
+    ## Print GLSMethod.
+    cat("\tGLSMethod:", GWASInfo$GLSMethod, "\n")
+    if (!is.null(GWASInfo$kinshipMethod)) {
+      ## Print kinshipmethod.
+      cat("\tkinshipMethod:", GWASInfo$kinshipMethod, "\n\n")
+    } else {
+      cat("\n")
+    }
     for (trait in traitsTr) {
       cat("\tTrait:", trait, "\n\n")
       if (substr(GWASInfo$call[[1]], 4, 4) == "S" &&

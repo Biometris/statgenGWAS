@@ -473,6 +473,7 @@ runSingleTraitGwas <- function(gData,
                    thrType = thrType,
                    MAF = MAF,
                    GLSMethod = GLSMethod,
+                   kinshipMethod = attr(K, which = "method"),
                    varComp = varCompTot,
                    genomicControl = genomicControl,
                    inflationFactor = inflationFactorTot)

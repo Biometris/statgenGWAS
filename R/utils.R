@@ -67,9 +67,11 @@ computeKin <- function(GLSMethod,
     if (!is.null(kin)) {
       ## kin is supplied as input. Convert to matrix.
       K <- as.matrix(kin)
+      kinshipMethod <- NULL
     } else if (!is.null(gData$kinship) && !inherits(gData$kinship, "list")) {
       ## Get kin from gData object.
       K <- gData$kinship
+      kinshipMethod <- NULL
     } else {
       ## Compute K from markers.
       K <- kinship(X = markers, method = kinshipMethod)
@@ -80,9 +82,11 @@ computeKin <- function(GLSMethod,
     if (!is.null(kin)) {
       ## kin is supplied as input. Convert to matrices.
       K <- lapply(X = kin, FUN = as.matrix)
+      kinshipMethod <- NULL
     } else if (!is.null(gData$kinship) && inherits(gData$kinship, "list")) {
       ## Get kin from gData object.
       K <- gData$kinship
+      kinshipMethod <- NULL
     } else {
       ## Compute chromosome specific kinship matrices.
       K <- chrSpecKin(markers = markers, map = map, 
@@ -93,6 +97,7 @@ computeKin <- function(GLSMethod,
         order(match(colnames(k), rownames(markers)))]
     })
   }
+  attr(K, which = "method") <- kinshipMethod
   return(K)
 }
 
