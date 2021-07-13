@@ -29,7 +29,7 @@
 #' 41,722 loci on 246 parental lines were obtained using 50K Illumina Infinium 
 #' HD arrays (Ganal et al., 2011). Genotype were coded in allelic dose with 0 
 #' for the minor allele, 1 for the heterozygote, and 2 for the major allele. 
-#' Genotype were filtered (MAF>1\%) and missing data imputed using Beagle v3.\cr
+#' Genotype were filtered (MAF > 1%) and missing data imputed using Beagle v3.\cr
 #' A data.frame with 246 rows and 41723 columns.
 #' \describe{
 #' \item{Ind}{name of the genotype}
@@ -58,7 +58,7 @@
 #' \item{parent1}{identifier of donor dent line}
 #' \item{Code_ID, Variety_ID, Accession_ID}{identifier of the genotype}
 #' \item{geno.panel}{project in which the genetic material was generated}
-#' \item{grain.yield}{genotypic mean for yield adjusted at 15\% grain moisture,
+#' \item{grain.yield}{genotypic mean for yield adjusted at 15% grain moisture,
 #' in ton per hectare (t ha^-1)}
 #' \item{grain.number}{genotypic mean for number of grain per square meter}
 #' \item{grain.weight}{genotypic mean for individual grain weight in milligram

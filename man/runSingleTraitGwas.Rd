@@ -94,7 +94,7 @@ Roeder (1999) be applied?}
 the selection of candidate loci. See Details.}
 
 \item{alpha}{A numerical value used for calculating the LOD-threshold for
-\code{thrType} = "bonf" and the significant p-Values for \code{thrType} = 
+\code{thrType} = "bonf" and the significant p-Values for \code{thrType} =
 "fdr".}
 
 \item{LODThr}{A numerical value used as a LOD-threshold when
@@ -103,10 +103,10 @@ the selection of candidate loci. See Details.}
 \item{nSnpLOD}{A numerical value indicating the number of SNPs with the
 smallest p-values that are selected when \code{thrType} = "small".}
 
-\item{pThr}{A numerical value just as the cut off value for p-Values for 
+\item{pThr}{A numerical value just as the cut off value for p-Values for
 \code{thrType} = "fdr".}
 
-\item{rho}{A numerical value used a the minimum value for SNPs to be 
+\item{rho}{A numerical value used a the minimum value for SNPs to be
 considered correlated when using \code{thrType} = "fdr".}
 
 \item{sizeInclRegion}{An integer. Should the results for SNPs close to
@@ -116,9 +116,9 @@ or base pairs. Otherwise 0.}
 \item{minR2}{A numerical value between 0 and 1. Restricts the SNPs included
 in the region close to significant SNPs to only those SNPs that are in
 sufficient Linkage Disequilibrium (LD) with the significant snp, where LD
-is measured in terms of \eqn{R^2}. If for example \code{sizeInclRegion} = 
-200000 and \code{minR2} = 0.5, then for every significant SNP also those SNPs 
-whose LD (\eqn{R^2}) with the significant SNP is at least 0.5 AND which are 
+is measured in terms of \eqn{R^2}. If for example \code{sizeInclRegion} =
+200000 and \code{minR2} = 0.5, then for every significant SNP also those SNPs
+whose LD (\eqn{R^2}) with the significant SNP is at least 0.5 AND which are
 at most 200000 away from this significant snp are included. Ignored if
 \code{sizeInclRegion} = 0.}
 
@@ -136,37 +136,39 @@ object. A covariance matrix is computed using the EMMA algorithm (Kang et
 al., 2008) or the Newton-Raphson algorithm (Tunnicliffe, 1989) in the
 \code{sommer} package. Then a Generalized Least Squares (GLS) method is used
 for estimating the marker effects and corresponding p-values. This is done
-using either one kinship matrix for all chromosomes or different 
-chromosome-specific kinship matrices for each chromosome. Significant SNPs 
+using either one kinship matrix for all chromosomes or different
+chromosome-specific kinship matrices for each chromosome. Significant SNPs
 are selected based on a user defined threshold.
 }
 \section{Threshold types for the selection of candidate loci}{
 
-For the selection of candidate loci from the GWAS output four different 
-methods can be used. The method used can be specified in the function 
-parameter \code{thrType}. Further parameters can be used to fine tune the 
+For the selection of candidate loci from the GWAS output four different
+methods can be used. The method used can be specified in the function
+parameter \code{thrType}. Further parameters can be used to fine tune the
 method.
 \describe{
-\item{bonf}{The Bonferroni threshold, a LOD-threshold of 
-\eqn{-log10(alpha / m)}, where m is the number of SNPs and alpha can be 
+\item{bonf}{The Bonferroni threshold, a LOD-threshold of
+\eqn{-log10(alpha / m)}, where m is the number of SNPs and alpha can be
 specified by the function parameter \code{alpha}}
 \item{fixed}{A fixed LOD-threshold, specified by the function parameter
 \code{LODThr}}
 \item{small}{The n SNPs with with the smallest p-Values are selected. n can
 be specified in \code{nSnpLOD}
 }
-\item{fdr}{Following the algorithm proposed by Brzyski D. et al. (2017), 
-SNPs are selected in such a way that the False Discovery Rate (fdr) is 
-minimized. To do this, first the SNPs are restricted to the SNPs with a 
-p-Value below \code{pThr}. Then clusters of SNPs are created using a 
-two step iterative process in which first the SNP with the lowest p-Value is 
-selected as cluster representative. This SNP and all SNPs that have a 
-correlation with this SNP of \code{pho} or higher will form a cluster. 
-The selected SNPs are removed from the list and the procedure repeated until 
-no SNPs are left. Finally to determine the number of significant clusters 
-the first cluster is determined for which the p-Value of the cluster 
-representative is not smaller than \eqn{cluster_{number} * alpha / m} where 
-m is the number of SNPs and alpha can be specified by the function parameter 
+\item{fdr}{Following the algorithm proposed by Brzyski D. et al. (2017),
+SNPs are selected in such a way that the False Discovery Rate (fdr) is
+minimized. To do this, first the SNPs are restricted to the SNPs with a
+p-Value below \code{pThr}. Then clusters of SNPs are created using a
+two step iterative process in which first the SNP with the lowest p-Value is
+selected as cluster representative. This SNP and all SNPs that have a
+correlation with this SNP of \eqn{\rho} or higher will form a cluster.
+\eqn{\rho} can be specified as an argument in the function and has a default
+value of 0.5, which is a recommended starting value in practice.
+The selected SNPs are removed from the list and the procedure repeated until
+no SNPs are left. Finally to determine the number of significant clusters
+the first cluster is determined for which the p-Value of the cluster
+representative is not smaller than \eqn{cluster_{number} * \alpha / m} where
+m is the number of SNPs and alpha can be specified by the function parameter
 \code{alpha}. All previous clusters are selected as significant.}
 }
 }
@@ -218,28 +220,28 @@ GWASDropsMult <- runSingleTraitGwas(gData = gDataDrops,
 }
 \references{
 Astle, William, and David J. Balding. 2009. Population Structure
-and Cryptic Relatedness in Genetic Association Studies. Statistical Science 
+and Cryptic Relatedness in Genetic Association Studies. Statistical Science
 24 (4): 451–71. \url{https://doi.org/10.1214/09-sts307}.
 
-Brzyski D. et al. (2017) Controlling the Rate of GWAS False 
+Brzyski D. et al. (2017) Controlling the Rate of GWAS False
 Discoveries. Genetics 205 (1): 61-75.
 \url{https://doi.org/10.1534/genetics.116.193987}
 
-Devlin, B., and Kathryn Roeder. 1999. Genomic Control for 
-Association Studies. Biometrics 55 (4): 997–1004. 
+Devlin, B., and Kathryn Roeder. 1999. Genomic Control for
+Association Studies. Biometrics 55 (4): 997–1004.
 \url{https://doi.org/10.1111/j.0006-341x.1999.00997.x}.
 
 Kang et al. (2008) Efficient Control of Population Structure in
-Model Organism Association Mapping. Genetics 178 (3): 1709–23. 
+Model Organism Association Mapping. Genetics 178 (3): 1709–23.
 \url{https://doi.org/10.1534/genetics.107.080101}.
 
-Millet, E. J., Pommier, C., et al. (2019). A multi-site 
-experiment in a network of European fields for assessing the maize yield 
-response to environmental scenarios [Data set]. 
+Millet, E. J., Pommier, C., et al. (2019). A multi-site
+experiment in a network of European fields for assessing the maize yield
+response to environmental scenarios \link{Data set}.
 \url{https://doi.org/10.15454/IASSTN}
 
 Rincent et al. (2014) Recovering power in association mapping
-panels with variable levels of linkage disequilibrium. Genetics 197 (1): 
+panels with variable levels of linkage disequilibrium. Genetics 197 (1):
 375–87. \url{https://doi.org/10.1534/genetics.113.159731}.
 
 Segura et al. (2012) An efficient multi-locus mixed-model
@@ -253,7 +255,7 @@ Tunnicliffe W. (1989) On the use of marginal likelihood in time
 series model estimation. JRSS 51 (1): 15–27.
 
 VanRaden P.M. (2008) Efficient methods to compute genomic
-predictions. Journal of Dairy Science 91 (11): 4414–23. 
+predictions. Journal of Dairy Science 91 (11): 4414–23.
 \url{https://doi.org/10.3168/jds.2007-0980}.
 }
 \seealso{

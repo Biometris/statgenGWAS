@@ -30,11 +30,13 @@
 #' p-Value below \code{pThr}. Then clusters of SNPs are created using a 
 #' two step iterative process in which first the SNP with the lowest p-Value is 
 #' selected as cluster representative. This SNP and all SNPs that have a 
-#' correlation with this SNP of \code{pho} or higher will form a cluster. 
+#' correlation with this SNP of \eqn{\rho} or higher will form a cluster. 
+#' \eqn{\rho} can be specified as an argument in the function and has a default
+#' value of 0.5, which is a recommended starting value in practice.
 #' The selected SNPs are removed from the list and the procedure repeated until 
 #' no SNPs are left. Finally to determine the number of significant clusters 
 #' the first cluster is determined for which the p-Value of the cluster 
-#' representative is not smaller than \eqn{cluster_{number} * alpha / m} where 
+#' representative is not smaller than \eqn{cluster_{number} * \alpha / m} where 
 #' m is the number of SNPs and alpha can be specified by the function parameter 
 #' \code{alpha}. All previous clusters are selected as significant.}
 #' }

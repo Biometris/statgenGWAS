@@ -26,40 +26,40 @@ measured at the end of the experiment.\cr
 the five main environmental scenarios that were identified in the data. The
 scenarios have been added to the data as well as a classification of the
 genotypes in four genetic groups.\cr
-The main purpose of this dataset 
+The main purpose of this dataset
 consists in using the environmental characterization to quantify the genetic
 variability of maize grain yield in response to the environmental drivers
 for genotype-by-environment interaction. For instance, allelic effects at
 QTLs identified over the field network are consistent within a scenario but
 largely differ between scenarios.\cr\cr
- 
-The data is split in three separate data.frames. 
-\describe{ 
-\item{\strong{dropsMarkers}}{This data.frame contains the 50K genotyping 
-matrix coded in allelic dose (012) filtered and imputed. Genotyping of 
-41,722 loci on 246 parental lines were obtained using 50K Illumina Infinium 
-HD arrays (Ganal et al., 2011). Genotype were coded in allelic dose with 0 
-for the minor allele, 1 for the heterozygote, and 2 for the major allele. 
-Genotype were filtered (MAF>1\%) and missing data imputed using Beagle v3.\cr
+
+The data is split in three separate data.frames.
+\describe{
+\item{\strong{dropsMarkers}}{This data.frame contains the 50K genotyping
+matrix coded in allelic dose (012) filtered and imputed. Genotyping of
+41,722 loci on 246 parental lines were obtained using 50K Illumina Infinium
+HD arrays (Ganal et al., 2011). Genotype were coded in allelic dose with 0
+for the minor allele, 1 for the heterozygote, and 2 for the major allele.
+Genotype were filtered (MAF > 1\%) and missing data imputed using Beagle v3.\cr
 A data.frame with 246 rows and 41723 columns.
 \describe{
 \item{Ind}{name of the genotype}
 \item{SYMN83 to PZE-110111485}{coded QTLs}
 }
-}  
-\item{\strong{dropsMap}}{This data.frame contains the description of the 
+}
+\item{\strong{dropsMap}}{This data.frame contains the description of the
 41,722 loci genotyped by 50K Illumina Infinium Array on the 246 lines.\cr
 A data.frame with 41722 rows and 5 columns.
 \describe{
-  \item{SNP.names}{name of the SNP}
-  \item{Chromosome}{number of the B73 reference genome V2}
-  \item{Position}{position on the B73 reference genome V2 in basepairs}
-  \item{allele1}{first original allele (A, T, G or C)}
-  \item{allele2}{second original allele (A, T, G or C)}
+\item{SNP.names}{name of the SNP}
+\item{Chromosome}{number of the B73 reference genome V2}
+\item{Position}{position on the B73 reference genome V2 in basepairs}
+\item{allele1}{first original allele (A, T, G or C)}
+\item{allele2}{second original allele (A, T, G or C)}
 }
 }
-\item{\strong{dropsPheno}}{This data.frame contains the genotypic means 
-(Best Linear Unbiased Estimators, BLUEs), with one value per experiment 
+\item{\strong{dropsPheno}}{This data.frame contains the genotypic means
+(Best Linear Unbiased Estimators, BLUEs), with one value per experiment
 (Location × year × water regime) per genotype.\cr
 A data.frame with 2460 rows and 19 columns.\cr
 \describe{
@@ -73,7 +73,7 @@ for watered and R for rain-fed.}
 in ton per hectare (t ha^-1)}
 \item{grain.number}{genotypic mean for number of grain per square meter}
 \item{grain.weight}{genotypic mean for individual grain weight in milligram
- (mg)}
+(mg)}
 \item{anthesis}{genotypic mean for male flowering (pollen shed), in thermal
 time cumulated since emergence (d_20°C)}
 \item{silking}{genotypic mean for female flowering (silking emergence), in
@@ -93,25 +93,25 @@ water deficit (WD)}
 Hot(Day)}
 \item{scenarioFull}{the full scenario for the experiment, a combination of
 scenarioWater and scenarioTemp}
-\item{geneticGroup}{the genetic group to which the genotype belongs} 
+\item{geneticGroup}{the genetic group to which the genotype belongs}
 }
 }
 }
 }
 \note{
 From the source data, the experiments from 2011 have been removed since
-these do not contain all genotypes. Also the experiment Gra13W has been 
+these do not contain all genotypes. Also the experiment Gra13W has been
 removed.
 }
 \references{
-Millet, E. J., Pommier, C., et al. (2019). A multi-site 
-experiment in a network of European fields for assessing the maize yield 
-response to environmental scenarios [Data set]. 
+Millet, E. J., Pommier, C., et al. (2019). A multi-site
+experiment in a network of European fields for assessing the maize yield
+response to environmental scenarios \link{Data set}.
 \url{https://doi.org/10.15454/IASSTN}
 
-Ganal MW, et al. (2011) A Large Maize (Zea mays L.) SNP 
+Ganal MW, et al. (2011) A Large Maize (Zea mays L.) SNP
 Genotyping Array: Development and Germplasm Genotyping, and Genetic Mapping
-to Compare with the B73 Reference Genome. PLoS ONE 6(12): e28334. 
+to Compare with the B73 Reference Genome. PLoS ONE 6(12): e28334.
 \url{https://doi.org/10.1371/journal.pone.0028334}
 }
 \keyword{datasets}

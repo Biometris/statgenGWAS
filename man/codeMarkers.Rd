@@ -32,19 +32,19 @@ allele for the whole set of SNPs, or a character vector with a reference
 allele per SNP.}
 
 \item{nMissGeno}{A numerical value between 0 and 1. Genotypes with a
-fraction of missing values higher than \code{nMissGeno} will be removed. 
+fraction of missing values higher than \code{nMissGeno} will be removed.
 Genotypes with only missing values will always be removed.}
 
 \item{nMiss}{A numerical value between 0 and 1. SNPs with a fraction of
-missing values higher than \code{nMiss} will be removed. SNPs with only 
+missing values higher than \code{nMiss} will be removed. SNPs with only
 missing values will always be removed.}
 
 \item{MAF}{A numerical value between 0 and 1. SNPs with a Minor Allele
-Frequency (MAF) below this value will be removed. Only one of \code{MAF} 
+Frequency (MAF) below this value will be removed. Only one of \code{MAF}
 and \code{MAC} may be specified.}
 
-\item{MAC}{A numerical value. SNPs with Minor Allele Count (MAC) below this 
-value will be removed. Only one of \code{MAF} and \code{MAC} may be 
+\item{MAC}{A numerical value. SNPs with Minor Allele Count (MAC) below this
+value will be removed. Only one of \code{MAF} and \code{MAC} may be
 specified.}
 
 \item{removeDuplicates}{Should duplicate SNPs be removed?}

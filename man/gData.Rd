@@ -21,7 +21,7 @@ gData object is created.}
 \item{geno}{A matrix or data.frame with genotypes in the rows and markers in
 the columns. A matrix from the \code{matrix} in the base package may be
 provided as well as as matrix from the Matrix package.\cr
-If no row names are provided, they are taken from \code{pheno} (if supplied 
+If no row names are provided, they are taken from \code{pheno} (if supplied
 and dimension matches). If no column names are provided, the row names
 from \code{map} are used (if supplied and dimension matches).}
 

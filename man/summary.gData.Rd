@@ -18,13 +18,13 @@ If \code{NULL}, all trials are included.}
 \value{
 A list with a most four components:
 \describe{
-\item{mapSum}{A list with number of markers and number of chromosomes in 
+\item{mapSum}{A list with number of markers and number of chromosomes in
 the map.}
-\item{markerSum}{A list with number of markers, number of genotypes and 
+\item{markerSum}{A list with number of markers, number of genotypes and
 the distribution of the values within the markers.}
 \item{phenoSum}{A list of data.frames, one per trial with a summary of all
 traits within the trial.}
-\item{covarSum}{A list of data.frames, one per trial with a summary of all 
+\item{covarSum}{A list of data.frames, one per trial with a summary of all
 covariates within the trial.}
 }
 All components are only present in the output if the corresponding content is

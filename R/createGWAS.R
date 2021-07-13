@@ -197,9 +197,9 @@ summary.GWAS <- function(object,
 #' \item{\code{signLwd}}{A numerical value giving the thickness of the
 #' points that are false/true positives/negatives. Default = 0.6}
 #' \item{\code{lod}}{A positive numerical value. For the SNPs with a LOD-value
-#' below this value, only 5\% is plotted. The chance of a SNP being plotted is
+#' below this value, only 5% is plotted. The chance of a SNP being plotted is
 #' proportional to its LOD-score. This option can be useful when plotting a
-#' large number of SNPs. The 5\% of SNPs plotted is selected randomly. For 
+#' large number of SNPs. The 5% of SNPs plotted is selected randomly. For 
 #' reproducible results use set.seed before calling the function.}
 #' \item{\code{chr}}{A vector of chromosomes to be plotted. By default, all
 #' chromosomes are plotted. Using this option allows restricting the plot to a
