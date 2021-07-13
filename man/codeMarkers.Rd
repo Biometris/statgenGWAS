@@ -60,9 +60,9 @@ values should be done.\cr
 \item{fixed - missing values will be replaced by a given fixed value.}
 \item{random - missing values will be replaced by a random value calculated
 using allele frequencies per SNP.}
-\item{beagle - missing values will be imputed using beagle software. Beagle
-only accepts integers as map positions. If you use this option, please cite
-the original papers in your publication (see references).}
+\item{beagle - missing values will be imputed using beagle software, version
+5.2. Beagle only accepts integers as map positions. If you use this option,
+please cite the original papers in your publication (see references).}
 }}
 
 \item{fixedValue}{A numerical value used for replacing missing values in
@@ -127,7 +127,8 @@ gDataCoded3 <- codeMarkers(gData = gData, impute = TRUE,
 
 }
 \references{
-B L Browning and S R Browning (2016). Genotype imputation with
-millions of reference samples. Am J Hum Genet 98:116-126.
-doi:10.1016/j.ajhg.2015.11.020
+S R Browning and B L Browning (2007) Rapid and accurate haplotype
+phasing and missing data inference for whole genome association studies by
+use of localized haplotype clustering. Am J Hum Genet 81:1084-1097.
+\doi{10.1086/521987}
 }
