@@ -72,7 +72,6 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install automake 
-          brew install [--cask] xquartz
           
       - name: Install dependencies
         run: |
