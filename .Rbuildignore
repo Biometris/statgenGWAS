@@ -18,3 +18,4 @@ ci
 ^\.github$
 .editorconfig
 ^CRAN-RELEASE$
+testScripts

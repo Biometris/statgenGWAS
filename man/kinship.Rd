@@ -57,9 +57,9 @@ kinship(M, method = "astle", denominator = 2)
 \references{
 Astle, William, and David J. Balding. 2009. “Population Structure
 and Cryptic Relatedness in Genetic Association Studies.” Statistical Science
-24 (4): 451–71. \url{https://doi.org/10.1214/09-sts307}.
+24 (4): 451–71. \doi{10.1214/09-sts307}.
 
 VanRaden P.M. (2008) Efficient methods to compute genomic
 predictions. Journal of Dairy Science 91 (11): 4414–23.
-\url{https://doi.org/10.3168/jds.2007-0980}.
+\doi{10.3168/jds.2007-0980}.
 }

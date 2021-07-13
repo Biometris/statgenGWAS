@@ -98,12 +98,12 @@
 #' 
 #' @references Millet, E. J., Pommier, C., et al. (2019). A multi-site 
 #' experiment in a network of European fields for assessing the maize yield 
-#' response to environmental scenarios [Data set]. 
-#' \url{https://doi.org/10.15454/IASSTN}
+#' response to environmental scenarios - Data set. 
+#' \doi{doi.org/10.15454/IASSTN}
 #' @references Ganal MW, et al. (2011) A Large Maize (Zea mays L.) SNP 
 #' Genotyping Array: Development and Germplasm Genotyping, and Genetic Mapping
 #' to Compare with the B73 Reference Genome. PLoS ONE 6(12): e28334. 
-#' \url{https://doi.org/10.1371/journal.pone.0028334}
+#' \doi{10.1371/journal.pone.0028334}
 #' 
 #' @name dropsData
 NULL
