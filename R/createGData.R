@@ -373,7 +373,7 @@ createGData <- function(gData = NULL,
   ## Modify covar.
   if (!is.null(covar)) {
     ## Only a data.frame is allowed.
-    if (!is.data.frame(covar)) {
+    if (!inherits(covar, "data.frame")) {
       stop("covar should be a data.frame.\n")
     }
     ## All columns should be numerical, character of factors.

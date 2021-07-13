@@ -22,8 +22,8 @@ expect_equal(length(stg0), 5)
 expect_equal(names(stg0), 
              c("GWAResult", "signSnp", "kinship", "thr", "GWASInfo"))
 expect_equal(names(stg0[["GWASInfo"]]), 
-             c("call", "remlAlgo", "thrType", "MAF", "GLSMethod", "varComp", 
-               "genomicControl", "inflationFactor"))
+             c("call", "remlAlgo", "thrType", "MAF", "GLSMethod",
+               "kinshipMethod", "varComp", "genomicControl", "inflationFactor"))
 expect_equal(length(stg0[["GWASInfo"]][["varComp"]][["ph1"]]), 5)
 expect_true(inherits(stg0[["GWAResult"]], "list"))
 expect_equal(length(stg0[["GWAResult"]]), 1)
@@ -124,8 +124,8 @@ expect_equal(length(stgM0), 5)
 expect_equal(names(stgM0), 
              c("GWAResult", "signSnp", "kinship", "thr", "GWASInfo"))
 expect_equal(names(stgM0[["GWASInfo"]]), 
-             c("call", "remlAlgo", "thrType", "MAF", "GLSMethod", "varComp", 
-               "genomicControl", "inflationFactor"))
+             c("call", "remlAlgo", "thrType", "MAF", "GLSMethod", 
+               "kinshipMethod", "varComp", "genomicControl", "inflationFactor"))
 expect_true(inherits(stgM0[["kinship"]], "list"))
 expect_equal(length(stgM0[["kinship"]]), 2)
 expect_true(inherits(stgM0[["kinship"]][[1]], "matrix"))
