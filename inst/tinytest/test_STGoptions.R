@@ -89,15 +89,15 @@ expect_true(is.na(stg5$thr$ph1))
 expect_equal(nrow(stg5$signSnp$ph1), 3)
 expect_equal(as.character(stg5$signSnp$ph1$snpStatus),
              c("significant SNP", "within LD of significant SNP", 
-               "within LD of significant SNP"))
+               "significant SNP"))
 
 ## Test option genomicControl.
 
-stg5 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
+stg6 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
                            genomicControl = TRUE)
 
 # Should only affect pValue and LOD
-expect_equal(stg5$GWAResult$ph1$pValue, 
+expect_equal(stg6$GWAResult$ph1$pValue, 
              c(0.422667073511117, 0.5, 0.673478867897455))
-expect_equal(stg5$GWAResult$ph1$LOD, 
+expect_equal(stg6$GWAResult$ph1$LOD, 
              c(0.374001583137163, 0.301029995663981, 0.171676026814803))
