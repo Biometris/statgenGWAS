@@ -1,9 +1,10 @@
-Release with some extra options and significantly decreased run time
-* New options in main function runSingleTraitGWAS.
-* Decreased run time for codeMarkers.
+Release with some extra options, small bug fixes and significantly improved documentation
+* New options in plot functions.
+* Small bug fixes.
+* Improved vignette and function documentation + extra examples.
 
 ## Test environments
-* local Windows 10 install, R 4.0.2
+* local Windows 10 install, R 4.1.0
 * Ubuntu (on github actions, devel and release)
 * macOS (on github actions, release)
 * R-hub (devel and release)
@@ -12,10 +13,10 @@ Release with some extra options and significantly decreased run time
 
 0 errors | 0 warnings | 2 notes
 
-installed size is  6.0Mb
+installed size is  8.9Mb
   sub-directories of 1Mb or more:
-    data   3.0Mb
-    libs   2.1Mb
+    data   2.7Mb
+    libs   5.2Mb
 
 * Sizes vary per platform tested on. 
 
