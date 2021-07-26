@@ -1,4 +1,4 @@
-# statgenGWAS 1.0.5.1
+# statgenGWAS 1.0.6
 
 * The plot function now has an option title.
 * The codeMarkers function now has an option MAC equivalent to the same option in runSingleTraitGwas.
