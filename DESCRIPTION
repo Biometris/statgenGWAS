@@ -2,11 +2,12 @@ Package: statgenGWAS
 Type: Package
 Title: Genome Wide Association Studies 
 Version: 1.0.5.1
-Date: 2020-11-02
+Date: 2021-07-26
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 
-                    role = c("aut", "cre")),
+                    role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0002-8673-2514")),
              person(given = "Willem", 
                     family = "Kruijer",
                     role = "aut",
@@ -56,7 +57,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
-Depends: R (>= 3.5)
+Depends: R (>= 3.6)
 Imports: data.table,
     ggplot2 (>= 3.0.0),
     sommer (>= 3.7.3),
