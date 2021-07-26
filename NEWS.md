@@ -10,6 +10,7 @@
 * The beagle software used for imputation is updated to version 5.2.
 * Bug in the computation of the genomic inflation factor is fixed. It was incorrectly computed as 1 / genomic inflaction factor.
 * The data in the vignette is updated such that the environments included match those in the other statgen packages.
+* The manhattan plot function gained arguments for setting the start and end position when plotting results for a single chromosome.
 
 # statgenGWAS 1.0.5
 

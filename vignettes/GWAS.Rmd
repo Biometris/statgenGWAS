@@ -258,6 +258,14 @@ To change the threshold when plotting, without having to redo the GWAS analysis,
 ## Set significance threshold to 4 and only plot chromosomes 6 to 8.
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", yThr = 4, chr = 6:8)
 ```
+When plotting a single chromosome it is possible to specify `startPos` and/or `endPos` to indicate the start position and end position for SNPs that are plotted.
+```{r manhattanStgPos}
+## Plot a manhattan plot of GWAS Drops.
+## Set significance threshold to 4 and only plot first part of chromosome 6.
+plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", 
+     yThr = 4, chr = 6, startPos = 0, endPos = 6e7)
+```
+
 
 If the number of SNPs gets large, the plotting might get slow. This can be dealt with by setting the parameter `lod`. When doing so, for the SNPs with a LOD-value below `lod`, only 5% will be plotted. The chance of a SNP being plotted is proportional to its LOD-value. SNPs with a higher LOD have a higher chance of being plotted. Since most SNPs will have low LOD-values, this restriction doesn't very much affect the resulting plot. Note that the 5% of the SNPs that is plotted, is selected randomly. For reproducible results make sure to set a seed. 
 
