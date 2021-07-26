@@ -183,6 +183,23 @@ p1 <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
            chr = 1)
 expect_equal(nrow(p1$data), 2)
 
+# Check options startPos/endPos.
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+                  chr = 1, startPos = -1),
+             "startPos should be a single numerical value between 0 and 2")
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+                  chr = 1, endPos = -1),
+             "endPos should be a single numerical value greater than 0")
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+                  chr = 1, startPos = 1, endPos = 0),
+             "Start position should be smaller than end position")
+expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+                  chr = 1, startPos = 1.5, endPos = 1.6),
+             "No SNPs in selected range")
+p1 <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
+           chr = 1, startPos = 2, endPos = 2)
+expect_equal(nrow(p1$data), 1)
+
 # Check option effects.
 expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
                   effects = "M5"),
