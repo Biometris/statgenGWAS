@@ -5,7 +5,11 @@
 * Bug when using tibbles instead of data.frames as input for covariates is fixed.
 * The kinship function now has an option for returning a named identity matrix as output.
 * An extra check for the presence of . in a character marker matrix is added. 
-* The correct SNPs are now exluded when using MAF/MAC.
+* The correct SNPs are now excluded when using MAF/MAC.
+* The function documentation and vignette have been revised and extra clarification is added where needed.
+* The beagle software used for imputation is updated to version 5.2.
+* Bug in the computation of the genomic inflation factor is fixed. It was incorrectly computed as 1 / genomic inflaction factor.
+* The data in the vignette is updated such that the environments included match those in the other statgen packages.
 
 # statgenGWAS 1.0.5
 

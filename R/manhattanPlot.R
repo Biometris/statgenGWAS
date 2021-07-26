@@ -26,7 +26,7 @@
 #' @param output Should the plot be output to the current device? If
 #' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #'
-#' @return A LOD-profile with LOD-scores per snip. Markers declared significant
+#' @return A LOD-profile with LOD-scores per SNP. Markers declared significant
 #' get a red dot, markers with a real effect get a blue dot. If both significant
 #' and real effects are given false positives get an orange dot, true negatives
 #' a yellow dot and true positives a green dot.
@@ -92,7 +92,7 @@ manhattanPlot <- function(xValues,
   }, ggplot2::aes_string(x = "x", y = "y", color = "chr")) +
     ggplot2::scale_y_continuous(limits = c(0, yMax),
                                 expand = c(0, 0, 0.1, 0)) +
-    ggplot2::scale_x_continuous(breaks = xMarks, labels = chrs, limits = c(0, NA), 
+    ggplot2::scale_x_continuous(breaks = xMarks, labels = chrs, 
                                 expand = c(0, 0)) +
     ggplot2::scale_color_manual(values = colPalette, labels = NULL) +
     ggplot2::coord_cartesian(clip = "off") +

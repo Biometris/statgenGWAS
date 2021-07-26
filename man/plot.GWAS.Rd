@@ -83,6 +83,14 @@ reproducible results use set.seed before calling the function.}
 \item{\code{chr}}{A vector of chromosomes to be plotted. By default, all
 chromosomes are plotted. Using this option allows restricting the plot to a
 subset of chromosomes.}
+\item{\code{startPos}}{A numerical value indicating the start position for
+the plot. Using this option allows restricting the plot to a part of a
+selected chromosome. Only used if exactly one chromosome is specified in
+\code{chr}.}
+\item{\code{endPos}}{A numerical value indicating the end position for
+the plot. Using this option allows restricting the plot to a part of a
+selected chromosome. Only used if exactly one chromosome is specified in
+\code{chr}.}
 }
 }
 
@@ -129,6 +137,80 @@ which the plot is exported. Ignored if exportPptx = \code{FALSE}.}
 }
 }
 
+\examples{
+## Create a gData object Using the data from the DROPS project.
+## See the included vignette for a more extensive description on the steps.
+data(dropsMarkers)
+data(dropsMap)
+data(dropsPheno)
+
+## Add genotypes as row names of dropsMarkers and drop Ind column.
+rownames(dropsMarkers) <- dropsMarkers[["Ind"]]
+dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
+
+## Add genotypes as row names of dropsMap.
+rownames(dropsMap) <- dropsMap[["SNP.names"]]
+
+## Rename Chomosome and Position columns.
+colnames(dropsMap)[match(c("Chromosome", "Position"), 
+                   colnames(dropsMap))] <- c("chr", "pos")
+                   
+## Convert phenotypic data to a list.
+dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
+
+## Rename Variety_ID to genotype and select relevant columns.
+dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
+  colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
+  trial <- trial[c("genotype", "grain.yield", "grain.number", "seed.size",
+                 "anthesis", "silking", "plant.height", "tassel.height",
+                 "ear.height")]
+return(trial)
+}) 
+
+## Create gData object.
+gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap, 
+                          pheno = dropsPhenoList)
+                          
+## Run single trait GWAS for trait 'grain.yield' for trial Mur13W.
+\donttest{
+GWASDrops <- runSingleTraitGwas(gData = gDataDrops,
+                               trials = "Mur13W",
+                               traits = "grain.yield")
+                               
+## Create a manhattan plot.
+plot(GWASDrops)
+
+## Manually set a threshold for significant snps and add a title.
+plot(GWASDrops, 
+    yThr = 3.5, 
+    title = "Manhattan plot for Mur13W")
+    
+## Restrict plot to part of chr 6.
+plot(GWASDrops, 
+    yThr = 3.5, 
+    chr = 6,
+    startPos = 0,
+    endPos = 110000000)
+    
+## Create a qq plot.
+plot(GWASDrops, 
+    plotType = "qq",
+    title = "QQ plot for Mur13W")
+    
+## Create a QTL plot.
+plot(GWASDrops,
+    plotType = "qtl",
+    title = "QTL plot for Mur13W")
+    
+## Manually set a threshold and don't show vertical lines.
+plot(GWASDrops,     
+    plotType = "qtl",
+    yThr = 3.5,
+    printVertGrid = FALSE,
+    title = "QTL plot for Mur13W")          
+}
+
+}
 \references{
 Millet et al. (2016) Genome-wide analysis of yield in Europe:
 Allelic effects vary with drought and heat scenarios. Plant Physiology,

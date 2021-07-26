@@ -154,16 +154,21 @@
 #' data(dropsMarkers)
 #' data(dropsMap)
 #' data(dropsPheno)
+#' 
 #' ## Add genotypes as row names of dropsMarkers and drop Ind column.
 #' rownames(dropsMarkers) <- dropsMarkers[["Ind"]]
 #' dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
+#' 
 #' ## Add genotypes as row names of dropsMap.
 #' rownames(dropsMap) <- dropsMap[["SNP.names"]]
+#' 
 #' ## Rename Chomosome and Position columns.
 #' colnames(dropsMap)[match(c("Chromosome", "Position"), 
 #'                    colnames(dropsMap))] <- c("chr", "pos")
+#'                    
 #' ## Convert phenotypic data to a list.
 #' dropsPhenoList <- split(x = dropsPheno, f = dropsPheno[["Experiment"]])
+#' 
 #' ## Rename Variety_ID to genotype and select relevant columns.
 #' dropsPhenoList <- lapply(X = dropsPhenoList, FUN = function(trial) {
 #'   colnames(trial)[colnames(trial) == "Variety_ID"] <- "genotype"
@@ -172,6 +177,8 @@
 #'                  "ear.height")]
 #' return(trial)
 #' }) 
+#' 
+#' ## Create gData object.
 #' gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap, 
 #'                           pheno = dropsPhenoList)
 #'                           
