@@ -181,7 +181,7 @@ gDataDropsImputedBeagle <- codeMarkers(gData = gDataDropsMiss,
 
 ## **Single trait GWAS**
 
-The cleaned gData object can be used for performing single trait GWAS analysis. With all the default settings the analysis already performs quite well. In the examples below the trial Mur13W is used to demonstrate the options of the *runSingleTraitGwas* function. 
+The cleaned gData object can be used for performing single trait GWAS analysis with the *runSingleTraitGwas* function. The default parameter values in the function are chosen in such a way that usually the analysis gives decent results. In the examples below the trial Mur13W is used to demonstrate the options of the *runSingleTraitGwas* function. 
 ```{r stg}
 ## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.
 GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
@@ -207,6 +207,8 @@ The output of the *runSingleTraitGwas* function is an object of class GWAS. This
 ```{r gwaRes}
 print(head(GWASDrops$GWAResult$Mur13W), row.names = FALSE)
 ```
+
+Note that the estimated effect is computed for a single allele. Its direction depends on the coding of the markers in the gData object. In this example the minor allele was used as reference allele, so the effects are the estimated effects for the minor allele.  
 
 **signSnp**: a list of data.tables, one for each trial for which the analysis was run, containing the significant SNPs. Optionally also the SNPs close to the significant SNPs are included in the data.table. See [**3.6.7**](#sign) for more information on how to do this. The data.tables in signSnp consist of the same columns as those in GWAResult described above. Two extra columns are added:
 
@@ -347,7 +349,7 @@ The *runSingleTraitGwas* function has many more parameters that can be specified
 
 The analysis can be performed for more than one trait in a single function call. Not specifying `traits` at all will perform the analysis for all traits that are present in the phenotypic data in the gData object. The results will be combined in a single output object with the traits specified in the column *trait* in *GWAResult* and *signSnp* within this object. Running for multiple trials is also possible and will generate a list of outputs within *GWAResult* and *signSnp* in the output object. Not specifying `trials` will run the GWAS analysis for all trials in the phenotypic data in the gData object.
 
-### Significance thresholds {#sign}
+### Significance thresholds
 
 The threshold for selecting significant SNPs in a GWAS analysis is computed by default using Bonferroni correction, with an alpha of 0.05. The alpha can be modified setting the option *alpha* when calling *runSingleTraitGwas*. Two other threshold types can be used: a fixed threshold (`thrType = "fixed"`) specifying the $-\log_{10}(p)$ (*LODThr*) value of the threshold, or a threshold that defines the n SNPs with the highest $-\log_{10}(p)$ scores as significant SNPs. Set `thrType = "small"` together with `nSnpLOD = n` to do this. In the following example, we select all SNPs with $p < 10^{-4}$.
 
@@ -430,7 +432,7 @@ GWASDropsMAC <- runSingleTraitGwas(gData = gDataDropsDedup,
                                    MAC = 20)
 ```
 
-### SNPs close to significant SNPs
+### SNPs close to significant SNPs {#sign}
 
 Apart from the significant SNPs themselves, it is usually of interest to identify SNPs that are close to the significant SNPs. These can be included in the output by setting `sizeIncludedRegion` to a positive value. When doing so, SNPs that are within a distance of `sizeIncludedRegion` from a significant SNP (based on the information in the map) are included in the signSnp data.table in the output. Only SNPs having sufficient linkage disequilibrium (LD) with the significant SNP are included. LD is measured in terms of the squared Pearson correlation ($R^2$). The minimum $R^2$ required to be included can be specified by setting `minR2`.
 
