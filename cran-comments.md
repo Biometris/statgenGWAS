@@ -3,6 +3,8 @@ Release with some extra options, small bug fixes and significantly improved docu
 * Small bug fixes, including error on cran check results.
 * Improved vignette and function documentation + extra examples.
 
+After previous attempt to release, fixed duplicated doi.org in link
+
 ## Test environments
 * local Windows 10 install, R 4.1.0
 * Ubuntu (on github actions, devel and release)
@@ -22,22 +24,11 @@ installed size is  8.9Mb
 
 On some of the r-hub platforms an additional note:
 Found the following (possibly) invalid URLs:
-  URL: https://doi.org/10.1534/genetics.107.080101
-    From: man/runSingleTraitGwas.Rd
+  URL: https://doi.org/10.1214/09-sts307
+    From: man/kinship.Rd
+          man/runSingleTraitGwas.Rd
           inst/doc/GWAS.html
-    Status: 403
-    Message: Forbidden
-  URL: https://doi.org/10.1534/genetics.113.159731
-    From: man/runSingleTraitGwas.Rd
-          inst/doc/GWAS.html
-    Status: 403
-    Message: Forbidden
-  URL: https://doi.org/10.1534/genetics.116.193987
-    From: man/runSingleTraitGwas.Rd
-          inst/doc/GWAS.html
-    Status: 403
-    Message: Forbidden
 
     
-* All three URLs work fine in a web browser.
+* This URL works fine in a web browser.
 

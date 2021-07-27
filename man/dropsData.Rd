@@ -107,7 +107,7 @@ removed.
 Millet, E. J., Pommier, C., et al. (2019). A multi-site
 experiment in a network of European fields for assessing the maize yield
 response to environmental scenarios - Data set.
-\doi{doi.org/10.15454/IASSTN}
+\doi{10.15454/IASSTN}
 
 Ganal MW, et al. (2011) A Large Maize (Zea mays L.) SNP
 Genotyping Array: Development and Germplasm Genotyping, and Genetic Mapping
