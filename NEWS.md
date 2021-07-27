@@ -1,3 +1,7 @@
+# statgenGWAS 1.0.7
+
+* No user visual changes.
+
 # statgenGWAS 1.0.6
 
 * The plot function now has an option title.

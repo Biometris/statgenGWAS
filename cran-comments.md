@@ -1,15 +1,12 @@
-Release with some extra options, small bug fixes and significantly improved documentation. 
-* New options in plot functions.
-* Small bug fixes, including error on cran check results.
-* Improved vignette and function documentation + extra examples.
-
-After previous attempt to release, fixed duplicated doi.org in link
+Patch release fixing test failures on some platforms. 
 
 ## Test environments
 * local Windows 10 install, R 4.1.0
 * Ubuntu (on github actions, devel and release)
 * macOS (on github actions, release)
 * R-hub (devel and release)
+* R-hub patched-solaris
+* R-hub noLD
 
 ## R CMD check results
 
