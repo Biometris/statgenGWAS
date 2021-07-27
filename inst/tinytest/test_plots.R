@@ -1,6 +1,6 @@
 load(file = "testdata.rda")
 
-### Test plotting funtions.
+### Test plotting functions.
 
 ## General input tests.
 
@@ -79,7 +79,7 @@ expect_silent(plot(stg, plotType = "qtl", trial = "ph1", yThr = 0.2))
 expect_error(plot(stg1, plotType = "qtl", trial = "ph1", chr = 3),
              "Select at least one valid chromosome for plotting")
 p1 <- plot(stg1, plotType = "qtl", trial = "ph1", chr = 1)
-expect_equal(nrow(p1$data), 7)
+expect_equal(nrow(p1$data), 9)
 
 # Check option normalize.
 
@@ -104,7 +104,7 @@ expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1",
 # Data contains no numerical column for sorting. 
 # Add one manually.
 stg1a <- stg1
-stg1a$GWAResult$ph1$sortCol <- rep(c(3, 4, 5, 1, 2), each = 3)
+stg1a$GWAResult$ph1$sortCol <- rep(c(3, 4, 5, 1, 2), each = 4)
 expect_silent(p1 <- plot(stg1a, plotType = "qtl", trial = "ph1", trait = "X1", 
                          sortData = "sortCol"))
 
@@ -216,7 +216,7 @@ expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
 p1 <- plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",
            lod = .5)
 # Just one SNP left after sampling.
-expect_equal(nrow(p1$data), 1)
+expect_equal(nrow(p1$data), 2)
 
 # Check yThr
 expect_error(plot(stg, plotType = "manhattan", trial = "ph1", trait = "X1",

@@ -63,7 +63,6 @@ expect_equal(statgenGWAS:::computeKin(GLSMethod = "single", kin = K0,
 
 # Test for GLSMethod multi.
 
-K0 = Sigma + 0.1
 gDataTestK0M <- createGData(kin = list("chr1" = K0, "chr2" = K0))
 
 # Only kin provided -> return directly.
@@ -93,7 +92,7 @@ K3 <- statgenGWAS:::computeKin(GLSMethod = "single",
 expect_true(inherits(K3, "matrix"))
 expect_equal(dim(K3), c(10, 10))
 expect_equivalent(K3[1:2, 1:2], 
-                  matrix(rep(0.161495911495911, times = 4), nrow = 2))
+                  matrix(rep(0.246121933621934, times = 4), nrow = 2))
 
 # Test for GLSMethod multi.
 
@@ -111,7 +110,7 @@ expect_true(inherits(KLst3, "list"))
 expect_true(inherits(KLst3[[1]], "matrix"))
 expect_equal(dim(KLst3[[1]]), c(10, 10))
 expect_equivalent(KLst3[[1]][1:2, 1:2], 
-                  matrix(rep(0.0202020202020202, times = 4), nrow = 2))
+                  matrix(rep(0.26010101010101, times = 4), nrow = 2))
 
 ## Test expand pheno.
 

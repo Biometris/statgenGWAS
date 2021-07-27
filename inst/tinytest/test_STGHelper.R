@@ -10,16 +10,16 @@ covar <- gDataTest$covar
 # Check with default settings.
 
 expect_equivalent(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma)[[1]],
-                  c(0.0210850718415217, 1.85373628827768))
+                  c(9.80733999117857e-05, 2.16021038853735))
 expect_equivalent(statgenGWAS:::EMMA(dat = pheno, trait = "X1", K = Sigma)[[1]],
-                  c(0.0210850718415217, 1.85373628827768))
+                  c(9.80733999117857e-05, 2.16021038853735))
 
 # Check with covariates.
 # Use combinations of covariates and SNP covariates.
 
 expect_equivalent(statgenGWAS:::EMMA(dat = pheno, trait = 2, K = Sigma,
                                      covar = covar[, 1, drop = FALSE])[[1]],
-                  c(8.76962021955837e-05, 1.93163739799548))
+                  c(0.000107734030018285, 2.37299992713443))
 
 # Check that extra options don't significantly change results.
 # Changing the number of grid points or setting different upper or lower
@@ -70,27 +70,30 @@ expect_equivalent(statgenGWAS:::emmaREMLLL(logDelta = -1, lambda = 1:10,
 
 GLS0 <- statgenGWAS:::fastGLS(y = y, X = X, Sigma = Sigma)
 expect_true(inherits(GLS0, "data.table"))
-expect_equal(dim(GLS0), c(3, 5))
+expect_equal(dim(GLS0), c(4, 5))
 expect_equal(colnames(GLS0), c("rn", "pValue", "effect", "effectSe", "RLR2"))
 
 # Check without covariates.
 
 expect_equivalent(
   as.matrix(GLS0[, 2:5]), 
-  matrix(c(0.0271120646525595, 0.556661238666598, 0.203405705505351, 
-           -2.90711358246727, -1.01229725829335, -1.73072077802875, 
-           0.310442837982955, 0.352135174778732, 0.290108955585292,
-           0.999844554418642, 0.562383932125061, 0.971533598465952), nrow = 3))
+  matrix(c(0.00902917885035805, 0.348617547569426, 0.0943676219534976, 
+           0.0128620260615326, -16.7349901664247, -9.90568316516165, 
+           -13.2646467301295, 8.80467920925613, 0.249876050144977, 
+           0.343464035166123, 0.274126541008359, 0.135523209809584, 
+           1, 1, 1, 1), nrow = 4))
 
 # Check with covariates.
 
 GLS1 <- statgenGWAS:::fastGLS(y = y, X = X, Sigma = Sigma, covs = covs)
 expect_equivalent(
   as.matrix(GLS1[, 2:5]), 
-  matrix(c(0.158456432903659, 0.592448089085206, 0.861012555940774, 
-           -4.0813171867358, -1.23573112888003, 0.547427202536095, 
-           0.67415615801093, 0.498746367260275, 0.667641616295594, 
-           0.974397061281524, 0.458757080015615, 0.0650202741814823), nrow = 3))
+  matrix(c(0.762937476428709, 0.983140796459948, 0.109726700344376, 
+           0.274137725349961, 1.69578638166878, 0.167226553742237, 
+           6.47091225567247, -3.98457205198297, 0.61037456571308, 
+           0.855589996753001, 0.489578911347709, 0.415729973147865, 
+           0.537856284290155, 0.00381285082817118, 0.999999974117709, 
+           0.99989756698506), nrow = 4))
 
 # Check that fastGLS is independent of dimensions.
 

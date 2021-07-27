@@ -15,11 +15,11 @@ stgM1 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 
 expect_equal(stg1$GWASInfo$remlAlgo, "NR")
 expect_equal(stg1$GWASInfo$varComp$ph1$X1,
-             c(Vg = 0.01816883008257, Ve = 1.8560701334347))
+             c(Vg = 0, Ve = 2.16025890791368))
 
 expect_equal(stgM1$GWASInfo$remlAlgo, "NR")
 expect_equivalent(unlist(stgM1$GWASInfo$varComp$ph1$X1),
-                  c(0, 1.87085447659007, 0, 1.87085447659007))
+                  c(0, 2.16025890791368, 0.0333358984538663, 2.1434329617154))
 
 ## Test option sizeInclRegion.
 
@@ -32,7 +32,7 @@ expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 # No difference here for GLSMethod single and multi so only check single.
 
 stg2 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
-                           thrType = "fixed", LODThr = 0.2,
+                           thrType = "fixed", LODThr = 0.5,
                            sizeInclRegion = 1, minR2 = 0.01)
 
 sig2 <- stg2$signSnp$ph1
@@ -41,7 +41,7 @@ expect_true(inherits(sig2, "data.table"))
 expect_equal(nrow(sig2), 2)
 expect_equal(as.character(sig2[["snpStatus"]]), 
              c("significant SNP", "within 1 of a significant SNP"))
-expect_equal(sig2[["LOD"]] > 0.2, c(TRUE, FALSE))
+expect_equal(sig2[["LOD"]] > 0.5, c(TRUE, FALSE))
 
 ## Test option useMAF.
 
@@ -69,7 +69,7 @@ expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 
 stg4 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
                            thrType = "small", nSnpLOD = 1)
-expect_equivalent(stg4$thr$ph1, 0.25448394608549)
+expect_equivalent(stg4$thr$ph1, 0.647869833844002)
 expect_equal(nrow(stg4$signSnp$ph1), 1)
 
 # Test "fdr"
@@ -86,10 +86,10 @@ expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 stg5 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
                            thrType = "fdr", pThr = 0.9, alpha = 2, rho = 0.1)
 expect_true(is.na(stg5$thr$ph1))
-expect_equal(nrow(stg5$signSnp$ph1), 3)
+expect_equal(nrow(stg5$signSnp$ph1), 4)
 expect_equal(as.character(stg5$signSnp$ph1$snpStatus),
              c("significant SNP", "within LD of significant SNP", 
-               "significant SNP"))
+               "significant SNP", "within LD of significant SNP"))
 
 ## Test option genomicControl.
 
@@ -98,6 +98,8 @@ stg6 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 
 # Should only affect pValue and LOD
 expect_equal(stg6$GWAResult$ph1$pValue, 
-             c(0.422667073511117, 0.5, 0.673478867897455))
+             c(0.207685963365974, 0.76377486699805, 
+               0.313335193042927, 0.609163888678303))
 expect_equal(stg6$GWAResult$ph1$LOD, 
-             c(0.374001583137163, 0.301029995663981, 0.171676026814803))
+             c(0.682592854638227, 0.117034636750403, 
+               0.503990823484163, 0.215265849611408))
