@@ -24,7 +24,7 @@ expect_true(any(grepl(pattern = "Residual variance: 2.16021", x = sumStg0)))
 expect_true(any(grepl(pattern = "LOD-threshold: 1.90309", x = sumStg0)))
 expect_true(any(grepl(pattern = "No significant SNPs found", x = sumStg0)))
 expect_true(any(grepl(pattern = "No genomic control correction", x = sumStg0)))
-expect_true(any(grepl(pattern = "inflation-factor: 1.179", x = sumStg0)))
+expect_true(any(grepl(pattern = "inflation-factor: 1.074", x = sumStg0)))
 
 sumStg1 <- capture.output(summary(stg1))
 expect_true(any(grepl(pattern = "Number of significant SNPs: 1", x = sumStg1)))
