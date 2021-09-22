@@ -260,7 +260,7 @@ extrSignSnpsFDR <- function(GWAResult,
     ## Restrict BMarkers to markers on same chromosome as clusterRep.
     BMarkersChr <- BMarkers[, names(chrs[chrs == clusterRepChr]), drop = FALSE]
     ## Find all remaining SNPs within LD of at least rho of representing SNP.
-    LD <- cor(BMarkers[, names(clusterRep)], BMarkersChr)
+    LD <- abs(cor(BMarkers[, names(clusterRep)], BMarkersChr))
     LDSet <- names(LD[, LD > rho])
     ## Remove selected SNPs from B and from markers.
     B <- B[!names(B) %in% LDSet]
@@ -270,11 +270,11 @@ extrSignSnpsFDR <- function(GWAResult,
     ## Using union assures representing SNP will be the first in the list.
     snpSelection <- c(snpSelection, list(union(names(snpSelection), LDSet)))
   }
-  ## Compute number of clusters.
-  nClust <- max(which(BpVals < alpha / (1:length(BpVals))))
-  ## Convert SNPs in selected clusters to vector.
-  snpSelection <- c(unlist(snpSelection[1:nClust]))
-  if (nClust > 0) {
+  if (BpVals[1] < alpha) {
+    ## Compute number of clusters.
+    nClust <- max(which(BpVals < alpha / (1:length(BpVals))))
+    ## Convert SNPs in selected clusters to vector.
+    snpSelection <- c(unlist(snpSelection[1:nClust]))
     ## Create a vector of SNP statuses, differentiating between representing
     ## SNPs and everything else.
     snpStatus <- ifelse(snpSelection %in% names(BpVals), "significant SNP",
