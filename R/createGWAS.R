@@ -404,6 +404,10 @@ plot.GWAS <- function(x,
     }
     GWASel <- GWAResult[["trait"]] == trait
     GWAResult <- GWAResult[GWASel, ]
+    if (nrow(GWAResult) == 0) {
+      stop("No observations for ", trait, " in trial ", 
+           names(x$GWAResult)[trial], ".\n")
+    }
     signSel <- signSnp[["trait"]] == trait
     signSnp <- signSnp[signSel, ]
   }
