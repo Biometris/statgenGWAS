@@ -458,7 +458,8 @@ summary.gData <- function(object,
   }
   if (!is.null(pheno)) {
     phenoSum <- sapply(X = names(pheno[trials]), FUN = function(trial) {
-      trSum <- do.call(cbind, lapply(X = pheno[[trial]][, -1], FUN = summaryNA))
+      trSum <- do.call(cbind, lapply(X = pheno[[trial]][, -1, drop = FALSE], 
+                                     FUN = summaryNA))
       attr(x = trSum, which = "nGeno") <- 
         length(unique(pheno[[trial]][["genotype"]]))
       return(trSum)
@@ -472,7 +473,7 @@ summary.gData <- function(object,
   return(structure(totSum, class = "summary.gData"))
 }
 
-#' Printing summazed objects of class gData
+#' Printing summarized objects of class gData
 #'
 #' \code{print} method for object of class summary.gData created by summarizing
 #' objects of class gData.

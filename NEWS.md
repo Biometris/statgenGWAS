@@ -1,3 +1,7 @@
+# statgenGWAS 1.0.7.1
+
+* A bug in gData summaries when only one trait is present in the phenotypic data is fixed.
+
 # statgenGWAS 1.0.7
 
 * No user visual changes.
