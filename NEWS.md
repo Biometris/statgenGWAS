@@ -1,6 +1,7 @@
 # statgenGWAS 1.0.7.1
 
 * A bug in gData summaries when only one trait is present in the phenotypic data is fixed.
+* A bug in runSingleTraitGwas is fixed now allowing for using traits that are in pheno as covariates in covar.
 
 # statgenGWAS 1.0.7
 
