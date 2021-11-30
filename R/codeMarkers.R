@@ -423,10 +423,10 @@ imputeBeagle <- function(markersRecoded,
   write.table(mapBeagle, file = tmpMap, col.names = FALSE, 
               row.names = FALSE, quote = FALSE, na = ".", sep = "\t")
   ## Convert markers to format suitable for beagle input.
-  all00 <- "0|0"
-  all01 <- "0|1"
-  all11 <- "1|1"
-  all10 <- "1|0"
+  all00 <- "0/0"
+  all01 <- "0/1"
+  all11 <- "1/1"
+  all10 <- "1/0"
   markersBeagle <- as.data.frame(t(markersRecoded),
                                  stringsAsFactors = FALSE)
   markersBeagle[markersBeagle == 0] <- all00
@@ -455,8 +455,8 @@ imputeBeagle <- function(markersRecoded,
   system(paste0("java -Xmx3000m -jar ",
                 shQuote(paste0(sort(path.package()[grep("statgenGWAS",
                                                         path.package())])[1],
-                               "/java/beagle.jar")), " gt=", tmpVcf, 
-                " out=", tmpVcfOut, " gp=true seed=1234 nthreads=", 1,
+                               "/java/beagle.jar")), " gtgl=", tmpVcf, 
+                " out=", tmpVcfOut, " gprobs=true seed=1234 nthreads=", 1,
                 " map=", tmpMap), intern = TRUE)
   ## Read beagle output.
   beagleOut <- read.table(gzfile(paste0(tmpVcfOut, ".vcf.gz")),
