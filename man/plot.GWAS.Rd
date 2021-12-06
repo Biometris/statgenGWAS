@@ -17,7 +17,7 @@
 \arguments{
 \item{x}{An object of class \code{GWAS}.}
 
-\item{...}{further arguments to be passed on to the actual plotting
+\item{...}{Further arguments to be passed on to the actual plotting
 functions.}
 
 \item{plotType}{A character string indicating the type of plot to be made.

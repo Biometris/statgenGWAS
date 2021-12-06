@@ -262,7 +262,7 @@ summary.GWAS <- function(object,
 #' }
 #'
 #' @param x An object of class \code{GWAS}.
-#' @param ... further arguments to be passed on to the actual plotting
+#' @param ... Further arguments to be passed on to the actual plotting
 #' functions.
 #' @param plotType A character string indicating the type of plot to be made.
 #' One of "manhattan", "qq" and "qtl".
