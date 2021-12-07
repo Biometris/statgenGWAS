@@ -522,12 +522,12 @@ print.summary.gData <- function(x,
   }
 }
 
-#' Plot function for the class \code{GWAS}
+#' Plot function for the class \code{gData}
 #'
-#' Creates a plot of an object of S3 class \code{GWAS}. The following types of
+#' Creates a plot of an object of S3 class \code{gData}. The following types of
 #' plot can be made:
 #' \itemize{
-#' \item{a manhattan plot, i.e. a plot of LOD-scores per SNP}
+#' \item{a plot of the genetic map}
 #' }
 #' 
 #' @param x An object of class \code{gData}.
@@ -546,43 +546,15 @@ plot.gData <- function(x,
                        title = NULL,
                        output = TRUE) {
   plotType <- match.arg(plotType)
+  dotArgs <- list(...)
   map <- x$map
   if (plotType == "genMap") {
     if (is.null(map)) {
       stop("No map present in the gData object. Plotting not possible.\n")
     }
-    ## Construct title.
-    if (is.null(title)) {
-      title <- "Genetic map"
-    }
-    ## Convert chr to factor for plotting. Keep chr order.
-    if (!is.factor(map[["chr"]])) {
-      map[["chr"]] <- factor(map[["chr"]], levels = unique(map[["chr"]]))
-    }
-    ## Get chromosome lengths.
-    maxPos <- tapply(X = map[["pos"]], INDEX = map[["chr"]], FUN = max)
-    chrLen <- data.frame(chr = unique(map[["chr"]]), min = 0, max = maxPos)
-    p <- ggplot2::ggplot(data = map,
-                         ggplot2::aes_string(x = "chr", y = "pos")) +
-      ggplot2::geom_segment(data = chrLen,
-                            ggplot2::aes_string(x = "chr", y = "min", 
-                                                yend = "max", xend = "chr"),
-                            lineend = "round", size = 8, color = "grey90") +
-      ggplot2::geom_segment(data = chrLen,
-                            ggplot2::aes_string(x = "chr", y = "min", 
-                                                yend = "max", xend = "chr")) +
-      ggplot2::geom_point(pch = "_", size = 4) +
-      ggplot2::labs(title = title, y = "Position", x = "Chromosome") +
-      ggplot2::scale_y_reverse() +
-      ggplot2::theme(
-        panel.background = ggplot2::element_blank(),
-        plot.background = ggplot2::element_blank(),
-        axis.ticks.x = ggplot2::element_blank(),
-        axis.line.y = ggplot2::element_line(),
-        plot.title = ggplot2::element_text(hjust = 0.5))
-  } 
-  if (output) {
-    plot(p)
+    highlight <- dotArgs$highlight
+    p <- geneticMapPlot(map = map, highlight = highlight, 
+                        title = title, output = output)
   }
   invisible(p)
 }

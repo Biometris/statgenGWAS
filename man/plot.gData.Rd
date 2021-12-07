@@ -2,7 +2,7 @@
 % Please edit documentation in R/createGData.R
 \name{plot.gData}
 \alias{plot.gData}
-\title{Plot function for the class \code{GWAS}}
+\title{Plot function for the class \code{gData}}
 \usage{
 \method{plot}{gData}(x, ..., plotType = c("genMap"), title = NULL, output = TRUE)
 }
@@ -21,9 +21,9 @@ One of "genMap".}
 \code{FALSE}, only a list of ggplot objects is invisibly returned.}
 }
 \description{
-Creates a plot of an object of S3 class \code{GWAS}. The following types of
+Creates a plot of an object of S3 class \code{gData}. The following types of
 plot can be made:
 \itemize{
-\item{a manhattan plot, i.e. a plot of LOD-scores per SNP}
+\item{a plot of the genetic map}
 }
 }
