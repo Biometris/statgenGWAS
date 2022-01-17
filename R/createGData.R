@@ -122,7 +122,12 @@ createGData <- function(gData = NULL,
       warning("Existing map will be overwritten.\n", call. = FALSE)
     }
     ## Extract columns and order.
-    map <- map[order(map[["chr"]], map[["pos"]]), c("chr", "pos")]
+    chkNum <- tryCatch(as.numeric(map[["chr"]]), warning = function(w) w)
+    if (is.numeric(map[["chr"]]) || inherits(chkNum, "warning")) {
+      map <- map[order(map[["chr"]], map[["pos"]]), c("chr", "pos")]
+    } else {
+      map <- map[order(chkNum, map[["pos"]]), c("chr", "pos")]
+    }
     if (all(rownames(map) %in% as.character(1:nrow(map)))) {
       ## If no marker name in input compute them from chromosome and position.
       ## Names are made unique if necessary by adding a suffix _1, _2, etc.
@@ -528,6 +533,20 @@ print.summary.gData <- function(x,
 #' plot can be made:
 #' \itemize{
 #' \item{a plot of the genetic map}
+#' }
+#' 
+#' See details for a detailed description of the plots and the plot options
+#' specific to the different plots.
+#' 
+#' @section Genetic map Plot:
+#' A plot of the genetic map showing the length of the chromosomes and the 
+#' positions of the markers in the genetic map.\cr
+#' Extra parameter options:
+#' \describe{
+#' \item{\code{highlight}}{A data.frame with at least columns chr and pos, 
+#' containing marker positions that should be highlighted in the plot. If a 
+#' column name is present that is used for annotation, otherwise the 
+#' highlighted markers are annotated as chr\@pos}
 #' }
 #' 
 #' @param x An object of class \code{gData}.

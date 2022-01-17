@@ -27,3 +27,20 @@ plot can be made:
 \item{a plot of the genetic map}
 }
 }
+\details{
+See details for a detailed description of the plots and the plot options
+specific to the different plots.
+}
+\section{Genetic map Plot}{
+
+A plot of the genetic map showing the length of the chromosomes and the
+positions of the markers in the genetic map.\cr
+Extra parameter options:
+\describe{
+\item{\code{highlight}}{A data.frame with at least columns chr and pos,
+containing marker positions that should be highlighted in the plot. If a
+column name is present that is used for annotation, otherwise the
+highlighted markers are annotated as chr\@pos}
+}
+}
+

@@ -2,6 +2,7 @@
 
 * A bug in gData summaries when only one trait is present in the phenotypic data is fixed.
 * A bug in runSingleTraitGwas is fixed now allowing for using traits that are in pheno as covariates in covar.
+* Sorting of chromosomes in map is now done correctly for numeric values stored as character.
 
 # statgenGWAS 1.0.7
 

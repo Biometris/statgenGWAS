@@ -389,6 +389,8 @@ plot.GWAS <- function(x,
     }
   }
   GWAResult <- x$GWAResult[[trial]]
+  GWAResult[["chr"]] <- factor(GWAResult[["chr"]], 
+                               levels = unique(GWAResult[["chr"]]))
   signSnp <- x$signSnp[[trial]]
   if (plotType != "qtl") {
     if (is.null(trait)) {
