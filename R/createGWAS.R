@@ -418,7 +418,7 @@ plot.GWAS <- function(x,
     GWAResult <- GWAResult[!is.na(GWAResult$pos), ]
     ## Select specific chromosome(s) for plotting.
     if (!is.null(dotArgs$chr)) {
-      GWAResult <- GWAResult[GWAResult$chr %in% dotArgs$chr, ]
+      GWAResult <- droplevels(GWAResult[GWAResult$chr %in% dotArgs$chr, ])
       if (nrow(GWAResult) == 0) {
         stop("Select at least one valid chromosome for plotting.\n")
       }
