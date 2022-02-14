@@ -131,6 +131,21 @@ To get an idea of the contents of the data a summary of the gData object can be 
 summary(gDataDrops, trials = "Mur13W")
 ```
 
+It is also possible to plot the genetic map for a gData object. This will show the length of the chromosomes and the position of the markers in the gData object on the chromosomes. It is also possible to highlight one or more markers.
+
+```{r plotGData}
+## Plot genetic map.
+plot(gDataDrops)
+```
+
+To highlight a marker, the parameter `highlight` can be used. It requires `data.frame` with at least the column "chr" and "pos". If a column name is present it will be used to annotate the highlighted marker. If no name column is present the annotation will be of the form pos\@chr.
+
+```{r plotGData}
+## Plot genetic map.
+## Highlight the 20.000th marker in the map.
+plot(gDataDrops, highlight = dropsMap[20000, ])
+```
+
 ## **Recoding and cleaning of markers**
 
 Marker data has to be numerical and without missing values in order to do GWAS analysis. This can be achieved using the *codeMarkers* function. The marker data available for the DROPS project has already been converted from A/T/C/G to 0/1/2. The *codeMarkers* function in the package can still be used to further clean the markers, e.g. by removing the duplicate SNPs.
@@ -163,7 +178,7 @@ The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF)
 ```{r imputeMissings}
 ## Impute missing values with random value.
 ## Remove SNPs and genotypes with proportion of NA larger than 0.01.
-gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss, 
+gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss,
                                  nMissGeno = 0.01, 
                                  nMiss = 0.01, 
                                  impute = TRUE, 

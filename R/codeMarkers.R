@@ -111,6 +111,9 @@ codeMarkers <- function(gData,
                         verbose = FALSE) {
   ## Checks.
   chkGData(gData, comps = "markers")
+  if (ncol(gData$markers) == 0) {
+    stop("At least one marker should be present.\n")
+  }
   if (length(refAll) > 1 && !length(refAll) == ncol(gData$markers)) {
     stop("Number of reference alleles should either be 1 or equal to",
          "the amount of SNPs in markers.\n")
