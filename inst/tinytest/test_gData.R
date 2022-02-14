@@ -222,3 +222,28 @@ expect_true(any(grepl(pattern = "Number of genotypes: 3", x = sumGd)))
 expect_true(any(grepl(pattern = "Number of trials: 1", x = sumGd)))
 expect_true(any(grepl(pattern = "Number of traits: 4", x = sumGd)))
 expect_true(any(grepl(pattern = "Number of covariates: 1", x = sumGd)))
+
+## Test plot.gData
+gdNoMap <- gd0
+gdNoMap$map <- NULL
+
+expect_error(plot(gdNoMap),
+             "No map present in the gData object")
+p0 <- plot(gd0)
+
+expect_inherits(p0, "ggplot")
+
+p1 <- plot(gd0, title = "tst")
+expect_equal(p1$labels$title, "tst")
+
+expect_error(plot(gd0, highlight = "m1"),
+             "highlight should be a data.frame")
+expect_error(plot(gd0, highlight = map[3, 1, drop = FALSE]),
+             "The following columns are missing in highlight")
+
+p2 <- plot(gd0, highlight = map[3, ])
+expect_equal(p2$labels$label, "name")
+
+
+
+

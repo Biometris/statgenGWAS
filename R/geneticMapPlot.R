@@ -13,7 +13,7 @@ geneticMapPlot <- function(map,
       hasName(x = highlight, name = reqCol)
     })]
     if (length(missCols) > 0) {
-      stop("The following columns are missing in hightlight:\n",
+      stop("The following columns are missing in highlight:\n",
            paste(missCols, collapse = ", "))
     }
   }

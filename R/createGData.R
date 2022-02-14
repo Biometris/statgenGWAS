@@ -529,52 +529,62 @@ print.summary.gData <- function(x,
 
 #' Plot function for the class \code{gData}
 #'
-#' Creates a plot of an object of S3 class \code{gData}. The following types of
-#' plot can be made:
-#' \itemize{
-#' \item{a plot of the genetic map}
-#' }
-#' 
-#' See details for a detailed description of the plots and the plot options
-#' specific to the different plots.
-#' 
-#' @section Genetic map Plot:
-#' A plot of the genetic map showing the length of the chromosomes and the 
-#' positions of the markers in the genetic map.\cr
-#' Extra parameter options:
-#' \describe{
-#' \item{\code{highlight}}{A data.frame with at least columns chr and pos, 
-#' containing marker positions that should be highlighted in the plot. If a 
-#' column name is present that is used for annotation, otherwise the 
-#' highlighted markers are annotated as chr\@pos}
-#' }
+#' Creates a plot of the genetic map in an object of S3 class \code{gData}. A 
+#' plot of the genetic map showing the length of the chromosomes and the 
+#' positions of the markers in the genetic map is created.
 #' 
 #' @param x An object of class \code{gData}.
-#' @param ... Further arguments to be passed on to the actual plotting
-#' functions.
-#' @param plotType A character string indicating the type of plot to be made.
-#' One of "genMap".
+#' @param ... Not used.
+#' @param highlight A data.frame with at least columns chr and pos, 
+#' containing marker positions that should be highlighted in the plot. If a 
+#' column "name" is present that is used for annotation, otherwise the 
+#' highlighted markers are annotated as chr\@pos#' 
 #' @param title A character string, the title of the plot.
 #' @param output Should the plot be output to the current device? If
-#' \code{FALSE}, only a list of ggplot objects is invisibly returned.
+#' \code{FALSE}, only a ggplot object is invisibly returned.
+#' 
+#' @return An object of class \code{ggplot} is invisibly returned.
+#'  
+#' @examples
+#' set.seed(1234)
+#' ## Create genotypic data.
+#' geno <- matrix(sample(x = c(0, 1, 2), size = 15, replace = TRUE), nrow = 3)
+#' dimnames(geno) <- list(paste0("G", 1:3), paste0("M", 1:5))
+#'
+#' ## Construct map.
+#' map <- data.frame(chr = c(1, 1, 2, 2, 2), pos = 1:5,
+#'                   row.names = paste0("M", 1:5))
+#'
+#' ## Compute kinship matrix.
+#' kin <- kinship(X = geno, method = "IBS")
+#'
+#' ## Create phenotypic data.
+#' pheno <- data.frame(paste0("G", 1:3),
+#'                     matrix(rnorm(n = 12, mean = 50, sd = 5), nrow = 3),
+#'                     stringsAsFactors = FALSE)
+#' dimnames(pheno) = list(paste0("G", 1:3), c("genotype", paste0("T", 1:4)))
+#'
+#' ## Combine all data in gData object.
+#' gData <- createGData(geno = geno, map = map, kin = kin, pheno = pheno)
+#' 
+#' ## Plot genetic map.
+#' plot(gData)
+#' 
+#' ## Plot genetic map. Highlight first marker in map.
+#' plot(gData, highlight = map[1, ])
 #'  
 #' @export
 plot.gData <- function(x,
                        ...,
-                       plotType = c("genMap"),
+                       highlight = NULL,
                        title = NULL,
                        output = TRUE) {
-  plotType <- match.arg(plotType)
-  dotArgs <- list(...)
   map <- x$map
-  if (plotType == "genMap") {
-    if (is.null(map)) {
-      stop("No map present in the gData object. Plotting not possible.\n")
-    }
-    highlight <- dotArgs$highlight
-    p <- geneticMapPlot(map = map, highlight = highlight, 
-                        title = title, output = output)
+  if (is.null(map)) {
+    stop("No map present in the gData object. Plotting not possible.\n")
   }
+  p <- geneticMapPlot(map = map, highlight = highlight, title = title, 
+                      output = output)
   invisible(p)
 }
 
