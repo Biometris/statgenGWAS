@@ -5,8 +5,9 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: false
-    number_sections: true
-bibliography: bibliography.bib    
+    number_sections: false
+bibliography: bibliography.bib
+link-citations: yes  
 vignette: >
   %\VignetteIndexEntry{Introduction to the statgenGWAS package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -23,42 +24,17 @@ library(statgenGWAS)
 options(width = 100, digits = 2)
 ```
 
-The statgenGWAS package has been designed for performing single trait Genome Wide Association Studies (GWAS).
+## The statgenGWAS package {-}
 
-----
+The statgenGWAS package has been designed for performing single trait Genome Wide Association Studies (GWAS). The purpose of GWAS is to determine alleles that correlate to different traits.
 
-# The class `gData`
-
-Data for analysis on genomic data comes from different sources and is stored in one data object of class **gData** (**g**enomic **Data**) for convenience. A gData object will contain all data needed for performing analyses, so the first thing to do when using the statgenGWAS package is creating a gData object. A gData object consists of different types of data. All data is optional, however for certain analyses, certain data is required. Additional data can always be added to an existing object later on.  
-A gData object can be created using the function **_createGData_**. If an existing gData object is provided as an input to this function, data is added to the existing object and existing data will be overwritten with a warning if necessary. All data is checked for consistency and, if needed, default names are added with a warning message.  
-A gData object created this way will consist of the following components:  
-
-## **Marker map**  
-The data.frame **map** is used to describe the physical positions of the markers on the chromosomes. The data consists of two columns, *chr* for the name or number of the chromosome and *pos* for the position of the marker on the chromosome. The position can be in basepair or in centimorgan. The names of the markers should be the row names of the data.frame.  
-
-## **Marker matrix**  
-The marker matrix is stored in the matrix **marker** within the gData object. It has the names of the markers in its column names and the genotypes in its row names. Markers can either be coded as character strings or as numerical values. In the former case, before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be do using the function **_codeMarkers_**. 
-
-## **Phenotypic data**  
-Phenotypic data, either directly from field trials or after summarizing can be stored in **pheno** in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different trials or different summarizations of the original data. The first column of all elements of pheno should be *genotype* and all the other columns should represent different traits. Storing additional variables should be done in **covar**. A single data.frame will be converted to a one-item list upon creation of a gData object.
-
-## **Kinship matrix**  
-The kinship matrix describes the genetic relatedness between the different genotypes. It is stored in the matrix **kinship** in the gData object. This should be a square matrix with genotypes in both row and column names and a measure for the genetic relatedness in its cells. There are many ways of computing genetic relatedness some of which are included in this package. Instead of providing one kinship matrix a list of kinship matrices can be provided with each matrix in this list a chromosome specific kinship matrix, usually computed using all markers that are not on the corresponding chromosome. If a named list of kinship matrices is provided, its names should match the names or numbers of the chromosomes in **map**. Unnamed lists will be given default names. 
-
-## **Further covariates**  
-Further covariates that can be used in the analyses can be stored in the data.frame **covar**. This data.frame has genotypes in its row names and the covariates in the column names. Covariates can be numerical, factor or character data. The latter will be converted to a factor when creating the gData object.
-
-----
-
-# Single Trait GWAS
-
-## Theoretical background
+### Theoretical background
 
 Suppose there are $n$ measurements of a phenotype for $t$ genotypes. Then a very common linear mixed model for association mapping is
 $$y = X\beta + Zu + e,$$  
 where $y$ is an $n \times 1$ vector of observed phenotypes and $X$ is an $n \times q$ design matrix for the fixed effects, including an intercept, covariates, and the SNP of interest. $\beta$ is the $q \times 1$ vector of coefficients of these fixed effects, the last element ($\beta_{\textrm{SNP}}$) being the SNP-effect of interest. $Z$ is the $n \times t$ incidence matrix assigning individuals to genotypes.  $u$ is the vector of genetic random effects, with $var(u) = \sigma^2_g K$, where $K$ is a marker-based relatedness matrix. Finally, $e$ is a $n \times 1$ vector of residual (non-genetic) errors, with $var(\epsilon) = \sigma^2_e I_n$. For this model the phenotypic variance-covariance matrix is $\Sigma = \sigma^2_g ZKZ^{t} + \sigma^2_e I_n$. 
 
-## Application in the package
+### Application in the package
 
 Single trait GWAS in the statgenGWAS package follows the approach of @Kang2010 and related papers:
 
@@ -71,11 +47,39 @@ The REML-estimates in step (1) can be computed using either the Efficient Mixed 
 
 ----
 
-# Worked example
+## The class `gData`
+
+Data for analysis on genomic data comes from different sources and is stored in one data object of class **gData** (**g**enomic **Data**) for convenience. A gData object will contain all data needed for performing analyses, so the first thing to do when using the statgenGWAS package is creating a gData object. A gData object consists of different types of data. All data is optional, however for certain analyses, certain data is required. Additional data can always be added to an existing object later on.  
+A gData object can be created using the function **_createGData_**. If an existing gData object is provided as an input to this function, data is added to the existing object and existing data will be overwritten with a warning if necessary. All data is checked for consistency and, if needed, default names are added with a warning message.  
+A gData object created this way will consist of the following components:  
+
+### Marker map
+
+The data.frame **map** is used to describe the physical positions of the markers on the chromosomes. The data consists of two columns, *chr* for the name or number of the chromosome and *pos* for the position of the marker on the chromosome. The position can be in basepair or in centimorgan. The names of the markers should be the row names of the data.frame.  
+
+### Marker matrix
+
+The marker matrix is stored in the matrix **marker** within the gData object. It has the names of the markers in its column names and the genotypes in its row names. Markers can either be coded as character strings or as numerical values. In the former case, before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be do using the function **_codeMarkers_**. 
+
+#### Phenotypic data
+
+Phenotypic data, either directly from field trials or after summarizing can be stored in **pheno** in the gData object. Pheno can either be a single data.frame or a list of data.frames for storing data for different trials or different summarizations of the original data. The first column of all elements of pheno should be *genotype* and all the other columns should represent different traits. Storing additional variables should be done in **covar**. A single data.frame will be converted to a one-item list upon creation of a gData object.
+
+### Kinship matrix
+
+The kinship matrix describes the genetic relatedness between the different genotypes. It is stored in the matrix **kinship** in the gData object. This should be a square matrix with genotypes in both row and column names and a measure for the genetic relatedness in its cells. There are many ways of computing genetic relatedness some of which are included in this package. Instead of providing one kinship matrix a list of kinship matrices can be provided with each matrix in this list a chromosome specific kinship matrix, usually computed using all markers that are not on the corresponding chromosome. If a named list of kinship matrices is provided, its names should match the names or numbers of the chromosomes in **map**. Unnamed lists will be given default names. 
+
+### Further covariates
+
+Further covariates that can be used in the analyses can be stored in the data.frame **covar**. This data.frame has genotypes in its row names and the covariates in the column names. Covariates can be numerical, factor or character data. The latter will be converted to a factor when creating the gData object.
+
+----
+
+## Worked example
 
 As an example of the functionality of the package a worked example is provided using maize data from the European Union project DROPS. The data is available from https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN [@Millet2019] and the relevant data sets are included as data.frames in the statgenGWAS package.
 
-## **Load data**
+### Load data
 
 The first step is loading the data into R. 
 ```{r loadData} 
@@ -85,7 +89,7 @@ data(dropsPheno)
 ```
 dropsMarkers contains the coded marker information for 41722 SNPs and 246 genotypes. dropsMap contains information about the positions of those SNPs on the B73 reference genome V2. dropsPheno contains data for the genotypic means (Best Linear Unbiased Estimators, BLUEs), with one value per experiment per genotype, for eight traits. For a more detailed description of the contents of the data see ```help(dropsData)```.
 
-## **Create gData object**
+### Create gData object
 
 The next step is to create a **gData** object from the raw data that can be used for the GWAS analysis. For this the raw data has to be converted to a suitable format for a **gData** object.
 When creating a **gData** object, the markers should be input as a matrix or data.frame with genotypes in the row names and markers in the column names. The latter is already satisfied so only the row names should be added and the Ind column used for that should be dropped.
@@ -140,13 +144,13 @@ plot(gDataDrops)
 
 To highlight a marker, the parameter `highlight` can be used. It requires `data.frame` with at least the column "chr" and "pos". If a column name is present it will be used to annotate the highlighted marker. If no name column is present the annotation will be of the form pos\@chr.
 
-```{r plotGData}
+```{r plotGDataHL}
 ## Plot genetic map.
 ## Highlight the 20.000th marker in the map.
 plot(gDataDrops, highlight = dropsMap[20000, ])
 ```
 
-## **Recoding and cleaning of markers**
+### Recoding and cleaning of markers
 
 Marker data has to be numerical and without missing values in order to do GWAS analysis. This can be achieved using the *codeMarkers* function. The marker data available for the DROPS project has already been converted from A/T/C/G to 0/1/2. The *codeMarkers* function in the package can still be used to further clean the markers, e.g. by removing the duplicate SNPs.
 ```{r removeDupMarkers}
@@ -194,7 +198,7 @@ gDataDropsImputedBeagle <- codeMarkers(gData = gDataDropsMiss,
                                        verbose = TRUE)
 ```
 
-## **Single trait GWAS**
+### Single trait GWAS
 
 The cleaned gData object can be used for performing single trait GWAS analysis with the *runSingleTraitGwas* function. The default parameter values in the function are chosen in such a way that usually the analysis gives decent results. In the examples below the trial Mur13W is used to demonstrate the options of the *runSingleTraitGwas* function. 
 ```{r stg}
@@ -378,7 +382,7 @@ GWASDropsFixThr <- runSingleTraitGwas(gData = gDataDropsDedup,
                                       LODThr = 4)
 ```
 
-**Controlling false discovery rate**
+#### Controlling false discovery rate
 
 A final option for selecting significant SNPs is by setting `thrType = "fdr"`. When doing so the significant SNPs won't be selected by computing a genome wide threshold, but by trying to control the rate of false discoveries as in @Brzyski2016.    
 

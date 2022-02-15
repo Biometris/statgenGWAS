@@ -1,3 +1,6 @@
+template:
+  bootstrap: 5
+  
 home:
   title: An R package for fast GWAS
 
@@ -42,6 +45,7 @@ reference:
   - createGData
   - codeMarkers
   - summary.gData
+  - plot.gData
   - kinship
 - title: Single trait GWAS
 - contents:
