@@ -1,12 +1,10 @@
-Patch release fixing test failures on some platforms. 
+Release adding a plot function and fixing some minor bugs.
 
 ## Test environments
-* local Windows 10 install, R 4.1.0
-* Ubuntu (on github actions, devel and release)
-* macOS (on github actions, release)
+* local Windows 10 install, R 4.1.2
+* winbuilder
+* macbuilder
 * R-hub (devel and release)
-* R-hub patched-solaris
-* R-hub noLD
 
 ## R CMD check results
 
@@ -25,7 +23,8 @@ Found the following (possibly) invalid URLs:
     From: man/kinship.Rd
           man/runSingleTraitGwas.Rd
           inst/doc/GWAS.html
-
+    Status: 500
+    Message: Internal Server Error
     
 * This URL works fine in a web browser.
 
