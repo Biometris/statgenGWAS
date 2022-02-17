@@ -97,7 +97,7 @@
       <img src="" class="logo" alt=""><h1>Introduction to the statgenGWAS package</h1>
                         <h4 data-toc-skip class="author">Bart-Jan van Rossum</h4>
             
-            <h4 data-toc-skip class="date">2022-02-16</h4>
+            <h4 data-toc-skip class="date">2022-02-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Biometris/statgenGWAS/blob/HEAD/vignettes/GWAS.Rmd" class="external-link"><code>vignettes/GWAS.Rmd</code></a></small>
       <div class="d-none name"><code>GWAS.Rmd</code></div>
@@ -634,19 +634,19 @@ Note that the computation of allele frequencies in <em>runSingleTraitGwas</em> i
 <span class="co">## Check signSnp in output.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">GWASDropsInclClose</span><span class="op">$</span><span class="va">signSnp</span><span class="op">$</span><span class="va">Mur13W</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt;        trait           snp chr      pos allFreq  pValue effect effectSe   RLR2  LOD</span>
+<span class="co">#&gt;  grain.yield PZE-106021293   6 18645872    0.94 5.5e-01  0.110     0.18 0.0015 0.26</span>
+<span class="co">#&gt;  grain.yield PZE-106021294   6 18645992    0.69 3.6e-02  0.223     0.11 0.0176 1.44</span>
 <span class="co">#&gt;  grain.yield PZE-106021308   6 18646399    0.84 5.3e-01 -0.083     0.13 0.0016 0.27</span>
 <span class="co">#&gt;  grain.yield PZE-106021320   6 18646911    0.77 4.5e-01  0.088     0.12 0.0023 0.34</span>
-<span class="co">#&gt;  grain.yield PZE-106021349   6 18712665    0.87 6.5e-02 -0.274     0.15 0.0137 1.19</span>
 <span class="co">#&gt;  grain.yield PZE-106021363   6 18846283    0.70 3.5e-07  0.522     0.10 0.0959 6.46</span>
 <span class="co">#&gt;  grain.yield PZE-106021410   6 18990291    0.70 2.3e-07  0.527     0.10 0.0984 6.63</span>
-<span class="co">#&gt;  grain.yield PZE-106021419   6 18991091    0.74 2.9e-07  0.525     0.10 0.0971 6.54</span>
 <span class="co">#&gt;                          snpStatus propSnpVar</span>
+<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0010</span>
+<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0167</span>
 <span class="co">#&gt;  within 2e+05 of a significant SNP     0.0015</span>
 <span class="co">#&gt;  within 2e+05 of a significant SNP     0.0022</span>
-<span class="co">#&gt;  within 2e+05 of a significant SNP     0.0129</span>
 <span class="co">#&gt;                    significant SNP     0.0884</span>
-<span class="co">#&gt;                    significant SNP     0.0903</span>
-<span class="co">#&gt;                    significant SNP     0.0827</span></code></pre></div>
+<span class="co">#&gt;                    significant SNP     0.0903</span></code></pre></div>
 <hr>
 </div>
 </div>
