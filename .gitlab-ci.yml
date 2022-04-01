@@ -1,0 +1,43 @@
+stages:
+  - test
+
+variables:
+  OMP_THREAD_LIMIT: "2"
+  APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git build-essential gobjc++ libomp-dev devscripts"
+
+before_script:
+  - apt-get update
+  - apt-get install -y --no-install-recommends ${APT_PKGS}
+  - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
+  - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH}"
+  - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
+  - install2.r devtools
+  - r -e 'devtools::install_dev_deps()'
+
+r-release:
+  stage: test
+  tags:
+    - Docker
+  image: rocker/r-ver:latest
+  script:
+    - r -e 'devtools::check(check_dir = ".")'
+  artifacts:
+    paths:
+      - "*.Rcheck"
+    name: logs
+    when: always
+
+r-devel:
+  stage: test
+  tags:
+    - Docker
+  image: rocker/r-ver:devel
+  script:
+    - r -e 'devtools::check(check_dir = ".")'
+  artifacts:
+    paths:
+      - "*.Rcheck"
+    name: logs
+    when: always
+
+
