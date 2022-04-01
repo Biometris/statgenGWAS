@@ -17,6 +17,7 @@
 #' 
 #' @return An object of class \code{gData}.
 #' 
+#' @importFrom methods as
 #' @export
 readPLINK <- function(bed,
                       bim,
@@ -26,7 +27,6 @@ readPLINK <- function(bed,
     stop("Package snpStats needed for reading PLINK files.")
   }
   genoPLINK <- snpStats::read.plink(bed = bed, bim = bim, fam = fam, ...)
-  
   ## Get makers.  
   markers <- as(genoPLINK$genotypes, "numeric")
   ## Get map.

@@ -3,7 +3,7 @@ stages:
 
 variables:
   OMP_THREAD_LIMIT: "2"
-  APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git build-essential gobjc++ libomp-dev devscripts"
+  APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git build-essential gobjc++ libomp-dev devscripts libxtst6"
 
 before_script:
   - apt-get update
@@ -11,7 +11,8 @@ before_script:
   - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
   - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH}"
   - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
-  - install2.r devtools
+  - install2.r devtools BiocManager
+  - r -e 'BiocManager::install("snpStats")'
   - r -e 'devtools::install_dev_deps()'
 
 r-release:
