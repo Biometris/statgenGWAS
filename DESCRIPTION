@@ -65,7 +65,8 @@ Imports: data.table,
 Suggests: knitr,
     rmarkdown,
     officer,
-    tinytest
+    tinytest,
+    snpStats
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo
 URL: https://biometris.github.io/statgenGWAS/index.html, https://github.com/Biometris/statgenGWAS/
