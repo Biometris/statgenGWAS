@@ -349,7 +349,7 @@ runSingleTraitGwas <- function(gData,
                                           key = "snp")
       if (GLSMethod == "single") {
         ## Determine segregating markers. Exclude snps used as covariates.
-        segMarkers <- which(abs(allFreq) > MAF)
+        segMarkers <- which(allFreq > MAF & allFreq < (1 - MAF))
         ## Exclude snpCovariates from segregating markers.
         exclude <- exclMarkers(snpCov = snpCov, markers = markersRed,
                                allFreq = allFreq)
