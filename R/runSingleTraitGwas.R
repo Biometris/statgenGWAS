@@ -274,7 +274,7 @@ runSingleTraitGwas <- function(gData,
   ## or kinship matrices per chromosome (GLSMethod multi).
   K <- computeKin(GLSMethod = GLSMethod, kin = kin, gData = gData,
                   markers = gData$markers, map = gData$map,
-                  kinshipMethod = kinshipMethod)
+                  kinshipMethod = kinshipMethod, MAF = MAF)
   ## Compute max value in markers
   maxScore <- min(max(gData$markers, na.rm = TRUE), 2)
   ## Define data.frames for total results.

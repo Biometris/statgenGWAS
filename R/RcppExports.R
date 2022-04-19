@@ -41,16 +41,20 @@ getThr <- function(nCores = NULL) {
     .Call(`_statgenGWAS_getThr`, nCores)
 }
 
-astleCPP <- function(x, denom = NULL) {
-    .Call(`_statgenGWAS_astleCPP`, x, denom)
+astleCPP2 <- function(x, denom = NULL) {
+    .Call(`_statgenGWAS_astleCPP2`, x, denom)
 }
 
-IBSCPP <- function(x, denom = NULL) {
-    .Call(`_statgenGWAS_IBSCPP`, x, denom)
+astleCPP <- function(x, MAF = NULL, denom = NULL) {
+    .Call(`_statgenGWAS_astleCPP`, x, MAF, denom)
 }
 
-vanRadenCPP <- function(x, denom = NULL) {
-    .Call(`_statgenGWAS_vanRadenCPP`, x, denom)
+IBSCPP <- function(x, MAF = NULL, denom = NULL) {
+    .Call(`_statgenGWAS_IBSCPP`, x, MAF, denom)
+}
+
+vanRadenCPP <- function(x, MAF = NULL, denom = NULL) {
+    .Call(`_statgenGWAS_vanRadenCPP`, x, MAF, denom)
 }
 
 #' Reduce the kinship matrix
