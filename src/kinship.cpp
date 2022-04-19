@@ -6,8 +6,8 @@ using namespace Rcpp;
 using namespace arma;
 
 // [[Rcpp::export]]
-arma::mat astleCPP(arma::mat x,
-                   Rcpp::Nullable<Rcpp::NumericVector> denom = R_NilValue) {
+arma::mat astleCPP2(arma::mat x,
+                    Rcpp::Nullable<Rcpp::NumericVector> denom = R_NilValue) {
   // Remove markers with variance 0.
   x = x.cols( find (var(x) > 0) );
   // Scale X.
@@ -25,10 +25,45 @@ arma::mat astleCPP(arma::mat x,
 }
 
 // [[Rcpp::export]]
+arma::mat astleCPP(arma::mat x,
+                   Rcpp::Nullable<Rcpp::NumericVector> MAF = R_NilValue,
+                   Rcpp::Nullable<Rcpp::NumericVector> denom = R_NilValue) {
+  // Remove markers with variance 0.
+  x = x.cols( find (var(x) > 0) );
+  // Remove markers with Minor Allele Frequency lower than MAF.
+  if (MAF.isNotNull()) {
+    double maxVal = x.max();
+    double MAFval = Rcpp::as<double>(MAF);
+    x = x.cols( find( (mean(x) / maxVal) > MAFval ) );  
+    x = x.cols( find( (mean(x) / maxVal) < (1 - MAFval) ) );
+  } 
+  // Scale X.
+  arma::rowvec p = sum(x) / x.n_rows;
+  x.each_row() -= p;
+  x.each_row() /= sqrt( var(x) );
+  // Compute denominator.
+  double denominator;
+  if (denom.isNull()) {
+    denominator = x.n_cols;
+  } else {
+    denominator = Rcpp::as<double>(denom);
+  }
+  return x * x.t() / denominator;
+}
+
+// [[Rcpp::export]]
 arma::mat IBSCPP(arma::mat x,
+                 Rcpp::Nullable<Rcpp::NumericVector> MAF = R_NilValue,
                  Rcpp::Nullable<Rcpp::NumericVector> denom = R_NilValue) {
   // Remove markers with variance 0.
   x = x.cols( find (var(x) > 0) );
+  // Remove markers with Minor Allele Frequency lower than MAF.
+  if (MAF.isNotNull()) {
+    double maxVal = x.max();
+    double MAFval = Rcpp::as<double>(MAF);
+    x = x.cols( find( (mean(x) / maxVal) > MAFval ) );  
+    x = x.cols( find( (mean(x) / maxVal) < (1 - MAFval) ) );
+  } 
   // Compute denominator.
   double denominator;
   if (denom.isNull()) {
@@ -41,9 +76,17 @@ arma::mat IBSCPP(arma::mat x,
 
 // [[Rcpp::export]]
 arma::mat vanRadenCPP(arma::mat x,
+                      Rcpp::Nullable<Rcpp::NumericVector> MAF = R_NilValue,
                       Rcpp::Nullable<Rcpp::NumericVector> denom = R_NilValue) {
   // Remove markers with variance 0.
   x = x.cols( find (var(x) > 0) );
+  // Remove markers with Minor Allele Frequency lower than MAF.
+  if (MAF.isNotNull()) {
+    double maxVal = x.max();
+    double MAFval = Rcpp::as<double>(MAF);
+    x = x.cols( find( (mean(x) / maxVal) > MAFval ) );  
+    x = x.cols( find( (mean(x) / maxVal) < (1 - MAFval) ) );
+  } 
   // Scale X.
   arma::rowvec p = sum(x) / (2 * x.n_rows);
   x.each_row() -= 2 * p;
