@@ -26,7 +26,7 @@ options(width = 100, digits = 2)
 
 ## The statgenGWAS package {-}
 
-The statgenGWAS package has been designed for performing single trait Genome Wide Association Studies (GWAS). The purpose of GWAS is to determine alleles that correlate to different traits.
+The statgenGWAS package has been designed for performing single trait Genome Wide Association Studies (GWAS), where the objective is to find associations between genetic markers and phenotypic traits. 
 
 ### Theoretical background
 
@@ -43,23 +43,33 @@ Single trait GWAS in the statgenGWAS package follows the approach of @Kang2010 a
 
 These steps are repeated for each combination of trial and trait for which the analysis is run.  
 
-The REML-estimates in step (1) can be computed using either the Efficient Mixed Model Association (EMMA) algorithm [@Kang2008], or the Newton-Raphson (NR) algorithm [@Tunnicliffe1989]. Our implementation of GLS borrows some code of @Segura2012.
+The REML-estimates in step (1) can be computed using either the Efficient Mixed Model Association (EMMA) algorithm [@Kang2008], or the Newton-Raphson (NR) algorithm [@Tunnicliffe1989]. Our implementation of GLS is a c++ implementation of the R code of @Segura2012.
 
 ----
 
 ## The class `gData`
 
-Data for analysis on genomic data comes from different sources and is stored in one data object of class **gData** (**g**enomic **Data**) for convenience. A gData object will contain all data needed for performing analyses, so the first thing to do when using the statgenGWAS package is creating a gData object. A gData object consists of different types of data. All data is optional, however for certain analyses, certain data is required. Additional data can always be added to an existing object later on.  
-A gData object can be created using the function **_createGData_**. If an existing gData object is provided as an input to this function, data is added to the existing object and existing data will be overwritten with a warning if necessary. All data is checked for consistency and, if needed, default names are added with a warning message.  
+Genotypic data are stored in an object of class **gData** (**g**enotypic **Data**). A gData object will contain all data needed for performing analyses, so the first thing to do when using the statgenGWAS package is creating a gData object. This can be done using the function **_createGData_**. A gData object combines genotypic data and phenotypic data in a `list`. In a typical workflow the user first imports marker and map data as illustrated in the following  example.
+
+```{r toy}
+
+```
+
+If an existing gData object is provided as an input to the `createGData()` function, data is added to the existing object and existing data will be overwritten with a warning if necessary. All data is checked for consistency and, if needed, default names are added with a warning message.  
 A gData object created this way will consist of the following components:  
 
 ### Marker map
 
-The data.frame **map** is used to describe the physical positions of the markers on the chromosomes. The data consists of two columns, *chr* for the name or number of the chromosome and *pos* for the position of the marker on the chromosome. The position can be in basepair or in centimorgan. The names of the markers should be the row names of the data.frame.  
+The data.frame **map** is used to describe the physical positions of the markers on the chromosomes. The data consists of two columns, *chr* for the name or number of the chromosome and *pos* for the position of the marker on the chromosome. The position can be in basepair or in centimorgan. The row names of map should be the names of the markers.
 
 ### Marker matrix
 
-The marker matrix is stored in the matrix **marker** within the gData object. It has the names of the markers in its column names and the genotypes in its row names. Markers can either be coded as character strings or as numerical values. In the former case, before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be do using the function **_codeMarkers_**. 
+The marker matrix is stored in the matrix **marker** within the gData object. The column names should be the names of the markers and the row names the names of the genotypes. Markers can either be coded as character strings or as numerical values. In the former case, before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be do using the function **_codeMarkers_**. 
+
+
+enforce consistency between genotypic and phenotypic data. 
+
+
 
 #### Phenotypic data
 
