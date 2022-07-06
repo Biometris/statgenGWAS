@@ -326,6 +326,7 @@ runSingleTraitGwas <- function(gData,
       ## markers that are not in map
       markersRed <- gData$markers[nonMiss, colnames(gData$markers) %in%
                                     rownames(mapRed), drop = FALSE]
+      markersRed <- markersRed[, rownames(mapRed)]
       ## Compute allele frequencies based on genotypes for which phenotypic
       ## data is available.
       allFreq <- colMeans(markersRed, na.rm = TRUE) / maxScore
