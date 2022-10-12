@@ -110,7 +110,7 @@ expect_silent(p1 <- plot(stg1a, plotType = "qtl", trial = "ph1", trait = "X1",
 
 # Check option binPositions
 binPos <- data.frame(chr = 1)
-binPos1 <- data.frame(chr = 1, pos = 2)
+binPos1 <- data.frame(chr = as.factor(1), pos = 2)
 
 expect_error(plot(stg1, plotType = "qtl", trial = "ph1", trait = "X1", 
                   binPositions = "binPos"),
