@@ -6,7 +6,7 @@
 \alias{statgenGWAS-package}
 \title{statgenGWAS: Genome Wide Association Studies}
 \description{
-Fast single trait Genome Wide Association Studies (GWAS) following the method described in Kang et al. (2010), <doi:10.1038/ng.548>. One of a series of statistical genetic packages for streamlining the analysis of typical plant breeding experiments developed by Biometris.
+Fast single trait Genome Wide Association Studies (GWAS) following the method described in Kang et al. (2010), \doi{10.1038/ng.548}. One of a series of statistical genetic packages for streamlining the analysis of typical plant breeding experiments developed by Biometris.
 }
 \seealso{
 Useful links:
@@ -28,7 +28,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Fred van Eeuwijk (\href{https://orcid.org/0000-0003-3672-2921}{ORCID}) [contributor]
-  \item Martin Boer [contributor]
+  \item Martin Boer (\href{https://orcid.org/0000-0002-1879-4588}{ORCID}) [contributor]
   \item Marcos Malosetti (\href{https://orcid.org/0000-0002-8150-1397}{ORCID}) [contributor]
   \item Daniela Bustos-Korts (\href{https://orcid.org/0000-0003-3827-6726}{ORCID}) [contributor]
   \item Emilie Millet (\href{https://orcid.org/0000-0002-2913-4892}{ORCID}) [contributor]

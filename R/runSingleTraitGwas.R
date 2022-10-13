@@ -274,7 +274,7 @@ runSingleTraitGwas <- function(gData,
   ## or kinship matrices per chromosome (GLSMethod multi).
   K <- computeKin(GLSMethod = GLSMethod, kin = kin, gData = gData,
                   markers = gData$markers, map = gData$map,
-                  kinshipMethod = kinshipMethod)
+                  kinshipMethod = kinshipMethod, MAF = MAF)
   ## Compute max value in markers
   maxScore <- min(max(gData$markers, na.rm = TRUE), 2)
   ## Define data.frames for total results.
@@ -326,6 +326,7 @@ runSingleTraitGwas <- function(gData,
       ## markers that are not in map
       markersRed <- gData$markers[nonMiss, colnames(gData$markers) %in%
                                     rownames(mapRed), drop = FALSE]
+      markersRed <- markersRed[, rownames(mapRed)]
       ## Compute allele frequencies based on genotypes for which phenotypic
       ## data is available.
       allFreq <- colMeans(markersRed, na.rm = TRUE) / maxScore
@@ -349,7 +350,7 @@ runSingleTraitGwas <- function(gData,
                                           key = "snp")
       if (GLSMethod == "single") {
         ## Determine segregating markers. Exclude snps used as covariates.
-        segMarkers <- which(abs(allFreq) > MAF)
+        segMarkers <- which(allFreq > MAF & allFreq < (1 - MAF))
         ## Exclude snpCovariates from segregating markers.
         exclude <- exclMarkers(snpCov = snpCov, markers = markersRed,
                                allFreq = allFreq)
@@ -385,7 +386,7 @@ runSingleTraitGwas <- function(gData,
                                         rownames(mapRedChr), drop = FALSE]
           allFreqChr <- colMeans(markersRedChr, na.rm = TRUE) / maxScore
           ## Determine segregating markers. Exclude snps used as covariates.
-          segMarkersChr <- which(abs(allFreqChr) > MAF)
+          segMarkersChr <- which(allFreqChr > MAF & allFreqChr < (1 - MAF))
           ## Exclude snpCovariates from segregating markers.
           exclude <- exclMarkers(snpCov = snpCov, markers = markersRedChr,
                                  allFreq = allFreqChr)

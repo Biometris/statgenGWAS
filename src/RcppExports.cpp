@@ -117,38 +117,41 @@ BEGIN_RCPP
 END_RCPP
 }
 // astleCPP
-arma::mat astleCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> denom);
-RcppExport SEXP _statgenGWAS_astleCPP(SEXP xSEXP, SEXP denomSEXP) {
+arma::mat astleCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> MAF, Rcpp::Nullable<Rcpp::NumericVector> denom);
+RcppExport SEXP _statgenGWAS_astleCPP(SEXP xSEXP, SEXP MAFSEXP, SEXP denomSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type MAF(MAFSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type denom(denomSEXP);
-    rcpp_result_gen = Rcpp::wrap(astleCPP(x, denom));
+    rcpp_result_gen = Rcpp::wrap(astleCPP(x, MAF, denom));
     return rcpp_result_gen;
 END_RCPP
 }
 // IBSCPP
-arma::mat IBSCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> denom);
-RcppExport SEXP _statgenGWAS_IBSCPP(SEXP xSEXP, SEXP denomSEXP) {
+arma::mat IBSCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> MAF, Rcpp::Nullable<Rcpp::NumericVector> denom);
+RcppExport SEXP _statgenGWAS_IBSCPP(SEXP xSEXP, SEXP MAFSEXP, SEXP denomSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type MAF(MAFSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type denom(denomSEXP);
-    rcpp_result_gen = Rcpp::wrap(IBSCPP(x, denom));
+    rcpp_result_gen = Rcpp::wrap(IBSCPP(x, MAF, denom));
     return rcpp_result_gen;
 END_RCPP
 }
 // vanRadenCPP
-arma::mat vanRadenCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> denom);
-RcppExport SEXP _statgenGWAS_vanRadenCPP(SEXP xSEXP, SEXP denomSEXP) {
+arma::mat vanRadenCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> MAF, Rcpp::Nullable<Rcpp::NumericVector> denom);
+RcppExport SEXP _statgenGWAS_vanRadenCPP(SEXP xSEXP, SEXP MAFSEXP, SEXP denomSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type MAF(MAFSEXP);
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type denom(denomSEXP);
-    rcpp_result_gen = Rcpp::wrap(vanRadenCPP(x, denom));
+    rcpp_result_gen = Rcpp::wrap(vanRadenCPP(x, MAF, denom));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -193,9 +196,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_statgenGWAS_codeCharMarkers", (DL_FUNC) &_statgenGWAS_codeCharMarkers, 4},
     {"_statgenGWAS_fastGLSCPP", (DL_FUNC) &_statgenGWAS_fastGLSCPP, 5},
     {"_statgenGWAS_getThr", (DL_FUNC) &_statgenGWAS_getThr, 1},
-    {"_statgenGWAS_astleCPP", (DL_FUNC) &_statgenGWAS_astleCPP, 2},
-    {"_statgenGWAS_IBSCPP", (DL_FUNC) &_statgenGWAS_IBSCPP, 2},
-    {"_statgenGWAS_vanRadenCPP", (DL_FUNC) &_statgenGWAS_vanRadenCPP, 2},
+    {"_statgenGWAS_astleCPP", (DL_FUNC) &_statgenGWAS_astleCPP, 3},
+    {"_statgenGWAS_IBSCPP", (DL_FUNC) &_statgenGWAS_IBSCPP, 3},
+    {"_statgenGWAS_vanRadenCPP", (DL_FUNC) &_statgenGWAS_vanRadenCPP, 3},
     {"_statgenGWAS_reduceKinship", (DL_FUNC) &_statgenGWAS_reduceKinship, 2},
     {"_statgenGWAS_nearestPD", (DL_FUNC) &_statgenGWAS_nearestPD, 10},
     {NULL, NULL, 0}

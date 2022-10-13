@@ -64,7 +64,8 @@ computeKin <- function(GLSMethod,
                        gData = NULL,
                        markers = NULL,
                        map = NULL,
-                       kinshipMethod = NULL) {
+                       kinshipMethod = NULL,
+                       MAF = NULL) {
   if (GLSMethod == "single") {
     if (!is.null(kin)) {
       ## kin is supplied as input. Convert to matrix.
@@ -76,7 +77,7 @@ computeKin <- function(GLSMethod,
       kinshipMethod <- NULL
     } else {
       ## Compute K from markers.
-      K <- kinship(X = markers, method = kinshipMethod)
+      K <- kinship(X = markers, method = kinshipMethod, MAF = MAF)
     }
     K <- K[order(match(rownames(K), rownames(markers))),
            order(match(colnames(K), rownames(markers)))]
@@ -92,7 +93,7 @@ computeKin <- function(GLSMethod,
     } else {
       ## Compute chromosome specific kinship matrices.
       K <- chrSpecKin(markers = markers, map = map, 
-                      kinshipMethod = kinshipMethod)
+                      kinshipMethod = kinshipMethod, MAF = MAF)
     }
     K <- lapply(X = K, FUN = function(k) {
       k[order(match(rownames(k), rownames(markers))),
@@ -106,7 +107,8 @@ computeKin <- function(GLSMethod,
 ## Compute chromosome specific kinship matrices.
 chrSpecKin <- function(markers, 
                        map,
-                       kinshipMethod) {
+                       kinshipMethod,
+                       MAF) {
   chrs <- unique(map[rownames(map) %in% colnames(markers), "chr"])
   if (length(chrs) == 1) {
     stop("Chromosome specific kinship calculation not possible since ",
@@ -127,7 +129,7 @@ chrSpecKin <- function(markers,
     ## Compute kinship for current chromosome only. Denominator = 1, division
     ## is done later.
     K <- kinship(X = markers[, chrMrk, drop = FALSE], method = kinshipMethod, 
-                 denominator = 1)
+                 MAF = MAF, denominator = 1)
     ## Compute number of markers for other chromosomes.
     denom[which(chrs == chr)] <- ncol(markers[, -chrMrk, drop = FALSE])
     for (i in setdiff(seq_along(chrs), which(chr == chrs))) {

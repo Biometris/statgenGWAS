@@ -52,10 +52,10 @@ expect_error(runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1,
 # No difference here for GLSMethod single and multi so only check single.
 
 stg3 <- runSingleTraitGwas(gData = gDataTest, traits = "X1", trials = 1, 
-                           useMAF = FALSE, MAC = 7)
-# MAC = 7 causes M1 to be non-segregating.
-expect_equal(stg3$GWASInfo$MAF, 0.69999)
-expect_equal(stg3$GWAResult$ph1$pValue[1], NA_real_)
+                           useMAF = FALSE, MAC = 2)
+# MAC = 2 causes M3 to be non-segregating.
+expect_equal(stg3$GWASInfo$MAF, 0.19999)
+expect_equal(stg3$GWAResult$ph1$pValue[3], NA_real_)
 
 ## Test option thrType.
 

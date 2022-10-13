@@ -81,8 +81,8 @@ estVarCompNR <- function(dat,
   K <- K[nonMiss, nonMiss]
   ## Fit model.
   modFit <- sommer::mmer(fixed = fixed, data = dat,
-                         random = ~ sommer::vs(genotype, Gu = K),
-                         verbose = FALSE, date.warning = FALSE)
+                         random = ~ sommer::vsr(genotype, Gu = K),
+                         verbose = FALSE, dateWarning = FALSE)
   ## Compute varcov matrix using var components from model.
   vcMod <- modFit$sigma
   varComp <- setNames(unlist(vcMod)[c(1, length(unlist(vcMod)))],

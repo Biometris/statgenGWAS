@@ -8,7 +8,7 @@
 \alias{dropsPheno}
 \title{DROPS data sets}
 \source{
-\url{https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN}
+\doi{10.15454/IASSTN}
 }
 \description{
 This dataset comes from the European Union project DROPS (DROught-tolerant

@@ -7,6 +7,7 @@
 kinship(
   X,
   method = c("astle", "IBS", "vanRaden", "identity"),
+  MAF = NULL,
   denominator = NULL
 )
 }
@@ -15,6 +16,11 @@ kinship(
 the columns (m).}
 
 \item{method}{The method used for computing the kinship matrix.}
+
+\item{MAF}{The minor allele frequency (MAF) threshold used in kinship
+computation. A numerical value between 0 and 1. SNPs with MAF below this
+value are not taken into account when computing the kinship. If NULL all
+markers are used regardless of their allele frequency.}
 
 \item{denominator}{A numerical value. See details.}
 }
@@ -43,12 +49,15 @@ in the end.
 
 \examples{
 ## Create example matrix.
-M <- matrix(c(1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1), nrow = 3)
+M <- matrix(c(1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1), nrow = 4)
 
 ## Compute kinship matrices using different methods.
 kinship(M, method = "astle")
 kinship(M, method = "IBS")
 kinship(M, method = "vanRaden")
+
+## Only use markers with a Minor Allele Frequency of 0.3 or more.
+kinship(M, method = "astle", MAF = 0.3)
 
 ## Compute kinship matrix using astle and balding method with denominator 2.
 kinship(M, method = "astle", denominator = 2)
