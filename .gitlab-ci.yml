@@ -3,7 +3,7 @@ stages:
 
 variables:
   OMP_THREAD_LIMIT: "2"
-  APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git build-essential gobjc++ libomp-dev devscripts libxtst6 libfontconfig1-dev libharfbuzz-dev libfribidi-dev libgit2-dev  libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev"
+  APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git build-essential gobjc++ libomp-dev devscripts libxtst6 libfontconfig1-dev libharfbuzz-dev libfribidi-dev libgit2-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libxt6"
 
 before_script:
   - apt-get update
