@@ -4,7 +4,7 @@ author: "Bart-Jan van Rossum"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
-    toc: false
+    toc: false 
     number_sections: false
 bibliography: bibliography.bib
 link-citations: yes  
@@ -184,7 +184,7 @@ To re-impute the missing values added above, *codeMarkers* has to be run with `i
 
 * `imputeType = "fixed"`: Impute all missing values by a single fixed value. Use the parameter `fixedValue` to set this value. 
 * `imputeType = "random"`: Impute missing values with a random value based on the non-missing values for a SNP. 
-* `imputeType = "beagle"`: Impute missing values using the independent beagle software [@Browning2007]. Version 5.2 of this software is included in the package and is called with its default settings. It requires java to run. Since running beagle takes a long time for the current data, the call to beagle is only shown here but not run.    
+* `imputeType = "beagle"`: Impute missing values using the independent beagle software [@Browning2007]. Version 4.1 of this software is included in the package and is called with its default settings. It requires java to run. Since running beagle takes a long time for the current data, the call to beagle is only shown here but not run.    
  
 Before imputation, genotypes with a high proportion of missing values in the marker matrix can be removed by setting the parameter nMissGeno. Setting it to 0.1 will remove all genotypes with a proportion of missing values higher than 0.1. In a similar way SNPs with a high proportion of missing values can be removed setting nMiss. The default value for both parameters is 1, so genotypes and SNPs with only missing values are always removed.  
 The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF) lower than the specified MAF. As with removing duplicate SNPs this will be done both before and after imputation.
@@ -244,7 +244,7 @@ Note that the estimated effect is computed for a single allele. Its direction de
 | | |
 |:-----|:--------------------------------------------------|
 | snpStatus | either "significant SNP" or "within ... of a significant SNP" |
-| propSnpVar | proportion of the variance explained by the SNP |
+| propSnpVar | proportion of the variance explained by the SNP, computed as $\beta_{\textrm{SNP}}^2 * var(\textrm{SNP}) / var(\textrm{pheno})$ |
 ```{r signSnp}
 print(GWASDrops$signSnp$Mur13W, row.names = FALSE)
 ```
