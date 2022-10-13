@@ -41,10 +41,6 @@ getThr <- function(nCores = NULL) {
     .Call(`_statgenGWAS_getThr`, nCores)
 }
 
-astleCPP2 <- function(x, denom = NULL) {
-    .Call(`_statgenGWAS_astleCPP2`, x, denom)
-}
-
 astleCPP <- function(x, MAF = NULL, denom = NULL) {
     .Call(`_statgenGWAS_astleCPP`, x, MAF, denom)
 }

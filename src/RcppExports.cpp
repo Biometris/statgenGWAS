@@ -116,18 +116,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// astleCPP2
-arma::mat astleCPP2(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> denom);
-RcppExport SEXP _statgenGWAS_astleCPP2(SEXP xSEXP, SEXP denomSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::NumericVector> >::type denom(denomSEXP);
-    rcpp_result_gen = Rcpp::wrap(astleCPP2(x, denom));
-    return rcpp_result_gen;
-END_RCPP
-}
 // astleCPP
 arma::mat astleCPP(arma::mat x, Rcpp::Nullable<Rcpp::NumericVector> MAF, Rcpp::Nullable<Rcpp::NumericVector> denom);
 RcppExport SEXP _statgenGWAS_astleCPP(SEXP xSEXP, SEXP MAFSEXP, SEXP denomSEXP) {
@@ -208,7 +196,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_statgenGWAS_codeCharMarkers", (DL_FUNC) &_statgenGWAS_codeCharMarkers, 4},
     {"_statgenGWAS_fastGLSCPP", (DL_FUNC) &_statgenGWAS_fastGLSCPP, 5},
     {"_statgenGWAS_getThr", (DL_FUNC) &_statgenGWAS_getThr, 1},
-    {"_statgenGWAS_astleCPP2", (DL_FUNC) &_statgenGWAS_astleCPP2, 2},
     {"_statgenGWAS_astleCPP", (DL_FUNC) &_statgenGWAS_astleCPP, 3},
     {"_statgenGWAS_IBSCPP", (DL_FUNC) &_statgenGWAS_IBSCPP, 3},
     {"_statgenGWAS_vanRadenCPP", (DL_FUNC) &_statgenGWAS_vanRadenCPP, 3},
