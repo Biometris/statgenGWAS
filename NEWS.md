@@ -1,3 +1,8 @@
+# statgenGWAS 1.0.9
+
+* The kinship function now has an argument MAF allowing for excluding SNPs with a low minor allele frequency from the calculations.
+* Small change in tests to accomodate future ggplot2 release.
+
 # statgenGWAS 1.0.8
 
 * A function readPlink is added that reads file in PLINK format and converts them directly to a gData object.
