@@ -13,7 +13,7 @@ optionally remove duplicate SNPs.
 optionally impute missing values.
 repeat steps 5. and 6. if missing values are imputed.
 
-"><title>Code and impute markers — codeMarkers • statgenGWAS</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Code and impute markers — codeMarkers"><meta property="og:description" content="codeMarkers codes markers in a gData object and optionally
+"><title>Code and impute markers — codeMarkers • statgenGWAS</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Code and impute markers — codeMarkers"><meta property="og:description" content="codeMarkers codes markers in a gData object and optionally
 performs imputation of missing values as well.
 The function performs the following steps:
 replace strings in naStrings by NA.
@@ -38,7 +38,7 @@ repeat steps 5. and 6. if missing values are imputed.
     
     <a class="navbar-brand me-2" href="../index.html">statgenGWAS</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.9</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,21 +120,21 @@ The function performs the following steps:<br></p><ol><li><p>replace strings in 
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">codeMarkers</span><span class="op">(</span>
-  <span class="va">gData</span>,
-  refAll <span class="op">=</span> <span class="st">"minor"</span>,
-  nMissGeno <span class="op">=</span> <span class="fl">1</span>,
-  nMiss <span class="op">=</span> <span class="fl">1</span>,
-  MAF <span class="op">=</span> <span class="cn">NULL</span>,
-  MAC <span class="op">=</span> <span class="cn">NULL</span>,
-  removeDuplicates <span class="op">=</span> <span class="cn">TRUE</span>,
-  keep <span class="op">=</span> <span class="cn">NULL</span>,
-  impute <span class="op">=</span> <span class="cn">TRUE</span>,
-  imputeType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"random"</span>, <span class="st">"fixed"</span>, <span class="st">"beagle"</span><span class="op">)</span>,
-  fixedValue <span class="op">=</span> <span class="cn">NULL</span>,
-  naStrings <span class="op">=</span> <span class="cn">NA</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codeMarkers</span><span class="op">(</span></span>
+<span>  <span class="va">gData</span>,</span>
+<span>  refAll <span class="op">=</span> <span class="st">"minor"</span>,</span>
+<span>  nMissGeno <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  nMiss <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  MAF <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  MAC <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  removeDuplicates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  keep <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  impute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  imputeType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"random"</span>, <span class="st">"fixed"</span>, <span class="st">"beagle"</span><span class="op">)</span>,</span>
+<span>  fixedValue <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  naStrings <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -142,6 +142,8 @@ The function performs the following steps:<br></p><ol><li><p>replace strings in 
     <dl><dt>gData</dt>
 <dd><p>An object of class <code>gData</code> containing at least
 <code>markers</code>.</p></dd>
+
+
 <dt>refAll</dt>
 <dd><p>A character string indicating the reference allele used when
 recoding markers.<br>
@@ -149,29 +151,45 @@ If "minor", then the recoding is done using the minor allele as reference
 allele. Alternatively a single character can be supplied as a reference
 allele for the whole set of SNPs, or a character vector with a reference
 allele per SNP.</p></dd>
+
+
 <dt>nMissGeno</dt>
 <dd><p>A numerical value between 0 and 1. Genotypes with a
 fraction of missing values higher than <code>nMissGeno</code> will be removed.
 Genotypes with only missing values will always be removed.</p></dd>
+
+
 <dt>nMiss</dt>
 <dd><p>A numerical value between 0 and 1. SNPs with a fraction of
 missing values higher than <code>nMiss</code> will be removed. SNPs with only
 missing values will always be removed.</p></dd>
+
+
 <dt>MAF</dt>
 <dd><p>A numerical value between 0 and 1. SNPs with a Minor Allele
 Frequency (MAF) below this value will be removed. Only one of <code>MAF</code>
 and <code>MAC</code> may be specified.</p></dd>
+
+
 <dt>MAC</dt>
 <dd><p>A numerical value. SNPs with Minor Allele Count (MAC) below this
 value will be removed. Only one of <code>MAF</code> and <code>MAC</code> may be
 specified.</p></dd>
+
+
 <dt>removeDuplicates</dt>
 <dd><p>Should duplicate SNPs be removed?</p></dd>
+
+
 <dt>keep</dt>
 <dd><p>A vector of SNPs that should never be removed in the whole
 process.</p></dd>
+
+
 <dt>impute</dt>
 <dd><p>Should imputation of missing values be done?</p></dd>
+
+
 <dt>imputeType</dt>
 <dd><p>A character string indicating what kind of imputation of
 values should be done.<br></p><ul><li><p>fixed - missing values will be replaced by a given fixed value.</p></li>
@@ -181,17 +199,26 @@ using allele frequencies per SNP.</p></li>
 5.2. Beagle only accepts integers as map positions. If you use this option,
 please cite the original papers in your publication (see references).</p></li>
 </ul></dd>
+
+
 <dt>fixedValue</dt>
 <dd><p>A numerical value used for replacing missing values in
 case <code>inputType</code> is fixed.</p></dd>
+
+
 <dt>naStrings</dt>
 <dd><p>A character vector of strings to be treated as NA.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Should a summary of the performed steps be printed?</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A copy of the input <code>gData</code> object with markers replaced by
+    
+
+<p>A copy of the input <code>gData</code> object with markers replaced by
 coded and imputed markers.</p>
     </div>
     <div class="section level2">
@@ -199,42 +226,42 @@ coded and imputed markers.</p>
     <p>S R Browning and B L Browning (2007) Rapid and accurate haplotype
 phasing and missing data inference for whole genome association studies by
 use of localized haplotype clustering. Am J Hum Genet 81:1084-1097.
-doi: <a href="https://doi.org/10.1086/521987" class="external-link">10.1086/521987</a></p>
+<a href="https://doi.org/10.1086/521987" class="external-link">doi:10.1086/521987</a></p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Create markers</span></span>
-<span class="r-in"><span class="va">markers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in"><span class="st">"AA"</span>,   <span class="st">"AB"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BA"</span>,   <span class="st">"AB"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span>
-<span class="r-in"><span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span>
-<span class="r-in"><span class="st">"AA"</span>,   <span class="st">"BA"</span>,   <span class="st">"AB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AB"</span>,   <span class="st">"AB"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span>
-<span class="r-in"><span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span>
-<span class="r-in"><span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,  <span class="st">"AB"</span>, <span class="st">"AA"</span>,</span>
-<span class="r-in"><span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,    <span class="cn">NA</span>,    <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span>
-<span class="r-in"><span class="st">"AB"</span>,   <span class="st">"AB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="cn">NA</span>,  <span class="st">"AB"</span>,</span>
-<span class="r-in"><span class="st">"AA"</span>,   <span class="st">"AA"</span>,    <span class="cn">NA</span>,    <span class="st">"BB"</span>,    <span class="cn">NA</span>,    <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,  <span class="st">"AA"</span>, <span class="st">"AA"</span>,</span>
-<span class="r-in"><span class="st">"AA"</span>,    <span class="cn">NA</span>,     <span class="cn">NA</span>,    <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,  <span class="st">"AA"</span>, <span class="st">"AA"</span>,</span>
-<span class="r-in"><span class="st">"AA"</span>,    <span class="cn">NA</span>,    <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span><span class="op">)</span>,</span>
-<span class="r-in">ncol <span class="op">=</span> <span class="fl">10</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"IND"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>,</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"SNP"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## create object of class 'gData'.</span></span>
-<span class="r-in"><span class="va">gData</span> <span class="op">&lt;-</span> <span class="fu"><a href="gData.html">createGData</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">markers</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Code markers by minor allele, no imputation.</span></span>
-<span class="r-in"><span class="va">gDataCoded1</span> <span class="op">&lt;-</span> <span class="fu">codeMarkers</span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gData</span>, impute <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Code markers by reference alleles, impute missings by fixed value.</span></span>
-<span class="r-in"><span class="va">gDataCoded2</span> <span class="op">&lt;-</span> <span class="fu">codeMarkers</span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gData</span>,</span>
-<span class="r-in">                           refAll <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, times <span class="op">=</span>  <span class="fl">5</span><span class="op">)</span>,</span>
-<span class="r-in">                           impute <span class="op">=</span> <span class="cn">TRUE</span>, imputeType <span class="op">=</span> <span class="st">"fixed"</span>,</span>
-<span class="r-in">                           fixedValue <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Code markers by minor allele, impute by random value.</span></span>
-<span class="r-in"><span class="va">gDataCoded3</span> <span class="op">&lt;-</span> <span class="fu">codeMarkers</span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gData</span>, impute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">                           imputeType <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Create markers</span></span></span>
+<span class="r-in"><span><span class="va">markers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,   <span class="st">"AB"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BA"</span>,   <span class="st">"AB"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,   <span class="st">"BA"</span>,   <span class="st">"AB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AB"</span>,   <span class="st">"AB"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,  <span class="st">"AB"</span>, <span class="st">"AA"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,    <span class="cn">NA</span>,    <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AB"</span>,   <span class="st">"AB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="cn">NA</span>,  <span class="st">"AB"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,   <span class="st">"AA"</span>,    <span class="cn">NA</span>,    <span class="st">"BB"</span>,    <span class="cn">NA</span>,    <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,  <span class="st">"AA"</span>, <span class="st">"AA"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,    <span class="cn">NA</span>,     <span class="cn">NA</span>,    <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,  <span class="st">"AA"</span>, <span class="st">"AA"</span>,</span></span>
+<span class="r-in"><span><span class="st">"AA"</span>,    <span class="cn">NA</span>,    <span class="st">"AA"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"BB"</span>,   <span class="st">"AA"</span>,   <span class="st">"AA"</span>,   <span class="cn">NA</span>,  <span class="st">"AA"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>ncol <span class="op">=</span> <span class="fl">10</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"IND"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"SNP"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## create object of class 'gData'.</span></span></span>
+<span class="r-in"><span><span class="va">gData</span> <span class="op">&lt;-</span> <span class="fu"><a href="gData.html">createGData</a></span><span class="op">(</span>geno <span class="op">=</span> <span class="va">markers</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Code markers by minor allele, no imputation.</span></span></span>
+<span class="r-in"><span><span class="va">gDataCoded1</span> <span class="op">&lt;-</span> <span class="fu">codeMarkers</span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gData</span>, impute <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Code markers by reference alleles, impute missings by fixed value.</span></span></span>
+<span class="r-in"><span><span class="va">gDataCoded2</span> <span class="op">&lt;-</span> <span class="fu">codeMarkers</span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gData</span>,</span></span>
+<span class="r-in"><span>                           refAll <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, times <span class="op">=</span>  <span class="fl">5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                           impute <span class="op">=</span> <span class="cn">TRUE</span>, imputeType <span class="op">=</span> <span class="st">"fixed"</span>,</span></span>
+<span class="r-in"><span>                           fixedValue <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Code markers by minor allele, impute by random value.</span></span></span>
+<span class="r-in"><span><span class="va">gDataCoded3</span> <span class="op">&lt;-</span> <span class="fu">codeMarkers</span><span class="op">(</span>gData <span class="op">=</span> <span class="va">gData</span>, impute <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                           imputeType <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -246,7 +273,7 @@ doi: <a href="https://doi.org/10.1086/521987" class="external-link">10.1086/5219
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer></div>
