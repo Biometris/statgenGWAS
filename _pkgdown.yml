@@ -47,7 +47,7 @@ reference:
   - summary.gData
   - plot.gData
   - kinship
-  - readPlink
+  - readPLINK
 - title: Single trait GWAS
 - contents:
   - runSingleTraitGwas

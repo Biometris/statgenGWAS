@@ -19,3 +19,4 @@ ci
 .editorconfig
 ^CRAN-RELEASE$
 testScripts
+^CRAN-SUBMISSION$
