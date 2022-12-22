@@ -35,7 +35,8 @@ qqPlot <- function(pValues,
   ## Create a data.frame used as input for ggplot.
   plotDat <- data.frame(expected, observed)
   p <- ggplot2::ggplot(plotDat, 
-                       ggplot2::aes_string(x = "expected", y = "observed")) +
+                       ggplot2::aes(x = .data[["expected"]], 
+                                    y = .data[["observed"]])) +
     ggplot2::geom_point() +
     ggplot2::geom_line() +
     ggplot2::geom_abline(slope = 1, intercept = 0, color = "blue") +

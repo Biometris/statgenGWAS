@@ -89,7 +89,7 @@ manhattanPlot <- function(xValues,
     plotDat
   } else {
     plotDat[-c(xSig, xEffects),  ]
-  }, ggplot2::aes_string(x = "x", y = "y", color = "chr")) +
+  }, ggplot2::aes(x = .data[["x"]], y = .data[["y"]], color = .data[["chr"]])) +
     ggplot2::scale_y_continuous(limits = c(0, yMax),
                                 expand = c(0, 0, 0.1, 0)) +
     ggplot2::scale_x_continuous(breaks = xMarks, labels = chrs, 

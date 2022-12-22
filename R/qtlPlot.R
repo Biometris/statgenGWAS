@@ -159,7 +159,7 @@ qtlPlot <- function(dat,
                    panel.grid.major.x = 
                      ggplot2::element_line(color = ifelse(printVertGrid,
                                                           "white", "gray")),
-                   panel.grid.major.y = ggplot2::element_line(color = "white"),
+                                                          panel.grid.major.y = ggplot2::element_line(color = "white"),
                    panel.grid.minor = ggplot2::element_blank(),
                    plot.title = ggplot2::element_text(hjust = 0.5),
                    axis.ticks = ggplot2::element_blank(),
@@ -179,10 +179,11 @@ qtlPlot <- function(dat,
   ## Point size proportional to allelic effect.
   ## Point color depends on the effect direction.
   p <- ggplot2::ggplot(data = plotDat,
-                       ggplot2::aes_string(x = "pos", 
-                                           y = "reorder(trait, -sort)", 
-                                           size = "abs(eff)",
-                                           color = "factor(color)")) +
+                       ggplot2::aes(x = .data[["pos"]], 
+                                    y = reorder(.data[["trait"]], 
+                                                -.data[["sort"]]),
+                                    size = abs(.data[["eff"]]),
+                                    color = factor(.data[["color"]]))) +
     # add vertical lines at the bin positions
     ggplot2::geom_vline(ggplot2::aes_(xintercept = ~pos), data = binPositions,
                         linetype = 1, color = "white") +

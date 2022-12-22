@@ -36,14 +36,16 @@ geneticMapPlot <- function(map,
     highlight[["name"]] <- paste("\u2190", highlight[["name"]])
   }
   p <- ggplot2::ggplot(data = map,
-                       ggplot2::aes_string(x = "chr", y = "pos")) +
+                       ggplot2::aes(x = .data[["chr"]], y = .data[["pos"]])) +
     ggplot2::geom_segment(data = chrLen,
-                          ggplot2::aes_string(x = "chr", y = "min", 
-                                              yend = "max", xend = "chr"),
+                          ggplot2::aes(y = .data[["min"]], 
+                                       xend = .data[["chr"]], 
+                                       yend = .data[["max"]]),
                           lineend = "round", size = 8, color = "grey90") +
     ggplot2::geom_segment(data = chrLen,
-                          ggplot2::aes_string(x = "chr", y = "min", 
-                                              yend = "max", xend = "chr")) +
+                          ggplot2::aes(y = .data[["min"]],
+                                       xend = .data[["chr"]], 
+                                       yend = .data[["max"]])) +
     ggplot2::geom_point(pch = "_", size = 4) +
     ggplot2::labs(title = title, y = "Position", x = "Chromosome") +
     ggplot2::scale_y_reverse() +
@@ -57,8 +59,7 @@ geneticMapPlot <- function(map,
     p <- p +
       ggplot2::geom_point(data = highlight, color = "red", pch = "_", size = 5) +
       ggplot2::geom_text(data = highlight,
-                         ggplot2::aes_string(x = "chr", y = "pos", 
-                                             label = "name"),
+                         ggplot2::aes(label = .data[["name"]]),
                          color = "red", size = 2, nudge_x = 0.4)
   }
   if (output) {
