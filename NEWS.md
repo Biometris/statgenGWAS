@@ -1,4 +1,4 @@
-# statgenGWAS 1.0.10
+# statgenGWAS 1.0.9.9000
 
 * Functions no longer rely on soft-deprecated ggplot2 functions.
 
