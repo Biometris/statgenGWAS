@@ -8,8 +8,6 @@ on:
 
 name: test-coverage
 
-name: test-coverage
-
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
