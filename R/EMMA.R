@@ -45,7 +45,7 @@ EMMA <- function(dat,
                  uLim = 10,
                  eps = .Machine$double.eps ^ 0.25) {
   ## Remove data with missings in trait or any of the covars.
-  nonMiss <- dat[!is.na(dat[trait]), "genotype"]
+  nonMiss <- dat[!is.na(dat[[trait]]), "genotype", drop = TRUE]
   nonMissId <- which(!is.na(dat[trait]))
   if (!is.null(covar)) {
     nonMissCov <- rownames(covar)[rowSums(is.na(covar)) == 0]
@@ -53,7 +53,7 @@ EMMA <- function(dat,
     nonMissId <- intersect(nonMissId, which(dat[["genotype"]] %in% nonMissCov))
   }
   K <- K[nonMiss, nonMiss]
-  y <- dat[nonMissId, trait]
+  y <- dat[nonMissId, trait, drop = TRUE]
   ## Define intercept.
   X <- matrix(data = 1, nrow = length(nonMiss), ncol = 1)
   if (!is.null(covar)) {

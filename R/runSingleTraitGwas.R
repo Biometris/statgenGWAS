@@ -342,7 +342,7 @@ runSingleTraitGwas <- function(gData,
       varCompTr[[trait]] <- vc$varComp
       vcovMatrix <- vc$vcovMatrix
       ## Define single column matrix with trait non missing values.
-      y <- phTrTr[which(phTrTr$genotype %in% nonMiss), trait]
+      y <- phTrTr[which(phTrTr$genotype %in% nonMiss), trait, drop = TRUE]
       ## Set up a data.table for storing results containing map info and
       ## allele frequencies.
       GWAResult <- data.table::data.table(trait = trait, snp = rownames(mapRed),
