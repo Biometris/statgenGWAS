@@ -500,8 +500,10 @@ print.summary.gData <- function(x,
     cat("\tNumber of markers:", x$markerSum$nMarkers, "\n")
     cat("\tNumber of genotypes:", x$markerSum$nGeno, "\n")
     cat("\tContent:\n")
-    cat("\t", names(x$markerSum$markerContent), "\n")
-    cat("\t", x$markerSum$markerContent, "\n\n")
+    ## A small workaround to get a nicer alignment of the headers.
+    markerContPrint <- capture.output(print(x$markerSum$markerContent))
+    cat("\t", markerContPrint[2], "\n")
+    cat("\t", markerContPrint[3], "\n\n")
   }
   if (!is.null(x$phenoSum)) {
     cat("pheno\n")
