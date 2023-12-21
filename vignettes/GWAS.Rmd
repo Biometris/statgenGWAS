@@ -64,12 +64,7 @@ The data.frame **map** is used to describe the physical positions of the markers
 
 ### Marker matrix
 
-The marker matrix is stored in the matrix **marker** within the gData object. The column names should be the names of the markers and the row names the names of the genotypes. Markers can either be coded as character strings or as numerical values. In the former case, before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be do using the function **_codeMarkers_**. 
-
-
-enforce consistency between genotypic and phenotypic data. 
-
-
+The marker matrix is stored in the matrix **marker** within the gData object. The column names should be the names of the markers and the row names the names of the genotypes. Markers can either be coded as character strings or as numerical values. In the former case, before performing any analysis, the marker matrix has to be converted to a numerical matrix. This can be done using the function **_codeMarkers_**. 
 
 #### Phenotypic data
 
@@ -124,7 +119,8 @@ gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap)
 ```
 
 The next step involves adding phenotypic data to the gData object just created. dropsPheno contains genotypic means for 28 trials. To be able to run a GWAS analysis per trial the data has to be added as a list of 28 data.frames. These data.frames should have "genotype" as their first column and may only contain traits after that. Other columns need to be dropped.    
-The phenotypic data can be added to *gDataDrops* using the same function that was used for creating the object. Adding an argument `gData` to the function call will add new data to an existing gData object. If gDataDrops would have been non-empty, the phenotypic data already present would be overwritten.
+The phenotypic data can be added to *gDataDrops* using the same function that was used for creating the object. Adding an argument `gData` to the function call will add new data to an existing gData object. Any phenotypic data already present will be overwritten.
+
 ```{r addPheno}
 ## Rename Variety_ID to genotype.
 colnames(dropsPheno)[colnames(dropsPheno) == "Variety_ID"] <- "genotype"
@@ -140,6 +136,7 @@ gDataDrops <- createGData(gData = gDataDrops, pheno = dropsPhenoList)
 Note that if the phenotypic data consists of only one trial/experiment, it can be added as a single data.frame without first converting it to a list. In this case createGData will convert the input to a list with one item.
 
 To get an idea of the contents of the data a summary of the gData object can be made. This will give an overview of the content of the map and markers and also print a summary per trait per trial. Since there are 28 trials and 8 traits in gDataDrops giving a very large summary, the output is restricted here to one trial, Mur13W, using the `trials` parameter of the summary function.
+
 ```{r sumGData}
 ## Summarize gDataDrops.
 summary(gDataDrops, trials = "Mur13W")
@@ -163,14 +160,16 @@ plot(gDataDrops, highlight = dropsMap[20000, ])
 ### Recoding and cleaning of markers
 
 Marker data has to be numerical and without missing values in order to do GWAS analysis. This can be achieved using the *codeMarkers* function. The marker data available for the DROPS project has already been converted from A/T/C/G to 0/1/2. The *codeMarkers* function in the package can still be used to further clean the markers, e.g. by removing the duplicate SNPs.
+
 ```{r removeDupMarkers}
 ## Remove duplicate SNPs from gDataDrops.
 gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE) 
 ```
 
-Note that duplicate SNPs are removed at random. To get reproducible results make sure to set a seed.
+Note that in case of duplicate SNPs only one of them is used - this is picked at random. To get reproducible results ake sure to set a seed for the random number generator.
 
-To demonstrate the options of the *codeMarkers* function, we randomly replace 1% of the values in the marker matrix by NA.
+Since missing values are not uncommon in real data, the *codeMarkers* function has several imputation options. To demonstrate these, we randomly replace 1% of the values in the marker matrix by NA.
+
 ```{r addMissings}
 ## Copy gData object.
 gDataDropsMiss <- gDataDrops
@@ -180,14 +179,14 @@ nVal <- nrow(gDataDropsMiss$markers) * ncol(gDataDropsMiss$markers)
 gDataDropsMiss$markers[sample(x = 1:nVal, size = nVal / 100)] <- NA
 ```
 
-To re-impute the missing values added above, *codeMarkers* has to be run with `impute = TRUE`. Then the type of imputation can be chosen setting the parameter `imputeType`:
+To impute the missing values added above, *codeMarkers* has to be run with `impute = TRUE`. Then the type of imputation can be chosen setting the parameter `imputeType`:
 
 * `imputeType = "fixed"`: Impute all missing values by a single fixed value. Use the parameter `fixedValue` to set this value. 
 * `imputeType = "random"`: Impute missing values with a random value based on the non-missing values for a SNP. 
 * `imputeType = "beagle"`: Impute missing values using the independent beagle software [@Browning2007]. Version 4.1 of this software is included in the package and is called with its default settings. It requires java to run. Since running beagle takes a long time for the current data, the call to beagle is only shown here but not run.    
  
 Before imputation, genotypes with a high proportion of missing values in the marker matrix can be removed by setting the parameter nMissGeno. Setting it to 0.1 will remove all genotypes with a proportion of missing values higher than 0.1. In a similar way SNPs with a high proportion of missing values can be removed setting nMiss. The default value for both parameters is 1, so genotypes and SNPs with only missing values are always removed.  
-The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF) lower than the specified MAF. As with removing duplicate SNPs this will be done both before and after imputation.
+The parameter MAF can be used to remove SNPs with a Minor Allele Frequency (MAF) lower than the specified MAF. After imputation, the markers are again scanned for duplicate SNPs and SNPs with a MAF lower than the threshold - if these are found, they will be removed as described earlier.
 
 ```{r imputeMissings}
 ## Impute missing values with random value.
