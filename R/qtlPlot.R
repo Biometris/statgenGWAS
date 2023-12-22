@@ -156,10 +156,8 @@ qtlPlot <- function(dat,
   ## Create theme for plot
   qtlPlotTheme <- 
     ggplot2::theme(plot.background = ggplot2::element_blank(),
-                   panel.grid.major.x = 
-                     ggplot2::element_line(color = ifelse(printVertGrid,
-                                                          "white", "gray")),
-                                                          panel.grid.major.y = ggplot2::element_line(color = "white"),
+                   panel.grid.major.x = ggplot2::element_blank(),
+                   panel.grid.major.y = ggplot2::element_line(color = "white"),
                    panel.grid.minor = ggplot2::element_blank(),
                    plot.title = ggplot2::element_text(hjust = 0.5),
                    axis.ticks = ggplot2::element_blank(),
@@ -174,6 +172,10 @@ qtlPlot <- function(dat,
                    strip.text = ggplot2::element_text(),
                    strip.text.x = ggplot2::element_text(size = 14),
                    strip.text.y = ggplot2::element_text(size = 0))
+  if (printVertGrid) {
+    qtlPlotTheme <- qtlPlotTheme + 
+      ggplot2::theme(panel.grid.major.x = ggplot2::element_line(color = "white"))
+  }
   ## Create the plot object
   ## Y data is sorted in reverse order because of the way ggplot plots.
   ## Point size proportional to allelic effect.
