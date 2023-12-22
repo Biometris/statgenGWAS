@@ -486,7 +486,8 @@ summary.gData <- function(object,
 #' @param x An object of class \code{summary.gData}.
 #' @param ... Not used.
 #'
-#' @noRd
+#' @importFrom utils capture.output
+#' @noRd 
 #' @export
 print.summary.gData <- function(x, 
                                 ...) {
