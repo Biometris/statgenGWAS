@@ -1,5 +1,6 @@
 # statgenGWAS 1.0.9.9000
 
+* The QTL plot now has a legend explaining the meaning of the colors used.
 * Functions no longer rely on soft-deprecated ggplot2 functions.
 * The support for tibbles with phenotypic data is improved.
 
