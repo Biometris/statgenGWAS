@@ -66,7 +66,12 @@ EMMA <- function(dat,
     return(list(varcomp = c(0, 0), K = K))
   }
   resEmma <- emmaCPP(y = y, k = K, x = X, eps = .Machine$double.eps ^ 0.25)
+  ## Assure that vcovMatrix is positive definite.
   vcovMatrix <- resEmma$vcovMatrix
+  if (any(eigen(vcovMatrix, symmetric = TRUE,
+                only.values = TRUE)$values <= 1e-8)) {
+    vcovMatrix <- nearestPD(vcovMatrix)
+  }
   rownames(vcovMatrix) <- colnames(vcovMatrix) <- rownames(K)
   return(list(varComp = c(Vg = resEmma$maxVg, Ve = resEmma$maxVe),
               vcovMatrix = vcovMatrix))
