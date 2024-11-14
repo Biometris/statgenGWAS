@@ -1,14 +1,14 @@
 Release triggered by test issue with next ggplot2 version.
 
 ## Test environments
-* local Windows 10 install, R 4.2.1
+* local Windows 10 install, R 4.4.2
 * winbuilder
 * macbuilder
-* R-hub (devel and release)
+* ubuntu (github actions)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 note
 
 installed size is  8.9Mb
   sub-directories of 1Mb or more:
