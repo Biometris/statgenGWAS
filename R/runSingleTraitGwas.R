@@ -116,7 +116,7 @@
 #' the parallel part of the algorithm. If \code{NULL} the number of cores used
 #' will be equal to the number of cores available on the machine - 1.
 #'
-#' @return An object of class \code{\link{GWAS}}.
+#' @return An object of class \code{GWAS}.
 #'
 #' @references Astle, William, and David J. Balding. 2009. Population Structure
 #' and Cryptic Relatedness in Genetic Association Studies. Statistical Science 

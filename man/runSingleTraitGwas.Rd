@@ -127,7 +127,7 @@ the parallel part of the algorithm. If \code{NULL} the number of cores used
 will be equal to the number of cores available on the machine - 1.}
 }
 \value{
-An object of class \code{\link{GWAS}}.
+An object of class \code{GWAS}.
 }
 \description{
 \code{runSingleTraitGwas} performs a single-trait Genome Wide Association
