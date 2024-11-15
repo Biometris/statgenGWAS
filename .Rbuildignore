@@ -12,3 +12,4 @@
 .gitlab-ci.yml
 _pkgdown.yml
 README.Rmd
+^CRAN-SUBMISSION$
