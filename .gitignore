@@ -10,4 +10,3 @@ autom4te.cache
 src-i386
 testScripts
 docs/
-configure.ac
