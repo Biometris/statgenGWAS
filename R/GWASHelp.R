@@ -115,7 +115,7 @@ estVarCompNR <- function(dat,
 #' needed in the general algorithm so to not redo things unnecessarily it is
 #' not redone here.
 #'
-#' @return A numerical vector of markers to be exluded from the GWAS scan.
+#' @returns A numerical vector of markers to be exluded from the GWAS scan.
 #'
 #' @noRd
 #' @keywords internal
@@ -153,7 +153,7 @@ exclMarkers <- function(snpCov,
 #' @param nObs An integer > 0 indicating the number of individuals.
 #' @param nCov An integer > 0 indicating the number of covariables.
 #'
-#' @return A list with two components:
+#' @returns A list with two components:
 #' \itemize{
 #' \item{\code{pValues} a vector of p-values corrected by the genomic inflation
 #' factor, with the same NA's as the input}.
@@ -318,7 +318,7 @@ extrSignSnpsFDR <- function(GWAResult,
 #' @param minR2 A numerical value between 0 and 1 indicating the minimum
 #' LD (in terms of R^2) that the SNPs should have with the reference SNP.
 #'
-#' @return An integer vector with indices of the SNPs that are within the
+#' @returns An integer vector with indices of the SNPs that are within the
 #' given \code{sizeInclRegion} and have a minimum LD with the reference SNP.
 #' 
 #' @noRd

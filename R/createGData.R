@@ -38,7 +38,7 @@
 #' @param covar A data.frame with extra covariates per genotype. Genotypes
 #' should be in the rows.
 #'
-#' @return An object of class \code{gData} with the following components:
+#' @returns An object of class \code{gData} with the following components:
 #' \item{\code{map}}{a data.frame containing map data. Map is sorted by
 #' chromosome and position.}
 #' \item{\code{markers}}{a matrix containing marker information.}
@@ -428,7 +428,7 @@ createGData <- function(gData = NULL,
 #' be either numeric indices or character names of list items in \code{pheno}.
 #' If \code{NULL}, all trials are included.
 #' 
-#' @return A list with a most four components:
+#' @returns A list with a most four components:
 #' \describe{
 #' \item{mapSum}{A list with number of markers and number of chromosomes in 
 #' the map.}
@@ -552,7 +552,7 @@ print.summary.gData <- function(x,
 #' @param output Should the plot be output to the current device? If
 #' \code{FALSE}, only a ggplot object is invisibly returned.
 #' 
-#' @return An object of class \code{ggplot} is invisibly returned.
+#' @returns An object of class \code{ggplot} is invisibly returned.
 #'  
 #' @examples
 #' set.seed(1234)

@@ -15,7 +15,7 @@
 #' \code{bed} is used with its file extension replaced by fam.
 #' @param ... Further arguments passed to \code{\link[snpStats]{read.plink}}.
 #' 
-#' @return An object of class \code{gData}.
+#' @returns An object of class \code{gData}.
 #' 
 #' @importFrom methods as
 #' @export

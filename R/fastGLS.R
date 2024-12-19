@@ -14,7 +14,7 @@
 #' @param covs An n x c matrix of covariates (NOT including an intercept).
 #' No missing values allowed.
 #'
-#' @return A data.table with the following columns:
+#' @returns A data.table with the following columns:
 #' \itemize{
 #' \item{\code{pValue} p-values for the GLS F-test}
 #' \item{\code{beta} effect sizes}

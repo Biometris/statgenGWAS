@@ -62,7 +62,7 @@ vanRadenCPP <- function(x, MAF = NULL, denom = NULL) {
 #' @param nPca An integer, the number of eigenvectors used for reducing the
 #' kinship matrix.
 #'
-#' @return The reduced kinship matrix
+#' @returns The reduced kinship matrix
 #'
 #' @noRd
 #' @keywords internal

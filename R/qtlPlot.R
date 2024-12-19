@@ -28,7 +28,7 @@
 #' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #' @param ... Further parameter.
 #'
-#' @return A ggplot object is returned and plotted on screen. Optionally the
+#' @returns A ggplot object is returned and plotted on screen. Optionally the
 #' plot is exported to pptx as well.
 #'
 #' @references Millet et al. (2016) Genome-wide analysis of yield in Europe:

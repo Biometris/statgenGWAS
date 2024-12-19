@@ -55,7 +55,7 @@
 #' @param naStrings A character vector of strings to be treated as NA.
 #' @param verbose Should a summary of the performed steps be printed?
 #'
-#' @return A copy of the input \code{gData} object with markers replaced by
+#' @returns A copy of the input \code{gData} object with markers replaced by
 #' coded and imputed markers.
 #'
 #' @references S R Browning and B L Browning (2007) Rapid and accurate haplotype

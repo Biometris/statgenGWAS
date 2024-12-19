@@ -26,7 +26,7 @@
 #' @param output Should the plot be output to the current device? If
 #' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #'
-#' @return A LOD-profile with LOD-scores per SNP. Markers declared significant
+#' @returns A LOD-profile with LOD-scores per SNP. Markers declared significant
 #' get a red dot, markers with a real effect get a blue dot. If both significant
 #' and real effects are given false positives get an orange dot, true negatives
 #' a yellow dot and true positives a green dot.

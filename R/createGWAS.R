@@ -24,7 +24,7 @@
 #' @param GWASInfo a list containing extra information concerning the GWAS
 #' analysis.
 #'
-#' @return An object of class GWAS, a list of the input items.
+#' @returns An object of class GWAS, a list of the input items.
 #'
 #' @seealso \code{\link{summary.GWAS}}, \code{\link{plot.GWAS}}
 #'

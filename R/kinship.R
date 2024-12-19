@@ -26,7 +26,7 @@
 #' markers are used regardless of their allele frequency. 
 #' @param denominator A numerical value. See details.
 #'
-#' @return An n x n kinship matrix.
+#' @returns An n x n kinship matrix.
 #'
 #' @references Astle, William, and David J. Balding. 2009. “Population Structure
 #' and Cryptic Relatedness in Genetic Association Studies.” Statistical Science

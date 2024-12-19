@@ -21,7 +21,7 @@
 #' @param eps A numerical value used as computational tolerance in the
 #' algorithm.
 #'
-#' @return A list with two components:
+#' @returns A list with two components:
 #' \itemize{
 #' \item{\code{varcomp} a vector of genetic variance Vg and residual variance
 #' Ve}
