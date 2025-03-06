@@ -1,4 +1,8 @@
-# statgenGWAS 1.0.9.9000
+# statgenGWAS 1.0.11
+ 
+* Random imputation is now done properly for marker matrices with values larger than 2.
+
+# statgenGWAS 1.0.10
 
 * The QTL plot now has a legend explaining the meaning of the colors used.
 * The support for tibbles and data.tables with phenotypic data is improved.
