@@ -27,8 +27,12 @@ estVarComp <- function(GLSMethod,
     EMMADat <- pheno[, c("genotype", trait)]
     ## Don't add rownames directly when creating data.frame because of 
     ## https://github.com/tidyverse/tibble/issues/1202
-    EMMACovar <- as.data.frame(pheno[covar])
-    rownames(EMMACovar) <- pheno[["genotype"]]
+    if (!is.null(covar)) {
+      EMMACovar <- as.data.frame(pheno[covar])
+      rownames(EMMACovar) <- pheno[["genotype"]]
+    } else {
+      EMMACovar <- NULL
+    }
     if (GLSMethod == "single") {
       remlObj <- EMMA(dat = EMMADat, trait = trait, covar = EMMACovar, K = K)
       ## Extract varComp and vcovMatrix
