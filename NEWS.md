@@ -1,6 +1,7 @@
 # statgenGWAS 1.0.11
  
 * Random imputation is now done properly for marker matrices with values larger than 2.
+* Estimating variance components using the NR algorithm no also works when replicated genotypes are used.
 
 # statgenGWAS 1.0.10
 

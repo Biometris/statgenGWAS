@@ -2848,7 +2848,7 @@ openmp_cflag=""
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for macOS" >&5
 printf %s "checking for macOS... " >&6; }
 RSysinfoName=$("${R_HOME}/bin/Rscript" --vanilla -e 'cat(Sys.info()["sysname"])')
-if test x"${RSysinfoName}" == x"Darwin"; then
+if test x"${RSysinfoName}" = x"Darwin"; then
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: found" >&5
 printf "%s\n" "found" >&6; }
    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: OpenMP unavailable and turned off." >&5
@@ -2863,7 +2863,7 @@ printf %s "checking for OpenMP... " >&6; }
    ## if R has -fopenmp we should be good
    allldflags=$(${R_HOME}/bin/R CMD config --ldflags)
    hasOpenMP=$(echo ${allldflags} | grep -- -fopenmp)
-   if test x"${hasOpenMP}" == x""; then
+   if test x"${hasOpenMP}" = x""; then
 	  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: missing" >&5
 printf "%s\n" "missing" >&6; }
 	  openmp_flag="-DARMA_DONT_USE_OPENMP"
