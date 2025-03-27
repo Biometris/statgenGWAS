@@ -117,7 +117,7 @@ summary.GWAS <- function(object,
     }
     for (trait in traitsTr) {
       cat("\tTrait:", trait, "\n\n")
-      if (substr(GWASInfo$call[[1]], 4, 4) == "S" &&
+      if (any(grepl("runSingle", GWASInfo$call[[1]])) &&
           !is.null(GWASInfo$GLSMethod) && GWASInfo$GLSMethod == "single") {
         ## Print mixed model info.
         cat("\t\tMixed model with only polygenic effects,",
@@ -397,7 +397,7 @@ plot.GWAS <- function(x,
       trait <- unique(GWAResult$trait)
     }
     if (length(trait) > 1) {
-      if (substr(as.character(x$GWASInfo$call)[1], 1, 9) == "runSingle") {
+      if (any(grepl("runSingle", x$GWASInfo$call[[1]]))) {
         stop("Trait not supplied but multiple traits detected in data.\n")
       } else {
         ## For multi trait GWAS p-values are the same for all traits.
