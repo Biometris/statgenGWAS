@@ -6,11 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Introduction to the statgenGWAS package • statgenGWAS</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to the statgenGWAS package">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><link href="../deps/KaTex-0.16.10/katex.min.css" rel="stylesheet">
+<script src="../deps/KaTex-0.16.10/katex.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to the statgenGWAS package">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -43,6 +44,7 @@
     <li><a class="external-link dropdown-item" href="https://biometris.github.io/statgenHTP">statgenHTP</a></li>
     <li><a class="external-link dropdown-item" href="https://biometris.github.io/statgenIBD">statgenIBD</a></li>
     <li><a class="external-link dropdown-item" href="https://biometris.github.io/statgenMPP">statgenMPP</a></li>
+    <li><a class="external-link dropdown-item" href="https://biometris.github.io/statgenQTLxT">statgenQTLxT</a></li>
     <li><a class="external-link dropdown-item" href="https://biometris.github.io/LMMsolver">LMMsolver</a></li>
   </ul>
 </li>
@@ -81,46 +83,24 @@ associations between genetic markers and phenotypic traits.</p>
 <div class="section level3">
 <h3 id="theoretical-background">Theoretical background<a class="anchor" aria-label="anchor" href="#theoretical-background"></a>
 </h3>
-<p>Suppose there are
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-measurements of a phenotype for
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
-genotypes. Then a very common linear mixed model for association mapping
-is
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>X</mi><mi>β</mi><mo>+</mo><mi>Z</mi><mi>u</mi><mo>+</mo><mi>e</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">y = X\beta + Zu + e,</annotation></semantics></math><br>
-where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
-is an
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \times 1</annotation></semantics></math>
-vector of observed phenotypes and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
-is an
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>q</mi></mrow><annotation encoding="application/x-tex">n \times q</annotation></semantics></math>
-design matrix for the fixed effects, including an intercept, covariates,
-and the SNP of interest.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
-is the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">q \times 1</annotation></semantics></math>
-vector of coefficients of these fixed effects, the last element
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mtext mathvariant="normal">SNP</mtext></msub><annotation encoding="application/x-tex">\beta_{\textrm{SNP}}</annotation></semantics></math>)
-being the SNP-effect of interest.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
-is the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">n \times t</annotation></semantics></math>
-incidence matrix assigning individuals to genotypes.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
-is the vector of genetic random effects, with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>u</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msubsup><mi>σ</mi><mi>g</mi><mn>2</mn></msubsup><mi>K</mi></mrow><annotation encoding="application/x-tex">var(u) = \sigma^2_g K</annotation></semantics></math>,
-where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
-is a marker-based relatedness matrix. Finally,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>e</mi><annotation encoding="application/x-tex">e</annotation></semantics></math>
-is a
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \times 1</annotation></semantics></math>
-vector of residual (non-genetic) errors, with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>ϵ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msubsup><mi>σ</mi><mi>e</mi><mn>2</mn></msubsup><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">var(\epsilon) = \sigma^2_e I_n</annotation></semantics></math>.
-For this model the phenotypic variance-covariance matrix is
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Σ</mi><mo>=</mo><msubsup><mi>σ</mi><mi>g</mi><mn>2</mn></msubsup><mi>Z</mi><mi>K</mi><msup><mi>Z</mi><mi>t</mi></msup><mo>+</mo><msubsup><mi>σ</mi><mi>e</mi><mn>2</mn></msubsup><msub><mi>I</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\Sigma = \sigma^2_g ZKZ^{t} + \sigma^2_e I_n</annotation></semantics></math>.</p>
+<p>Suppose there are <span class="math inline">n</span> measurements of
+a phenotype for <span class="math inline">t</span> genotypes. Then a
+very common linear mixed model for association mapping is <span class="math display">y = X\beta + Zu + e,</span><br>
+where <span class="math inline">y</span> is an <span class="math inline">n \times 1</span> vector of observed phenotypes and
+<span class="math inline">X</span> is an <span class="math inline">n
+\times q</span> design matrix for the fixed effects, including an
+intercept, covariates, and the SNP of interest. <span class="math inline">\beta</span> is the <span class="math inline">q
+\times 1</span> vector of coefficients of these fixed effects, the last
+element (<span class="math inline">\beta_{\textrm{SNP}}</span>) being
+the SNP-effect of interest. <span class="math inline">Z</span> is the
+<span class="math inline">n \times t</span> incidence matrix assigning
+individuals to genotypes. <span class="math inline">u</span> is the
+vector of genetic random effects, with <span class="math inline">var(u)
+= \sigma^2_g K</span>, where <span class="math inline">K</span> is a
+marker-based relatedness matrix. Finally, <span class="math inline">e</span> is a <span class="math inline">n \times
+1</span> vector of residual (non-genetic) errors, with <span class="math inline">var(\epsilon) = \sigma^2_e I_n</span>. For this
+model the phenotypic variance-covariance matrix is <span class="math inline">\Sigma = \sigma^2_g ZKZ^{t} + \sigma^2_e
+I_n</span>.</p>
 </div>
 <div class="section level3">
 <h3 id="application-in-the-package">Application in the package<a class="anchor" aria-label="anchor" href="#application-in-the-package"></a>
@@ -129,19 +109,12 @@ For this model the phenotypic variance-covariance matrix is
 <span class="citation">Kang et al. (<a href="#ref-Kang2010">2010</a>)</span> and related papers:</p>
 <ol style="list-style-type: decimal">
 <li>For the ‘empty’ model (i.e., without any SNP in the fixed effects),
-we obtain REML-estimates of the variance components
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mi>g</mi><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma^2_g</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mi>e</mi><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma^2_e</annotation></semantics></math>,
-which give an estimate
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>Σ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat \Sigma</annotation></semantics></math>
-of the variance-covariance matrix.</li>
-<li>Fixing
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>Σ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat \Sigma</annotation></semantics></math>,
-we use generalized least-squares (GLS) to test the null-hypothesis
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mtext mathvariant="normal">SNP</mtext></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\beta_{\textrm{SNP}} = 0</annotation></semantics></math>
-using an F-test, for each SNP in turn. The last step gives vectors of
-estimated effect-size and P-values for all SNPs.</li>
+we obtain REML-estimates of the variance components <span class="math inline">\sigma^2_g</span> and <span class="math inline">\sigma^2_e</span>, which give an estimate <span class="math inline">\hat \Sigma</span> of the variance-covariance
+matrix.</li>
+<li>Fixing <span class="math inline">\hat \Sigma</span>, we use
+generalized least-squares (GLS) to test the null-hypothesis <span class="math inline">\beta_{\textrm{SNP}} = 0</span> using an F-test, for
+each SNP in turn. The last step gives vectors of estimated effect-size
+and P-values for all SNPs.</li>
 </ol>
 <p>These steps are repeated for each combination of trial and trait for
 which the analysis is run.</p>
@@ -517,8 +490,7 @@ value</td>
 </tr>
 <tr class="even">
 <td align="left">LOD</td>
-<td align="left">LOD score for the SNP, defined as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mo>log</mo><mn>10</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mi>V</mi><mi>a</mi><mi>l</mi><mi>u</mi><mi>e</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">-\log_{10}(pValue)</annotation></semantics></math>
+<td align="left">LOD score for the SNP, defined as <span class="math inline">-\log_{10}(pValue)</span>
 </td>
 </tr>
 </tbody>
@@ -558,8 +530,8 @@ SNP”</td>
 <tr class="even">
 <td align="left">propSnpVar</td>
 <td align="left">proportion of the variance explained by the SNP,
-computed as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>β</mi><mtext mathvariant="normal">SNP</mtext><mn>2</mn></msubsup><mo>*</mo><mi>v</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">SNP</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mi>v</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">pheno</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\beta_{\textrm{SNP}}^2 * var(\textrm{SNP}) / var(\textrm{pheno})</annotation></semantics></math>
+computed as <span class="math inline">\beta_{\textrm{SNP}}^2 *
+var(\textrm{SNP}) / var(\textrm{pheno})</span>
 </td>
 </tr>
 </tbody>
@@ -640,27 +612,18 @@ GWASDrops, with a QQ-plot, Manhattan plot or QTL-plot.</p>
 <div class="section level4">
 <h4 id="qq-plots">QQ-plots<a class="anchor" aria-label="anchor" href="#qq-plots"></a>
 </h4>
-<p>A QQ-plot of the observed against the expected
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mo>log</mo><mn>10</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">-\log_{10}(p)</annotation></semantics></math>
-values can be made by setting <code>plotType = "qq"</code>. Most of the
-SNPs are expected to have no effect, resulting in P-values uniformly
-distributed on
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math>,
-and leading to the identity function
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">y=x</annotation></semantics></math>)
-on the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mo>log</mo><mn>10</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">-\log_{10}(p)</annotation></semantics></math>
-scale. As in the plot below, deviations from this line should only occur
-on the right side of the plot, for a small number of SNPs with an effect
-on the phenotype (and possibly SNPs in LD). There is
-<strong>inflation</strong> if the observed
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mo>log</mo><mn>10</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">-\log_{10}(p)</annotation></semantics></math>
-values are always above the line
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">y=x</annotation></semantics></math>,
-and (less common) <strong>deflation</strong> if they are always below
-this line. A QQ-plot therefore gives a first impression of the quality
-of the GWAS model: if for example
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mo>log</mo><mn>10</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">-\log_{10}(p)</annotation></semantics></math>
+<p>A QQ-plot of the observed against the expected <span class="math inline">-\log_{10}(p)</span> values can be made by setting
+<code>plotType = "qq"</code>. Most of the SNPs are expected to have no
+effect, resulting in P-values uniformly distributed on <span class="math inline">[0,1]</span>, and leading to the identity function
+(<span class="math inline">y=x</span>) on the <span class="math inline">-\log_{10}(p)</span> scale. As in the plot below,
+deviations from this line should only occur on the right side of the
+plot, for a small number of SNPs with an effect on the phenotype (and
+possibly SNPs in LD). There is <strong>inflation</strong> if the
+observed <span class="math inline">-\log_{10}(p)</span> values are
+always above the line <span class="math inline">y=x</span>, and (less
+common) <strong>deflation</strong> if they are always below this line. A
+QQ-plot therefore gives a first impression of the quality of the GWAS
+model: if for example <span class="math inline">-\log_{10}(p)</span>
 values are consistently too large (inflation), the correction for
 genetic relatedness may not be adequate.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -838,15 +801,10 @@ in the phenotypic data in the gData object.</p>
 computed by default using Bonferroni correction, with an alpha of 0.05.
 The alpha can be modified setting the option <em>alpha</em> when calling
 <em>runSingleTraitGwas</em>. Two other threshold types can be used: a
-fixed threshold (<code>thrType = "fixed"</code>) specifying the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mo>log</mo><mn>10</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">-\log_{10}(p)</annotation></semantics></math>
-(<em>LODThr</em>) value of the threshold, or a threshold that defines
-the n SNPs with the highest
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mo>log</mo><mn>10</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">-\log_{10}(p)</annotation></semantics></math>
-scores as significant SNPs. Set <code>thrType = "small"</code> together
-with <code>nSnpLOD = n</code> to do this. In the following example, we
-select all SNPs with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup></mrow><annotation encoding="application/x-tex">p &lt; 10^{-4}</annotation></semantics></math>.</p>
+fixed threshold (<code>thrType = "fixed"</code>) specifying the <span class="math inline">-\log_{10}(p)</span> (<em>LODThr</em>) value of the
+threshold, or a threshold that defines the n SNPs with the highest <span class="math inline">-\log_{10}(p)</span> scores as significant SNPs. Set
+<code>thrType = "small"</code> together with <code>nSnpLOD = n</code> to
+do this. In the following example, we select all SNPs with <span class="math inline">p &lt; 10^{-4}</span>.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span></span>
 <span><span class="co">## Use a fixed significance threshold of 4.</span></span>
@@ -866,22 +824,16 @@ control the rate of false discoveries as in <span class="citation">Brzyski et al
 <code>pThr</code>. Then clusters of SNPs are created using a two step
 iterative process in which SNPs with the lowest p-values are selected as
 cluster representatives. This SNP and all SNPs that have a correlation
-with this SNP of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>
-or higher (specified by the function parameter <code>rho</code>) will
-form a cluster. The selected SNPs are removed from the list and the
-procedure is repeated until no SNPs are left. At the end of this step,
-one has a list of clusters, with corresponding vector of p-values of the
-cluster representatives. Finally, to determine the number of significant
+with this SNP of <span class="math inline">\rho</span> or higher
+(specified by the function parameter <code>rho</code>) will form a
+cluster. The selected SNPs are removed from the list and the procedure
+is repeated until no SNPs are left. At the end of this step, one has a
+list of clusters, with corresponding vector of p-values of the cluster
+representatives. Finally, to determine the number of significant
 clusters, the first cluster is determined for which the p-value of the
-cluster representative is larger than
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>l</mi><mi>u</mi><mi>s</mi><mi>t</mi><mi>e</mi><msub><mi>r</mi><mrow><mi>n</mi><mi>u</mi><mi>m</mi><mi>b</mi><mi>e</mi><mi>r</mi></mrow></msub><mo>*</mo><mi>α</mi><mi>/</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">cluster_{number} * \alpha / m</annotation></semantics></math>,
-where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
-is the number of SNPs and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
-can be specified by the corresponding function parameter. All previous
-clusters are selected as significant.</p>
+cluster representative is larger than <span class="math inline">cluster_{number} * \alpha / m</span>, where <span class="math inline">m</span> is the number of SNPs and <span class="math inline">\alpha</span> can be specified by the corresponding
+function parameter. All previous clusters are selected as
+significant.</p>
 <p>Note that because of the way the significant SNPs are selected it is
 possible that a SNP with a lower p-Value than a significant SNP is not
 significant itself. This happens if that SNP is highly correlated to
@@ -1003,12 +955,9 @@ positive value. When doing so, SNPs that are within a distance of
 information in the map) are included in the signSnp data.table in the
 output. Only SNPs having sufficient linkage disequilibrium (LD) with the
 significant SNP are included. LD is measured in terms of the squared
-Pearson correlation
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math>).
-The minimum
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math>
-required to be included can be specified by setting
-<code>minR2</code>.</p>
+Pearson correlation (<span class="math inline">R^2</span>). The minimum
+<span class="math inline">R^2</span> required to be included can be
+specified by setting <code>minR2</code>.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Run single trait GWAS for trait 'grain.yield' for Mur13W.</span></span>
 <span><span class="co">## Include SNPs within 200000 centimorgan of significant SNPs with a minimum LD of 0.1.</span></span>
