@@ -1,5 +1,6 @@
 template:
   bootstrap: 5
+  math-rendering: katex
   
 home:
   title: An R package for fast GWAS
@@ -31,6 +32,8 @@ navbar:
           href: https://biometris.github.io/statgenIBD
         - text: "statgenMPP"
           href: https://biometris.github.io/statgenMPP
+        - text: "statgenQTLxT"
+          href: https://biometris.github.io/statgenQTLxT
         - text: "LMMsolver"
           href: https://biometris.github.io/LMMsolver
     - icon: fa-github fa-lg fab
