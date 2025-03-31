@@ -1,7 +1,7 @@
-Release triggered by test issue with next ggplot2 version.
+Release fixing CRAN check note.
 
 ## Test environments
-* local Windows 10 install, R 4.4.2
+* local Windows 11 install, R 4.4.3
 * winbuilder
 * macbuilder
 * ubuntu (github actions)
