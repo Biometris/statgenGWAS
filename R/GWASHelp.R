@@ -72,7 +72,31 @@ estVarComp <- function(GLSMethod,
         vcovMatrix[[which(chrs == chr)]] <- vcNR$vcovMatrix
       } # End loop over chromosomes.
     } # End GLSMethod multi.
-  } # End remlAlgo NR.
+  } else if (remlAlgo == "LMM") {
+    if (!is.null(covar)) {
+      ## Construct the formula for the fixed part of the model.
+      ## Define formula for fixed part. ` needed to accommodate -
+      ## in variable names.
+      fixed <- as.formula(paste0(trait," ~ `",
+                                 paste0(covar, collapse = "` + `"), "`"))
+    } else {
+      fixed <- as.formula(paste(trait, " ~ 1"))
+    }
+    if (GLSMethod == "single") {
+      vcNR <- estVarCompLMM(dat = pheno, fixed = fixed, K = K, nonMiss = nonMiss,
+                            nonMissRepId = nonMissRepId)
+      varComp <- vcNR$varComp
+      vcovMatrix <- vcNR$vcovMatrix
+    } else if (GLSMethod == "multi") {
+      for (chr in chrs) {
+        vcNR <- estVarCompLMM(dat = pheno, fixed = fixed, 
+                              K = K[[which(chrs == chr)]], 
+                              nonMiss = nonMiss, nonMissRepId = nonMissRepId)
+        varComp[[which(chrs == chr)]] <- vcNR$varComp
+        vcovMatrix[[which(chrs == chr)]] <- vcNR$vcovMatrix
+      } # End loop over chromosomes.
+    } # End GLSMethod multi.
+  }# End remlAlgo NR.
   return(list(varComp = varComp, vcovMatrix = vcovMatrix))
 }
 
@@ -91,12 +115,11 @@ estVarCompNR <- function(dat,
                          random = ~ sommer::vsr(genotype, Gu = K),
                          verbose = FALSE, dateWarning = FALSE)
   ## Compute varcov matrix using var components from model.
-  vcMod <- modFit$sigma
-  varComp <- setNames(unlist(vcMod)[c(1, length(unlist(vcMod)))],
-                      c("Vg", "Ve"))
+  varComp <- setNames(modFit$sigmaVector, c("Vg", "Ve"))
   modK <- K[nonMissRepId, nonMissRepId]
-  vcovMatrix <- unlist(vcMod)[1] * modK +
-    diag(x = unlist(vcMod)[length(unlist(vcMod))], nrow = nrow(modK))
+  vcovMatrix <- varComp[1] * modK +
+    diag(x = varComp[2], nrow = nrow(modK))
+  
   ## Assure that vcovMatrix is positive definite.
   if (any(eigen(vcovMatrix, symmetric = TRUE,
                 only.values = TRUE)$values <= 1e-8)) {
@@ -105,6 +128,36 @@ estVarCompNR <- function(dat,
   return(list(varComp = varComp, vcovMatrix = vcovMatrix))
 }
 
+#' Helper function for estimating variance components using NR method.
+#' 
+#' @noRd
+#' @keywords internal
+estVarCompLMM <- function(dat,
+                          fixed,
+                          K, 
+                          nonMiss, 
+                          nonMissRepId) {
+  K <- K[nonMiss, nonMiss]
+  ## Trick to avoid near singularity of kinship matrix
+  K <- K + diag(x = 1 / nrow(K), nrow = nrow(K))
+  ## Fit model.
+  modFit <- LMMsolver::LMMsolve(fixed = fixed,
+                                random = ~ genotype,
+                                ginverse = list(genotype = solve(K)),
+                                data = dat, 
+                                maxit =  1000)
+  ## Compute varcov matrix using var components from model.
+  varComp <- setNames(modFit$VarDf$Variance, c("Vg", "Ve"))
+  modK <- K[nonMissRepId, nonMissRepId]
+  vcovMatrix <- varComp[1] * modK +
+    diag(x = varComp[2], nrow = nrow(modK))
+  ## Assure that vcovMatrix is positive definite.
+  if (any(eigen(vcovMatrix, symmetric = TRUE,
+                only.values = TRUE)$values <= 1e-8)) {
+    nearestPD(vcovMatrix)
+  }
+  return(list(varComp = varComp, vcovMatrix = vcovMatrix))
+}
 
 #' Select markers to be excluded from GWAS scan.
 #'

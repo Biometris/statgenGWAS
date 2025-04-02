@@ -61,6 +61,7 @@ Roxygen: list(markdown = TRUE)
 Depends: R (>= 3.6)
 Imports: data.table,
     ggplot2 (>= 3.0.0),
+    LMMsolver,
     methods,
     rlang,
     Rcpp,
