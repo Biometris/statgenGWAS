@@ -65,7 +65,7 @@ Imports: data.table,
     methods,
     rlang,
     Rcpp,
-    sommer (>= 3.7.3)
+    sommer (>= 4.4.1)
 Suggests: knitr,
     rmarkdown,
     officer,

@@ -12,7 +12,7 @@ runSingleTraitGwas(
   snpCov = NULL,
   kin = NULL,
   kinshipMethod = c("astle", "IBS", "vanRaden"),
-  remlAlgo = c("EMMA", "NR"),
+  remlAlgo = c("EMMA", "NR", "LMM"),
   GLSMethod = c("single", "multi"),
   useMAF = TRUE,
   MAF = 0.01,
