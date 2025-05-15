@@ -57,6 +57,7 @@ reference:
   - plot.gData
   - kinship
   - readPLINK
+  - readVcf
 - title: Single trait GWAS
 - contents:
   - runSingleTraitGwas

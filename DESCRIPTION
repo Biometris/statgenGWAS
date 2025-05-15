@@ -70,7 +70,8 @@ Suggests: knitr,
     rmarkdown,
     officer,
     tinytest,
-    snpStats
+    snpStats,
+    vcfR
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo
 URL: https://biometris.github.io/statgenGWAS/index.html, https://github.com/Biometris/statgenGWAS/
