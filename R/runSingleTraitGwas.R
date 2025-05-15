@@ -75,8 +75,7 @@
 #' @param remlAlgo A character string indicating the algorithm used to estimate
 #' the variance components. Either \code{EMMA}, for the EMMA algorithm,
 #' \code{NR}, for the Newton-Raphson algorithm (using 
-#' [sommer::mmes]), or \code{Hend} for the Henderson-based average 
-#' information algorithm (using [LMMsolver::LMMsolve]).
+#' [sommer::mmes]), or \code{Hend} for the modified Henderson algorithm (using [LMMsolver::LMMsolve]).
 #' @param GLSMethod A character string indicating the method used to estimate
 #' the marker effects. Either \code{single} for using a single kinship matrix,
 #' or \code{multi} for using chromosome specific kinship matrices.
