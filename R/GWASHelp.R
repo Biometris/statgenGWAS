@@ -12,7 +12,8 @@ estVarComp <- function(GLSMethod,
                        K,
                        chrs,
                        nonMiss,
-                       nonMissRepId) {
+                       nonMissRepId,
+                       family) {
   ## Estimate variance components.
   if (GLSMethod == "single") {
     if (isTRUE(all.equal(K, diag(nrow = nrow(K)), check.names = FALSE))) {
@@ -84,14 +85,15 @@ estVarComp <- function(GLSMethod,
     }
     if (GLSMethod == "single") {
       vcNR <- estVarCompHend(dat = pheno, fixed = fixed, K = K, nonMiss = nonMiss,
-                             nonMissRepId = nonMissRepId)
+                             nonMissRepId = nonMissRepId, family = family)
       varComp <- vcNR$varComp
       vcovMatrix <- vcNR$vcovMatrix
     } else if (GLSMethod == "multi") {
       for (chr in chrs) {
         vcNR <- estVarCompHend(dat = pheno, fixed = fixed, 
                                K = K[[which(chrs == chr)]], 
-                               nonMiss = nonMiss, nonMissRepId = nonMissRepId)
+                               nonMiss = nonMiss, nonMissRepId = nonMissRepId,
+                               family = family)
         varComp[[which(chrs == chr)]] <- vcNR$varComp
         vcovMatrix[[which(chrs == chr)]] <- vcNR$vcovMatrix
       } # End loop over chromosomes.
@@ -137,7 +139,8 @@ estVarCompHend <- function(dat,
                            fixed,
                            K, 
                            nonMiss, 
-                           nonMissRepId) {
+                           nonMissRepId,
+                           family) {
   K <- K[nonMiss, nonMiss]
   ## Trick to avoid near singularity of kinship matrix
   K <- K + diag(x = 1 / nrow(K), nrow = nrow(K))
@@ -145,7 +148,8 @@ estVarCompHend <- function(dat,
   modFit <- LMMsolver::LMMsolve(fixed = fixed,
                                 random = ~ genotype,
                                 ginverse = list(genotype = solve(K)),
-                                data = dat, 
+                                data = dat,
+                                family = family,
                                 maxit =  1000)
   ## Compute varcov matrix using var components from model.
   varComp <- setNames(modFit$VarDf$Variance, c("Vg", "Ve"))

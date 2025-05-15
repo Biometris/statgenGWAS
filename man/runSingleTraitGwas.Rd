@@ -26,6 +26,7 @@ runSingleTraitGwas(
   rho = 0.5,
   sizeInclRegion = 0,
   minR2 = 0.5,
+  family = gaussian(),
   nCores = NULL
 )
 }

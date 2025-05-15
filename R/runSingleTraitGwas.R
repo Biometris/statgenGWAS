@@ -230,6 +230,7 @@ runSingleTraitGwas <- function(gData,
                                rho = 0.5,
                                sizeInclRegion = 0,
                                minR2 = 0.5,
+                               family = gaussian(),
                                nCores = NULL) {
   ## Checks.
   chkGData(gData)
@@ -341,7 +342,7 @@ runSingleTraitGwas <- function(gData,
       vc <- estVarComp(GLSMethod = GLSMethod, remlAlgo = remlAlgo,
                        trait = trait, pheno = phTrTr, covar = covTr,
                        K = K, chrs = chrs, nonMiss = nonMiss, 
-                       nonMissRepId = nonMissRepId)
+                       nonMissRepId = nonMissRepId, family = family)
       varCompTr[[trait]] <- vc$varComp
       vcovMatrix <- vc$vcovMatrix
       ## Define single column matrix with trait non missing values.
