@@ -3,10 +3,11 @@
 #' \code{runSingleTraitGwas} performs a single-trait Genome Wide Association
 #' Study (GWAS) on phenotypic and genotypic data contained in a \code{gData}
 #' object. A covariance matrix is computed using the EMMA algorithm (Kang et
-#' al., 2008) or the Newton-Raphson algorithm (Tunnicliffe, 1989) in the
-#' \code{sommer} package. Then a Generalized Least Squares (GLS) method is used
-#' for estimating the marker effects and corresponding p-values. This is done
-#' using either one kinship matrix for all chromosomes or different 
+#' al., 2008), the Newton-Raphson algorithm (Tunnicliffe, 1989) in the
+#' \code{sommer} package, or the Henderson-based average information algorithm 
+#' in the \code{LMMsolver} package. Then a Generalized Least Squares (GLS) 
+#' method is used for estimating the marker effects and corresponding p-values. 
+#' This is done using either one kinship matrix for all chromosomes or different 
 #' chromosome-specific kinship matrices for each chromosome. Significant SNPs 
 #' are selected based on a user defined threshold.
 #' 
@@ -72,8 +73,10 @@
 #' kinship matrix is supplied either in \code{gData} or in parameter \code{kin},
 #' \code{kinshipMethod} is ignored.
 #' @param remlAlgo A character string indicating the algorithm used to estimate
-#' the variance components. Either \code{EMMA}, for the EMMA algorithm, or
-#' \code{NR}, for the Newton-Raphson algorithm.
+#' the variance components. Either \code{EMMA}, for the EMMA algorithm,
+#' \code{NR}, for the Newton-Raphson algorithm (using 
+#' [sommer::mmes]), or \code{Hend} for the Henderson-based average 
+#' information algorithm (using [LMMsolver::LMMsolve]).
 #' @param GLSMethod A character string indicating the method used to estimate
 #' the marker effects. Either \code{single} for using a single kinship matrix,
 #' or \code{multi} for using chromosome specific kinship matrices.
@@ -199,7 +202,7 @@
 #'                                     GLSMethod = "multi")  
 #' }
 #'
-#' @seealso \code{\link{summary.GWAS}}, \code{\link{plot.GWAS}}
+#' @seealso [summary.GWAS], [plot.GWAS]
 #'
 #' @importFrom data.table :=
 #' @import data.table
@@ -213,7 +216,7 @@ runSingleTraitGwas <- function(gData,
                                snpCov = NULL,
                                kin = NULL,
                                kinshipMethod = c("astle", "IBS", "vanRaden"),
-                               remlAlgo = c("EMMA", "NR", "LMM"),
+                               remlAlgo = c("EMMA", "NR", "Hend"),
                                GLSMethod = c("single", "multi"),
                                useMAF = TRUE,
                                MAF = 0.01,

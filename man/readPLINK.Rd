@@ -18,14 +18,14 @@ will be appended.}
 This is basically a tab-delimited "pedfile". If not specified
 \code{bed} is used with its file extension replaced by fam.}
 
-\item{...}{Further arguments passed to \code{\link[snpStats]{read.plink}}.}
+\item{...}{Further arguments passed to \link[snpStats:read.plink]{snpStats::read.plink}.}
 }
 \value{
 An object of class \code{gData}.
 }
 \description{
 Read PLINK binary data and save in gData format. This is a wrapper around
-\code{\link[snpStats]{read.plink}} in the Bioconductor package
+\link[snpStats:read.plink]{snpStats::read.plink} in the Bioconductor package
 \code{snpStats}. This package needs to be installed for the function to
 work.
 }

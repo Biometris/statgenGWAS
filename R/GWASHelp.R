@@ -72,7 +72,7 @@ estVarComp <- function(GLSMethod,
         vcovMatrix[[which(chrs == chr)]] <- vcNR$vcovMatrix
       } # End loop over chromosomes.
     } # End GLSMethod multi.
-  } else if (remlAlgo == "LMM") {
+  } else if (remlAlgo == "Hend") {
     if (!is.null(covar)) {
       ## Construct the formula for the fixed part of the model.
       ## Define formula for fixed part. ` needed to accommodate -
@@ -83,15 +83,15 @@ estVarComp <- function(GLSMethod,
       fixed <- as.formula(paste(trait, " ~ 1"))
     }
     if (GLSMethod == "single") {
-      vcNR <- estVarCompLMM(dat = pheno, fixed = fixed, K = K, nonMiss = nonMiss,
-                            nonMissRepId = nonMissRepId)
+      vcNR <- estVarCompHend(dat = pheno, fixed = fixed, K = K, nonMiss = nonMiss,
+                             nonMissRepId = nonMissRepId)
       varComp <- vcNR$varComp
       vcovMatrix <- vcNR$vcovMatrix
     } else if (GLSMethod == "multi") {
       for (chr in chrs) {
-        vcNR <- estVarCompLMM(dat = pheno, fixed = fixed, 
-                              K = K[[which(chrs == chr)]], 
-                              nonMiss = nonMiss, nonMissRepId = nonMissRepId)
+        vcNR <- estVarCompHend(dat = pheno, fixed = fixed, 
+                               K = K[[which(chrs == chr)]], 
+                               nonMiss = nonMiss, nonMissRepId = nonMissRepId)
         varComp[[which(chrs == chr)]] <- vcNR$varComp
         vcovMatrix[[which(chrs == chr)]] <- vcNR$vcovMatrix
       } # End loop over chromosomes.
@@ -133,11 +133,11 @@ estVarCompNR <- function(dat,
 #' 
 #' @noRd
 #' @keywords internal
-estVarCompLMM <- function(dat,
-                          fixed,
-                          K, 
-                          nonMiss, 
-                          nonMissRepId) {
+estVarCompHend <- function(dat,
+                           fixed,
+                           K, 
+                           nonMiss, 
+                           nonMissRepId) {
   K <- K[nonMiss, nonMiss]
   ## Trick to avoid near singularity of kinship matrix
   K <- K + diag(x = 1 / nrow(K), nrow = nrow(K))

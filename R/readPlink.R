@@ -1,7 +1,7 @@
 #' Read PLINK binary data 
 #' 
 #' Read PLINK binary data and save in gData format. This is a wrapper around 
-#' \code{\link[snpStats]{read.plink}} in the Bioconductor package 
+#' [snpStats::read.plink] in the Bioconductor package 
 #' \code{snpStats}. This package needs to be installed for the function to 
 #' work. 
 #' 
@@ -13,7 +13,7 @@
 #' @param fam The file containing subject (and, possibly, family) identifiers. 
 #' This is basically a tab-delimited "pedfile". If not specified 
 #' \code{bed} is used with its file extension replaced by fam.
-#' @param ... Further arguments passed to \code{\link[snpStats]{read.plink}}.
+#' @param ... Further arguments passed to [snpStats::read.plink].
 #' 
 #' @returns An object of class \code{gData}.
 #' 

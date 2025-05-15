@@ -26,7 +26,7 @@
 #'
 #' @returns An object of class GWAS, a list of the input items.
 #'
-#' @seealso \code{\link{summary.GWAS}}, \code{\link{plot.GWAS}}
+#' @seealso [summary.GWAS], [plot.GWAS]
 #'
 #' @noRd
 #' @keywords internal

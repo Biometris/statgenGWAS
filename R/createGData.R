@@ -48,7 +48,7 @@
 #'
 #' @author Bart-Jan van Rossum
 #'
-#' @seealso \code{\link{summary.gData}}
+#' @seealso [summary.gData]
 #'
 #' @examples 
 #' set.seed(1234)

@@ -1,3 +1,7 @@
+# statgenGWAS 1.0.11.9000
+
+* New option "Hend" in remlAlgo for estimating variance components using the Henderson-based average information algorithm using the `LMMsolver` package.
+
 # statgenGWAS 1.0.11
  
 * Random imputation is now done properly for marker matrices with values larger than 2.
