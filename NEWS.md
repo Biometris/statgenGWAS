@@ -1,6 +1,7 @@
 # statgenGWAS 1.0.11.9000
 
 * New option "Hend" in remlAlgo for estimating variance components using the Henderson-based average information algorithm using the `LMMsolver` package.
+* Anticipating deprecation of `mmer` in sommer, calls to sommer now use `mmes` instead of `mmer`.
 
 # statgenGWAS 1.0.11
  
