@@ -70,8 +70,8 @@ kinship matrix is supplied either in \code{gData} or in parameter \code{kin},
 \item{remlAlgo}{A character string indicating the algorithm used to estimate
 the variance components. Either \code{EMMA}, for the EMMA algorithm,
 \code{NR}, for the Newton-Raphson algorithm (using
-\link[sommer:mmes]{sommer::mmes}), or \code{Hend} for the Henderson-based average
-information algorithm (using \link[LMMsolver:LMMsolve]{LMMsolver::LMMsolve}).}
+\link[sommer:mmes]{sommer::mmes}), or \code{Hend} for the modified Henderson algorithm
+(using \link[LMMsolver:LMMsolve]{LMMsolver::LMMsolve}).}
 
 \item{GLSMethod}{A character string indicating the method used to estimate
 the marker effects. Either \code{single} for using a single kinship matrix,
@@ -136,8 +136,8 @@ An object of class \code{GWAS}.
 Study (GWAS) on phenotypic and genotypic data contained in a \code{gData}
 object. A covariance matrix is computed using the EMMA algorithm (Kang et
 al., 2008), the Newton-Raphson algorithm (Tunnicliffe, 1989) in the
-\code{sommer} package, or the Henderson-based average information algorithm
-in the \code{LMMsolver} package. Then a Generalized Least Squares (GLS)
+\code{sommer} package, or the modified Henderson algorithm in the
+\code{LMMsolver} package. Then a Generalized Least Squares (GLS)
 method is used for estimating the marker effects and corresponding p-values.
 This is done using either one kinship matrix for all chromosomes or different
 chromosome-specific kinship matrices for each chromosome. Significant SNPs
