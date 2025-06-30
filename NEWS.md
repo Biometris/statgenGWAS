@@ -1,4 +1,4 @@
-# statgenGWAS 1.0.11.9000
+# statgenGWAS 1.0.12
 
 * A function readVcf is added that reads a file in VCF format and converts it directly to a gData object.
 * New option "Hend" in remlAlgo for estimating variance components using the Henderson-based average information algorithm using the `LMMsolver` package.
