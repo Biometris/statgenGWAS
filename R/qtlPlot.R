@@ -186,7 +186,8 @@ qtlPlot <- function(dat,
                                     size = abs(.data[["eff"]]),
                                     color = factor(.data[["color"]]))) +
     # add vertical lines at the bin positions
-    ggplot2::geom_vline(ggplot2::aes_(xintercept = ~pos), data = binPositions,
+    ggplot2::geom_vline(ggplot2::aes(xintercept = .data[["pos"]]), 
+                        data = binPositions,
                         linetype = 1, color = "white") +
     ## Add the points with a slight transparency in case of overlap.
     ggplot2::geom_point(alpha = I(0.7), na.rm = TRUE) +

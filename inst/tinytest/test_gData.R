@@ -242,8 +242,4 @@ expect_error(plot(gd0, highlight = map[3, 1, drop = FALSE]),
              "The following columns are missing in highlight")
 
 p2 <- plot(gd0, highlight = map[3, ])
-expect_equal(p2$labels$label, "name")
-
-
-
-
+expect_equal(ggplot2::get_labs(p2)$label, "name")

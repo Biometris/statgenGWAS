@@ -41,7 +41,7 @@ geneticMapPlot <- function(map,
                           ggplot2::aes(y = .data[["min"]], 
                                        xend = .data[["chr"]], 
                                        yend = .data[["max"]]),
-                          lineend = "round", size = 8, color = "grey90") +
+                          lineend = "round", linewidth = 8, color = "grey90") +
     ggplot2::geom_segment(data = chrLen,
                           ggplot2::aes(y = .data[["min"]],
                                        xend = .data[["chr"]], 

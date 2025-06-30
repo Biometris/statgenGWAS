@@ -3,6 +3,7 @@
 * A function readVcf is added that reads a file in VCF format and converts it directly to a gData object.
 * New option "Hend" in remlAlgo for estimating variance components using the Henderson-based average information algorithm using the `LMMsolver` package.
 * Anticipating deprecation of `mmer` in sommer, calls to sommer now use `mmes` instead of `mmer`.
+* Tests are modified for compatibility with the upcoming version of ggplot2.
 
 # statgenGWAS 1.0.11
  
