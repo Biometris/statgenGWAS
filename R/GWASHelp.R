@@ -336,6 +336,7 @@ extrSignSnpsFDR <- function(GWAResult,
     nClust <- max(which(BpVals < alpha / (1:length(BpVals))))
     ## Convert SNPs in selected clusters to vector.
     snpSelection <- c(unlist(snpSelection[1:nClust]))
+    snpSelectionPos <- match(snpSelection, GWAResult$snp)
     ## Create a vector of SNP statuses, differentiating between representing
     ## SNPs and everything else.
     snpStatus <- ifelse(snpSelection %in% names(BpVals), "significant SNP",
@@ -344,11 +345,12 @@ extrSignSnpsFDR <- function(GWAResult,
     ## phenotypic data is available. For inbreeders, this depends on
     ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
     ## 1 if there are heterozygotes).
-    snpVar <- 4 * GWAResult[snpSelection, "effect"] ^ 2 / maxScore ^ 2 *
+    snpVar <- 4 * GWAResult[snpSelectionPos, "effect"] ^ 2 / 
+      maxScore ^ 2 *
       apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
     propSnpVar <- snpVar[["effect"]] / as.numeric(var(pheno[trait]))
     ## Create data.table with significant snps.
-    signSnp <- data.table::data.table(GWAResult[snpSelection, ],
+    signSnp <- data.table::data.table(GWAResult[snpSelectionPos, ],
                                       snpStatus = as.factor(snpStatus),
                                       propSnpVar = propSnpVar)
     ## Sort columns.
