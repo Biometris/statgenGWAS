@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">statgenGWAS</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.13</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Bart-Jan van
 Rossum</h4>
             
-            <h4 data-toc-skip class="date">2025-06-30</h4>
+            <h4 data-toc-skip class="date">2026-02-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Biometris/statgenGWAS/blob/main/vignettes/GWAS.Rmd" class="external-link"><code>vignettes/GWAS.Rmd</code></a></small>
       <div class="d-none name"><code>GWAS.Rmd</code></div>
@@ -328,7 +328,7 @@ one or more markers.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Plot genetic map.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gDataDrops</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/plotGData-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/plotGData-1.png" class="r-plt" alt="" width="672"></p>
 <p>To highlight a marker, the parameter <code>highlight</code> can be
 used. It requires <code>data.frame</code> with at least the column “chr”
 and “pos”. If a column name is present it will be used to annotate the
@@ -338,7 +338,7 @@ of the form pos@chr.</p>
 <code class="sourceCode R"><span><span class="co">## Plot genetic map.</span></span>
 <span><span class="co">## Highlight the 20.000th marker in the map.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gDataDrops</span>, highlight <span class="op">=</span> <span class="va">dropsMap</span><span class="op">[</span><span class="fl">20000</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/plotGDataHL-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/plotGDataHL-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="recoding-and-cleaning-of-markers">Recoding and cleaning of markers<a class="anchor" aria-label="anchor" href="#recoding-and-cleaning-of-markers"></a>
@@ -629,7 +629,7 @@ genetic relatedness may not be adequate.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Plot a QQ-plot of GWAS Drops.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qq"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/qqStg-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/qqStg-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="manhattan-plots">Manhattan plots<a class="anchor" aria-label="anchor" href="#manhattan-plots"></a>
@@ -640,7 +640,7 @@ red.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Plot a manhattan plot of GWAS Drops.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/manhattanStg-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/manhattanStg-1.png" class="r-plt" alt="" width="672"></p>
 <p>To change the threshold when plotting, without having to redo the
 GWAS analysis, use the parameter <code>yThr</code>. Use <code>chr</code>
 to plot a subset of chromosomes.</p>
@@ -648,7 +648,7 @@ to plot a subset of chromosomes.</p>
 <code class="sourceCode R"><span><span class="co">## Plot a manhattan plot of GWAS Drops.</span></span>
 <span><span class="co">## Set significance threshold to 4 and only plot chromosomes 6 to 8.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span>, yThr <span class="op">=</span> <span class="fl">4</span>, chr <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/manhattanStgThr-1.png" width="672">
+<p><img src="GWAS_files/figure-html/manhattanStgThr-1.png" class="r-plt" alt="" width="672">
 When plotting a single chromosome it is possible to specify
 <code>startPos</code> and/or <code>endPos</code> to indicate the start
 position and end position for SNPs that are plotted.</p>
@@ -657,7 +657,7 @@ position and end position for SNPs that are plotted.</p>
 <span><span class="co">## Set significance threshold to 4 and only plot first part of chromosome 6.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
 <span>     yThr <span class="op">=</span> <span class="fl">4</span>, chr <span class="op">=</span> <span class="fl">6</span>, startPos <span class="op">=</span> <span class="fl">0</span>, endPos <span class="op">=</span> <span class="fl">6e7</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/manhattanStgPos-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/manhattanStgPos-1.png" class="r-plt" alt="" width="672"></p>
 <p>If the number of SNPs gets large, the plotting might get slow. This
 can be dealt with by setting the parameter <code>lod</code>. When doing
 so, for the SNPs with a LOD-value below <code>lod</code>, only 5% will
@@ -672,7 +672,7 @@ a seed.</p>
 <span><span class="co">## Plot only 5% of SNPs with a LOD below 3.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span>, lod <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/manhattanLod-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/manhattanLod-1.png" class="r-plt" alt="" width="672"></p>
 <p>The user can specify known effects (<code>effects</code>), which will
 be used for determining true/false positives and false negatives. These
 are displayed in green, orange and yellow, respectively.</p>
@@ -681,7 +681,7 @@ are displayed in green, orange and yellow, respectively.</p>
 <span><span class="co">## Assume PZE-106021410 and PZE-105012420 are SNPs with known effects.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"manhattan"</span>, trait <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
 <span>     effects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PZE-106021410"</span>, <span class="st">"PZE-105012420"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/manhattanEffects-1.png" width="672">
+<p><img src="GWAS_files/figure-html/manhattanEffects-1.png" class="r-plt" alt="" width="672">
 The plot now shows PZE-106021410 in green, since it is a SNP with a
 known effect also found by our GWAS analyses. The other SNPs on
 chromosome 6 are shown in orange, they are found by our GWAS, but not
@@ -707,7 +707,7 @@ be compared.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/qtlStg-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/qtlStg-1.png" class="r-plt" alt="" width="672"></p>
 <p>In this case, for “anthesis” there are no significant SNPs so the
 line is left out. To change the threshold when plotting without having
 to redo the GWAS analysis, use the parameter <code>yThr</code>.</p>
@@ -715,7 +715,7 @@ to redo the GWAS analysis, use the parameter <code>yThr</code>.</p>
 <code class="sourceCode R"><span><span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span></span>
 <span><span class="co">## Set significance threshold to 4.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span>, yThr <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/qtlStgThr-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/qtlStgThr-1.png" class="r-plt" alt="" width="672"></p>
 <p>Now there are significant SNPs for both traits. However since the
 traits are measured on a different scale, the effect estimates cannot be
 compared. For better comparison, one can set
@@ -725,7 +725,7 @@ standard deviation of the phenotype.</p>
 <code class="sourceCode R"><span><span class="co">## Plot a qtl plot of GWAS Drops for Mur13W.</span></span>
 <span><span class="co">## Set significance threshold to 4 and normalize effect estimates.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">GWASDrops</span>, plotType <span class="op">=</span> <span class="st">"qtl"</span>, yThr <span class="op">=</span> <span class="fl">4</span>, normalize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GWAS_files/figure-html/qtlStgNorm-1.png" width="672"></p>
+<p><img src="GWAS_files/figure-html/qtlStgNorm-1.png" class="r-plt" alt="" width="672"></p>
 <p>Now the effects are on the same scale and comparable.</p>
 <p>Other parameters can be used to plot a subset of the chromosomes
 (<code>chr</code>) and directly export the plot to .pptx
@@ -968,22 +968,22 @@ specified by setting <code>minR2</code>.</p>
 <span>                                         minR2 <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="co">## Check signSnp in output.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">GWASDropsInclClose</span><span class="op">$</span><span class="va">signSnp</span><span class="op">$</span><span class="va">Mur13W</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        trait           snp   chr      pos allFreq pValue effect effectSe   RLR2   LOD</span></span>
-<span><span class="co">#&gt;       &lt;char&gt;        &lt;char&gt; &lt;int&gt;    &lt;int&gt;   &lt;num&gt;  &lt;num&gt;  &lt;num&gt;    &lt;num&gt;  &lt;num&gt; &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  grain.yield PZE-106020972     6 17723425    0.67 0.3802  0.091    0.103 0.0031  0.42</span></span>
-<span><span class="co">#&gt;  grain.yield PZE-106020991     6 17729872    0.79 0.2882  0.124    0.116 0.0046  0.54</span></span>
-<span><span class="co">#&gt;  grain.yield PZE-106021096     6 18155761    0.76 0.0605  0.205    0.109 0.0142  1.22</span></span>
-<span><span class="co">#&gt;  grain.yield PZE-106021183     6 18247710    0.80 0.0085 -0.324    0.124 0.0276  2.07</span></span>
-<span><span class="co">#&gt;  grain.yield PZE-106021194     6 18255168    0.60 0.1518 -0.142    0.099 0.0083  0.82</span></span>
-<span><span class="co">#&gt;  grain.yield PZE-106021250     6 18528809    0.88 0.0836 -0.260    0.150 0.0121  1.08</span></span>
+<span><span class="co">#&gt;        trait           snp   chr      pos allFreq  pValue effect effectSe  RLR2   LOD</span></span>
+<span><span class="co">#&gt;       &lt;char&gt;        &lt;char&gt; &lt;int&gt;    &lt;int&gt;   &lt;num&gt;   &lt;num&gt;  &lt;num&gt;    &lt;num&gt; &lt;num&gt; &lt;num&gt;</span></span>
+<span><span class="co">#&gt;  grain.yield      SYN25279     6 18646353    0.76 3.9e-04   0.39     0.11 0.049   3.4</span></span>
+<span><span class="co">#&gt;  grain.yield      SYN25281     6 18646369    0.79 5.5e-05   0.46     0.11 0.062   4.3</span></span>
+<span><span class="co">#&gt;  grain.yield      SYN25282     6 18646737    0.67 3.0e-02   0.24     0.11 0.019   1.5</span></span>
+<span><span class="co">#&gt;  grain.yield      SYN22470     6 18712443    0.62 1.8e-02   0.25     0.11 0.022   1.7</span></span>
+<span><span class="co">#&gt;  grain.yield PZE-106021363     6 18846283    0.70 3.5e-07   0.52     0.10 0.096   6.5</span></span>
+<span><span class="co">#&gt;  grain.yield PZE-106021410     6 18990291    0.70 2.3e-07   0.53     0.10 0.098   6.6</span></span>
 <span><span class="co">#&gt;                          snpStatus propSnpVar</span></span>
 <span><span class="co">#&gt;                             &lt;fctr&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP     0.0028</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP     0.0040</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP     0.0122</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP     0.0267</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP     0.0076</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP     0.0115</span></span></code></pre></div>
+<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.043</span></span>
+<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.054</span></span>
+<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.019</span></span>
+<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.023</span></span>
+<span><span class="co">#&gt;                    significant SNP      0.088</span></span>
+<span><span class="co">#&gt;                    significant SNP      0.090</span></span></code></pre></div>
 <hr>
 </div>
 </div>
@@ -1080,7 +1080,7 @@ Predictions.”</span> <em>Journal of Dairy Science</em> 91 (11): 4414–23.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
