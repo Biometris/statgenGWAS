@@ -1,7 +1,8 @@
-Release anticipating new ggplot2 release.
+Minor bugfix
 
 ## Test environments
-* local Windows 11 install, R 4.5.1
+
+* local Windows 11 install, R 4.5.2
 * winbuilder
 * macbuilder
 * ubuntu (github actions)

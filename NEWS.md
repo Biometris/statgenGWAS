@@ -1,3 +1,7 @@
+# statgenGWAS 1.0.13
+
+* A bug in runSingleTraitGwas is fixed that in some cases caused the SNPs within a minimum distance of a significant SNP to be selected incorrectly.
+
 # statgenGWAS 1.0.12
 
 * A function readVcf is added that reads a file in VCF format and converts it directly to a gData object.
