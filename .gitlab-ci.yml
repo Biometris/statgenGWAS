@@ -1,5 +1,6 @@
 stages:
   - test
+  - deploy
 
 variables:
   OMP_THREAD_LIMIT: "2"
