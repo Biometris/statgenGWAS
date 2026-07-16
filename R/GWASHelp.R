@@ -264,8 +264,10 @@ extrSignSnps <- function(GWAResult,
       snpStatus <- rep(paste("within", sizeInclRegion, "of a significant SNP"),
                        length(snpSelectionVec))
       snpStatus[snpSelectionVec %in% signSnpNr] <- "significant SNP"
-      memb <- sapply(X = snpSelection, FUN = \(x) snpSelectionVec %in% x)
-      relatedSnp <- lapply(X = seq_len(nrow(memb)), \(i) signSnpName[memb[i, ]])
+      memb <- sapply(X = snpSelection, 
+                     FUN = function(x) snpSelectionVec %in% x)
+      relatedSnp <- lapply(X = seq_len(nrow(memb)), 
+                           FUN = function(i) signSnpName[memb[i, ]])
       relatedSnp[snpSelectionVec %in% signSnpNr] <- ""
       relatedSnp <- sapply(relatedSnp, paste, collapse = ", ")
     } else {
