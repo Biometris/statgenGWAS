@@ -14,8 +14,6 @@ before_script:
   - Rscript -e "update.packages(ask = FALSE, checkBuilt = TRUE)"
   - Rscript -e "install.packages('pak')"
   - Rscript -e 'pak::local_install_dev_deps(upgrade = FALSE)'
-  - install2.r BiocManager
-  - r -e 'BiocManager::install("snpStats")'
 
 r-release:
   stage: test
@@ -40,7 +38,7 @@ coverage:
   script:
     - install2.r covr
     - Rscript -e 'devtools::install()'
-    - Rscript -e 'covr::package_coverage(type = "none", code = "tinytest::run_test_dir(at_home = TRUE)")'
+    - Rscript -e 'covr::package_coverage(type = "none", code = "tinytest::run_test_dir(at_home = FALSE)")'
   coverage: '/Coverage:\s*(\d+.\d+\%)/'
 
 
