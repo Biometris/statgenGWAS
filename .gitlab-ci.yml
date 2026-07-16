@@ -10,9 +10,11 @@ before_script:
   - apt-get install -y --no-install-recommends ${APT_PKGS}
   - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH}"
   - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
-  - install2.r devtools BiocManager
+  - Rscript -e "update.packages(ask = FALSE, checkBuilt = TRUE)"
+  - Rscript -e "install.packages('pak')"
+  - Rscript -e 'pak::local_install_dev_deps(upgrade = FALSE)'
+  - install2.r BiocManager
   - r -e 'BiocManager::install("snpStats")'
-  - r -e 'devtools::install_dev_deps(upgrade = "never")'
 
 r-release:
   stage: test
@@ -28,18 +30,16 @@ r-release:
     when: always
     expire_in: 1 month
 
-r-devel:
-  stage: test
+coverage:
+  stage: deploy
   tags:
     - Docker
-  image: rocker/verse:devel
+  image: rocker/verse:latest
+  when: on_success
   script:
-    - r -e 'devtools::check(check_dir = ".")'
-  artifacts:
-    paths:
-      - "*.Rcheck"
-    name: logs
-    when: always
-    expire_in: 1 month
+    - install2.r covr
+    - Rscript -e 'devtools::install()'
+    - Rscript -e 'covr::package_coverage(type = "none", code = "tinytest::run_test_dir(at_home = TRUE)")'
+  coverage: '/Coverage:\s*(\d+.\d+\%)/'
 
 
