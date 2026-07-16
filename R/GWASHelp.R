@@ -255,30 +255,37 @@ extrSignSnps <- function(GWAResult,
   signSnpNr <- which(!is.na(GWAResult[["LOD"]]) & GWAResult[["LOD"]] >= LODThr)
   if (length(signSnpNr) > 0) {
     if (sizeInclRegion > 0) {
-      snpSelection <- unlist(sapply(X = signSnpNr, FUN = getSNPsInRegionSufLD,
-                                    map = map, markers = markers, 
-                                    sizeInclRegion = sizeInclRegion, 
-                                    minR2 = minR2))
-      snpSelection <- sort(union(snpSelection, signSnpNr))
+      snpSelection <- sapply(X = signSnpNr, FUN = getSNPsInRegionSufLD,
+                             map = map, markers = markers,
+                             sizeInclRegion = sizeInclRegion, 
+                             minR2 = minR2)
+      signSnpName <- rownames(map)[signSnpNr]
+      snpSelectionVec <- sort(union(unlist(snpSelection), signSnpNr))
       snpStatus <- rep(paste("within", sizeInclRegion, "of a significant SNP"),
-                       length(snpSelection))
-      snpStatus[snpSelection %in% signSnpNr] <- "significant SNP"
+                       length(snpSelectionVec))
+      snpStatus[snpSelectionVec %in% signSnpNr] <- "significant SNP"
+      memb <- sapply(X = snpSelection, FUN = \(x) snpSelectionVec %in% x)
+      relatedSnp <- lapply(X = seq_len(nrow(memb)), \(i) signSnpName[memb[i, ]])
+      relatedSnp[snpSelectionVec %in% signSnpNr] <- ""
+      relatedSnp <- sapply(relatedSnp, paste, collapse = ", ")
     } else {
-      snpSelection <- signSnpNr
+      snpSelectionVec <- signSnpNr
       snpStatus <- rep("significant SNP", length(signSnpNr))
+      relatedSnp <- ""
     }
     ## Compute variance of marker scores, based on genotypes for which
     ## phenotypic data is available. For inbreeders, this depends on
     ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
     ## 1 if there are heterozygotes).
-    snpVar <- 4 * GWAResult[snpSelection, "effect"] ^ 2 / maxScore ^ 2 *
-      apply(X = markers[, GWAResult[snpSelection][["snp"]], drop = FALSE], 
+    snpVar <- 4 * GWAResult[snpSelectionVec, "effect"] ^ 2 / maxScore ^ 2 *
+      apply(X = markers[, GWAResult[snpSelectionVec][["snp"]], drop = FALSE], 
             MARGIN = 2, FUN = var)
     propSnpVar <- snpVar[["effect"]] / as.numeric(var(pheno[trait]))
     ## Create data.table with significant snps.
-    signSnp <- data.table::data.table(GWAResult[snpSelection, ],
+    signSnp <- data.table::data.table(GWAResult[snpSelectionVec, ],
                                       snpStatus = as.factor(snpStatus),
-                                      propSnpVar = propSnpVar)
+                                      propSnpVar = propSnpVar,
+                                      relatedSnp = relatedSnp)
     ## Sort columns.
     data.table::setkeyv(x = signSnp, cols = c("trait", "chr", "pos"))
   } else {
@@ -329,30 +336,35 @@ extrSignSnpsFDR <- function(GWAResult,
     BMarkers <- BMarkers[, !colnames(BMarkers) %in% LDSet, drop = FALSE]
     ## Add LD set to selected SNPs.
     ## Using union assures representing SNP will be the first in the list.
-    snpSelection <- c(snpSelection, list(union(names(snpSelection), LDSet)))
+    snpSelection <- c(snpSelection, list(union(names(clusterRep), LDSet)))
   }
   if (BpVals[1] < alpha) {
     ## Compute number of clusters.
     nClust <- max(which(BpVals < alpha / (1:length(BpVals))))
     ## Convert SNPs in selected clusters to vector.
-    snpSelection <- c(unlist(snpSelection[1:nClust]))
-    snpSelectionPos <- match(snpSelection, GWAResult$snp)
+    snpSelectionSign <- snpSelection[1:nClust]
+    snpSelectionSignVec <- c(unlist(snpSelectionSign))
+    snpSelectionSignPos <- match(snpSelectionSignVec, GWAResult$snp)
     ## Create a vector of SNP statuses, differentiating between representing
     ## SNPs and everything else.
-    snpStatus <- ifelse(snpSelection %in% names(BpVals), "significant SNP",
+    snpStatus <- ifelse(snpSelectionSignVec %in% names(BpVals), "significant SNP",
                         "within LD of significant SNP")
+    relatedSnp <- unlist(lapply(X = snpSelectionSign, FUN = function(x) {
+      c("", rep(x[1], times = length(x) - 1))
+    }))
     ## Compute variance of marker scores, based on genotypes for which
     ## phenotypic data is available. For inbreeders, this depends on
     ## maxScore. It is therefore scaled to marker scores 0, 1 (or 0, 0.5,
     ## 1 if there are heterozygotes).
-    snpVar <- 4 * GWAResult[snpSelectionPos, "effect"] ^ 2 / 
+    snpVar <- 4 * GWAResult[snpSelectionSignPos, "effect"] ^ 2 / 
       maxScore ^ 2 *
-      apply(X = markers[, snpSelection, drop = FALSE], MARGIN = 2, FUN = var)
+      apply(X = markers[, snpSelectionSignVec, drop = FALSE], MARGIN = 2, FUN = var)
     propSnpVar <- snpVar[["effect"]] / as.numeric(var(pheno[trait]))
     ## Create data.table with significant snps.
-    signSnp <- data.table::data.table(GWAResult[snpSelectionPos, ],
+    signSnp <- data.table::data.table(GWAResult[snpSelectionSignPos, ],
                                       snpStatus = as.factor(snpStatus),
-                                      propSnpVar = propSnpVar)
+                                      propSnpVar = propSnpVar,
+                                      relatedSnp = relatedSnp)
     ## Sort columns.
     data.table::setkeyv(x = signSnp, cols = c("trait", "chr", "pos"))
   } else {
@@ -397,8 +409,8 @@ getSNPsInRegionSufLD <- function(snp,
     R2 <- suppressWarnings(cor(markers[, snp, drop = FALSE],
                                markers[, candidateSnps, drop = FALSE]) ^ 2)
     ## Select SNPs based on R2.
-    candidateSnpsNames <- colnames(R2[, R2 > minR2, drop = FALSE])
-    return(which(rownames(map) %in% candidateSnpsNames))
+    candidateSnpNames <- colnames(R2[, R2 > minR2, drop = FALSE])
+    return(which(rownames(map) %in% candidateSnpNames))
   } else {
     return(integer())
   }
