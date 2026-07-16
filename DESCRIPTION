@@ -56,7 +56,6 @@ Description: Fast single trait Genome Wide Association Studies (GWAS) following
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 3.6)
 Imports: data.table,
@@ -76,3 +75,4 @@ VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo
 URL: https://biometris.github.io/statgenGWAS/index.html, https://github.com/Biometris/statgenGWAS/
 BugReports: https://github.com/Biometris/statgenGWAS/issues
+Config/roxygen2/version: 8.0.0

@@ -10,14 +10,14 @@ readVcf(vcfFile, ...)
 \item{vcfFile}{The name of the vcf file. This can either be a plain text file
 with extension (.vcf), or a gzipped file with extencion (.vcf.gz).}
 
-\item{...}{Further arguments passed to \link[vcfR:io_vcfR]{vcfR::read.vcfR}.}
+\item{...}{Further arguments passed to \link[vcfR:read.vcfR]{vcfR::read.vcfR}.}
 }
 \value{
 An object of class \code{gData}.
 }
 \description{
 Read variant call format (VCF) data and save in gData format. This is a
-wrapper around \link[vcfR:io_vcfR]{vcfR::read.vcfR} in the package \code{vcfR}. This package
+wrapper around \link[vcfR:read.vcfR]{vcfR::read.vcfR} in the package \code{vcfR}. This package
 needs to be installed for the function to work.
 }
 \references{

@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl} (\href{https://orcid.org/0000-0002-8673-2514}{ORCID})
   \item Willem Kruijer (\href{https://orcid.org/0000-0001-7179-1733}{ORCID})
 }
 
