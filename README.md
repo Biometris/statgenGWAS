@@ -7,7 +7,7 @@
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/statgenGWAS)](https://www.r-pkg.org/pkg/statgenGWAS)
 [![R-CMD-check](https://github.com/Biometris/statgenGWAS/workflows/R-CMD-check/badge.svg)](https://github.com/Biometris/statgenGWAS/actions?workflow=R-CMD-check)
-[![codecov](https://codecov.io/gh/Biometris/statgenGWAS/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Biometris/statgenGWAS)
+[![codecov](https://codecov.io/gh/Biometris/statgenGWAS/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Biometris/statgenGWAS)
 
 **statgenGWAS** is an R package for fast single trait Genome Wide
 Association Studies (GWAS).
@@ -91,14 +91,14 @@ GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
 plot(GWASDrops, plotType = "qq", trait = "grain.yield")
 ```
 
-<img src="man/figures/README-qqStg-1.png" width="75%" />
+<img src="man/figures/README-qqStg-1.png" alt="" width="75%" />
 
 ``` r
 ## Manhattan plot of GWAS Drops.
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield")
 ```
 
-<img src="man/figures/README-manhattanStg-1.png" width="75%" />
+<img src="man/figures/README-manhattanStg-1.png" alt="" width="75%" />
 
 ``` r
 ## Qtl plot of GWAS Drops.
@@ -106,4 +106,4 @@ plot(GWASDrops, plotType = "manhattan", trait = "grain.yield")
 plot(GWASDrops, plotType = "qtl", yThr = 4, normalize = TRUE)
 ```
 
-<img src="man/figures/README-qtlStgNorm-1.png" width="75%" />
+<img src="man/figures/README-qtlStgNorm-1.png" alt="" width="75%" />
