@@ -111,13 +111,12 @@ estVarCompNR <- function(dat,
                          nonMissRepId) {
   K <- K[nonMiss, nonMiss]
   ## Fit model.
-  modFit <- sommer::mmes(fixed = fixed, data = dat,
-                         random = ~ sommer::vsm(sommer::ism(genotype), Gu = K),
-                         rcov = ~sommer::vsm(sommer::ism(units)),
-                         tolParConvLL = 1e-03,
+  modFit <- sommer::mmer(fixed = fixed, data = dat,
+                         random = ~ sommer::vsr(genotype, Gu = K),
                          verbose = FALSE, dateWarning = FALSE)
   ## Compute varcov matrix using var components from model.
-  varComp <- setNames(unlist(modFit$theta), c("Vg", "Ve"))
+  varcomps <- summary(modFit)$varcomp[["VarComp"]]
+  varComp <- setNames(varcomps, c("Vg", "Ve"))
   modK <- K[nonMissRepId, nonMissRepId]
   vcovMatrix <- varComp[1] * modK +
     diag(x = varComp[2], nrow = nrow(modK))

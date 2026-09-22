@@ -18,8 +18,10 @@ importFrom(data.table,":=")
 importFrom(graphics,plot)
 importFrom(methods,as)
 importFrom(rlang,.data)
-importFrom(utils,capture.output)
-importFrom(utils,hasName)
-importFrom(utils,read.table)
-importFrom(utils,write.table)
+importFrom(utils,
+  capture.output,
+  hasName,
+  read.table,
+  write.table
+)
 useDynLib(statgenGWAS, .registration = TRUE)

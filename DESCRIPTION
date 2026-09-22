@@ -75,4 +75,4 @@ VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppArmadillo
 URL: https://biometris.github.io/statgenGWAS/index.html, https://github.com/Biometris/statgenGWAS/
 BugReports: https://github.com/Biometris/statgenGWAS/issues
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
