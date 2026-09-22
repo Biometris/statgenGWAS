@@ -1,8 +1,8 @@
-Minor bugfix
+Minor release to accommodate upcoming release of sommer
 
 ## Test environments
 
-* local Windows 11 install, R 4.5.2
+* local Windows 11 install, R 4.6.1
 * winbuilder
 * macbuilder
 * ubuntu (github actions)
