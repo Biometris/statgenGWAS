@@ -39,13 +39,13 @@ Source:
 [`DESCRIPTION`](https://github.com/Biometris/statgenGWAS/blob/main/DESCRIPTION)
 
 van Rossum B, Kruijer W (2026). *statgenGWAS: Genome Wide Association
-Studies*. R package version 1.0.13,
+Studies*. R package version 1.0.14,
 <https://biometris.github.io/statgenGWAS/index.html>.
 
     @Manual{,
       title = {statgenGWAS: Genome Wide Association Studies},
       author = {Bart-Jan {van Rossum} and Willem Kruijer},
       year = {2026},
-      note = {R package version 1.0.13},
+      note = {R package version 1.0.14},
       url = {https://biometris.github.io/statgenGWAS/index.html},
     }

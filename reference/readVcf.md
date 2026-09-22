@@ -1,8 +1,10 @@
 # Read variant call format data
 
 Read variant call format (VCF) data and save in gData format. This is a
-wrapper around vcfR::read.vcfR in the package `vcfR`. This package needs
-to be installed for the function to work.
+wrapper around
+[vcfR::read.vcfR](https://rdrr.io/pkg/vcfR/man/io_vcfR.html) in the
+package `vcfR`. This package needs to be installed for the function to
+work.
 
 ## Usage
 
@@ -19,7 +21,8 @@ readVcf(vcfFile, ...)
 
 - ...:
 
-  Further arguments passed to vcfR::read.vcfR.
+  Further arguments passed to
+  [vcfR::read.vcfR](https://rdrr.io/pkg/vcfR/man/io_vcfR.html).
 
 ## Value
 

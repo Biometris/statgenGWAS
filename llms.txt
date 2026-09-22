@@ -19,6 +19,7 @@ full overview of all options it is best to read the
 - Install from CRAN:
 
 ``` r
+
 install.packages("statgenGWAS")
 ```
 
@@ -26,6 +27,7 @@ install.packages("statgenGWAS")
   [remotes](https://github.com/r-lib/remotes) package):
 
 ``` r
+
 remotes::install_github("Biometris/statgenGWAS", ref = "develop", dependencies = TRUE)
 ```
 
@@ -38,6 +40,7 @@ First get the data in the form required by the package, converting it to
 an object of class **g**(enomic)**Data**.
 
 ``` r
+
 library(statgenGWAS)
 ## Read data.
 data("dropsMarkers")
@@ -67,6 +70,7 @@ gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap, pheno = dropsPhen
 ```
 
 ``` r
+
 ## Remove duplicate SNPs from gDataDrops.
 gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE) 
 #> Input contains 41722 SNPs for 246 genotypes.
@@ -77,6 +81,7 @@ gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE)
 ```
 
 ``` r
+
 ## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.
 GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
                                 trials = "Mur13W",
@@ -84,6 +89,7 @@ GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
 ```
 
 ``` r
+
 ## QQ plot of GWAS Drops.
 plot(GWASDrops, plotType = "qq", trait = "grain.yield")
 ```
@@ -91,6 +97,7 @@ plot(GWASDrops, plotType = "qq", trait = "grain.yield")
 ![](reference/figures/README-qqStg-1.png)
 
 ``` r
+
 ## Manhattan plot of GWAS Drops.
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield")
 ```
@@ -98,6 +105,7 @@ plot(GWASDrops, plotType = "manhattan", trait = "grain.yield")
 ![](reference/figures/README-manhattanStg-1.png)
 
 ``` r
+
 ## Qtl plot of GWAS Drops.
 ## Set significance threshold to 4 and normalize effect estimates.
 plot(GWASDrops, plotType = "qtl", yThr = 4, normalize = TRUE)

@@ -1,6 +1,13 @@
 # Changelog
 
+## statgenGWAS 1.0.14
+
+- For SNPs close to significant SNPs the name of significant SNP
+  concerned is now included in the output.
+
 ## statgenGWAS 1.0.13
+
+CRAN release: 2026-02-19
 
 - A bug in runSingleTraitGwas is fixed that in some cases caused the
   SNPs within a minimum distance of a significant SNP to be selected

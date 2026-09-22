@@ -23,6 +23,9 @@ Useful links:
 
 Authors:
 
+- Bart-Jan van Rossum <bart-jan.vanrossum@wur.nl>
+  ([ORCID](https://orcid.org/0000-0002-8673-2514))
+
 - Willem Kruijer ([ORCID](https://orcid.org/0000-0001-7179-1733))
 
 Other contributors:

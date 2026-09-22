@@ -8,8 +8,8 @@
 <title>Introduction to the statgenGWAS package • statgenGWAS</title>
 <!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to the statgenGWAS package">
 </head>
@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">statgenGWAS</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Bart-Jan van
 Rossum</h4>
             
-            <h4 data-toc-skip class="date">2026-02-19</h4>
+            <h4 data-toc-skip class="date">2026-09-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Biometris/statgenGWAS/blob/main/vignettes/GWAS.Rmd" class="external-link"><code>vignettes/GWAS.Rmd</code></a></small>
       <div class="d-none name"><code>GWAS.Rmd</code></div>
@@ -211,7 +211,7 @@ factor when creating the gData object.</p>
 <p>As an example of the functionality of the package a worked example is
 provided using maize data from the European Union project DROPS. The
 data is available from <a href="https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN" class="external-link uri">https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN</a>
-<span class="citation">(<a href="#ref-Millet2019">E. J. Millet et al.
+<span class="citation">(<a href="#ref-Millet2019">Millet et al.
 2019</a>)</span> and the relevant data sets are included as data.frames
 in the statgenGWAS package.</p>
 <div class="section level3">
@@ -545,12 +545,12 @@ var(\textrm{SNP}) / var(\textrm{pheno})</span>
 <span><span class="co">#&gt;  grain.yield PZE-106021419     6 18991091    0.74 2.9e-07   0.53      0.1 0.097   6.5</span></span>
 <span><span class="co">#&gt;  grain.yield PZE-106021420     6 18991117    0.70 1.3e-06   0.50      0.1 0.087   5.9</span></span>
 <span><span class="co">#&gt;  grain.yield PZE-106021424     6 18991481    0.74 5.0e-07   0.52      0.1 0.093   6.3</span></span>
-<span><span class="co">#&gt;        snpStatus propSnpVar</span></span>
-<span><span class="co">#&gt;           &lt;fctr&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  significant SNP      0.088</span></span>
-<span><span class="co">#&gt;  significant SNP      0.090</span></span>
-<span><span class="co">#&gt;  significant SNP      0.083</span></span>
-<span><span class="co">#&gt;  significant SNP      0.080</span></span>
+<span><span class="co">#&gt;        snpStatus propSnpVar relatedSnp</span></span>
+<span><span class="co">#&gt;           &lt;fctr&gt;      &lt;num&gt;     &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  significant SNP      0.088           </span></span>
+<span><span class="co">#&gt;  significant SNP      0.090           </span></span>
+<span><span class="co">#&gt;  significant SNP      0.083           </span></span>
+<span><span class="co">#&gt;  significant SNP      0.080           </span></span>
 <span><span class="co">#&gt;  significant SNP      0.080</span></span></code></pre></div>
 <p><strong>kinship</strong>: the kinship matrix (or matrices) used in
 the GWAS analysis. This can either be the user provided kinship matrix
@@ -700,7 +700,7 @@ specifics on how to do this <code><a href="../reference/plot.GWAS.html">help(plo
 <p>A qtl plot can be made by setting <code>plotType = "qtl"</code>. In
 this plot the significant SNPs are marked by circles at their genomic
 positions, with diameter proportional to the estimated effect size; for
-an example see <span class="citation">E. Millet et al. (<a href="#ref-Millet2016">2016</a>)</span>. Typically, this is done for
+an example see <span class="citation">Millet et al. (<a href="#ref-Millet2016">2016</a>)</span>. Typically, this is done for
 multiple traits or environments, with the genomic position on the
 x-axis, which are displayed horizontally above each other and can thus
 be compared.</p>
@@ -976,13 +976,13 @@ specified by setting <code>minR2</code>.</p>
 <span><span class="co">#&gt;  grain.yield      SYN22470     6 18712443    0.62 1.8e-02   0.25     0.11 0.022   1.7</span></span>
 <span><span class="co">#&gt;  grain.yield PZE-106021363     6 18846283    0.70 3.5e-07   0.52     0.10 0.096   6.5</span></span>
 <span><span class="co">#&gt;  grain.yield PZE-106021410     6 18990291    0.70 2.3e-07   0.53     0.10 0.098   6.6</span></span>
-<span><span class="co">#&gt;                          snpStatus propSnpVar</span></span>
-<span><span class="co">#&gt;                             &lt;fctr&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.043</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.054</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.019</span></span>
-<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.023</span></span>
-<span><span class="co">#&gt;                    significant SNP      0.088</span></span>
+<span><span class="co">#&gt;                          snpStatus propSnpVar    relatedSnp</span></span>
+<span><span class="co">#&gt;                             &lt;fctr&gt;      &lt;num&gt;        &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.043 PZE-106021363</span></span>
+<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.054 PZE-106021363</span></span>
+<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.019 PZE-106021363</span></span>
+<span><span class="co">#&gt;  within 2e+05 of a significant SNP      0.023 PZE-106021363</span></span>
+<span><span class="co">#&gt;                    significant SNP      0.088              </span></span>
 <span><span class="co">#&gt;                    significant SNP      0.090</span></span></code></pre></div>
 <hr>
 </div>
@@ -990,7 +990,7 @@ specified by setting <code>minR2</code>.</p>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Astle2009" class="csl-entry">
 Astle, William, and David J. Balding. 2009. <span>“Population Structure
 and Cryptic Relatedness in Genetic Association Studies.”</span>
@@ -1013,50 +1013,44 @@ Devlin, B., and Kathryn Roeder. 1999. <span>“Genomic Control for
 Association Studies.”</span> <em>Biometrics</em> 55 (4): 997–1004. <a href="https://doi.org/10.1111/j.0006-341x.1999.00997.x" class="external-link">https://doi.org/10.1111/j.0006-341x.1999.00997.x</a>.
 </div>
 <div id="ref-Kang2010" class="csl-entry">
-Kang, Hyun Min, Jae Hoon Sul, Susan K Service, Noah A Zaitlen, Sit-yee
-Kong, Nelson B Freimer, Chiara Sabatti, and Eleazar Eskin. 2010.
+Kang, Hyun Min, Jae Hoon Sul, Susan K Service, et al. 2010.
 <span>“Variance Component Model to Account for Sample Structure in
 Genome-Wide Association Studies.”</span> <em>Nature Genetics</em> 42
 (4): 348–54. <a href="https://doi.org/10.1038/ng.548" class="external-link">https://doi.org/10.1038/ng.548</a>.
 </div>
 <div id="ref-Kang2008" class="csl-entry">
-Kang, Hyun Min, Noah A. Zaitlen, Claire M. Wade, Andrew Kirby, David
-Heckerman, Mark J. Daly, and Eleazar Eskin. 2008. <span>“Efficient
-Control of Population Structure in Model Organism Association
-Mapping.”</span> <em>Genetics</em> 178 (3): 1709–23. <a href="https://doi.org/10.1534/genetics.107.080101" class="external-link">https://doi.org/10.1534/genetics.107.080101</a>.
+Kang, Hyun Min, Noah A. Zaitlen, Claire M. Wade, et al. 2008.
+<span>“Efficient Control of Population Structure in Model Organism
+Association Mapping.”</span> <em>Genetics</em> 178 (3): 1709–23. <a href="https://doi.org/10.1534/genetics.107.080101" class="external-link">https://doi.org/10.1534/genetics.107.080101</a>.
 </div>
 <div id="ref-Millet2019" class="csl-entry">
-Millet, Emilie J., Cyril Pommier, Mélanie Buy, Axel Nagel, Willem
-Kruijer, Therese Welz-Bolduan, Jeremy Lopez, et al. 2019. <span>“A
+Millet, Emilie J., Cyril Pommier, Mélanie Buy, et al. 2019. <em>A
 Multi-Site Experiment in a Network of European Fields for Assessing the
-Maize Yield Response to Environmental Scenarios.”</span> Portail Data
-Inra. <a href="https://doi.org/10.15454/IASSTN" class="external-link">https://doi.org/10.15454/IASSTN</a>.
+Maize Yield Response to Environmental Scenarios</em>. Portail Data Inra.
+<a href="https://doi.org/10.15454/IASSTN" class="external-link">https://doi.org/10.15454/IASSTN</a>.
 </div>
 <div id="ref-Millet2016" class="csl-entry">
-Millet, Emilie, Claude Welcker, Willem Kruijer, Sandra Negro, Stephane
-Nicolas, Sebastien Praud, Nicolas Ranc, et al. 2016. <span>“Genome-Wide
-Analysis of Yield in Europe: Allelic Effects as Functions of Drought and
-Heat Scenarios.”</span> <em>Plant Physiology</em>, July, pp.00621.2016.
-<a href="https://doi.org/10.1104/pp.16.00621" class="external-link">https://doi.org/10.1104/pp.16.00621</a>.
+Millet, Emilie, Claude Welcker, Willem Kruijer, et al. 2016.
+<span>“Genome-Wide Analysis of Yield in Europe: Allelic Effects as
+Functions of Drought and Heat Scenarios.”</span> <em>Plant
+Physiology</em>, July, pp.00621.2016. <a href="https://doi.org/10.1104/pp.16.00621" class="external-link">https://doi.org/10.1104/pp.16.00621</a>.
 </div>
 <div id="ref-Rincent2014" class="csl-entry">
-Rincent, Renaud, Laurence Moreau, Hervé Monod, Estelle Kuhn, Albrecht E.
-Melchinger, Rosa A. Malvar, Jesus Moreno-Gonzalez, et al. 2014.
+Rincent, Renaud, Laurence Moreau, Hervé Monod, et al. 2014.
 <span>“Recovering Power in Association Mapping Panels with Variable
 Levels of Linkage Disequilibrium.”</span> <em>Genetics</em> 197 (1):
 375–87. <a href="https://doi.org/10.1534/genetics.113.159731" class="external-link">https://doi.org/10.1534/genetics.113.159731</a>.
 </div>
 <div id="ref-Segura2012" class="csl-entry">
-Segura, Vincent, Bjarni J Vilhjálmsson, Alexander Platt, Arthur Korte,
-Ümit Seren, Quan Long, and Magnus Nordborg. 2012. <span>“An Efficient
-Multi-Locus Mixed-Model Approach for Genome-Wide Association Studies in
-Structured Populations.”</span> <em>Nature Genetics</em> 44 (7): 825–30.
-<a href="https://doi.org/10.1038/ng.2314" class="external-link">https://doi.org/10.1038/ng.2314</a>.
+Segura, Vincent, Bjarni J Vilhjálmsson, Alexander Platt, et al. 2012.
+<span>“An Efficient Multi-Locus Mixed-Model Approach for Genome-Wide
+Association Studies in Structured Populations.”</span> <em>Nature
+Genetics</em> 44 (7): 825–30. <a href="https://doi.org/10.1038/ng.2314" class="external-link">https://doi.org/10.1038/ng.2314</a>.
 </div>
 <div id="ref-Sun2010" class="csl-entry">
-Sun, G, C Zhu, M H Kramer, S-S Yang, W Song, H-P Piepho, and J Yu. 2010.
-<span>“Variation Explained in Mixed-Model Association Mapping.”</span>
-<em>Heredity</em> 105 (4): 333–40. <a href="https://doi.org/10.1038/hdy.2010.11" class="external-link">https://doi.org/10.1038/hdy.2010.11</a>.
+Sun, G, C Zhu, M H Kramer, et al. 2010. <span>“Variation Explained in
+Mixed-Model Association Mapping.”</span> <em>Heredity</em> 105 (4):
+333–40. <a href="https://doi.org/10.1038/hdy.2010.11" class="external-link">https://doi.org/10.1038/hdy.2010.11</a>.
 </div>
 <div id="ref-Tunnicliffe1989" class="csl-entry">
 Tunnicliffe, G Wilson. 1989. <span>“On the Use of Marginal Likelihood in
@@ -1080,7 +1074,7 @@ Predictions.”</span> <em>Journal of Dairy Science</em> 91 (11): 4414–23.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

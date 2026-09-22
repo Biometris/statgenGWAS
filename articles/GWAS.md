@@ -125,14 +125,15 @@ As an example of the functionality of the package a worked example is
 provided using maize data from the European Union project DROPS. The
 data is available from
 <https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN>
-([E. J. Millet et al. 2019](#ref-Millet2019)) and the relevant data sets
-are included as data.frames in the statgenGWAS package.
+([Millet et al. 2019](#ref-Millet2019)) and the relevant data sets are
+included as data.frames in the statgenGWAS package.
 
 ### Load data
 
 The first step is loading the data into R.
 
 ``` r
+
 data(dropsMarkers)
 data(dropsMap)
 data(dropsPheno)
@@ -157,6 +158,7 @@ is already satisfied so only the row names should be added and the Ind
 column used for that should be dropped.
 
 ``` r
+
 ## Add genotypes as row names of dropsMarkers and drop Ind column.
 rownames(dropsMarkers) <- dropsMarkers[["Ind"]]
 dropsMarkers <- dropsMarkers[colnames(dropsMarkers) != "Ind"]
@@ -168,6 +170,7 @@ of the SNPs. Other columns are ignored when creating a **gData** object,
 so they can be left as they are.
 
 ``` r
+
 ## Add genotypes as row names of dropsMap.
 rownames(dropsMap) <- dropsMap[["SNP.names"]]
 ## Rename Chomosome and Position columns.
@@ -179,6 +182,7 @@ created. This object can be used as a base. Phenotypic data, a kinship
 matrix and covariates may be added later on.
 
 ``` r
+
 ## Create a gData object containing map and marker information.
 gDataDrops <- createGData(geno = dropsMarkers, map = dropsMap)
 ```
@@ -195,6 +199,7 @@ function call will add new data to an existing gData object. Any
 phenotypic data already present will be overwritten.
 
 ``` r
+
 ## Rename Variety_ID to genotype.
 colnames(dropsPheno)[colnames(dropsPheno) == "Variety_ID"] <- "genotype"
 ## Select relevant columns and convert data to a list.
@@ -220,6 +225,7 @@ output is restricted here to one trial, Mur13W, using the `trials`
 parameter of the summary function.
 
 ``` r
+
 ## Summarize gDataDrops.
 summary(gDataDrops, trials = "Mur13W")
 #> map
@@ -256,6 +262,7 @@ in the gData object on the chromosomes. It is also possible to highlight
 one or more markers.
 
 ``` r
+
 ## Plot genetic map.
 plot(gDataDrops)
 ```
@@ -269,6 +276,7 @@ marker. If no name column is present the annotation will be of the form
 pos@chr.
 
 ``` r
+
 ## Plot genetic map.
 ## Highlight the 20.000th marker in the map.
 plot(gDataDrops, highlight = dropsMap[20000, ])
@@ -286,6 +294,7 @@ package can still be used to further clean the markers, e.g. by removing
 the duplicate SNPs.
 
 ``` r
+
 ## Remove duplicate SNPs from gDataDrops.
 gDataDropsDedup <- codeMarkers(gDataDrops, impute = FALSE, verbose = TRUE) 
 #> Input contains 41722 SNPs for 246 genotypes.
@@ -304,6 +313,7 @@ function has several imputation options. To demonstrate these, we
 randomly replace 1% of the values in the marker matrix by NA.
 
 ``` r
+
 ## Copy gData object.
 gDataDropsMiss <- gDataDrops
 ## Add random missing values to 1% of the values in the marker matrix.
@@ -341,6 +351,7 @@ than the threshold - if these are found, they will be removed as
 described earlier.
 
 ``` r
+
 ## Impute missing values with random value.
 ## Remove SNPs and genotypes with proportion of NA larger than 0.01.
 gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss,
@@ -359,6 +370,7 @@ gDataDropsImputed <- codeMarkers(gData = gDataDropsMiss,
 ```
 
 ``` r
+
 ## Impute missing values using beagle software.
 gDataDropsImputedBeagle <- codeMarkers(gData = gDataDropsMiss, 
                                        impute = TRUE,
@@ -375,6 +387,7 @@ analysis gives decent results. In the examples below the trial Mur13W is
 used to demonstrate the options of the *runSingleTraitGwas* function.
 
 ``` r
+
 ## Run single trait GWAS for traits 'grain.yield' and 'anthesis' for trial Mur13W.
 GWASDrops <- runSingleTraitGwas(gData = gDataDropsDedup,
                                 trials = "Mur13W",
@@ -386,20 +399,21 @@ GWAS. This is a list consisting of five components described below.
 **GWAResult**: a list of data.tables, one for each trial for which the
 analysis was run. Each data.table has the following columns:
 
-|          |                                                                           |
-|:---------|:--------------------------------------------------------------------------|
-| trait    | trait name                                                                |
-| snp      | SNP name                                                                  |
-| chr      | chromosome on which the SNP is located                                    |
-| pos      | position of the SNP on the chromosome                                     |
-| allFreq  | allele frequency of the SNP                                               |
-| pValue   | P-value for the SNP                                                       |
-| effect   | effect of the SNP on the trait value                                      |
-| effectSe | standard error of the effect of the SNP on the trait value                |
-| RLR2     | likelihood-ratio-based R2 as defined in Sun et al. ([2010](#ref-Sun2010)) |
-| LOD      | LOD score for the SNP, defined as -\log\_{10}(pValue)                     |
+|  |  |
+|:---|:---|
+| trait | trait name |
+| snp | SNP name |
+| chr | chromosome on which the SNP is located |
+| pos | position of the SNP on the chromosome |
+| allFreq | allele frequency of the SNP |
+| pValue | P-value for the SNP |
+| effect | effect of the SNP on the trait value |
+| effectSe | standard error of the effect of the SNP on the trait value |
+| RLR2 | likelihood-ratio-based R2 as defined in Sun et al. ([2010](#ref-Sun2010)) |
+| LOD | LOD score for the SNP, defined as -\log\_{10}(pValue) |
 
 ``` r
+
 print(head(GWASDrops$GWAResult$Mur13W), row.names = FALSE)
 #>        trait           snp   chr    pos allFreq pValue effect effectSe    RLR2   LOD
 #>       <char>        <char> <int>  <int>   <num>  <num>  <num>    <num>   <num> <num>
@@ -423,12 +437,13 @@ SNPs close to the significant SNPs are included in the data.table. See
 data.tables in signSnp consist of the same columns as those in GWAResult
 described above. Two extra columns are added:
 
-|            |                                                                                                                                 |
-|:-----------|:--------------------------------------------------------------------------------------------------------------------------------|
-| snpStatus  | either “significant SNP” or “within … of a significant SNP”                                                                     |
+|  |  |
+|:---|:---|
+| snpStatus | either “significant SNP” or “within … of a significant SNP” |
 | propSnpVar | proportion of the variance explained by the SNP, computed as \beta\_{\textrm{SNP}}^2 \* var(\textrm{SNP}) / var(\textrm{pheno}) |
 
 ``` r
+
 print(GWASDrops$signSnp$Mur13W, row.names = FALSE)
 #>        trait           snp   chr      pos allFreq  pValue effect effectSe  RLR2   LOD
 #>       <char>        <char> <int>    <int>   <num>   <num>  <num>    <num> <num> <num>
@@ -437,12 +452,12 @@ print(GWASDrops$signSnp$Mur13W, row.names = FALSE)
 #>  grain.yield PZE-106021419     6 18991091    0.74 2.9e-07   0.53      0.1 0.097   6.5
 #>  grain.yield PZE-106021420     6 18991117    0.70 1.3e-06   0.50      0.1 0.087   5.9
 #>  grain.yield PZE-106021424     6 18991481    0.74 5.0e-07   0.52      0.1 0.093   6.3
-#>        snpStatus propSnpVar
-#>           <fctr>      <num>
-#>  significant SNP      0.088
-#>  significant SNP      0.090
-#>  significant SNP      0.083
-#>  significant SNP      0.080
+#>        snpStatus propSnpVar relatedSnp
+#>           <fctr>      <num>     <char>
+#>  significant SNP      0.088           
+#>  significant SNP      0.090           
+#>  significant SNP      0.083           
+#>  significant SNP      0.080           
 #>  significant SNP      0.080
 ```
 
@@ -462,6 +477,7 @@ For a quick overview of the results, e.g. the number of significant
 SNPs, use the summary function.
 
 ``` r
+
 ## Create summary of GWASDrops.
 summary(GWASDrops)
 #> Mur13W:
@@ -521,6 +537,7 @@ for example -\log\_{10}(p) values are consistently too large
 (inflation), the correction for genetic relatedness may not be adequate.
 
 ``` r
+
 ## Plot a QQ-plot of GWAS Drops.
 plot(GWASDrops, plotType = "qq", trait = "grain.yield")
 ```
@@ -533,6 +550,7 @@ A manhattan plot is made by setting `plotType = "manhattan"`.
 Significant SNPs are marked in red.
 
 ``` r
+
 ## Plot a manhattan plot of GWAS Drops.
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield")
 ```
@@ -544,6 +562,7 @@ analysis, use the parameter `yThr`. Use `chr` to plot a subset of
 chromosomes.
 
 ``` r
+
 ## Plot a manhattan plot of GWAS Drops.
 ## Set significance threshold to 4 and only plot chromosomes 6 to 8.
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", yThr = 4, chr = 6:8)
@@ -554,6 +573,7 @@ chromosome it is possible to specify `startPos` and/or `endPos` to
 indicate the start position and end position for SNPs that are plotted.
 
 ``` r
+
 ## Plot a manhattan plot of GWAS Drops.
 ## Set significance threshold to 4 and only plot first part of chromosome 6.
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", 
@@ -572,6 +592,7 @@ resulting plot. Note that the 5% of the SNPs that is plotted, is
 selected randomly. For reproducible results make sure to set a seed.
 
 ``` r
+
 ## Plot a manhattan plot of GWAS Drops.
 ## Plot only 5% of SNPs with a LOD below 3.
 set.seed(1)
@@ -585,6 +606,7 @@ determining true/false positives and false negatives. These are
 displayed in green, orange and yellow, respectively.
 
 ``` r
+
 ## Plot a manhattan plot of GWAS Drops with significance threshold 4.
 ## Assume PZE-106021410 and PZE-105012420 are SNPs with known effects.
 plot(GWASDrops, plotType = "manhattan", trait = "grain.yield", 
@@ -610,12 +632,13 @@ how to do this [`help(plot.GWAS)`](../reference/plot.GWAS.md).
 A qtl plot can be made by setting `plotType = "qtl"`. In this plot the
 significant SNPs are marked by circles at their genomic positions, with
 diameter proportional to the estimated effect size; for an example see
-E. Millet et al. ([2016](#ref-Millet2016)). Typically, this is done for
+Millet et al. ([2016](#ref-Millet2016)). Typically, this is done for
 multiple traits or environments, with the genomic position on the
 x-axis, which are displayed horizontally above each other and can thus
 be compared.
 
 ``` r
+
 ## Plot a qtl plot of GWAS Drops for Mur13W.
 plot(GWASDrops, plotType = "qtl")
 ```
@@ -627,6 +650,7 @@ is left out. To change the threshold when plotting without having to
 redo the GWAS analysis, use the parameter `yThr`.
 
 ``` r
+
 ## Plot a qtl plot of GWAS Drops for Mur13W.
 ## Set significance threshold to 4.
 plot(GWASDrops, plotType = "qtl", yThr = 4)
@@ -640,6 +664,7 @@ compared. For better comparison, one can set `normalize = TRUE`, which
 divides the estimates by the standard deviation of the phenotype.
 
 ``` r
+
 ## Plot a qtl plot of GWAS Drops for Mur13W.
 ## Set significance threshold to 4 and normalize effect estimates.
 plot(GWASDrops, plotType = "qtl", yThr = 4, normalize = TRUE)
@@ -684,6 +709,7 @@ specified by the argument `kinshipMethod`, using all SNPs that are
 in power.
 
 ``` r
+
 ## Run single trait GWAS for trial 'Mur13W' and trait 'grain.yield'
 ## Use chromosome specific kinship matrices computed using method of van Raden.
 GWASDropsChrSpec <- runSingleTraitGwas(gData = gDataDropsDedup, 
@@ -724,6 +750,7 @@ highest -\log\_{10}(p) scores as significant SNPs. Set
 following example, we select all SNPs with p \< 10^{-4}.
 
 ``` r
+
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
 ## Use a fixed significance threshold of 4.
 GWASDropsFixThr <- runSingleTraitGwas(gData = gDataDropsDedup,
@@ -772,6 +799,7 @@ Newton-Raphson algorithm. Specify the method by setting the parameter
 is used.
 
 ``` r
+
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
 ## Use the Newton Raphson algorithm for computing the variance components.
 GWASDropsNR <- runSingleTraitGwas(gData = gDataDropsDedup,
@@ -789,6 +817,7 @@ GWASInfo. It is also shown in the summary. Ideally this factor should be
 happens. Its value for Mur13W can be checked as follows:
 
 ``` r
+
 GWASDrops$GWASInfo$inflationFactor$Mur13W
 #> grain.yield    anthesis 
 #>        0.99        0.97
@@ -800,6 +829,7 @@ apply any correction based on this. If the values are further away from
 in *runSingleTraitGwas*.
 
 ``` r
+
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
 ## Perform genomic correction on the p-Values.
 GWASDropsGenControl <- runSingleTraitGwas(gData = gDataDropsDedup,
@@ -829,6 +859,7 @@ same F-test and null model to estimate the variance components, but with
 only all other SNPs (if any) in SNP-covariates as fixed effects.
 
 ``` r
+
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
 ## Use PZE-106021410, the most significant SNP, a SNP covariate.
 GWASDropsSnpCov <- runSingleTraitGwas(gData = gDataDropsDedup,
@@ -860,6 +891,7 @@ in *codeMarkers* (which only uses the genotypic data) resulting in the
 removal a slightly different set of markers.
 
 ``` r
+
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
 ## Only include SNPs that have a MAC of at least 20
 GWASDropsMAC <- runSingleTraitGwas(gData = gDataDropsDedup,
@@ -883,6 +915,7 @@ are included. LD is measured in terms of the squared Pearson correlation
 setting `minR2`.
 
 ``` r
+
 ## Run single trait GWAS for trait 'grain.yield' for Mur13W.
 ## Include SNPs within 200000 centimorgan of significant SNPs with a minimum LD of 0.1.
 GWASDropsInclClose <- runSingleTraitGwas(gData = gDataDropsDedup,
@@ -900,13 +933,13 @@ print(head(GWASDropsInclClose$signSnp$Mur13W), row.names = FALSE)
 #>  grain.yield      SYN22470     6 18712443    0.62 1.8e-02   0.25     0.11 0.022   1.7
 #>  grain.yield PZE-106021363     6 18846283    0.70 3.5e-07   0.52     0.10 0.096   6.5
 #>  grain.yield PZE-106021410     6 18990291    0.70 2.3e-07   0.53     0.10 0.098   6.6
-#>                          snpStatus propSnpVar
-#>                             <fctr>      <num>
-#>  within 2e+05 of a significant SNP      0.043
-#>  within 2e+05 of a significant SNP      0.054
-#>  within 2e+05 of a significant SNP      0.019
-#>  within 2e+05 of a significant SNP      0.023
-#>                    significant SNP      0.088
+#>                          snpStatus propSnpVar    relatedSnp
+#>                             <fctr>      <num>        <char>
+#>  within 2e+05 of a significant SNP      0.043 PZE-106021363
+#>  within 2e+05 of a significant SNP      0.054 PZE-106021363
+#>  within 2e+05 of a significant SNP      0.019 PZE-106021363
+#>  within 2e+05 of a significant SNP      0.023 PZE-106021363
+#>                    significant SNP      0.088              
 #>                    significant SNP      0.090
 ```
 
@@ -933,44 +966,39 @@ Devlin, B., and Kathryn Roeder. 1999. “Genomic Control for Association
 Studies.” *Biometrics* 55 (4): 997–1004.
 <https://doi.org/10.1111/j.0006-341x.1999.00997.x>.
 
-Kang, Hyun Min, Jae Hoon Sul, Susan K Service, Noah A Zaitlen, Sit-yee
-Kong, Nelson B Freimer, Chiara Sabatti, and Eleazar Eskin. 2010.
-“Variance Component Model to Account for Sample Structure in Genome-Wide
+Kang, Hyun Min, Jae Hoon Sul, Susan K Service, et al. 2010. “Variance
+Component Model to Account for Sample Structure in Genome-Wide
 Association Studies.” *Nature Genetics* 42 (4): 348–54.
 <https://doi.org/10.1038/ng.548>.
 
-Kang, Hyun Min, Noah A. Zaitlen, Claire M. Wade, Andrew Kirby, David
-Heckerman, Mark J. Daly, and Eleazar Eskin. 2008. “Efficient Control of
-Population Structure in Model Organism Association Mapping.” *Genetics*
-178 (3): 1709–23. <https://doi.org/10.1534/genetics.107.080101>.
+Kang, Hyun Min, Noah A. Zaitlen, Claire M. Wade, et al. 2008. “Efficient
+Control of Population Structure in Model Organism Association Mapping.”
+*Genetics* 178 (3): 1709–23.
+<https://doi.org/10.1534/genetics.107.080101>.
 
-Millet, Emilie J., Cyril Pommier, Mélanie Buy, Axel Nagel, Willem
-Kruijer, Therese Welz-Bolduan, Jeremy Lopez, et al. 2019. “A Multi-Site
-Experiment in a Network of European Fields for Assessing the Maize Yield
-Response to Environmental Scenarios.” Portail Data Inra.
+Millet, Emilie J., Cyril Pommier, Mélanie Buy, et al. 2019. *A
+Multi-Site Experiment in a Network of European Fields for Assessing the
+Maize Yield Response to Environmental Scenarios*. Portail Data Inra.
 <https://doi.org/10.15454/IASSTN>.
 
-Millet, Emilie, Claude Welcker, Willem Kruijer, Sandra Negro, Stephane
-Nicolas, Sebastien Praud, Nicolas Ranc, et al. 2016. “Genome-Wide
-Analysis of Yield in Europe: Allelic Effects as Functions of Drought and
-Heat Scenarios.” *Plant Physiology*, July, pp.00621.2016.
+Millet, Emilie, Claude Welcker, Willem Kruijer, et al. 2016.
+“Genome-Wide Analysis of Yield in Europe: Allelic Effects as Functions
+of Drought and Heat Scenarios.” *Plant Physiology*, July, pp.00621.2016.
 <https://doi.org/10.1104/pp.16.00621>.
 
-Rincent, Renaud, Laurence Moreau, Hervé Monod, Estelle Kuhn, Albrecht E.
-Melchinger, Rosa A. Malvar, Jesus Moreno-Gonzalez, et al. 2014.
-“Recovering Power in Association Mapping Panels with Variable Levels of
-Linkage Disequilibrium.” *Genetics* 197 (1): 375–87.
+Rincent, Renaud, Laurence Moreau, Hervé Monod, et al. 2014. “Recovering
+Power in Association Mapping Panels with Variable Levels of Linkage
+Disequilibrium.” *Genetics* 197 (1): 375–87.
 <https://doi.org/10.1534/genetics.113.159731>.
 
-Segura, Vincent, Bjarni J Vilhjálmsson, Alexander Platt, Arthur Korte,
-Ümit Seren, Quan Long, and Magnus Nordborg. 2012. “An Efficient
-Multi-Locus Mixed-Model Approach for Genome-Wide Association Studies in
-Structured Populations.” *Nature Genetics* 44 (7): 825–30.
-<https://doi.org/10.1038/ng.2314>.
+Segura, Vincent, Bjarni J Vilhjálmsson, Alexander Platt, et al. 2012.
+“An Efficient Multi-Locus Mixed-Model Approach for Genome-Wide
+Association Studies in Structured Populations.” *Nature Genetics* 44
+(7): 825–30. <https://doi.org/10.1038/ng.2314>.
 
-Sun, G, C Zhu, M H Kramer, S-S Yang, W Song, H-P Piepho, and J Yu. 2010.
-“Variation Explained in Mixed-Model Association Mapping.” *Heredity* 105
-(4): 333–40. <https://doi.org/10.1038/hdy.2010.11>.
+Sun, G, C Zhu, M H Kramer, et al. 2010. “Variation Explained in
+Mixed-Model Association Mapping.” *Heredity* 105 (4): 333–40.
+<https://doi.org/10.1038/hdy.2010.11>.
 
 Tunnicliffe, G Wilson. 1989. “On the Use of Marginal Likelihood in Time
 Series Model Estimation.” *JRSS* 51 (1): 15–27.
