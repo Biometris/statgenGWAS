@@ -4,7 +4,7 @@
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/statgenGWAS)](https://www.r-pkg.org/pkg/statgenGWAS)
 [![R-CMD-check](https://github.com/Biometris/statgenGWAS/workflows/R-CMD-check/badge.svg)](https://github.com/Biometris/statgenGWAS/actions?workflow=R-CMD-check)
-[![codecov](https://codecov.io/gh/Biometris/statgenGWAS/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Biometris/statgenGWAS)
+[![codecov](https://codecov.io/gh/Biometris/statgenGWAS/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Biometris/statgenGWAS)
 
 **statgenGWAS** is an R package for fast single trait Genome Wide
 Association Studies (GWAS).
